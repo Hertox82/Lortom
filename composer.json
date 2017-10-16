@@ -1,9 +1,15 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "name": "hadeluca/lortom",
+    "description": "Lortom is a CMS based on Laravel Framework, The Backend was built with Angular 2",
+    "keywords": ["cms", "laravel","angular4","laravel+angular", "angular 2"],
     "license": "MIT",
     "type": "project",
+    "authors": [
+        {
+            "name" : "Hernan Ariel De Luca",
+            "email": "hadeluca@gmail.com"
+        }
+    ],
     "require": {
         "php": ">=7.0.0",
         "fideloper/proxy": "~3.3",

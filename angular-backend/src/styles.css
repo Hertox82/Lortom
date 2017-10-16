@@ -1,1 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Header pannello Admin */
+.main-header{  height: 40px;  background-color: orange;  color: white;  position: relative; z-index: 1080;}
+.logo{  padding: 8px 25px;  text-align: left;  width: 200px;  float:left;  }
+.navbar-custom-menu{  float:right;}
+.navbar-custom-menu ul { float:left; margin:0; list-style: none; padding-left: 0;}
+.navbar-custom-menu li { float:left; padding:10px;}
+
+/* Aside Bar*/
+.main-sidebar { position: absolute; width:200px; min-height: 100%; top:0; left:0; padding-top: 40px; z-index:810; background-color: #5e5d5d; color:white;}
+.user-panel {padding: 5px 20px;  margin: 3px; display:table;}
+.sidebar-menu {    list-style: none; margin: 0; padding: 0; overflow: hidden; white-space: nowrap;}
+.sidebar-menu li.header { padding-top: 10px;  padding-left: 10px; padding-right:10px; padding-bottom: 10px; font-size: 12px; text-transform: uppercase;
+color:gainsboro; background-color: #2F3133;
+}
+
+.sidebar-menu li a { padding-top: 12px;  padding-left: 10px; padding-right:10px; padding-bottom: 15px; border-left:3px solid transparent; display: block;
+    font-size: 14px;
+}
+
+.sidebar-menu li.active {border-left:3px solid orange; background-color: #505254}
+
+/*Content*/
+.content-wrapper { margin-left: 200px; background-color: #eaeaea; min-height: 910px;}
+
+.content-box { padding-top:15px; padding-left:15px; padding-right: 15px; position: relative;}
+.content-header > h1 { margin:0px; font-size: 24px; }
+.content-header > .breadcrumb { float:right; margin-top: 0; margin-bottom: 0; position: absolute;top:15px; right: 10px; padding:0;}
+.content-header > .breadcrumb li { display: inline-block; color: black; font-size: 12px;}
+.content-header > .breadcrumb li.active { color:  #9c9c9c;}
+.content-header > .breadcrumb > li + li::before { padding: 5px; content:'>\00a0';}
+
+.content {  padding-top: 15px; padding-bottom:15px; margin-right: auto; margin-left:auto;}
+
+/*Footer*/
+
+footer { margin-left: 200px; padding: 10px; border:1px solid #dde0e6; font-size: 12px;}
