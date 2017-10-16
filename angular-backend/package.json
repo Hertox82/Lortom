@@ -5,10 +5,12 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --deploy-url='/js/'",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "try-watch": "ng build --watch --deploy-url='/js/'",
+    "postbuild": "(cp ../public/js/index.html ../resources/views/backend/backend-angular.blade.php)"
   },
   "private": true,
   "dependencies": {
@@ -21,8 +23,12 @@
     "@angular/platform-browser": "^4.2.4",
     "@angular/platform-browser-dynamic": "^4.2.4",
     "@angular/router": "^4.2.4",
+    "bootstrap": "^4.0.0-beta",
     "core-js": "^2.4.1",
+    "jquery": "^3.2.1",
+    "popper.js": "^1.12.5",
     "rxjs": "^5.4.2",
+    "tether": "^1.4.0",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {

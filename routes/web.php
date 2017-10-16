@@ -18,3 +18,9 @@ Route::get('/', function () {
 Route::get('/backend',function(){
    return view('backend.backend-angular');
 });
+
+Route::group(['prefix' => '/backend'], function(){
+    Route::any('{catchAll}', function(){
+        return view('backend.backend-angular');
+    })->where('catchAll','(.*)');
+});
