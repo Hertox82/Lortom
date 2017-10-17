@@ -16,19 +16,19 @@ class SlideBarController extends Controller
         $lista = [
             [
                 'name'  => 'Dashboard',
-                'href'  => '/dashboard',
+                'href'  => '/backend/dashboard',
                 'icon'  => 'fa fa-dashboard',
                 'active' => true,
             ],
             [
                 'name'  => 'Settings',
-                'href'  => '/settings',
+                'href'  => '/backend/settings',
                 'icon'  => 'fa fa-cogs',
                 'active' => false,
             ],
             [
                 'name'  => 'Plugin',
-                'href'  => '/plugin',
+                'href'  => '/backend/plugin',
                 'icon'  => 'fa fa-plug',
                 'active' => false,
             ],

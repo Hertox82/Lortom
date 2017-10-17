@@ -144,7 +144,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/menu-item/menu-item.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<li *ngIf=\"item.active\" class=\"active\">\n  <a href=\"{{item.href}}\"><i class=\"{{item.icon}}\"></i> {{item.name}}</a>\n</li>"
+module.exports = "<li *ngIf=\"item.active else otherTemplate\" class=\"active\">\n  <a href=\"{{item.href}}\"><i class=\"{{item.icon}}\"></i> {{item.name}}</a>\n</li>\n<ng-template #otherTemplate>\n  <li><a href=\"{{item.href}}\"><i class=\"{{item.icon}}\"></i> {{item.name}}</a></li>\n</ng-template>"
 
 /***/ }),
 
