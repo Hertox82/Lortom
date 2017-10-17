@@ -1,6 +1,3 @@
-<li *ngIf="item.active else otherTemplate" class="active">
-  <a href="{{item.href}}"><i class="{{item.icon}}"></i> {{item.name}}</a>
+<li [routerLinkActive]="['active']">
+  <a routerLink="{{item.href}}"><i class="{{item.icon}}"></i> {{item.name}}</a>
 </li>
-<ng-template #otherTemplate>
-  <li><a href="{{item.href}}"><i class="{{item.icon}}"></i> {{item.name}}</a></li>
-</ng-template>

@@ -1,19 +1,35 @@
 webpackJsonp(["main"],{
 
 /***/ "../../../../../src/$$_gendir lazy recursive":
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-function webpackEmptyAsyncContext(req) {
-	// Here Promise.resolve().then() is used instead of new Promise() to prevent
-	// uncatched exception popping up in devtools
-	return Promise.resolve().then(function() {
-		throw new Error("Cannot find module '" + req + "'.");
+var map = {
+	"../plugins/Hardel/Dashboard/dashboard.module": [
+		"../../../../../src/plugins/Hardel/Dashboard/dashboard.module.ts",
+		"dashboard.module"
+	],
+	"../plugins/Hardel/Plugin/plugin.module": [
+		"../../../../../src/plugins/Hardel/Plugin/plugin.module.ts",
+		"plugin.module"
+	],
+	"../plugins/Hardel/Settings/settings.module": [
+		"../../../../../src/plugins/Hardel/Settings/settings.module.ts",
+		"settings.module"
+	]
+};
+function webpackAsyncContext(req) {
+	var ids = map[req];
+	if(!ids)
+		return Promise.reject(new Error("Cannot find module '" + req + "'."));
+	return __webpack_require__.e(ids[1]).then(function() {
+		return __webpack_require__(ids[0]);
 	});
-}
-webpackEmptyAsyncContext.keys = function() { return []; };
-webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
-module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = "../../../../../src/$$_gendir lazy recursive";
+};
+webpackAsyncContext.keys = function webpackAsyncContextKeys() {
+	return Object.keys(map);
+};
+webpackAsyncContext.id = "../../../../../src/$$_gendir lazy recursive";
+module.exports = webpackAsyncContext;
 
 /***/ }),
 
@@ -38,7 +54,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n\n<header class=\"main-header\">\n    <a class=\"logo\">\n        <span>Lortom</span>\n    </a>\n    <nav>\n        <div class=\"navbar-custom-menu\">\n            <ul>\n                <li>\n                    <a>Messaggi</a>\n                </li>\n                <li>\n                    <a>Alert</a>\n                </li>\n                <li>\n                    <a>Configurazione</a>\n                </li>\n                <li>\n                    <a>Profilo</a>\n                </li>\n\n            </ul>\n        </div>\n    </nav>\n</header>\n\n<aside class=\"main-sidebar\">\n   <section class=\"sidebar\">\n       <div class=\"user-panel\">\n           <div class=\"pull-left image\">\n               Immagine\n           </div>\n           <div class=\"pull-left info\">\n               Nome e Cognome\n           </div>\n       </div>\n       <app-menu-items></app-menu-items>\n   </section>\n</aside>\n\n<!-- Qui viene messo il rootlet-->\n<div class=\"content-wrapper\">\n    <div class=\"content-box\">\n        <div class=\"content-header\">\n            <h1>Dashboard</h1>\n            <ol class=\"breadcrumb\">\n                <li><a>Home</a></li>\n                <li class=\"active\"><a>Ciao</a></li>\n            </ol>\n        </div>\n        <div class=\"content\">\n            Qui viene messo tutto il contenuto\n        </div>\n    </div>\n</div>\n\n\n<footer>\n    &copy; Lortom 2017 - MIT License - created by Hernan Ariel De Luca\n</footer>"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n\n<header class=\"main-header\">\n    <a class=\"logo\">\n        <span>Lortom</span>\n    </a>\n    <nav>\n        <div class=\"navbar-custom-menu\">\n            <ul>\n                <li>\n                    <a>Messaggi</a>\n                </li>\n                <li>\n                    <a>Alert</a>\n                </li>\n                <li>\n                    <a>Configurazione</a>\n                </li>\n                <li>\n                    <a>Profilo</a>\n                </li>\n\n            </ul>\n        </div>\n    </nav>\n</header>\n\n<aside class=\"main-sidebar\">\n   <section class=\"sidebar\">\n       <div class=\"user-panel\">\n           <div class=\"pull-left image\">\n               Immagine\n           </div>\n           <div class=\"pull-left info\">\n               Nome e Cognome\n           </div>\n       </div>\n       <app-menu-items></app-menu-items>\n   </section>\n</aside>\n\n<!-- Qui viene messo il rootlet-->\n<div class=\"content-wrapper\">\n    <router-outlet></router-outlet>\n</div>\n\n\n<footer>\n    &copy; Lortom 2017 - MIT License - created by Hernan Ariel De Luca\n</footer>"
 
 /***/ }),
 
@@ -62,7 +78,7 @@ var AppComponent = (function () {
     return AppComponent;
 }());
 AppComponent = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'app-root',
         template: __webpack_require__("../../../../../src/app/app.component.html"),
         styles: [__webpack_require__("../../../../../src/app/app.component.css")]
@@ -85,6 +101,7 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__menu_items_menu_items_component__ = __webpack_require__("../../../../../src/app/menu-items/menu-items.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__menu_item_menu_item_component__ = __webpack_require__("../../../../../src/app/menu-item/menu-item.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__menuservice__ = __webpack_require__("../../../../../src/app/menuservice.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_routing__ = __webpack_require__("../../../../../src/app/app.routing.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -98,13 +115,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 var AppModule = (function () {
     function AppModule() {
     }
     return AppModule;
 }());
 AppModule = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["L" /* NgModule */])({
+    Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* NgModule */])({
         declarations: [
             __WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */],
             __WEBPACK_IMPORTED_MODULE_4__menu_items_menu_items_component__["a" /* MenuItemsComponent */],
@@ -112,7 +130,8 @@ AppModule = __decorate([
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* HttpModule */]
+            __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* HttpModule */],
+            __WEBPACK_IMPORTED_MODULE_7__app_routing__["a" /* routing */]
         ],
         providers: [__WEBPACK_IMPORTED_MODULE_6__menuservice__["a" /* MenuService */]],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */]]
@@ -120,6 +139,27 @@ AppModule = __decorate([
 ], AppModule);
 
 //# sourceMappingURL=app.module.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/app.routing.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return routing; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/**
+ * Created by hernan on 17/10/2017.
+ */
+
+var routes = [
+    { path: 'backend', redirectTo: 'backend/dashboard', pathMatch: 'full' },
+    { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashBoardModule' },
+    { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' },
+    { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' }
+];
+var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["a" /* RouterModule */].forRoot(routes);
+//# sourceMappingURL=app.routing.js.map
 
 /***/ }),
 
@@ -144,7 +184,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/menu-item/menu-item.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<li *ngIf=\"item.active else otherTemplate\" class=\"active\">\n  <a href=\"{{item.href}}\"><i class=\"{{item.icon}}\"></i> {{item.name}}</a>\n</li>\n<ng-template #otherTemplate>\n  <li><a href=\"{{item.href}}\"><i class=\"{{item.icon}}\"></i> {{item.name}}</a></li>\n</ng-template>"
+module.exports = "<li [routerLinkActive]=\"['active']\">\n  <a routerLink=\"{{item.href}}\"><i class=\"{{item.icon}}\"></i> {{item.name}}</a>\n</li>\n"
 
 /***/ }),
 
@@ -175,11 +215,11 @@ var MenuItemComponent = (function () {
     return MenuItemComponent;
 }());
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* Input */])(),
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
     __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface__["SlideItem"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface__["SlideItem"]) === "function" && _a || Object)
 ], MenuItemComponent.prototype, "item", void 0);
 MenuItemComponent = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'app-menu-item',
         template: __webpack_require__("../../../../../src/app/menu-item/menu-item.component.html"),
         styles: [__webpack_require__("../../../../../src/app/menu-item/menu-item.component.css")]
@@ -247,7 +287,7 @@ var MenuItemsComponent = (function () {
     return MenuItemsComponent;
 }());
 MenuItemsComponent = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'app-menu-items',
         template: __webpack_require__("../../../../../src/app/menu-items/menu-items.component.html"),
         styles: [__webpack_require__("../../../../../src/app/menu-items/menu-items.component.css")]
@@ -300,7 +340,7 @@ var MenuService = (function () {
     return MenuService;
 }());
 MenuService = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Injectable */])(),
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Http */]) === "function" && _a || Object])
 ], MenuService);
 
@@ -350,7 +390,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 if (__WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].production) {
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_19" /* enableProdMode */])();
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_23" /* enableProdMode */])();
 }
 Object(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_2__app_app_module__["a" /* AppModule */])
     .catch(function (err) { return console.log(err); });

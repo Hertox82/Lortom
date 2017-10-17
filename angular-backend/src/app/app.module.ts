@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { MenuItemsComponent } from './menu-items/menu-items.component';
 import { MenuItemComponent } from './menu-item/menu-item.component';
 import {MenuService} from "./menuservice";
+import {routing} from "./app.routing";
 
 
 
@@ -16,7 +17,8 @@ import {MenuService} from "./menuservice";
   ],
   imports: [
     BrowserModule,
-      HttpModule
+    HttpModule,
+    routing
   ],
   providers: [MenuService],
   bootstrap: [AppComponent]
