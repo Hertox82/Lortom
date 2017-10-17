@@ -13,26 +13,19 @@ class SlideBarController extends Controller
 {
     public function populate(Request $request)
     {
-        $lista = [
-            [
-                'name'  => 'Dashboard',
-                'href'  => '/backend/dashboard',
-                'icon'  => 'fa fa-dashboard',
-                'active' => true,
-            ],
-            [
-                'name'  => 'Settings',
-                'href'  => '/backend/settings',
-                'icon'  => 'fa fa-cogs',
-                'active' => false,
-            ],
-            [
-                'name'  => 'Plugin',
-                'href'  => '/backend/plugin',
-                'icon'  => 'fa fa-plug',
-                'active' => false,
-            ],
-        ];
+        $listaPlugin = config('plugins');
+
+        $lista = [];
+
+        foreach ($listaPlugin['plugins'] as $plug)
+        {
+            $lista[] = [
+                'name' => $plug['PluginName'],
+                'href' => '/backend'.$plug['routingPath'],
+                'icon' => $plug['icon']
+            ];
+        }
+
         return response()->json(['menulista' => $lista]);
     }
 }

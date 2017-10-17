@@ -1,18 +1,18 @@
 <?php
 /**
+ * Created by PhpStorm.
  * User: hernan
  * Date: 17/10/2017
- * Time: 11:08
+ * Time: 16:26
  */
 
-namespace Plugins\Hardel\Dashboard\Providers;
+namespace Plugins\Hardel\Plugin\Providers;
 
 
 use Illuminate\Support\ServiceProvider;
 use App\Services\PluginsConfigCompiler;
 
-
-class HardelDashboardServiceProvider extends ServiceProvider
+class HardelPluginServiceProvider extends ServiceProvider
 {
     public function boot()
     {
@@ -48,7 +48,7 @@ class HardelDashboardServiceProvider extends ServiceProvider
             $path = config_path('plugins.php');
             $pluginsConfig = require $path;
             $Plugins = new PluginsConfigCompiler(false,$pluginsConfig['plugins']);
-            if(! $Plugins->isPluginInserted('Hardel','Dashboard')) {
+            if(! $Plugins->isPluginInserted('Hardel','Plugin')) {
                 $Plugins->extrapolate($pl_load['plugins']);
                 $this->mergeConfigFrom(config_path('plugins.php'),'plugins');
             }
