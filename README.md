@@ -4,10 +4,11 @@ Lortom is an Content Management System built in Laravel 5.5 + Angular 2
 ### TODO LIST
 
 * ~~Installation System for Plugins in Lortom~~
-* Pass routing Angular runtime
-* Create Automatization to build a Plugin
-* Create Plugins Installer
+* ~~Pass routing Angular with Artisan Command~~
+* ~~Create Automatization to build a Plugin~~
+* Deleting Plugin in Safe mode (with Artisan command)
 * Create Artisan Command for Plugins
+* Create Plugins Installer
 * Create Artisan Command for Plugin's Migration
 * Styling the Backend
 * Create Template System for Front-end
