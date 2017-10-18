@@ -1,0 +1,13 @@
+import { NgModule } from '@angular/core';
+import {#Name#Component} from "./component/#pluginname#.component";
+import {routing} from "./#pluginname#.routing";
+
+
+@NgModule({
+    imports: [routing],
+    declarations: [
+        #Name#Component
+    ],
+})
+
+export class #Name#Module {}

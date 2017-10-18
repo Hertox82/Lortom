@@ -1,0 +1,20 @@
+<?php
+
+namespace #namespace#;
+
+
+use Illuminate\Support\ServiceProvider;
+
+class #vendor-name#ServiceProvider extends ServiceProvider
+{
+    public function boot()
+    {
+        /**
+         * Routing
+         */
+        if(!$this->app->routesAreCached())
+        {
+            require __DIR__.'/../routes.php';
+        }
+    }
+}

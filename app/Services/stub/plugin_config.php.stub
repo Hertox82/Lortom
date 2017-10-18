@@ -1,0 +1,11 @@
+<?php
+return [
+    'plugins' => [
+        'vendor'            => '#Vendor#',
+        'PluginName'        => '#Name#',
+        'moduleName'        => '#pluginname#.module',
+        'routingPath'       => '/#pluginname#',
+        'icon'              => '',
+        'serviceProvider'   => #Namespaceclass#::class,
+    ],
+];
