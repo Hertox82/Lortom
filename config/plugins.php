@@ -28,7 +28,7 @@ return [
           'moduleName' => 'prova.module', 
           'routingPath' => '/prova', 
           'icon' => '', 
-          'serviceProvider' => 'Plugins\Hardel\Prova\Providers\HardelProvaServiceProvider', 
+          'serviceProvider' => Plugins\Hardel\Prova\Providers\HardelProvaServiceProvider::class,
      ], 
    ], 
   ];

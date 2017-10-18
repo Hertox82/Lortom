@@ -1,4 +1,4 @@
-<php
+<?php
 
 namespace Plugins\Hardel\Prova\Controller;
 

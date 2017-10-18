@@ -52,9 +52,9 @@ class PluginsConfigCompiler
             $stub .= "     [ \n";
             foreach ($newContent as $key => $value)
             {
-                if($key == 'routingPath')
+                if($key == 'serviceProvider')
                 {
-                    $stub .= "          '{$key}' => '{$value}', \n";
+                    $stub .= "          '{$key}' =>  {$value}::class, \n";
                 }
                 else {
                     $stub .= "          '{$key}' => '{$value}', \n";
@@ -74,9 +74,9 @@ class PluginsConfigCompiler
                 $stub.= "  [ \n";
                 foreach ($plug as $key => $value)
                 {
-                    if($key == 'routingPath')
+                    if($key == 'serviceProvider')
                     {
-                        $stub .= "          '{$key}' => '{$value}', \n";
+                        $stub .= "          '{$key}' => {$value}::class, \n";
                     }
                     else {
                         $stub .= "          '{$key}' => '{$value}', \n";
