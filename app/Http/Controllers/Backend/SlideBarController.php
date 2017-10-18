@@ -17,14 +17,6 @@ class SlideBarController extends Controller
 
         $lista = [];
 
-        $route = [];
-
-        $route[] = [
-            'path'          => 'backend',
-            'redirectTo'    => 'backend/dashboard',
-            'pathMatch'     => 'full'
-        ];
-
         foreach ($listaPlugin['plugins'] as $plug)
         {
             $lista[] = [
@@ -32,16 +24,8 @@ class SlideBarController extends Controller
                 'href' => '/backend'.$plug['routingPath'],
                 'icon' => $plug['icon']
             ];
-
-            $moduleName = $plug['moduleName'];
-            $moduleName = str_replace('.',' ',$moduleName);
-            $moduleName = str_replace(' ','',ucwords($moduleName));
-            $route[] = [
-                'path'          => 'backend'.$plug['routingPath'],
-                'loadChildren'  => '../plugins/'.$plug['vendor'].'/'.$plug['PluginName'].'/'.$plug['moduleName'].'#'.$moduleName
-            ];
         }
 
-        return response()->json(['menulista' => $lista, 'route' => $route]);
+        return response()->json(['menulista' => $lista]);
     }
 }

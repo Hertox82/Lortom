@@ -16,10 +16,7 @@ export class MenuItemsComponent implements OnInit {
   ngOnInit() {
     this.menuService.getMenu()
         .subscribe(
-            (menuItems : any) => {
-              this.items = menuItems.menulista;
-              this.menuService.sendData(menuItems.route);
-              },
+            (menuItems : SlideItem[]) => this.items = menuItems,
             (error : Response) => console.log(error)
         );
   }

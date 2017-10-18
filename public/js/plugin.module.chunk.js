@@ -1,17 +1,17 @@
-webpackJsonp(["dashboard.module"],{
+webpackJsonp(["plugin.module"],{
 
-/***/ "../../../../../src/plugins/Hardel/Dashboard/component/dashboard.component.html":
+/***/ "../../../../../src/plugins/Hardel/Plugin/component/plugin.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\">\n        <h1>Dashboard</h1>\n        <ol class=\"breadcrumb\">\n            <li><a>Backend</a></li>\n            <li class=\"active\"><a>Dashboard</a></li>\n        </ol>\n    </div>\n    <div class=\"content\">\n        Qui viene messo tutto il contenuto\n    </div>\n</div>"
+module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\">\n        <h1>Plugin</h1>\n        <ol class=\"breadcrumb\">\n            <li><a>Backend</a></li>\n            <li class=\"active\"><a>Plugin</a></li>\n        </ol>\n    </div>\n    <div class=\"content\">\n        Qui viene messo tutto il contenuto\n    </div>\n</div>"
 
 /***/ }),
 
-/***/ "../../../../../src/plugins/Hardel/Dashboard/component/dashboard.component.ts":
+/***/ "../../../../../src/plugins/Hardel/Plugin/component/plugin.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DashBoardComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PluginComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /**
  * Created by hernan on 17/10/2017.
@@ -26,33 +26,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-var DashBoardComponent = (function () {
-    function DashBoardComponent() {
+var PluginComponent = (function () {
+    function PluginComponent() {
     }
-    DashBoardComponent.prototype.ngOnInit = function () { };
-    return DashBoardComponent;
+    PluginComponent.prototype.ngOnInit = function () {
+    };
+    return PluginComponent;
 }());
-DashBoardComponent = __decorate([
+PluginComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
-        selector: 'app-dashboard',
-        template: __webpack_require__("../../../../../src/plugins/Hardel/Dashboard/component/dashboard.component.html"),
+        selector: 'app-plugin',
+        template: __webpack_require__("../../../../../src/plugins/Hardel/Plugin/component/plugin.component.html")
     }),
     __metadata("design:paramtypes", [])
-], DashBoardComponent);
+], PluginComponent);
 
-//# sourceMappingURL=dashboard.component.js.map
+//# sourceMappingURL=plugin.component.js.map
 
 /***/ }),
 
-/***/ "../../../../../src/plugins/Hardel/Dashboard/dashboard.module.ts":
+/***/ "../../../../../src/plugins/Hardel/Plugin/plugin.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DashboardModule", function() { return DashboardModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PluginModule", function() { return PluginModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__component_dashboard_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Dashboard/component/dashboard.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dashboard_routing__ = __webpack_require__("../../../../../src/plugins/Hardel/Dashboard/dashboard.routing.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__component_plugin_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Plugin/component/plugin.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__plugin_routing__ = __webpack_require__("../../../../../src/plugins/Hardel/Plugin/plugin.routing.ts");
 /**
  * Created by hernan on 17/10/2017.
  */
@@ -65,43 +66,41 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var DashboardModule = (function () {
-    function DashboardModule() {
+var PluginModule = (function () {
+    function PluginModule() {
     }
-    return DashboardModule;
+    return PluginModule;
 }());
-DashboardModule = __decorate([
+PluginModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_2__dashboard_routing__["a" /* routing */]],
-        declarations: [
-            __WEBPACK_IMPORTED_MODULE_1__component_dashboard_component__["a" /* DashBoardComponent */]
-        ],
+        imports: [__WEBPACK_IMPORTED_MODULE_2__plugin_routing__["a" /* routing */]],
+        declarations: [__WEBPACK_IMPORTED_MODULE_1__component_plugin_component__["a" /* PluginComponent */]]
     })
-], DashboardModule);
+], PluginModule);
 
-//# sourceMappingURL=dashboard.module.js.map
+//# sourceMappingURL=plugin.module.js.map
 
 /***/ }),
 
-/***/ "../../../../../src/plugins/Hardel/Dashboard/dashboard.routing.ts":
+/***/ "../../../../../src/plugins/Hardel/Plugin/plugin.routing.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return routing; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__component_dashboard_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Dashboard/component/dashboard.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__component_plugin_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Plugin/component/plugin.component.ts");
 /**
  * Created by hernan on 17/10/2017.
  */
 
 
 var routes = [
-    { path: '', component: __WEBPACK_IMPORTED_MODULE_1__component_dashboard_component__["a" /* DashBoardComponent */] }
+    { path: '', component: __WEBPACK_IMPORTED_MODULE_1__component_plugin_component__["a" /* PluginComponent */] }
 ];
 var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["a" /* RouterModule */].forChild(routes);
-//# sourceMappingURL=dashboard.routing.js.map
+//# sourceMappingURL=plugin.routing.js.map
 
 /***/ })
 
 });
-//# sourceMappingURL=dashboard.module.chunk.js.map
+//# sourceMappingURL=plugin.module.chunk.js.map

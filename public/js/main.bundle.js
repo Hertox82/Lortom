@@ -7,6 +7,14 @@ var map = {
 	"../plugins/Hardel/Dashboard/dashboard.module": [
 		"../../../../../src/plugins/Hardel/Dashboard/dashboard.module.ts",
 		"dashboard.module"
+	],
+	"../plugins/Hardel/Plugin/plugin.module": [
+		"../../../../../src/plugins/Hardel/Plugin/plugin.module.ts",
+		"plugin.module"
+	],
+	"../plugins/Hardel/Settings/settings.module": [
+		"../../../../../src/plugins/Hardel/Settings/settings.module.ts",
+		"settings.module"
 	]
 };
 function webpackAsyncContext(req) {
@@ -56,8 +64,6 @@ module.exports = "<!--The content below is only a placeholder and can be replace
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menuservice__ = __webpack_require__("../../../../../src/app/menuservice.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -68,19 +74,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-
-
 var AppComponent = (function () {
-    function AppComponent(routeService, router) {
-        var _this = this;
-        this.routeService = routeService;
-        this.router = router;
+    function AppComponent() {
         this.title = 'app';
-        this.routeService.helpRoute$.subscribe(function (route) {
-            _this.routes = route;
-            console.log(_this.routes);
-            _this.router.resetConfig(_this.routes);
-        });
     }
     return AppComponent;
 }());
@@ -90,10 +86,9 @@ AppComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/app.component.html"),
         styles: [__webpack_require__("../../../../../src/app/app.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */]) === "function" && _b || Object])
+    __metadata("design:paramtypes", [])
 ], AppComponent);
 
-var _a, _b;
 //# sourceMappingURL=app.component.js.map
 
 /***/ }),
@@ -157,21 +152,14 @@ AppModule = __decorate([
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return routing; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/**
- * Created by hernan on 17/10/2017.
- */
 
-/*const routes : Routes = [
-    {path: 'backend', redirectTo:'backend/dashboard', pathMatch: 'full'},
-    {path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashBoardModule'},
-    {path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule'},
-    {path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule'}
-];*/
 var routes = [
     { path: 'backend', redirectTo: 'backend/dashboard', pathMatch: 'full' },
-    { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashBoardModule' },
+    { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' },
+    { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' },
+    { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' }
 ];
-var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["b" /* RouterModule */].forRoot(routes);
+var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["a" /* RouterModule */].forRoot(routes);
 //# sourceMappingURL=app.routing.js.map
 
 /***/ }),
@@ -295,10 +283,7 @@ var MenuItemsComponent = (function () {
     MenuItemsComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.menuService.getMenu()
-            .subscribe(function (menuItems) {
-            _this.items = menuItems.menulista;
-            _this.menuService.sendData(menuItems.route);
-        }, function (error) { return console.log(error); });
+            .subscribe(function (menuItems) { return _this.items = menuItems; }, function (error) { return console.log(error); });
     };
     return MenuItemsComponent;
 }());
@@ -325,8 +310,6 @@ var _a;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__ = __webpack_require__("../../../../rxjs/Rx.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__ = __webpack_require__("../../../../rxjs/Subject.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -342,21 +325,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
 var MenuService = (function () {
     function MenuService(http) {
         this.http = http;
-        this.helpRoute = new __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__["Subject"]();
-        this.helpRoute$ = this.helpRoute.asObservable();
     }
     MenuService.prototype.getMenu = function () {
         return this.http.get('http://lortom.dev/api/populate-slidebar')
             .map(function (response) {
-            return response.json();
+            return response.json().menulista;
         });
-    };
-    MenuService.prototype.sendData = function (routes) {
-        this.helpRoute.next(routes);
     };
     return MenuService;
 }());
