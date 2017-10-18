@@ -9,6 +9,7 @@ namespace App\Console\Commands;
 
 use App\Services\PluginCreateCompiler;
 use Illuminate\Console\Command;
+use File;
 
 class CreatePlugin extends Command
 {
@@ -61,6 +62,24 @@ class CreatePlugin extends Command
 
         if($this->confirm("This is the Vendor = {$vendor}, the Name= {$name} of plugin that you choice, Do you wish to continue?"))
         {
+
+            $name = str_replace('-',' ',$name);
+            $name = ucwords($name);
+            $name = str_replace(' ','',$name);
+
+            $pathPlugin = __DIR__.'/../../../angular-backend/src/plugins/';
+
+            if(File::exists($pathPlugin.$vendor))
+            {
+                $pathVendor = $pathPlugin.$vendor.'/';
+
+                if(File::exists($pathVendor.$name))
+                {
+                    $this->info("This Plugin: {$name} in this Vendor: {$vendor} already exist! Please select other Name for your plugin");
+                    return;
+                }
+            }
+
             $this->line('Ok, now is time to Create your Plugin!');
 
             $bar = $this->output->createProgressBar(9);
