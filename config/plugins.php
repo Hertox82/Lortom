@@ -22,13 +22,5 @@ return [
           'routingPath' => '/plugin', 
           'icon' => 'fa fa-plug', 
      ], 
-  [ 
-          'vendor' => 'Hardel', 
-          'PluginName' => 'Prova', 
-          'moduleName' => 'prova.module', 
-          'routingPath' => '/prova', 
-          'icon' => '', 
-          'serviceProvider' => Plugins\Hardel\Prova\Providers\HardelProvaServiceProvider::class,
-     ], 
    ], 
   ];

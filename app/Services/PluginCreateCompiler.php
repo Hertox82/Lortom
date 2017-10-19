@@ -9,45 +9,14 @@ namespace App\Services;
 
 use File;
 
-class PluginCreateCompiler
+class PluginCreateCompiler extends AbstractPlugin
 {
-    protected $vendor;
-
-    protected $name;
-
-    protected $basePath;
 
     protected $componentDir  = '/component/';
 
     protected $controllerDir = '/Controller/';
 
     protected $providersDir  = '/Providers/';
-
-    protected $stub = '';
-
-    protected $basePluginPath = '';
-
-
-    public function __construct()
-    {
-
-        $this->basePath = __DIR__.'/../../angular-backend/src/plugins/';
-    }
-
-
-    /**
-     * Function that set Vendor and Name of Plugin
-     * @param $vendor
-     * @param $name
-     * @return $this
-     */
-    public function setVendorName($vendor, $name)
-    {
-        $this->vendor = $vendor;
-        $this->name = $name;
-
-        return $this;
-    }
 
     /**
      * Chunk of function for progress bar
@@ -264,7 +233,7 @@ class PluginCreateCompiler
         //create plugin_config.php
         $fileStubConfigPlug = __DIR__.'/stub/plugin_config.php.stub';
         $nameFile = $path.'plugin_config.php';
-        $namespaceClass = $this->getNamespacePhp()."\\Providers\\{$this->vendor}{$this->name}ServiceProvider";
+        $namespaceClass = $this->getNameServiceProvider();
         File::put($nameFile,
             $this->setStub($fileStubConfigPlug)
         ->replaceWith('#Vendor#',$this->vendor)
@@ -279,50 +248,9 @@ class PluginCreateCompiler
         File::put($nameFile,
             $this->setStub($fileStubRoutes)->getStub());
 
-
-    }
-
-    /**
-     * Function to reduce time to replace the placeholder
-     * @param $search
-     * @param $replace
-     * @return $this
-     */
-    private function replaceWith($search,$replace)
-    {
-        $this->stub = str_replace($search,$replace,$this->stub);
-
-        return $this;
-    }
-
-    /**
-     * Function return the Stub
-     * @return string
-     */
-    private function getStub()
-    {
-        return $this->stub;
-    }
-
-    /**
-     * Function to clear and set the Stub
-     * @param $fileStub
-     * @return $this
-     */
-    private function setStub($fileStub)
-    {
-        $this->stub = '';
-        $this->stub = File::get($fileStub);
-        return $this;
     }
 
 
-    private function getNamespacePhp()
-    {
-        $nameSpace = "Plugins\\{$this->vendor}\\{$this->name}";
-
-        return $nameSpace;
-    }
 
     /**
      * Function insert the configuration of Plugin into the file plugins.php
@@ -335,16 +263,18 @@ class PluginCreateCompiler
 
         if(!file_exists(config_path('plugins.php')))
         {
-            $Plugins = new PluginsConfigCompiler(true);
-            $Plugins->extrapolate($plugin_load['plugins']);
+            $Plugins = new PluginsConfigCompiler();
+            $list[] = $plugin_load['plugins'];
+            $Plugins->extrapolate($list);
         }
         else
         {
             $path = config_path('plugins.php');
             $pluginsConfig = require $path;
-            $Plugins = new PluginsConfigCompiler(false,$pluginsConfig['plugins']);
-            if(! $Plugins->isPluginInserted($this->vendor,$this->name)) {
-                $Plugins->extrapolate($plugin_load['plugins']);
+            $Plugins = new PluginsConfigCompiler();
+            if(! $Plugins->isPluginInserted($this->vendor,$this->name,$pluginsConfig['plugins'])) {
+                $pluginsConfig['plugins'][] = $plugin_load['plugins'];
+                $Plugins->extrapolate($pluginsConfig['plugins']);
             }
         }
     }
@@ -360,72 +290,9 @@ class PluginCreateCompiler
 
         $appConfig = require config_path('app.php');
 
-        $pathApp = config_path('app.php');
-        $appStub = __DIR__.'/stub/app_config.php.stub';
         $appConfig['providers'][] = $plugin_load['plugins']['serviceProvider'];
 
-        File::put($pathApp,$this->setStub($appStub)
-        ->replaceWith('#timezone#',"'{$appConfig['timezone']}'")
-        ->replaceWith('#locale#',"'{$appConfig['locale']}'")
-        ->replaceWith('#fallback_locale#',"'{$appConfig['fallback_locale']}'")
-        ->replaceWith('#cipher#',"'{$appConfig['cipher']}'")
-        ->replaceWith('#providers#',$this->createStubService($appConfig['providers']))
-        ->replaceWith('#aliases#',$this->createStubAliases($appConfig['aliases']))
-        ->getStub());
+        $this->compileServiceInApp($appConfig);
 
-    }
-
-    /**
-     * This function provide to create a stub for Providers
-     * @param $listaTotale
-     * @return string
-     */
-    private function createStubService($listaTotale)
-    {
-        $stub = "";
-
-        $i=0;
-
-        $length= count($listaTotale);
-
-
-        foreach ($listaTotale as $service)
-        {
-            $stub.= "       {$service}::class";
-            if($i<($length -1))
-            {
-                $stub.=",";
-            }
-            $stub.="\n";
-            $i++;
-        }
-        return $stub;
-    }
-
-    /**
-     * This function provide to rigenerate aliases for config/app.php
-     * @param $listaAliases
-     * @return string
-     */
-    private function createStubAliases($listaAliases)
-    {
-        $stub = "";
-
-        $i=0;
-
-        $length=count($listaAliases);
-
-        foreach ($listaAliases as $key => $value)
-        {
-            $stub.= "        '{$key}' => {$value}::class ";
-            if($i<($length -1))
-            {
-                $stub.=",";
-            }
-            $stub.="\n";
-            $i++;
-
-        }
-        return $stub;
     }
 }

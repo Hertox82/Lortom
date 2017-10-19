@@ -17,25 +17,6 @@ class PluginsConfigCompiler
      */
     private $storedKey = 'plugins';
 
-    /**
-     * variabile dove viene salvato il precedente contenuto del plugins
-     * @var null
-     */
-    private $previousSave;
-
-    /**
-     * variabile per determinare se il file è già stato creato o no
-     * @var bool
-     */
-    private $isNew;
-
-
-    public function __construct($isNewFile = false, $previousSave = null)
-    {
-        $this->isNew = $isNewFile;
-        $this->previousSave = $previousSave;
-    }
-
 
     public function extrapolate($newContent = [])
     {
@@ -46,54 +27,34 @@ class PluginsConfigCompiler
         $stub.= "return [ \n";
         $stub.= "     '{$this->storedKey}' => [ \n";
 
-        if($this->isNew)
+        foreach ($newContent as $plug)
         {
 
-            $stub .= "     [ \n";
-            foreach ($newContent as $key => $value)
+            $stub.= "  [ \n";
+            foreach ($plug as $key => $value)
             {
                 if($key == 'serviceProvider')
                 {
-                    $stub .= "          '{$key}' =>  {$value}::class, \n";
+                    $stub .= "          '{$key}' => {$value}::class, \n";
                 }
                 else {
                     $stub .= "          '{$key}' => '{$value}', \n";
                 }
             }
             $stub.= "     ], \n";
-
-
-        }
-        else{
-
-            $this->previousSave[] = $newContent;
-
-            foreach ($this->previousSave as $plug)
-            {
-
-                $stub.= "  [ \n";
-                foreach ($plug as $key => $value)
-                {
-                    if($key == 'serviceProvider')
-                    {
-                        $stub .= "          '{$key}' => {$value}::class, \n";
-                    }
-                    else {
-                        $stub .= "          '{$key}' => '{$value}', \n";
-                    }
-                }
-                $stub.= "     ], \n";
-            }
         }
         $stub.= "   ], \n";
         $stub.= "  ];";
 
+
         File::put(config_path().'/plugins.php',$stub);
     }
 
-    public function isPluginInserted($vendor,$namePlugin)
+
+
+    public function isPluginInserted($vendor,$namePlugin,$list)
     {
-        foreach ($this->previousSave as $plug)
+        foreach ($list as $plug)
         {
             if($plug['vendor'] === $vendor && $plug['PluginName'] === $namePlugin)
             {

@@ -12,6 +12,10 @@ var map = {
 		"../../../../../src/plugins/Hardel/Plugin/plugin.module.ts",
 		"plugin.module"
 	],
+	"../plugins/Hardel/Prova/prova.module": [
+		"../../../../../src/plugins/Hardel/Prova/prova.module.ts",
+		"prova.module"
+	],
 	"../plugins/Hardel/Settings/settings.module": [
 		"../../../../../src/plugins/Hardel/Settings/settings.module.ts",
 		"settings.module"
@@ -157,7 +161,8 @@ var routes = [
     { path: 'backend', redirectTo: 'backend/dashboard', pathMatch: 'full' },
     { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' },
     { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' },
-    { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' }
+    { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' },
+    { path: 'backend/prova', loadChildren: '../plugins/Hardel/Prova/prova.module#ProvaModule' }
 ];
 var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["a" /* RouterModule */].forRoot(routes);
 //# sourceMappingURL=app.routing.js.map
