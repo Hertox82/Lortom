@@ -164,9 +164,9 @@ return [
        App\Providers\AuthServiceProvider::class,
        App\Providers\EventServiceProvider::class,
        App\Providers\RouteServiceProvider::class,
-       Plugins\Hardel\Dashboard\Providers\HardelDashboardServiceProvider::class,
        Plugins\Hardel\Settings\Providers\HardelSettingsServiceProvider::class,
-       Plugins\Hardel\Plugin\Providers\HardelPluginServiceProvider::class
+       Plugins\Hardel\Plugin\Providers\HardelPluginServiceProvider::class,
+       Plugins\Hardel\Dashboard\Providers\HardelDashboardServiceProvider::class
 
 
      ],

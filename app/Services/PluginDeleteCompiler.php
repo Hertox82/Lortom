@@ -35,7 +35,7 @@ class PluginDeleteCompiler extends AbstractPlugin
     /**
      * This function delete References of Plugin from config/plugins.php
      */
-    private function deleteFromPlugins()
+    public function deleteFromPlugins()
     {
         //load the plugins.php
         $pl_load = require config_path('plugins.php');
@@ -43,18 +43,10 @@ class PluginDeleteCompiler extends AbstractPlugin
         //store in this variable the array plugins
         $listPlugins = $pl_load['plugins'];
 
-        //recive from getElementFromPlugins the index and the element of this plugin
-        list($i,$el) = $this->getElementFromPlugins($listPlugins);
-
-        //store in this variable the ServiceProvider
-        $this->ServiceProvider = $el['serviceProvider'];
-
-        //remove the element from array
-        array_splice($listPlugins,$i,1);
+        $listPlugins = $this->removeDataFromPlugins($listPlugins);
 
         //now recompile the plugins.php
-        $compiler = new PluginsConfigCompiler();
-        $compiler->extrapolate($listPlugins);
+        $this->compilePlugin($listPlugins);
 
     }
 
@@ -68,24 +60,7 @@ class PluginDeleteCompiler extends AbstractPlugin
         $appConfig = require config_path('app.php');
 
         //cycle through the array in order to find the ServiceProvider to delete it.
-
-        foreach ($appConfig as $item => $valore)
-        {
-
-            if($item == 'providers')
-            {
-                $length = count($appConfig[$item]);
-                for($i=0;$i<$length; $i++)
-                {
-                    if($appConfig[$item][$i] == $this->ServiceProvider)
-                    {
-                        array_splice($appConfig[$item],$i,1);
-                        break;
-                    }
-                }
-            }
-        }
-
+        $appConfig = $this->removeDataFromApp($appConfig);
         //Recompile the file app.php
         $this->compileServiceInApp($appConfig);
     }

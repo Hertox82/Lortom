@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Services\PluginCreateCompiler;
 use App\Services\PluginDeleteCompiler;
 use App\Services\PluginRoutingCompiler;
+use App\Services\PluginUpdateCompiler;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -36,6 +37,9 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton('App\Services\PluginDeleteCompiler',function($app){
             return new PluginDeleteCompiler();
+        });
+        $this->app->singleton('App\Services\PluginUpdateCompiler',function($app){
+            return new PluginUpdateCompiler();
         });
     }
 }

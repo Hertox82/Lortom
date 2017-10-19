@@ -43,6 +43,9 @@ abstract class AbstractPlugin
     protected $stub = '';
 
 
+    protected $ServiceProvider;
+
+
     public function __construct()
     {
 
@@ -209,5 +212,50 @@ abstract class AbstractPlugin
                 return [$i,$arrayElem[$i]];
             }
         }
+    }
+
+
+    protected function compilePlugin($data)
+    {
+        $compiler = new PluginsConfigCompiler();
+        $compiler->extrapolate($data);
+    }
+
+    protected function removeDataFromPlugins($data)
+    {
+        //recive from getElementFromPlugins the index and the element of this plugin
+        list($i,$el) = $this->getElementFromPlugins($data);
+
+        //store in this variable the ServiceProvider
+        $this->ServiceProvider = @$el['serviceProvider'];
+
+        //remove the element from array
+        array_splice($data,$i,1);
+
+        return $data;
+    }
+
+    protected function removeDataFromApp($data)
+    {
+
+        foreach ($data as $item => $valore)
+        {
+
+            if($item == 'providers')
+            {
+                $length = count($data[$item]);
+                for($i=0;$i<$length; $i++)
+                {
+                    if($data[$item][$i] == $this->ServiceProvider)
+                    {
+                        array_splice($data[$item],$i,1);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $data;
+
     }
 }
