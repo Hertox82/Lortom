@@ -37,6 +37,10 @@ class PluginsConfigCompiler
                 {
                     $stub .= "          '{$key}' => {$value}::class, \n";
                 }
+                else if($key == 'position')
+                {
+                    $stub .= "          '{$key}' => {$value}, \n";
+                }
                 else {
                     $stub .= "          '{$key}' => '{$value}', \n";
                 }

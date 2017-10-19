@@ -3,6 +3,7 @@ return [
     'plugins' => [
         'vendor'            => '#Vendor#',
         'PluginName'        => '#Name#',
+        'position'          => #index#,
         'moduleName'        => '#pluginname#.module',
         'routingPath'       => '/#pluginname#',
         'icon'              => '',

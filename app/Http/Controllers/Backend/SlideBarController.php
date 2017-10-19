@@ -15,6 +15,8 @@ class SlideBarController extends Controller
     {
         $listaPlugin = config('plugins');
 
+        //ReSort the list of plugins
+        usort($listaPlugin['plugins'],["App\\Http\\Controllers\\Backend\\SlideBarController","sort"]);
         $lista = [];
 
         foreach ($listaPlugin['plugins'] as $plug)
@@ -26,6 +28,17 @@ class SlideBarController extends Controller
             ];
         }
 
+
+
         return response()->json(['menulista' => $lista]);
+    }
+
+    static function sort($a,$b)
+    {
+        $a = $a['position'];
+        $b = $b['position'];
+
+        if ($a == $b) return 0;
+        return ($a < $b) ? -1 : 1;
     }
 }

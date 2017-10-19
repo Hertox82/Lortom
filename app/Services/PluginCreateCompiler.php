@@ -234,13 +234,23 @@ class PluginCreateCompiler extends AbstractPlugin
         $fileStubConfigPlug = __DIR__.'/stub/plugin_config.php.stub';
         $nameFile = $path.'plugin_config.php';
         $namespaceClass = $this->getNameServiceProvider();
+        $configPathPlugins = config_path('plugins.php');
+        $index = 1;
+        if(file_exists($configPathPlugins))
+        {
+            $plgs_config_general = require $configPathPlugins;
+
+            $index = (count($plgs_config_general['plugins']) + 1);
+        }
+
         File::put($nameFile,
             $this->setStub($fileStubConfigPlug)
-        ->replaceWith('#Vendor#',$this->vendor)
-        ->replaceWith('#Name#',$this->name)
-        ->replaceWith('#pluginname#',strtolower($this->name))
-        ->replaceWith('#Namespaceclass#',$namespaceClass)
-        ->getStub());
+                ->replaceWith('#Vendor#',$this->vendor)
+                ->replaceWith('#Name#',$this->name)
+                ->replaceWith('#pluginname#',strtolower($this->name))
+                ->replaceWith('#Namespaceclass#',$namespaceClass)
+                ->replaceWith('#index#',$index)
+                ->getStub());
 
         //create routes.php
         $fileStubRoutes = __DIR__.'/stub/routes.php.stub';
