@@ -12,10 +12,6 @@ var map = {
 		"../../../../../src/plugins/Hardel/Plugin/plugin.module.ts",
 		"plugin.module"
 	],
-	"../plugins/Hardel/Prova/prova.module": [
-		"../../../../../src/plugins/Hardel/Prova/prova.module.ts",
-		"prova.module"
-	],
 	"../plugins/Hardel/Settings/settings.module": [
 		"../../../../../src/plugins/Hardel/Settings/settings.module.ts",
 		"settings.module"
@@ -110,12 +106,14 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__menu_item_menu_item_component__ = __webpack_require__("../../../../../src/app/menu-item/menu-item.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__menuservice__ = __webpack_require__("../../../../../src/app/menuservice.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_routing__ = __webpack_require__("../../../../../src/app/app.routing.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__submenu_item_submenu_item_component__ = __webpack_require__("../../../../../src/app/submenu-item/submenu-item.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -134,7 +132,8 @@ AppModule = __decorate([
         declarations: [
             __WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */],
             __WEBPACK_IMPORTED_MODULE_4__menu_items_menu_items_component__["a" /* MenuItemsComponent */],
-            __WEBPACK_IMPORTED_MODULE_5__menu_item_menu_item_component__["a" /* MenuItemComponent */]
+            __WEBPACK_IMPORTED_MODULE_5__menu_item_menu_item_component__["a" /* MenuItemComponent */],
+            __WEBPACK_IMPORTED_MODULE_8__submenu_item_submenu_item_component__["a" /* SubMenuItemComponent */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -159,10 +158,9 @@ AppModule = __decorate([
 
 var routes = [
     { path: 'backend', redirectTo: 'backend/dashboard', pathMatch: 'full' },
-    { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' },
     { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' },
     { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' },
-    { path: 'backend/prova', loadChildren: '../plugins/Hardel/Prova/prova.module#ProvaModule' }
+    { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' }
 ];
 var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["a" /* RouterModule */].forRoot(routes);
 //# sourceMappingURL=app.routing.js.map
@@ -190,7 +188,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/menu-item/menu-item.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<li [routerLinkActive]=\"['active']\">\n  <a routerLink=\"{{item.href}}\"><i class=\"{{item.icon}}\"></i> {{item.name}}</a>\n</li>\n"
+module.exports = "<li [routerLinkActive]=\"['active']\">\n  <a routerLink=\"{{item.href}}\"><i class=\"{{item.icon}}\"></i> {{item.name}}</a>\n  <span class=\"pull-right\" *ngIf=\"item.subMenu?.length > 0\">\n    <i class=\"fa fa-angle-left pull-right\"></i>\n</span>\n  <ul>\n    <app-submenu-item *ngFor=\"let sub of item.subMenu\"[item]=\"sub\"></app-submenu-item>\n  </ul>\n</li>\n"
 
 /***/ }),
 
@@ -349,6 +347,56 @@ MenuService = __decorate([
 
 var _a;
 //# sourceMappingURL=menuservice.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/submenu-item/submenu-item.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<li> {{item.name}}</li>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/submenu-item/submenu-item.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SubMenuItemComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface__ = __webpack_require__("../../../../../src/interfaces/slideItem.interface.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var SubMenuItemComponent = (function () {
+    function SubMenuItemComponent() {
+    }
+    SubMenuItemComponent.prototype.ngOnInit = function () {
+    };
+    return SubMenuItemComponent;
+}());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface__["SlideSubMenu"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface__["SlideSubMenu"]) === "function" && _a || Object)
+], SubMenuItemComponent.prototype, "item", void 0);
+SubMenuItemComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-submenu-item',
+        template: __webpack_require__("../../../../../src/app/submenu-item/submenu-item.component.html")
+    }),
+    __metadata("design:paramtypes", [])
+], SubMenuItemComponent);
+
+var _a;
+//# sourceMappingURL=submenu-item.component.js.map
 
 /***/ }),
 

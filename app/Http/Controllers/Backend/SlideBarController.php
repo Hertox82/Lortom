@@ -22,9 +22,10 @@ class SlideBarController extends Controller
         foreach ($listaPlugin['plugins'] as $plug)
         {
             $lista[] = [
-                'name' => $plug['PluginName'],
-                'href' => '/backend'.$plug['routingPath'],
-                'icon' => $plug['icon']
+                'name'      => $plug['PluginName'],
+                'href'      => '/backend'.$plug['routingPath'],
+                'icon'      => $plug['icon'],
+                'subMenu'   => $this->setSubMenu(@$plug['subMenu'])
             ];
         }
 
@@ -40,5 +41,23 @@ class SlideBarController extends Controller
 
         if ($a == $b) return 0;
         return ($a < $b) ? -1 : 1;
+    }
+
+    private function setSubMenu($lista)
+    {
+        if(is_null($lista))
+            return [];
+
+
+        $return = [];
+        foreach ($lista as $sub)
+        {
+            $return[] = [
+                  'name'    => $sub['Name'],
+                  'href'    => '/backend'.$sub['subPath']
+            ];
+        }
+
+        return $return;
     }
 }

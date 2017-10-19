@@ -6,5 +6,13 @@ export interface SlideItem {
     name : string;
     href : string;
     icon : string;
-    active : boolean;
+    subMenu : SlideSubMenu[]
 }
+
+export interface SlideSubMenu
+{
+    name: string;
+    href: string;
+}
+
+

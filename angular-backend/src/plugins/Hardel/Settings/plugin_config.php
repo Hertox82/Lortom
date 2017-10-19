@@ -7,6 +7,17 @@ return [
         'moduleName'        => 'settings.module',
         'routingPath'       => '/settings',
         'icon'              => 'fa fa-cogs',
-        'serviceProvider'   => Plugins\Hardel\Settings\Providers\HardelSettingsServiceProvider::class
+        'serviceProvider'   => Plugins\Hardel\Settings\Providers\HardelSettingsServiceProvider::class,
+        'subMenu'           => [
+            [
+                'subPath'       => '/settings/primoSubmenu',
+                'Name'          => 'Primo Submenu'
+            ],
+            [
+                'subPath'       => '/settings/secondoSubmenu',
+                'Name'          => 'Secondo Submenu'
+            ],
+
+        ],
     ],
 ];

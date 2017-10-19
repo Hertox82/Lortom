@@ -6,6 +6,7 @@ import { MenuItemsComponent } from './menu-items/menu-items.component';
 import { MenuItemComponent } from './menu-item/menu-item.component';
 import {MenuService} from "./menuservice";
 import {routing} from "./app.routing";
+import {SubMenuItemComponent} from "./submenu-item/submenu-item.component";
 
 
 
@@ -13,7 +14,8 @@ import {routing} from "./app.routing";
   declarations: [
     AppComponent,
     MenuItemsComponent,
-    MenuItemComponent
+    MenuItemComponent,
+    SubMenuItemComponent
   ],
   imports: [
     BrowserModule,
