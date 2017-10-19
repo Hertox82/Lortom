@@ -6,12 +6,14 @@ Lortom is an Content Management System built in Laravel 5.5 + Angular 2
 -[x] Installation System for Plugins in Lortom
 -[x] Pass routing Angular with Artisan Command
 -[x] Create Automatization to build a Plugin
--[ ] Deleting Plugin in Safe mode (with Artisan command)
--[ ] Update Plugin configuration
--[ ] Create Artisan Command for Plugins
+-[x] Deleting Plugin in Safe mode (with Artisan command)
+-[x] Update Plugin configuration
+-[x] Create Artisan Command for Plugins
+-[ ] Manage Submenu
+-[ ] Manage position on Menu
+-[ ] Create Artisan Command for Plugin's Migration
 -[ ] Create Plugins Installer
 -[ ] Create Plugins Exporter
--[ ] Create Artisan Command for Plugin's Migration
 -[ ] Styling the Backend
 -[ ] Create Template System for Front-end
 -[ ] Create Command to Build Template
@@ -48,9 +50,22 @@ In order to create a Plugin in Lortom, you must understand the folder structure
  
  ####Use Artisan Command
  
- ```bash
  
+ #####Create command
+ ```bash
+ $ php artisan lortom-plugin:create --vendor-name=Vendor,Name
  ```
+ 
+ This command allow you a creation of plugin.
+ 
+ you can also digit this command:
+ 
+ ```bash
+  $ php artisan lortom-plugin:create
+ ```
+ 
+ and simply answer the questions
+ 
  
  
 

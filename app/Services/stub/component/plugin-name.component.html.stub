@@ -1,1 +1,12 @@
-<p> The component</p>
+<div class="content-box">
+    <div class="content-header">
+        <h1>Title</h1>
+        <ol class="breadcrumb">
+            <li><a>Level 1</a></li>
+            <li class="active"><a>Level 2 active</a></li>
+        </ol>
+    </div>
+    <div class="content">
+        Here, the Content!
+    </div>
+</div>
