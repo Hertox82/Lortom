@@ -1,9 +1,14 @@
 <li [routerLinkActive]="['active']">
-  <a routerLink="{{item.href}}"><i class="{{item.icon}}"></i> {{item.name}}</a>
-  <span class="pull-right" *ngIf="item.subMenu?.length > 0">
-    <i class="fa fa-angle-left pull-right"></i>
-</span>
-  <ul>
+  <a routerLink="{{item.href}}" (click)="onRouterClick()"><i class="{{item.icon}}"></i> {{item.name}}
+    <span class="pull-right-container" *ngIf="item.subMenu?.length > 0">
+      <i *ngIf="!isClicked && router.url != item.href; else iconBlock" class="fa fa-angle-left pull-right"></i>
+    </span>
+    <ng-template #iconBlock>
+      <i class="fa fa-angle-down pull-right"></i>
+    </ng-template>
+  </a>
+
+  <ul [hidden] = "!isClicked && router.url != item.href">
     <app-submenu-item *ngFor="let sub of item.subMenu"[item]="sub"></app-submenu-item>
   </ul>
 </li>

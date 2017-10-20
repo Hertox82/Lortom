@@ -7,6 +7,7 @@ import { MenuItemComponent } from './menu-item/menu-item.component';
 import {MenuService} from "./menuservice";
 import {routing} from "./app.routing";
 import {SubMenuItemComponent} from "./submenu-item/submenu-item.component";
+import {EventService} from "../services/event.service";
 
 
 
@@ -22,7 +23,7 @@ import {SubMenuItemComponent} from "./submenu-item/submenu-item.component";
     HttpModule,
     routing
   ],
-  providers: [MenuService],
+  providers: [MenuService,EventService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
