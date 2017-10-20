@@ -48,10 +48,10 @@ In order to create a Plugin in Lortom, you must understand the folder structure
  */plugins/vendor/name_of_plugin*
  
  
- ####Use Artisan Command
+ #### Use Artisan Command
  
  
- #####Create command
+ ##### Create command
  ```bash
  $ php artisan lortom-plugin:create --vendor-name=Vendor,Name
  ```
@@ -67,7 +67,7 @@ In order to create a Plugin in Lortom, you must understand the folder structure
  and simply answer the questions
  
  
- #####Update command
+ ##### Update command
  
  ```bash
  $ php artisan lortom-plugin:update --vendor-name=Vendor,Name --no-routing
@@ -77,7 +77,7 @@ In order to create a Plugin in Lortom, you must understand the folder structure
  'plugin-name'.routing.ts
  
  
- #####Delete command
+ ##### Delete command
  
   ```bash
   $ php artisan lortom-plugin:delete --vendor-name=Vendor,Name
