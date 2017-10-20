@@ -24,8 +24,12 @@ class PluginDeleteCompiler extends AbstractPlugin
         $this->basePluginPath = $this->basePath.$this->vendor.'/'.$this->name;
         File::deleteDirectory($this->basePluginPath);
 
+        $i= $this->getIndexFromPlugins();
+
+        $this->ServiceProvider = @$this->getArrayDataPlugins()['plugins'][$i]['serviceProvider'];
+
         //Delete from config/plugins.php
-        $this->deleteFromPlugins();
+        $this->deleteFromPlugins($i);
 
         //Delete from config/app.php
         $this->deleteFromApp();
@@ -35,19 +39,10 @@ class PluginDeleteCompiler extends AbstractPlugin
     /**
      * This function delete References of Plugin from config/plugins.php
      */
-    public function deleteFromPlugins()
+    public function deleteFromPlugins($i)
     {
-        //load the plugins.php
-        $pl_load = require config_path('plugins.php');
-
-        //store in this variable the array plugins
-        $listPlugins = $pl_load['plugins'];
-
-        $listPlugins = $this->removeDataFromPlugins($listPlugins);
-
         //now recompile the plugins.php
-        $this->compilePlugin($listPlugins);
-
+        $this->compilePlugin('',$i);
     }
 
     /**

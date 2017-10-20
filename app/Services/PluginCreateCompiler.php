@@ -269,24 +269,9 @@ class PluginCreateCompiler extends AbstractPlugin
     private function insertConfigPlugin($path)
     {
         $file = $path.'plugin_config.php';
-        $plugin_load = require $file;
-
-        if(!file_exists(config_path('plugins.php')))
-        {
-            $Plugins = new PluginsConfigCompiler();
-            $list[] = $plugin_load['plugins'];
-            $Plugins->extrapolate($list);
-        }
-        else
-        {
-            $path = config_path('plugins.php');
-            $pluginsConfig = require $path;
-            $Plugins = new PluginsConfigCompiler();
-            if(! $Plugins->isPluginInserted($this->vendor,$this->name,$pluginsConfig['plugins'])) {
-                $pluginsConfig['plugins'][] = $plugin_load['plugins'];
-                $Plugins->extrapolate($pluginsConfig['plugins']);
-            }
-        }
+        //$plugin_load = require $file;
+        $pluginRawLoad = File::get($file);
+        $this->compilePlugin($pluginRawLoad);
     }
 
     /**
@@ -295,12 +280,11 @@ class PluginCreateCompiler extends AbstractPlugin
      */
     private function insertServiceInApp($basePath)
     {
-        $file = $basePath.'plugin_config.php';
-        $plugin_load = require $file;
+        $i = $this->getIndexFromPlugins();
 
         $appConfig = require config_path('app.php');
 
-        $appConfig['providers'][] = $plugin_load['plugins']['serviceProvider'];
+        $appConfig['providers'][] = $this->getArrayDataPlugins()['plugins'][$i]['serviceProvider'];
 
         $this->compileServiceInApp($appConfig);
 

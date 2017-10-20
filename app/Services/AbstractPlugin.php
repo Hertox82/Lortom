@@ -45,11 +45,19 @@ abstract class AbstractPlugin
 
     protected $ServiceProvider;
 
+    protected $arrayDataPlugins;
 
-    public function __construct()
+
+    protected $pluginConfigcompiler;
+
+
+    public function __construct(PluginsConfigCompiler $compiler)
     {
 
         $this->basePath = app_path().'/../angular-backend/src/plugins/';
+
+        $this->pluginConfigcompiler = $compiler;
+
     }
 
 
@@ -195,44 +203,30 @@ abstract class AbstractPlugin
         return $this->getNamespacePhp()."\\Providers\\{$this->vendor}{$this->name}ServiceProvider";
     }
 
-    /**
-     * This function cycle to the arrayElem in order to find it and return index and All Element
-     * @param $arrayElem
-     * @return array
-     */
-    protected function getElementFromPlugins($arrayElem)
-    {
-        $length = count($arrayElem);
 
-        //search for the plugins and remove it from array
-        for($i=0; $i<$length;$i++)
+    protected function compilePlugin($data,$delete = false)
+    {
+        $i = null;
+        if($delete)
         {
-            if($arrayElem[$i]['vendor'] === $this->vendor && $arrayElem[$i]['PluginName'] === $this->name)
-            {
-                return [$i,$arrayElem[$i]];
-            }
+            $i = $this->getIndexFromPlugins();
         }
+        $this->pluginConfigcompiler->write($data,$this->vendor,$this->name,$i);
     }
 
-
-    protected function compilePlugin($data)
+    protected function getArrayDataPlugins()
     {
-        $compiler = new PluginsConfigCompiler();
-        $compiler->extrapolate($data);
+        return $this->pluginConfigcompiler->getArrayDataPlugins();
     }
 
-    protected function removeDataFromPlugins($data)
+    protected function getIndexFromPlugins()
     {
-        //recive from getElementFromPlugins the index and the element of this plugin
-        list($i,$el) = $this->getElementFromPlugins($data);
+        return $this->pluginConfigcompiler->getIndexFromPlugins($this->getArrayDataPlugins()['plugins'],$this->vendor,$this->name);
+    }
 
-        //store in this variable the ServiceProvider
-        $this->ServiceProvider = @$el['serviceProvider'];
-
-        //remove the element from array
-        array_splice($data,$i,1);
-
-        return $data;
+    protected function removeDataFromPlugins($i)
+    {
+        PluginsConfigCompiler::removeDataFromPlugin($this->getArrayDataPlugins(),$i);
     }
 
     protected function removeDataFromApp($data)
