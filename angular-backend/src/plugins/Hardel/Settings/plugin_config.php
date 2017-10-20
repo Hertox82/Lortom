@@ -19,5 +19,11 @@ return [
             ],
 
         ],
+        'migration-up'      => function(){
+            //here migration for plugin
+        },
+        'migration-down'    => function(){
+            //here migration rollback
+        }
     ],
 ];
