@@ -12,59 +12,31 @@ use File;
 
 class PluginUpdateCompiler extends AbstractPlugin
 {
-    /*public function update_old()
-    {
-        //before update the file i need to delete reference on plugins.php
-        $pl_load = require config_path('plugins.php');
-
-        //store in this variable the array plugins
-        $listPlugins = $pl_load['plugins'];
-
-        //remove the old reference from config/plugins.php
-        $listPlugins = $this->removeDataFromPlugins($listPlugins);
-
-        $this->basePluginPath = $this->basePath.$this->vendor.'/'.$this->name;
-
-
-
-        if(strlen($this->ServiceProvider) == 0)
-        {
-            $this->ServiceProvider = $plugSelfConfig['plugins']['serviceProvider'];
-        }
-
-        //added to the array the new references
-        $listPlugins[] = $plugSelfConfig['plugins'];
-
-        //and finally write the config/plugins.php
-        $this->compilePlugin($listPlugins);
-
-        $appConfig = require config_path('app.php');
-
-        //cycle through the array in order to find the ServiceProvider to delete it.
-        $appConfig = $this->removeDataFromApp($appConfig);
-
-        $appConfig['providers'][] = $plugSelfConfig['plugins']['serviceProvider'];
-
-        $this->compileServiceInApp($appConfig);
-    }*/
 
     public function update()
     {
+        //store the path into the variable
         $this->basePluginPath = $this->basePath.$this->vendor.'/'.$this->name;
 
         $path = $this->basePluginPath.'/plugin_config.php';
+        //retrive the content of file
         $plugSelfConfig = File::get($path);
 
+        //delete and update and compile the config/plugins.php
         $this->compilePlugin($plugSelfConfig,true);
 
+        //I need to know the index of Elements into the plugins in order to set the Service Provider
         $i = $this->getIndexFromPlugins();
 
+        //retrive the Name of ServiceProvider
         $ServiceProvider =  @$this->getArrayDataPlugins()['plugins'][$i]['serviceProvider'];
+
 
         if($ServiceProvider != $this->getNameServiceProvider())
         {
             $this->ServiceProvider = $this->getNameServiceProvider();
         }
+
 
         $appConfig = require config_path('app.php');
 
