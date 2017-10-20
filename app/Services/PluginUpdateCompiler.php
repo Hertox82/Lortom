@@ -8,7 +8,7 @@
 
 namespace App\Services;
 
-
+use File;
 
 class PluginUpdateCompiler extends AbstractPlugin
 {
@@ -50,21 +50,28 @@ class PluginUpdateCompiler extends AbstractPlugin
 
     public function update()
     {
+        $this->basePluginPath = $this->basePath.$this->vendor.'/'.$this->name;
+
         $path = $this->basePluginPath.'/plugin_config.php';
-        $plugSelfConfig = require  $path;
+        $plugSelfConfig = File::get($path);
 
         $this->compilePlugin($plugSelfConfig,true);
 
         $i = $this->getIndexFromPlugins();
 
-        $this->ServiceProvider = @$this->getArrayDataPlugins()['plugins'][$i]['serviceProvider'];
+        $ServiceProvider =  @$this->getArrayDataPlugins()['plugins'][$i]['serviceProvider'];
+
+        if($ServiceProvider != $this->getNameServiceProvider())
+        {
+            $this->ServiceProvider = $this->getNameServiceProvider();
+        }
 
         $appConfig = require config_path('app.php');
 
         //cycle through the array in order to find the ServiceProvider to delete it.
         $appConfig = $this->removeDataFromApp($appConfig);
 
-        $appConfig['providers'][] = $this->ServiceProvider;
+        $appConfig['providers'][] = $ServiceProvider;
 
         $this->compileServiceInApp($appConfig);
 
