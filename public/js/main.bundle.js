@@ -54,7 +54,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n\n<header class=\"main-header\">\n    <a class=\"logo\">\n        <span>Lortom</span>\n    </a>\n    <nav>\n        <div class=\"navbar-custom-menu\">\n            <ul>\n                <li>\n                    <a>Messaggi</a>\n                </li>\n                <li>\n                    <a>Alert</a>\n                </li>\n                <li>\n                    <a>Configurazione</a>\n                </li>\n                <li>\n                    <a>Profilo</a>\n                </li>\n\n            </ul>\n        </div>\n    </nav>\n</header>\n\n<aside class=\"main-sidebar\">\n   <section class=\"sidebar\">\n       <div class=\"user-panel\">\n           <div class=\"pull-left image\">\n               Immagine\n           </div>\n           <div class=\"pull-left info\">\n               Nome e Cognome\n           </div>\n       </div>\n       <app-menu-items></app-menu-items>\n   </section>\n</aside>\n\n<!-- Qui viene messo il rootlet-->\n<div class=\"content-wrapper\">\n    <router-outlet></router-outlet>\n</div>\n\n\n<footer>\n    &copy; Lortom 2017 - MIT License - created by Hernan Ariel De Luca\n</footer>"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div *ngIf=\"isAuth; else login\">\n    <header class=\"main-header\">\n        <a class=\"logo\">\n            <span>Lortom</span>\n        </a>\n        <nav>\n            <div class=\"navbar-custom-menu\">\n                <ul>\n                    <li>\n                        <a>Messaggi</a>\n                    </li>\n                    <li>\n                        <a>Alert</a>\n                    </li>\n                    <li>\n                        <a>Configurazione</a>\n                    </li>\n                    <li>\n                        <a>Profilo</a>\n                    </li>\n\n                </ul>\n            </div>\n        </nav>\n    </header>\n\n    <aside class=\"main-sidebar\">\n       <section class=\"sidebar\">\n           <div class=\"user-panel\">\n               <div class=\"pull-left image\">\n                   Immagine\n               </div>\n               <div class=\"pull-left info\">\n                   Nome e Cognome\n               </div>\n           </div>\n           <app-menu-items></app-menu-items>\n       </section>\n    </aside>\n\n    <!-- Qui viene messo il rootlet-->\n    <div class=\"content-wrapper\">\n        <router-outlet></router-outlet>\n    </div>\n\n\n    <footer>\n        &copy; Lortom 2017 - MIT License - created by Hernan Ariel De Luca\n    </footer>\n</div>\n\n<ng-template #login>\n    <router-outlet></router-outlet>\n</ng-template>"
 
 /***/ }),
 
@@ -77,6 +77,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var AppComponent = (function () {
     function AppComponent() {
         this.title = 'app';
+        this.isAuth = false;
     }
     return AppComponent;
 }());
@@ -108,12 +109,16 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_routing__ = __webpack_require__("../../../../../src/app/app.routing.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__submenu_item_submenu_item_component__ = __webpack_require__("../../../../../src/app/submenu-item/submenu-item.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -135,12 +140,14 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */],
             __WEBPACK_IMPORTED_MODULE_4__menu_items_menu_items_component__["a" /* MenuItemsComponent */],
             __WEBPACK_IMPORTED_MODULE_5__menu_item_menu_item_component__["a" /* MenuItemComponent */],
-            __WEBPACK_IMPORTED_MODULE_8__submenu_item_submenu_item_component__["a" /* SubMenuItemComponent */]
+            __WEBPACK_IMPORTED_MODULE_8__submenu_item_submenu_item_component__["a" /* SubMenuItemComponent */],
+            __WEBPACK_IMPORTED_MODULE_10__login_login_component__["a" /* LoginComponent */],
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* HttpModule */],
-            __WEBPACK_IMPORTED_MODULE_7__app_routing__["a" /* routing */]
+            __WEBPACK_IMPORTED_MODULE_7__app_routing__["a" /* routing */],
+            __WEBPACK_IMPORTED_MODULE_11__angular_forms__["a" /* FormsModule */]
         ],
         providers: [__WEBPACK_IMPORTED_MODULE_6__menuservice__["a" /* MenuService */], __WEBPACK_IMPORTED_MODULE_9__services_event_service__["a" /* EventService */]],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */]]
@@ -157,15 +164,93 @@ AppModule = __decorate([
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return routing; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
+
 
 var routes = [
     { path: 'backend', redirectTo: 'backend/dashboard', pathMatch: 'full' },
+    { path: 'backend/login', component: __WEBPACK_IMPORTED_MODULE_1__login_login_component__["a" /* LoginComponent */] },
+    { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' },
     { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' },
-    { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' },
-    { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' }
+    { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' }
 ];
 var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["b" /* RouterModule */].forRoot(routes);
 //# sourceMappingURL=app.routing.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/login/login.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".form-title { padding: 20px;  color: orange;}\n.form-body {padding: 20px; min-height: 266px;}\n.form { position: absolute; top:300px; left:24%; width:50%; border: 1px solid orange}\n.form h1 {text-align: center;}\ninput {  width:100%; height: 30px; margin-top: 15px; margin-bottom: 15px; height: 42px;}\ninput::-webkit-input-placeholder{ text-transform: uppercase;}\ninput:-ms-input-placeholder{ text-transform: uppercase;}\ninput::placeholder{ text-transform: uppercase;}\nbutton { position: absolute; bottom:23px; right: 42%; background-color: orange; text-transform: uppercase; color:white; border:1px transparent; padding: 10px 30px}\n.error {color:red; font-size:12px;}", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/login/login.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"login\">\n    <div class=\"container\">\n        <div class=\"row\">\n            <div class=\"col-12\">\n                <div class=\"form\">\n                    <div class=\"form-title\">\n                        <h1>Login Form</h1>\n                    </div>\n                    <div class=\"form-body\">\n                        <input type= \"text\" name=\"username\" placeholder=\"username\" [(ngModel)]=\"username\" required>\n                        <input type= \"password\" name=\"password\" placeholder=\"password\" [(ngModel)]=\"password\" required>\n                        <button type=\"submit\" (click)=\"onSubmit()\">Login</button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/login/login.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+/**
+ * Created by hernan on 23/10/2017.
+ */
+var LoginComponent = (function () {
+    function LoginComponent() {
+    }
+    LoginComponent.prototype.ngOnInit = function () { };
+    LoginComponent.prototype.onSubmit = function () {
+        console.log(this.username);
+        console.log(this.password);
+    };
+    return LoginComponent;
+}());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    __metadata("design:type", String)
+], LoginComponent.prototype, "username", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    __metadata("design:type", String)
+], LoginComponent.prototype, "password", void 0);
+LoginComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-login',
+        template: __webpack_require__("../../../../../src/app/login/login.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/login/login.component.css")]
+    }),
+    __metadata("design:paramtypes", [])
+], LoginComponent);
+
+//# sourceMappingURL=login.component.js.map
 
 /***/ }),
 
@@ -378,7 +463,7 @@ var _a;
 /***/ "../../../../../src/app/submenu-item/submenu-item.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<li class=\"submenu-item\"> {{item.name}}</li>"
+module.exports = "<li class=\"submenu-item\">\n    <a routerLink=\"{{item.href}}\">{{item.name}}</a>\n</li>"
 
 /***/ }),
 

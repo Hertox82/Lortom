@@ -1,50 +1,55 @@
 <!--The content below is only a placeholder and can be replaced.-->
+<div *ngIf="isAuth; else login">
+    <header class="main-header">
+        <a class="logo">
+            <span>Lortom</span>
+        </a>
+        <nav>
+            <div class="navbar-custom-menu">
+                <ul>
+                    <li>
+                        <a>Messaggi</a>
+                    </li>
+                    <li>
+                        <a>Alert</a>
+                    </li>
+                    <li>
+                        <a>Configurazione</a>
+                    </li>
+                    <li>
+                        <a>Profilo</a>
+                    </li>
 
-<header class="main-header">
-    <a class="logo">
-        <span>Lortom</span>
-    </a>
-    <nav>
-        <div class="navbar-custom-menu">
-            <ul>
-                <li>
-                    <a>Messaggi</a>
-                </li>
-                <li>
-                    <a>Alert</a>
-                </li>
-                <li>
-                    <a>Configurazione</a>
-                </li>
-                <li>
-                    <a>Profilo</a>
-                </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
-            </ul>
-        </div>
-    </nav>
-</header>
-
-<aside class="main-sidebar">
-   <section class="sidebar">
-       <div class="user-panel">
-           <div class="pull-left image">
-               Immagine
+    <aside class="main-sidebar">
+       <section class="sidebar">
+           <div class="user-panel">
+               <div class="pull-left image">
+                   Immagine
+               </div>
+               <div class="pull-left info">
+                   Nome e Cognome
+               </div>
            </div>
-           <div class="pull-left info">
-               Nome e Cognome
-           </div>
-       </div>
-       <app-menu-items></app-menu-items>
-   </section>
-</aside>
+           <app-menu-items></app-menu-items>
+       </section>
+    </aside>
 
-<!-- Qui viene messo il rootlet-->
-<div class="content-wrapper">
-    <router-outlet></router-outlet>
+    <!-- Qui viene messo il rootlet-->
+    <div class="content-wrapper">
+        <router-outlet></router-outlet>
+    </div>
+
+
+    <footer>
+        &copy; Lortom 2017 - MIT License - created by Hernan Ariel De Luca
+    </footer>
 </div>
 
-
-<footer>
-    &copy; Lortom 2017 - MIT License - created by Hernan Ariel De Luca
-</footer>
+<ng-template #login>
+    <router-outlet></router-outlet>
+</ng-template>

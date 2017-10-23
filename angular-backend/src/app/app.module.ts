@@ -8,6 +8,8 @@ import {MenuService} from "./menuservice";
 import {routing} from "./app.routing";
 import {SubMenuItemComponent} from "./submenu-item/submenu-item.component";
 import {EventService} from "../services/event.service";
+import {LoginComponent} from "./login/login.component";
+import {FormsModule} from "@angular/forms";
 
 
 
@@ -16,12 +18,14 @@ import {EventService} from "../services/event.service";
     AppComponent,
     MenuItemsComponent,
     MenuItemComponent,
-    SubMenuItemComponent
+    SubMenuItemComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
     HttpModule,
-    routing
+    routing,
+    FormsModule
   ],
   providers: [MenuService,EventService],
   bootstrap: [AppComponent]

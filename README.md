@@ -9,9 +9,10 @@ Lortom is an Content Management System built in Laravel 5.5 + Angular 2
 - [x] Deleting Plugin in Safe mode (with Artisan command)
 - [x] Update Plugin configuration
 - [x] Create Artisan Command for Plugins
-- [ ] Manage Submenu
+- [X] Manage Submenu
 - [x] Manage position on Menu
 - [ ] Create Artisan Command for Plugin's Migration
+- [ ] Create Component to Manage Breadcrumbs and Title
 - [ ] Create Plugins Installer
 - [ ] Create Plugins Exporter
 - [ ] Styling the Backend

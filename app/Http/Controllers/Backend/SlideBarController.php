@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 
 class SlideBarController extends Controller
 {
+
     public function populate(Request $request)
     {
         $listaPlugin = config('plugins');
@@ -32,6 +33,29 @@ class SlideBarController extends Controller
 
 
         return response()->json(['menulista' => $lista]);
+    }
+
+    public function login(Request $request)
+    {
+        return view('login');
+    }
+
+    public function requestLogin(Request $request)
+    {
+        $input = $request->only(['username','password']);
+
+        $auth = new  \App\Services\Classes\LortomAuth();
+
+        $obj = $auth->authenticate($input);
+
+        if(!$obj)
+        {
+            return redirect()->route('login')->withErrors(['error' => 'username or password not find']);
+        }
+
+        pr($obj,1);
+
+
     }
 
     static function sort($a,$b)

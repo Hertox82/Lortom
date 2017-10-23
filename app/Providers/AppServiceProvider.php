@@ -9,6 +9,8 @@ use App\Services\PluginsConfigCompiler;
 use App\Services\PluginUpdateCompiler;
 use Illuminate\Support\ServiceProvider;
 
+use Illuminate\Support\Facades\Schema;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -18,7 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->bootHelper();
+
+        Schema::defaultStringLength(191);
     }
 
     /**
@@ -48,5 +52,14 @@ class AppServiceProvider extends ServiceProvider
         });
 
 
+    }
+
+
+    private function bootHelper()
+    {
+        if(file_exists($file = __DIR__.'/../helpers.php'))
+        {
+            require $file;
+        }
     }
 }

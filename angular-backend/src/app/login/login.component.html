@@ -1,0 +1,18 @@
+<div class="login">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="form">
+                    <div class="form-title">
+                        <h1>Login Form</h1>
+                    </div>
+                    <div class="form-body">
+                        <input type= "text" name="username" placeholder="username" [(ngModel)]="username" required>
+                        <input type= "password" name="password" placeholder="password" [(ngModel)]="password" required>
+                        <button type="submit" (click)="onSubmit()">Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
