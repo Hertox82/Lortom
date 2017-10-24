@@ -7,10 +7,20 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Services\Classes\LortomAuth;
 use Illuminate\Http\Request;
+use Cookie;
+use Session;
 
 class SlideBarController extends Controller
 {
+
+    protected $auth;
+
+    public function __construct(LortomAuth $auth)
+    {
+        $this->auth = $auth;
+    }
 
     public function populate(Request $request)
     {
@@ -44,18 +54,17 @@ class SlideBarController extends Controller
     {
         $input = $request->only(['username','password']);
 
-        $auth = new  \App\Services\Classes\LortomAuth();
-
-        $obj = $auth->authenticate($input);
-
-        if(!$obj)
+        if(!$this->auth->authenticate($input))
         {
-            return redirect()->route('login')->withErrors(['error' => 'username or password not find']);
+            //errore durante il login, da fare in json
+            return response()->json(['error' => 'username or password not find']);
         }
 
-        pr($obj,1);
+        $token = $this->auth->setToken();
 
+        $response = ['token' => $token];
 
+        return response()->json($response)->withCookie(Cookie::make('l_t',$token,1000));
     }
 
     static function sort($a,$b)

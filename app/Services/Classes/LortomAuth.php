@@ -8,52 +8,42 @@
 namespace App\Services\Classes;
 
 
-
-use  App\LortomUser;
-use Hash;
+use Illuminate\Contracts\Session\Session;
 
 class LortomAuth
 {
 
-    protected $username;
+    protected $userProvider;
 
-    protected $password;
+    public function __construct(LortomUserProvider $userProvider)
+    {
+        $this->userProvider = $userProvider;
+    }
 
     public function authenticate($input)
     {
-        array_walk_recursive($input,["App\\Services\\Classes\\LortomAuth",'saveInput']);
-
-        $query = LortomUser::where([['email',$this->username]])->first();
-
-        if(is_null($query))
-            return false;
-        else{
-            if(Hash::check($this->password,$query->password))
-            {
-                return $query;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        return $this->userProvider->validateLogin($input);
     }
 
 
-    protected function saveInput($item, $key)
+    public function getToken()
     {
-        $fn = ucfirst($key);
-        $function = "set{$fn}";
-        $this->$function($item);
+        return $this->userProvider->getToken();
     }
 
-    protected function setUsername($value)
+    public function setToken()
     {
-        $this->username = $value;
+       return $this->userProvider->setToken();
     }
 
-    protected function setPassword($value)
+    public function validateToken($token)
     {
-        $this->password = $value;
+        return $this->userProvider->validateToken($token);
     }
+
+    public function refreshToken()
+    {
+        return $this->userProvider->refreshToken();
+    }
+
 }

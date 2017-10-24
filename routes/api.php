@@ -21,3 +21,8 @@ Route::get('/populate-slidebar',[
     'as'    => 'populateSlidebar',
     'uses'  => 'Backend\SlideBarController@populate'
 ]);
+
+Route::post('/login',[
+    'as'    => 'apiLogin',
+    'uses'  => 'Backend\SlideBarController@requestLogin'
+]);

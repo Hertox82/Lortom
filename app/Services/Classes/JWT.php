@@ -1,4 +1,6 @@
 <?php
+
+namespace App\Services\Classes;
 /**
  * JSON Web Token implementation
  *
@@ -20,24 +22,24 @@ class JWT
     {
         $tks = explode('.', $jwt);
         if (count($tks) != 3) {
-            throw new UnexpectedValueException('Wrong number of segments');
+            throw new \UnexpectedValueException('Wrong number of segments');
         }
         list($headb64, $payloadb64, $cryptob64) = $tks;
         if (null === ($header = JWT::jsonDecode(JWT::urlsafeB64Decode($headb64)))
         ) {
-            throw new UnexpectedValueException('Invalid segment encoding');
+            throw new \UnexpectedValueException('Invalid segment encoding');
         }
         if (null === $payload = JWT::jsonDecode(JWT::urlsafeB64Decode($payloadb64))
         ) {
-            throw new UnexpectedValueException('Invalid segment encoding');
+            throw new \UnexpectedValueException('Invalid segment encoding');
         }
         $sig = JWT::urlsafeB64Decode($cryptob64);
         if ($verify) {
             if (empty($header->alg)) {
-                throw new DomainException('Empty algorithm');
+                throw new \DomainException('Empty algorithm');
             }
             if ($sig != JWT::sign("$headb64.$payloadb64", $key, $header->alg)) {
-                throw new UnexpectedValueException('Signature verification failed');
+                throw new \UnexpectedValueException('Signature verification failed');
             }
         }
         return $payload;
@@ -75,7 +77,7 @@ class JWT
             'HS512' => 'sha512',
         );
         if (empty($methods[$method])) {
-            throw new DomainException('Algorithm not supported');
+            throw new \DomainException('Algorithm not supported');
         }
         return hash_hmac($methods[$method], $msg, $key, true);
     }
@@ -91,7 +93,7 @@ class JWT
             JWT::handleJsonError($errno);
         }
         else if ($obj === null && $input !== 'null') {
-            throw new DomainException('Null result with non-null input');
+            throw new \DomainException('Null result with non-null input');
         }
         return $obj;
     }
@@ -107,7 +109,7 @@ class JWT
             JWT::handleJsonError($errno);
         }
         else if ($json === 'null' && $input !== null) {
-            throw new DomainException('Null result with non-null input');
+            throw new \DomainException('Null result with non-null input');
         }
         return $json;
     }
@@ -146,7 +148,7 @@ class JWT
             JSON_ERROR_CTRL_CHAR => 'Unexpected control character found',
             JSON_ERROR_SYNTAX => 'Syntax error, malformed JSON'
         );
-        throw new DomainException(isset($messages[$errno])
+        throw new \DomainException(isset($messages[$errno])
             ? $messages[$errno]
             : 'Unknown JSON error: ' . $errno
         );

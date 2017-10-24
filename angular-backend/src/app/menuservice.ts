@@ -30,9 +30,7 @@ export class MenuService {
         let options = new RequestOptions( { headers: headers} );
         return this.http.post(this.urlManager.getPathByName('login'),credential,options)
             .map(
-                (response: Response) => {
-                    return response.json().token;
-                }
+                (response: Response) => {return response.json();}
             );
     }
 }
