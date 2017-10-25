@@ -12,10 +12,13 @@ export class AppComponent {
 
   constructor(private event : EventService) {
 
-    console.log(document.cookie);
     let cookie = this.getCookie('l_t');
 
     console.log(cookie);
+    if(cookie)
+    {
+      this.isAuth = true;
+    }
     this.event.logged$.subscribe(
         (isLogged : boolean) => this.isAuth = isLogged
     );

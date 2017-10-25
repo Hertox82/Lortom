@@ -82,9 +82,11 @@ var AppComponent = (function () {
         this.event = event;
         this.title = 'app';
         this.isAuth = false;
-        console.log(document.cookie);
         var cookie = this.getCookie('l_t');
         console.log(cookie);
+        if (cookie) {
+            this.isAuth = true;
+        }
         this.event.logged$.subscribe(function (isLogged) { return _this.isAuth = isLogged; });
     }
     AppComponent.prototype.getCookie = function (name) {
@@ -268,6 +270,7 @@ var LoginComponent = (function () {
                 _this.event.logged(true);
                 localStorage.setItem('l_t', data.token);
                 _this.router.navigate(['/backend']);
+                //location.href = 'http://lortom.dev/backend';
             }
         });
     };

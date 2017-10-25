@@ -60,11 +60,13 @@ class SlideBarController extends Controller
             return response()->json(['error' => 'username or password not find']);
         }
 
-        $token = $this->auth->setToken();
+        $token = encrypt($rawToken = $this->auth->setToken());
 
-        $response = ['token' => $token];
+        $response = ['token' => $token, 'rawToken' => $rawToken];
 
-        return response()->json($response)->withCookie(Cookie::make('l_t',$token,1000));
+       $config = config('session');
+
+        return response()->json($response)->withCookie(Cookie::make('l_t',$rawToken,10,$config['path'],$config['domain'],$config['secure'],false,false,'Lax'));
     }
 
     static function sort($a,$b)

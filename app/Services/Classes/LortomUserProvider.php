@@ -52,24 +52,15 @@ class LortomUserProvider
 
     public function getToken()
     {
-        $token = $this->retrieveTokenBySession();
+        $token = $this->retrieveTokenByCookies();
 
         if(!$token)
         {
-            $token = $this->retrieveTokenByCookies();
-
-            if(!$token)
-            {
-                return null;
-            }
+            return null;
         }
 
-        return $token;
-    }
 
-    protected function retrieveTokenBySession()
-    {
-        return session()->has('l_t');
+        return $token;
     }
 
     protected function retrieveTokenByCookies()
@@ -89,9 +80,6 @@ class LortomUserProvider
 
         $token = JWT::encode($payload,'lortom_tomlor');
 
-        session()->put('l_t',$token);
-        session()->save();
-
         return $token;
     }
 
@@ -104,6 +92,8 @@ class LortomUserProvider
 
     public function validateToken($token)
     {
+        //$token = decrypt($token);
+
         try {
             $payload = JWT::decode($token, 'lortom_tomlor');
         }catch (\UnexpectedValueException $e)

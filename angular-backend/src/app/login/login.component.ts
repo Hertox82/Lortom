@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit
     {
         this.service.login({username: this.username, password: this.password})
             .subscribe(
-                (data : {error? : string, token? : string }) =>  {
+                (data : {error? : string, token? : string, rawToken? :string }) =>  {
 
                     if(data.error)
                     {
@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit
                         this.event.logged(true);
                         localStorage.setItem('l_t',data.token);
                         this.router.navigate(['/backend']);
+                        //location.href = 'http://lortom.dev/backend';
                     }
                 }
             );
