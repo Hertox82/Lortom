@@ -25,9 +25,10 @@ color:gainsboro; background-color: #2F3133;
 
 .sidebar-menu li a .pull-right-container { position: absolute; right: 10px; top:50%; margin-top:-7px; }
 
-.sidebar-menu li ul { background-color: rgba(146, 146, 146, 0.58);  margin: 0 1px; padding-left: 20px; }
+.sidebar-menu li ul { background-color: rgba(146, 146, 146, 0.58);  margin: 0 1px; padding-left: 20px; list-style: none;}
 
-.sidebar-menu li ul .submenu-item {font-size: 13px; padding:7px 5px;}
+.sidebar-menu li ul .submenu-item {font-size: 13px; /*padding:7px 5px;*/}
+.sidebar-menu li.active .submenu-item a { border:unset; background-color: rgb(123, 123, 123);}
 
 /*Content*/
 .content-wrapper { margin-left: 200px; background-color: #eaeaea; min-height: 910px;}
