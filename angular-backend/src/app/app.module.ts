@@ -10,12 +10,16 @@ import {SubMenuItemComponent} from "./submenu-item/submenu-item.component";
 import {EventService} from "../services/event.service";
 import {LoginComponent} from "./login/login.component";
 import {FormsModule} from "@angular/forms";
+import {NavbarComponent} from "./navbar/navbar.component";
+import {NavbarItemComponent} from "./navbar-item/navbar-item.component";
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    NavbarComponent,
+    NavbarItemComponent,
     MenuItemsComponent,
     MenuItemComponent,
     SubMenuItemComponent,

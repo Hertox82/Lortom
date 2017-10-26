@@ -1,11 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Header pannello Admin */
-.main-header{  height: 40px;  background-color: orange;  color: white;  position: relative; z-index: 1080;}
+.main-header{  height: 44px;  background-color: orange;  color: white;  position: relative; z-index: 1080;}
 .logo{  padding: 8px 25px;  text-align: left;  width: 200px;  float:left;  }
 .navbar-custom-menu{  float:right;}
-.navbar-custom-menu ul { float:left; margin:0; list-style: none; padding-left: 0;}
-.navbar-custom-menu li { float:left; padding:10px;}
+.navbar-custom-menu ul { float:left; margin:0; list-style: none; padding-left: 0; position:relative}
+.navbar-custom-menu li { float:left; padding:10px; cursor: pointer; width:65px; text-align: center;}
+.navbar-custom-menu li a {color:white;}
+.navbar-custom-menu li.active { background-color: #d47801;}
+.navbar-custom-menu .navbar-item ul { position: absolute; width: 100%; left: 0; top: 41px; background-color: #d47801; float:unset}
+.navbar-custom-menu .navbar-item li {float:unset !important; padding-left: 40px;}
+
 
 /* Aside Bar*/
 .main-sidebar { position: absolute; width:200px; min-height: 100%; top:0; left:0; padding-top: 40px; z-index:810; background-color: #5e5d5d; color:white;}

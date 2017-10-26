@@ -58,7 +58,7 @@ class LortomAuthentication
                     $response = $next($request);
 
                     $response->headers->set('X-FRAME-OPTIONS','DENY');
-                    return $response->withCookie(Cookie::make('l_t',$token,1000,$config['path'],$config['domain'],$config['secure'],false,false,'Lax'));
+                    return $response->withCookie(Cookie::make('l_t',$token,10,$config['path'],$config['domain'],$config['secure'],false,false,'Lax'));
                 }
                 else if($check === false)
                 {
@@ -66,7 +66,7 @@ class LortomAuthentication
                     $response = $next($request);
 
                     $response->headers->set('X-FRAME-OPTIONS','DENY');
-                    return $response->withCookie(Cookie::make('l_t',$token,1000,$config['path'],$config['domain'],$config['secure'],false,false,'Lax'));
+                    return $response->withCookie(Cookie::make('l_t',$token,10,$config['path'],$config['domain'],$config['secure'],false,false,'Lax'));
                 }
                 else
                 {
@@ -84,7 +84,7 @@ class LortomAuthentication
             {
                 $response = $next($request);
                 $response->headers->set('X-FRAME-OPTIONS','DENY');
-                return $response->withCookie(Cookie::make('l_t',$token,1000,$config['path'],$config['domain'],$config['secure'],false,false,'Lax'));
+                return $response->withCookie(Cookie::make('l_t',$token,10,$config['path'],$config['domain'],$config['secure'],false,false,'Lax'));
             }
             else if($check === false)
             {
@@ -92,7 +92,7 @@ class LortomAuthentication
                 $response = $next($request);
 
                 $response->headers->set('X-FRAME-OPTIONS','DENY');
-                return $response->withCookie(Cookie::make('l_t',$token,1000,$config['path'],$config['domain'],$config['secure'],false,false,'Lax'));
+                return $response->withCookie(Cookie::make('l_t',$token,10,$config['path'],$config['domain'],$config['secure'],false,false,'Lax'));
             }
             else
             {
@@ -102,5 +102,20 @@ class LortomAuthentication
             }
         }
 
+    }
+
+    private function Weeks($weeks = 0)
+    {
+        return ($weeks == 0) ? 0 : $weeks * $this->Days(7);
+    }
+
+    private function Days($days = 0)
+    {
+        return ($days == 0) ? 0 : $days * $this->Hours(24);
+    }
+
+    private function Hours($hours = 0)
+    {
+        return ($hours == 0) ? 0 : $hours * 60;
     }
 }

@@ -54,7 +54,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div *ngIf=\"isAuth; else login\">\n    <header class=\"main-header\">\n        <a class=\"logo\">\n            <span>Lortom</span>\n        </a>\n        <nav>\n            <div class=\"navbar-custom-menu\">\n                <ul>\n                    <li>\n                        <a>Messaggi</a>\n                    </li>\n                    <li>\n                        <a>Alert</a>\n                    </li>\n                    <li>\n                        <a>Configurazione</a>\n                    </li>\n                    <li>\n                        <a>Profilo</a>\n                    </li>\n\n                </ul>\n            </div>\n        </nav>\n    </header>\n\n    <aside class=\"main-sidebar\">\n       <section class=\"sidebar\">\n           <div class=\"user-panel\">\n               <div class=\"pull-left image\">\n                   Immagine\n               </div>\n               <div class=\"pull-left info\">\n                   Nome e Cognome\n               </div>\n           </div>\n           <app-menu-items></app-menu-items>\n       </section>\n    </aside>\n\n    <!-- Qui viene messo il rootlet-->\n    <div class=\"content-wrapper\">\n        <router-outlet></router-outlet>\n    </div>\n\n\n    <footer>\n        &copy; Lortom 2017 - MIT License - created by Hernan Ariel De Luca\n    </footer>\n</div>\n\n<ng-template #login>\n    <router-outlet></router-outlet>\n</ng-template>"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div *ngIf=\"isAuth; else login\">\n    <header class=\"main-header\">\n        <a class=\"logo\">\n            <span>Lortom</span>\n        </a>\n        <app-navbar></app-navbar>\n    </header>\n\n    <aside class=\"main-sidebar\">\n       <section class=\"sidebar\">\n           <div class=\"user-panel\">\n               <div class=\"pull-left image\">\n                   Immagine\n               </div>\n               <div class=\"pull-left info\">\n                   Nome e Cognome\n               </div>\n           </div>\n           <app-menu-items></app-menu-items>\n       </section>\n    </aside>\n\n    <!-- Qui viene messo il rootlet-->\n    <div class=\"content-wrapper\">\n        <router-outlet></router-outlet>\n    </div>\n\n\n    <footer>\n        &copy; Lortom 2017 - MIT License - created by Hernan Ariel De Luca\n    </footer>\n</div>\n\n<ng-template #login>\n    <router-outlet></router-outlet>\n</ng-template>"
 
 /***/ }),
 
@@ -135,12 +135,16 @@ var _a;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__navbar_navbar_component__ = __webpack_require__("../../../../../src/app/navbar/navbar.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__navbar_item_navbar_item_component__ = __webpack_require__("../../../../../src/app/navbar-item/navbar-item.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -162,6 +166,8 @@ AppModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* NgModule */])({
         declarations: [
             __WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */],
+            __WEBPACK_IMPORTED_MODULE_12__navbar_navbar_component__["a" /* NavbarComponent */],
+            __WEBPACK_IMPORTED_MODULE_13__navbar_item_navbar_item_component__["a" /* NavbarItemComponent */],
             __WEBPACK_IMPORTED_MODULE_4__menu_items_menu_items_component__["a" /* MenuItemsComponent */],
             __WEBPACK_IMPORTED_MODULE_5__menu_item_menu_item_component__["a" /* MenuItemComponent */],
             __WEBPACK_IMPORTED_MODULE_8__submenu_item_submenu_item_component__["a" /* SubMenuItemComponent */],
@@ -513,6 +519,166 @@ var _a;
 
 /***/ }),
 
+/***/ "../../../../../src/app/navbar-item/navbar-item.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/navbar-item/navbar-item.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<li class=\"navbar-item\" [ngClass]=\"isShow ? 'active' : ''\">\n    <a routerLink=\"{{navbarItem.href}}\" (click)=\"show()\" ><i class=\"{{navbarItem.name}}\"></i></a>\n    <ul class=\"navbar-submenu\" *ngIf=\"isShow == true;\">\n        <li class=\"navbar-submenu-item\" *ngFor=\"let nsub of navbarItem.subMenu\">\n            <a routerLink=\"{{nsub.href}}\">{{nsub.name}}</a>\n        </li>\n    </ul>\n</li>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/navbar-item/navbar-item.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NavbarItemComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_navbar_interface__ = __webpack_require__("../../../../../src/interfaces/navbar.interface.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_navbar_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_navbar_interface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+/**
+ * Created by hernan on 26/10/2017.
+ */
+var NavbarItemComponent = (function () {
+    function NavbarItemComponent(eService) {
+        var _this = this;
+        this.eService = eService;
+        this.isShow = false;
+        this.eService.clicked$.subscribe(function (item) {
+            if (item.object != _this) {
+                _this.isShow = item.close;
+            }
+        });
+    }
+    NavbarItemComponent.prototype.ngOnInit = function () { };
+    NavbarItemComponent.prototype.show = function () {
+        this.isShow = true;
+        this.eService.clicked({
+            object: this,
+            close: false
+        });
+    };
+    return NavbarItemComponent;
+}());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__interfaces_navbar_interface__["NavbarItem"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__interfaces_navbar_interface__["NavbarItem"]) === "function" && _a || Object)
+], NavbarItemComponent.prototype, "navbarItem", void 0);
+NavbarItemComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-navbar-item',
+        template: __webpack_require__("../../../../../src/app/navbar-item/navbar-item.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/navbar-item/navbar-item.component.css")]
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object])
+], NavbarItemComponent);
+
+var _a, _b;
+//# sourceMappingURL=navbar-item.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/navbar/navbar.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/navbar/navbar.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<nav>\n    <div class=\"navbar-custom-menu\">\n        <ul>\n            <app-navbar-item *ngFor=\"let item of navbarItems\" [navbarItem] = \"item\"></app-navbar-item>\n        </ul>\n    </div>\n</nav>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/navbar/navbar.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NavbarComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+/**
+ * Created by hernan on 26/10/2017.
+ */
+var NavbarComponent = (function () {
+    function NavbarComponent() {
+        this.navbarItems = [
+            { name: 'fa fa-envelope', href: '', subMenu: [] },
+            { name: 'fa fa-bell', href: '', subMenu: [] },
+            { name: 'fa fa-cogs', href: '/backend/settings', subMenu: [] },
+            { name: 'fa fa-user', href: '', subMenu: [
+                    { name: 'Modifica', href: '/backend/user/modifica' },
+                    { name: 'Logout', href: '/backend/logout' }
+                ] }
+        ];
+    }
+    NavbarComponent.prototype.ngOnInit = function () { };
+    return NavbarComponent;
+}());
+NavbarComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-navbar',
+        template: __webpack_require__("../../../../../src/app/navbar/navbar.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/navbar/navbar.component.css")]
+    }),
+    __metadata("design:paramtypes", [])
+], NavbarComponent);
+
+//# sourceMappingURL=navbar.component.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/submenu-item/submenu-item.component.html":
 /***/ (function(module, exports) {
 
@@ -606,6 +772,16 @@ var environment = {
     production: false
 };
 //# sourceMappingURL=environment.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/interfaces/navbar.interface.ts":
+/***/ (function(module, exports) {
+
+/**
+ * Created by hernan on 26/10/2017.
+ */
+//# sourceMappingURL=navbar.interface.js.map
 
 /***/ }),
 

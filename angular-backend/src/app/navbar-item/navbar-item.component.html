@@ -1,0 +1,8 @@
+<li class="navbar-item" [ngClass]="isShow ? 'active' : ''">
+    <a routerLink="{{navbarItem.href}}" (click)="show()" ><i class="{{navbarItem.name}}"></i></a>
+    <ul class="navbar-submenu" *ngIf="isShow == true;">
+        <li class="navbar-submenu-item" *ngFor="let nsub of navbarItem.subMenu">
+            <a routerLink="{{nsub.href}}">{{nsub.name}}</a>
+        </li>
+    </ul>
+</li>

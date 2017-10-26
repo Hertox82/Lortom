@@ -21,23 +21,22 @@ export class LoginComponent implements OnInit
 
     ngOnInit() {}
 
-    onSubmit()
-    {
-        this.service.login({username: this.username, password: this.password})
-            .subscribe(
-                (data : {error? : string, token? : string, rawToken? :string }) =>  {
+    onSubmit() {
+            this.service.login({username: this.username, password: this.password})
+                .subscribe(
+                    (data: { error?: string, token?: string, rawToken?: string }) => {
 
-                    if(data.error)
-                    {
+                        if (data.error) {
 
+                        }
+                        else {
+                            this.event.logged(true);
+                            localStorage.setItem('l_t', data.token);
+                            this.router.navigate(['/backend']);
+                            //location.href = 'http://lortom.dev/backend';
+                        }
                     }
-                    else{
-                        this.event.logged(true);
-                        localStorage.setItem('l_t',data.token);
-                        this.router.navigate(['/backend']);
-                        //location.href = 'http://lortom.dev/backend';
-                    }
-                }
-            );
+                );
+
     }
 }
