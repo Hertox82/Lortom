@@ -62,7 +62,10 @@ class SlideBarController extends Controller
 
         $token = $this->auth->setToken();
 
-        $response = ['token' => $token];
+        $User = $this->auth->getUser();
+
+        $UserObj = ['username' => $User->email, 'name' => $User->name];
+        $response = ['token' => $token, 'user' => $UserObj];
 
        $config = config('session');
 

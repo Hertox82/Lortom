@@ -24,12 +24,13 @@ export class LoginComponent implements OnInit
     onSubmit() {
             this.service.login({username: this.username, password: this.password})
                 .subscribe(
-                    (data: { error?: string, token?: string, rawToken?: string }) => {
-
+                    (data: { error?: string, token?: string, user?: any }) => {
+                        console.log(data.user);
                         if (data.error) {
 
                         }
                         else {
+                            this.event.user(data.user);
                             this.event.logged(true);
                             localStorage.setItem('l_t', data.token);
                             this.router.navigate(['/backend']);

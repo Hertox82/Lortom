@@ -46,4 +46,9 @@ class LortomAuth
         return $this->userProvider->refreshToken();
     }
 
+    public function getUser()
+    {
+        return $this->userProvider->getUser();
+    }
+
 }

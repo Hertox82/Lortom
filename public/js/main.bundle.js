@@ -54,7 +54,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div *ngIf=\"isAuth; else login\">\n    <header class=\"main-header\">\n        <a class=\"logo\">\n            <span>Lortom</span>\n        </a>\n        <app-navbar></app-navbar>\n    </header>\n\n    <aside class=\"main-sidebar\">\n       <section class=\"sidebar\">\n           <div class=\"user-panel\">\n               <div class=\"pull-left image\">\n                   Immagine\n               </div>\n               <div class=\"pull-left info\">\n                   Nome e Cognome\n               </div>\n           </div>\n           <app-menu-items></app-menu-items>\n       </section>\n    </aside>\n\n    <!-- Qui viene messo il rootlet-->\n    <div class=\"content-wrapper\">\n        <router-outlet></router-outlet>\n    </div>\n\n\n    <footer>\n        &copy; Lortom 2017 - MIT License - created by Hernan Ariel De Luca\n    </footer>\n</div>\n\n<ng-template #login>\n    <router-outlet></router-outlet>\n</ng-template>"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div *ngIf=\"isAuth; else login\">\n    <header class=\"main-header\">\n        <a class=\"logo\">\n            <span>Lortom</span>\n        </a>\n        <app-navbar></app-navbar>\n    </header>\n\n    <aside class=\"main-sidebar\">\n       <section class=\"sidebar\">\n           <app-user-side></app-user-side>\n           <app-menu-items></app-menu-items>\n       </section>\n    </aside>\n\n    <!-- Qui viene messo il rootlet-->\n    <div class=\"content-wrapper\">\n        <router-outlet></router-outlet>\n    </div>\n\n\n    <footer>\n        &copy; Lortom 2017 - MIT License - created by Hernan Ariel De Luca\n    </footer>\n</div>\n\n<ng-template #login>\n    <router-outlet></router-outlet>\n</ng-template>"
 
 /***/ }),
 
@@ -215,6 +215,8 @@ var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["b" /* RouterModule 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__logout_logout_component__ = __webpack_require__("../../../../../src/app/backend-module/logout/logout.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__user_module_user_module__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__user_module_user_side_user_side_component__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user-side/user-side.component.ts");
 /**
  * Created by hernan on 26/10/2017.
  */
@@ -224,6 +226,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -247,7 +251,8 @@ BackendModule = __decorate([
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
             __WEBPACK_IMPORTED_MODULE_10__angular_router__["b" /* RouterModule */],
-            __WEBPACK_IMPORTED_MODULE_11__angular_forms__["a" /* FormsModule */]
+            __WEBPACK_IMPORTED_MODULE_11__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_13__user_module_user_module__["a" /* UserModule */]
         ],
         declarations: [
             __WEBPACK_IMPORTED_MODULE_2__navbar_navbar_component__["a" /* NavbarComponent */],
@@ -266,7 +271,8 @@ BackendModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_2__navbar_navbar_component__["a" /* NavbarComponent */],
             __WEBPACK_IMPORTED_MODULE_4__menu_items_menu_items_component__["a" /* MenuItemsComponent */],
             __WEBPACK_IMPORTED_MODULE_7__login_login_component__["a" /* LoginComponent */],
-            __WEBPACK_IMPORTED_MODULE_12__logout_logout_component__["a" /* LogoutComponent */]
+            __WEBPACK_IMPORTED_MODULE_12__logout_logout_component__["a" /* LogoutComponent */],
+            __WEBPACK_IMPORTED_MODULE_14__user_module_user_side_user_side_component__["a" /* UserSideComponent */]
         ]
     })
 ], BackendModule);
@@ -336,9 +342,11 @@ var LoginComponent = (function () {
         var _this = this;
         this.service.login({ username: this.username, password: this.password })
             .subscribe(function (data) {
+            console.log(data.user);
             if (data.error) {
             }
             else {
+                _this.event.user(data.user);
                 _this.event.logged(true);
                 localStorage.setItem('l_t', data.token);
                 _this.router.navigate(['/backend']);
@@ -403,6 +411,10 @@ var LogoutComponent = (function () {
         this.eService = eService;
         this.menuService.logout().subscribe(function (data) {
             _this.eService.logged(false);
+            _this.eService.clicked({
+                object: null,
+                close: false
+            });
             _this.router.navigate(['/backend/login']);
         });
     }
@@ -793,6 +805,126 @@ var _a;
 
 /***/ }),
 
+/***/ "../../../../../src/app/backend-module/user-module/user-side/user-side.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/backend-module/user-module/user-side/user-side.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"user-panel\">\n    <div class=\"pull-left image\">\n        Immagine\n    </div>\n    <div class=\"pull-left info\" *ngIf=\"user != null\">\n        {{user.name}}\n    </div>\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/backend-module/user-module/user-side/user-side.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserSideComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var UserSideComponent = (function () {
+    function UserSideComponent(eService) {
+        var _this = this;
+        this.eService = eService;
+        this.eService.user$.subscribe(function (data) {
+            _this.user = data;
+            console.log(_this.user);
+        });
+    }
+    UserSideComponent.prototype.ngOnInit = function () { };
+    return UserSideComponent;
+}());
+UserSideComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-user-side',
+        template: __webpack_require__("../../../../../src/app/backend-module/user-module/user-side/user-side.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/backend-module/user-module/user-side/user-side.component.css")]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_event_service__["a" /* EventService */]) === "function" && _a || Object])
+], UserSideComponent);
+
+var _a;
+//# sourceMappingURL=user-side.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/backend-module/user-module/user.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__user_side_user_side_component__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user-side/user-side.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+
+
+var UserModule = (function () {
+    function UserModule() {
+    }
+    return UserModule;
+}());
+UserModule = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
+        imports: [
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* RouterModule */]
+        ],
+        declarations: [
+            __WEBPACK_IMPORTED_MODULE_4__user_side_user_side_component__["a" /* UserSideComponent */]
+        ],
+        providers: [
+            __WEBPACK_IMPORTED_MODULE_5__services_event_service__["a" /* EventService */]
+        ],
+        exports: [
+            __WEBPACK_IMPORTED_MODULE_4__user_side_user_side_component__["a" /* UserSideComponent */]
+        ]
+    })
+], UserModule);
+
+//# sourceMappingURL=user.module.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/menuservice.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -968,12 +1100,17 @@ var EventService = (function () {
         this.clicked$ = this._clicked.asObservable();
         this._logged = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["Subject"]();
         this.logged$ = this._logged.asObservable();
+        this._user = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["Subject"]();
+        this.user$ = this._user.asObservable();
     }
     EventService.prototype.clicked = function (object) {
         this._clicked.next(object);
     };
     EventService.prototype.logged = function (object) {
         this._logged.next(object);
+    };
+    EventService.prototype.user = function (object) {
+        this._user.next(object);
     };
     return EventService;
 }());

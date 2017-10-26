@@ -143,4 +143,9 @@ class LortomUserProvider
     {
         $this->password = $value;
     }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
 }

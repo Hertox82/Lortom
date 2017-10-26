@@ -19,6 +19,10 @@ export class LogoutComponent implements OnInit
         this.menuService.logout().subscribe(
             (data : Observable<any>) => {
                 this.eService.logged(false);
+                this.eService.clicked({
+                    object: null,
+                    close: false
+                })
                 this.router.navigate(['/backend/login']);
             }
         )

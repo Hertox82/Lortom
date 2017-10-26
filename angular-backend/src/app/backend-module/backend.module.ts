@@ -15,12 +15,15 @@ import {EventService} from "../../services/event.service";
 import {RouterModule} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {LogoutComponent} from "./logout/logout.component";
+import {UserModule} from "./user-module/user.module";
+import {UserSideComponent} from "./user-module/user-side/user-side.component";
 
 @NgModule({
     imports : [
         CommonModule,
         RouterModule,
-        FormsModule
+        FormsModule,
+        UserModule
     ],
     declarations : [
         NavbarComponent,
@@ -39,7 +42,8 @@ import {LogoutComponent} from "./logout/logout.component";
         NavbarComponent,
         MenuItemsComponent,
         LoginComponent,
-        LogoutComponent
+        LogoutComponent,
+        UserSideComponent
     ]
 })
 export class BackendModule {}

@@ -14,11 +14,18 @@ export class EventService {
     private _logged = new Subject();
     logged$ = this._logged.asObservable();
 
+    private _user = new Subject();
+    user$ = this._user.asObservable();
+
     clicked(object) {
         this._clicked.next(object);
     }
 
     logged(object){
         this._logged.next(object);
+    }
+
+    user(object){
+        this._user.next(object);
     }
 }
