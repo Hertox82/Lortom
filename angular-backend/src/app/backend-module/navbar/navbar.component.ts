@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {NavbarItem} from "../../interfaces/navbar.interface";
+import {NavbarItem} from "../../../interfaces/navbar.interface";
 /**
  * Created by hernan on 26/10/2017.
  */

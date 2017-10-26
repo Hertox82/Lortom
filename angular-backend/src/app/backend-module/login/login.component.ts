@@ -1,6 +1,6 @@
 import {OnInit, Component, Input, Output, EventEmitter} from "@angular/core";
-import {MenuService} from "../menuservice";
-import {EventService} from "../../services/event.service";
+import {MenuService} from "../../menuservice";
+import {EventService} from "../../../services/event.service";
 import {Router} from "@angular/router";
 /**
  * Created by hernan on 23/10/2017.
@@ -37,6 +37,5 @@ export class LoginComponent implements OnInit
                         }
                     }
                 );
-
     }
 }

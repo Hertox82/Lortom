@@ -33,4 +33,13 @@ export class MenuService {
                 (response: Response) => {return response.json();}
             );
     }
+
+    logout() : Observable<any>{
+        return this.http.get(this.urlManager.getPathByName('logout'))
+            .map(
+                (response :Response) => {
+                    return response.json();
+                }
+            );
+    }
 }

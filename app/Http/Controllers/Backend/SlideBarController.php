@@ -69,6 +69,13 @@ class SlideBarController extends Controller
         return response()->json($response)->withCookie(Cookie::make('l_t',$token,10,$config['path'],$config['domain'],$config['secure'],false,false,'Lax'));
     }
 
+    public function requestLogout(Request $request)
+    {
+        $config = config('session');
+        unset($_COOKIE['l_t']);
+        return response()->json(['message' => 'logged Out!'])->withCookie(Cookie::make('l_t',null,-1,$config['path'],$config['domain'],$config['secure'],false,false,'Lax'));
+    }
+
     static function sort($a,$b)
     {
         $a = $a['position'];

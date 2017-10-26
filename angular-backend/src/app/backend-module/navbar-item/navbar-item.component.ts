@@ -1,6 +1,6 @@
 import {Component, OnInit,Input} from "@angular/core";
-import {NavbarItem} from "../../interfaces/navbar.interface";
-import {EventService} from "../../services/event.service";
+import {NavbarItem} from "../../../interfaces/navbar.interface";
+import {EventService} from "../../../services/event.service";
 /**
  * Created by hernan on 26/10/2017.
  */

@@ -26,3 +26,8 @@ Route::post('/login',[
     'as'    => 'apiLogin',
     'uses'  => 'Backend\SlideBarController@requestLogin'
 ]);
+
+Route::get('/logout',[
+    'as'    => 'apiLogout',
+    'uses'  => 'Backend\SlideBarController@requestLogout'
+]);

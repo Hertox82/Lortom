@@ -12,7 +12,8 @@ export class ApiManager{
         this.basePath = 'http://lortom.dev/api/';
         this.apiUrl = [
             { namePath: 'getMenu', path:this.basePath+'populate-slidebar'},
-            { namePath: 'login', path:this.basePath+'login'}
+            { namePath: 'login', path:this.basePath+'login'},
+            { namePath: 'logout', path:this.basePath+'logout'}
         ];
     }
 

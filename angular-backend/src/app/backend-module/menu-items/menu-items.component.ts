@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {SlideItem} from "../../interfaces/slideItem.interface";
+import {SlideItem} from "../../../interfaces/slideItem.interface";
 import {Response} from "@angular/http";
-import {MenuService} from "../menuservice";
+import {MenuService} from "../../menuservice";
 
 @Component({
   selector: 'app-menu-items',

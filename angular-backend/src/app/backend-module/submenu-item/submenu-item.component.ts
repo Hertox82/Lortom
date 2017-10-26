@@ -1,6 +1,6 @@
 
 import {Component, Input, OnInit} from "@angular/core";
-import {SlideSubMenu} from "../../interfaces/slideItem.interface";
+import {SlideSubMenu} from "../../../interfaces/slideItem.interface";
 
 @Component({
     selector : 'app-submenu-item',
