@@ -13,7 +13,8 @@ export class ApiManager{
         this.apiUrl = [
             { namePath: 'getMenu', path:this.basePath+'populate-slidebar'},
             { namePath: 'login', path:this.basePath+'login'},
-            { namePath: 'logout', path:this.basePath+'logout'}
+            { namePath: 'logout', path:this.basePath+'logout'},
+            { namePath: 'editMyProfile', path:this.basePath+'edit-my-profile'}
         ];
     }
 

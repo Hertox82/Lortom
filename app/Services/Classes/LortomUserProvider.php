@@ -35,6 +35,7 @@ class LortomUserProvider
     {
         $query = LortomUser::where([['email',$this->username]])->first();
 
+        pr($query,1);
         if(is_null($query))
             return false;
         else{

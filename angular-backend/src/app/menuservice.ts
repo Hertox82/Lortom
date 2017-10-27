@@ -6,6 +6,7 @@ import {Headers, Http, RequestOptions, Response} from "@angular/http";
 import 'rxjs/Rx';
 import {Observable} from "rxjs/Observable";
 import {ApiManager} from "./urlApi/api.manager";
+import {User} from "./backend-module/user-module/user-model/user.interface";
 
 @Injectable()
 export class MenuService {
@@ -39,6 +40,17 @@ export class MenuService {
             .map(
                 (response :Response) => {
                     return response.json();
+                }
+            );
+    }
+
+    editMyProfile(user : User) : Observable<any>{
+        let headers = new Headers({'Content-Type' : 'application/json'});
+        let options = new RequestOptions( { headers: headers} );
+        return this.http.put(this.urlManager.getPathByName('editMyProfile'),user,options)
+            .map(
+                (response : Response) => {
+                    return response;
                 }
             );
     }

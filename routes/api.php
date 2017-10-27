@@ -31,3 +31,8 @@ Route::get('/logout',[
     'as'    => 'apiLogout',
     'uses'  => 'Backend\SlideBarController@requestLogout'
 ]);
+
+Route::put('/edit-my-profile',[
+    'as'     => 'apiEditMyProfile',
+    'uses'   => 'Backend\SlideBarController@requestEditMyProfile'
+])->middleware('lortom.auth');;

@@ -19,7 +19,7 @@ export class NavbarComponent implements OnInit
             {name : 'fa fa-bell', href: '', subMenu: []},
             {name : 'fa fa-cogs', href: '/backend/settings', subMenu: []},
             {name : 'fa fa-user', href: '', subMenu: [
-                {name: 'Modifica', href:'/backend/user/modifica'},
+                {name: 'Edit My Profile', href:'/backend/profile/edit'},
                 {name: 'Logout', href: '/backend/logout'}
             ]}
         ];

@@ -39,17 +39,6 @@
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group flex-group">
-                                            <label for="email" class="col-md-2 control-label">Username</label>
-                                            <div class="col-md-4">
-                                                <input type="email" class="form-control" name="email" [ngModel] = "user.email" placeholder="Username" id="email" *ngIf="isEdit === false; else editEmail" readonly>
-                                                <ng-template #editEmail>
-                                                    <input type="email" class="form-control" name="email" placeholder="Username" id="email" [(ngModel)] = "user.email">
-                                                </ng-template>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group flex-group">
                                             <label for="password" class="col-md-2 control-label">Password</label>
                                             <div class="col-md-4">
                                                 <input type="password" class="form-control" name="password" [ngModel] = "user.password" placeholder="password" id="password" *ngIf="isEdit === false; else editPassword" readonly>
@@ -65,7 +54,7 @@
                                             <div class="col-md-4">
                                                 <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password" id="confirmPassword" *ngIf="isEdit === false; else editConfirmPassword" readonly>
                                                 <ng-template #editConfirmPassword>
-                                                    <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password" id="confirmPassword">
+                                                    <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password" id="confirmPassword" [(ngModel)]="confirm">
                                                 </ng-template>
                                             </div>
                                         </div>
@@ -78,8 +67,8 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <button class="btn orange">Save</button>
-                    <button class="btn red">Cancel</button>
+                    <button class="btn orange" (click)="saveMode()">Save</button>
+                    <button class="btn red" (click)="resetMode()">Reset</button>
                 </div>
             </div>
         </form>

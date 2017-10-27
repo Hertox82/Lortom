@@ -79,6 +79,28 @@ class SlideBarController extends Controller
         return response()->json(['message' => 'logged Out!'])->withCookie(Cookie::make('l_t',null,-1,$config['path'],$config['domain'],$config['secure'],false,false,'Lax'));
     }
 
+    public function requestEditMyProfile(Request $request)
+    {
+        $User = $this->auth->getUser();
+
+        $input = $request->all();
+
+        pr($User,1);
+
+        if(isset($input['password']))
+        {
+            $User->password = bcrypt($input['password']);
+        }
+
+        if(isset($input['name'])){
+            $User->name = $input['name'];
+        }
+
+        $User->save();
+
+        return response()->json(['message' => 'Well done! All is up to date']);
+    }
+
     static function sort($a,$b)
     {
         $a = $a['position'];

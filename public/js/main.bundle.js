@@ -193,7 +193,7 @@ var routes = [
     { path: 'backend', redirectTo: 'backend/dashboard', pathMatch: 'full' },
     { path: 'backend/login', component: __WEBPACK_IMPORTED_MODULE_1__backend_module_login_login_component__["a" /* LoginComponent */] },
     { path: 'backend/logout', component: __WEBPACK_IMPORTED_MODULE_2__backend_module_logout_logout_component__["a" /* LogoutComponent */] },
-    { path: 'backend/user/modifica', component: __WEBPACK_IMPORTED_MODULE_3__backend_module_user_module_user_model_usermodel_component__["a" /* UserModelComponent */] },
+    { path: 'backend/profile/edit', component: __WEBPACK_IMPORTED_MODULE_3__backend_module_user_module_user_model_usermodel_component__["a" /* UserModelComponent */] },
     { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' },
     { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' },
     { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' }
@@ -767,7 +767,7 @@ var NavbarComponent = (function () {
             { name: 'fa fa-bell', href: '', subMenu: [] },
             { name: 'fa fa-cogs', href: '/backend/settings', subMenu: [] },
             { name: 'fa fa-user', href: '', subMenu: [
-                    { name: 'Modifica', href: '/backend/user/modifica' },
+                    { name: 'Edit My Profile', href: '/backend/profile/edit' },
                     { name: 'Logout', href: '/backend/logout' }
                 ] }
         ];
@@ -851,7 +851,7 @@ var _a;
 /***/ "../../../../../src/app/backend-module/user-module/user-model/usermodel.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\">\n        <h1>User Edit</h1>\n        <ol class=\"breadcrumb\">\n            <li><a>Backend</a></li>\n            <li class=\"active\"><a>User - Modifica</a></li>\n        </ol>\n    </div>\n    <div class=\"content\">\n\n        <form class=\"form\">\n            <div class=\"portlet\">\n                <div class=\"portlet-title\">\n                    <div class=\"caption\">\n                        <i class=\"fa fa-database\"></i>\n                        <span>Definizioni Generali</span>\n                    </div>\n                    <div class=\"actions\">\n                        <button class=\"btn darkorange\" (click)=\"editMode()\">\n                            <i class=\"fa fa-edit\"></i>\n                            Edit\n                        </button>\n                    </div>\n                </div>\n                <div class=\"portlet-body\">\n                    <div class=\"portlet-form-body\">\n                        <div class=\"container\">\n                            <div class=\"row\">\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"text\" class=\"form-control\" name=\"nome\" [ngModel] = \"user.name\" placeholder=\"Nome\" id=\"nome\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                                <ng-template #editName>\n                                                    <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"user.name\" >\n                                                </ng-template>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"email\" class=\"col-md-2 control-label\">Username</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"email\" class=\"form-control\" name=\"email\" [ngModel] = \"user.email\" placeholder=\"Username\" id=\"email\" *ngIf=\"isEdit === false; else editEmail\" readonly>\n                                                <ng-template #editEmail>\n                                                    <input type=\"email\" class=\"form-control\" name=\"email\" placeholder=\"Username\" id=\"email\" [(ngModel)] = \"user.email\">\n                                                </ng-template>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"password\" class=\"col-md-2 control-label\">Password</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"password\" class=\"form-control\" name=\"password\" [ngModel] = \"user.password\" placeholder=\"password\" id=\"password\" *ngIf=\"isEdit === false; else editPassword\" readonly>\n                                                <ng-template #editPassword>\n                                                    <input type=\"password\" class=\"form-control\" name=\"password\" placeholder=\"password\" id=\"password\" [(ngModel)] = \"user.password\">\n                                                </ng-template>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"confirmPassword\" class=\"col-md-2 control-label\">Confirm Password</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"password\" class=\"form-control\" name=\"confirmPassword\" placeholder=\"Confirm Password\" id=\"confirmPassword\" *ngIf=\"isEdit === false; else editConfirmPassword\" readonly>\n                                                <ng-template #editConfirmPassword>\n                                                    <input type=\"password\" class=\"form-control\" name=\"confirmPassword\" placeholder=\"Confirm Password\" id=\"confirmPassword\">\n                                                </ng-template>\n                                            </div>\n                                        </div>\n                                    </div>\n\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-12\">\n                    <button class=\"btn orange\">Save</button>\n                    <button class=\"btn red\">Cancel</button>\n                </div>\n            </div>\n        </form>\n    </div>\n</div>"
+module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\">\n        <h1>User Edit</h1>\n        <ol class=\"breadcrumb\">\n            <li><a>Backend</a></li>\n            <li class=\"active\"><a>User - Modifica</a></li>\n        </ol>\n    </div>\n    <div class=\"content\">\n\n        <form class=\"form\">\n            <div class=\"portlet\">\n                <div class=\"portlet-title\">\n                    <div class=\"caption\">\n                        <i class=\"fa fa-database\"></i>\n                        <span>Definizioni Generali</span>\n                    </div>\n                    <div class=\"actions\">\n                        <button class=\"btn darkorange\" (click)=\"editMode()\">\n                            <i class=\"fa fa-edit\"></i>\n                            Edit\n                        </button>\n                    </div>\n                </div>\n                <div class=\"portlet-body\">\n                    <div class=\"portlet-form-body\">\n                        <div class=\"container\">\n                            <div class=\"row\">\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"text\" class=\"form-control\" name=\"nome\" [ngModel] = \"user.name\" placeholder=\"Nome\" id=\"nome\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                                <ng-template #editName>\n                                                    <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"user.name\" >\n                                                </ng-template>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"password\" class=\"col-md-2 control-label\">Password</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"password\" class=\"form-control\" name=\"password\" [ngModel] = \"user.password\" placeholder=\"password\" id=\"password\" *ngIf=\"isEdit === false; else editPassword\" readonly>\n                                                <ng-template #editPassword>\n                                                    <input type=\"password\" class=\"form-control\" name=\"password\" placeholder=\"password\" id=\"password\" [(ngModel)] = \"user.password\">\n                                                </ng-template>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"confirmPassword\" class=\"col-md-2 control-label\">Confirm Password</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"password\" class=\"form-control\" name=\"confirmPassword\" placeholder=\"Confirm Password\" id=\"confirmPassword\" *ngIf=\"isEdit === false; else editConfirmPassword\" readonly>\n                                                <ng-template #editConfirmPassword>\n                                                    <input type=\"password\" class=\"form-control\" name=\"confirmPassword\" placeholder=\"Confirm Password\" id=\"confirmPassword\" [(ngModel)]=\"confirm\">\n                                                </ng-template>\n                                            </div>\n                                        </div>\n                                    </div>\n\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-12\">\n                    <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n                    <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n                </div>\n            </div>\n        </form>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -864,6 +864,7 @@ module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\"
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user_interface__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user-model/user.interface.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__user_interface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__menuservice__ = __webpack_require__("../../../../../src/app/menuservice.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -876,16 +877,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var UserModelComponent = (function () {
-    function UserModelComponent(eService) {
+    function UserModelComponent(eService, mService) {
         this.eService = eService;
+        this.mService = mService;
         this.isEdit = false;
         this.user = {
-            id: 1,
             name: 'Hernan Ariel De Luca',
-            email: 'hadeluca@gmail.com',
-            password: '',
         };
+        this.copyUser = Object.assign({}, this.user);
     }
     UserModelComponent.prototype.ngOnInit = function () {
         this.eService.clicked({
@@ -896,6 +897,40 @@ var UserModelComponent = (function () {
     };
     UserModelComponent.prototype.editMode = function () {
         this.isEdit = !this.isEdit;
+    };
+    UserModelComponent.prototype.saveMode = function () {
+        if ('password' in this.user) {
+            if (this.user.password.length > 0) {
+                if (this.user.password === this.confirm) {
+                    if (this.user.name === this.copyUser.name) {
+                        delete this.user.name;
+                    }
+                    this.sendUserData();
+                }
+                else {
+                    alert('La nuova password non è stata confermata, ridigita');
+                }
+            }
+            else {
+                this.sendUserData();
+            }
+        }
+        else {
+            if (this.user.name !== this.copyUser.name) {
+                this.sendUserData();
+            }
+            else {
+                alert('You don\'t change anything');
+            }
+        }
+    };
+    UserModelComponent.prototype.resetMode = function () {
+        this.user = Object.assign({}, this.copyUser);
+    };
+    UserModelComponent.prototype.sendUserData = function () {
+        this.mService.editMyProfile(this.user).subscribe(function (response) {
+            console.log(response);
+        });
     };
     return UserModelComponent;
 }());
@@ -909,10 +944,10 @@ UserModelComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/backend-module/user-module/user-model/usermodel.component.html"),
         styles: ['']
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__menuservice__["a" /* MenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__menuservice__["a" /* MenuService */]) === "function" && _c || Object])
 ], UserModelComponent);
 
-var _a, _b;
+var _a, _b, _c;
 //# sourceMappingURL=usermodel.component.js.map
 
 /***/ }),
@@ -1089,6 +1124,14 @@ var MenuService = (function () {
             return response.json();
         });
     };
+    MenuService.prototype.editMyProfile = function (user) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/json' });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        return this.http.put(this.urlManager.getPathByName('editMyProfile'), user, options)
+            .map(function (response) {
+            return response;
+        });
+    };
     return MenuService;
 }());
 MenuService = __decorate([
@@ -1115,7 +1158,8 @@ var ApiManager = (function () {
         this.apiUrl = [
             { namePath: 'getMenu', path: this.basePath + 'populate-slidebar' },
             { namePath: 'login', path: this.basePath + 'login' },
-            { namePath: 'logout', path: this.basePath + 'logout' }
+            { namePath: 'logout', path: this.basePath + 'logout' },
+            { namePath: 'editMyProfile', path: this.basePath + 'edit-my-profile' }
         ];
     }
     ApiManager.prototype.getPathByName = function (name) {
