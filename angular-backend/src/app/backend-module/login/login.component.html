@@ -9,6 +9,7 @@
                     <div class="form-body">
                         <input type= "text" name="username" placeholder="username" [(ngModel)]="username" required>
                         <input type= "password" name="password" placeholder="password" [(ngModel)]="password" required>
+                        <p style="color:red" *ngIf="error">{{error}}</p>
                         <button type="submit" (click)="onSubmit()">Login</button>
                     </div>
                 </div>

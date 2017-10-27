@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit
 {
     @Input() username : string;
     @Input() password : string;
+    error : string;
 
     constructor(private service: MenuService, private event : EventService, private router : Router) {}
 
@@ -25,9 +26,9 @@ export class LoginComponent implements OnInit
             this.service.login({username: this.username, password: this.password})
                 .subscribe(
                     (data: { error?: string, token?: string, user?: any }) => {
-                        console.log(data.user);
                         if (data.error) {
-
+                            console.log(data.error);
+                            this.error = data.error;
                         }
                         else {
 
@@ -35,7 +36,6 @@ export class LoginComponent implements OnInit
                             localStorage.setItem('l_t', data.token);
                             this.event.user(data.user);
                             this.router.navigate(['/backend']);
-                            //location.href = 'http://lortom.dev/backend';
                         }
                     }
                 );

@@ -305,7 +305,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/backend-module/login/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"login\">\n    <div class=\"container\">\n        <div class=\"row\">\n            <div class=\"col-12\">\n                <div class=\"form\">\n                    <div class=\"form-title\">\n                        <h1>Login Form</h1>\n                    </div>\n                    <div class=\"form-body\">\n                        <input type= \"text\" name=\"username\" placeholder=\"username\" [(ngModel)]=\"username\" required>\n                        <input type= \"password\" name=\"password\" placeholder=\"password\" [(ngModel)]=\"password\" required>\n                        <button type=\"submit\" (click)=\"onSubmit()\">Login</button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<div class=\"login\">\n    <div class=\"container\">\n        <div class=\"row\">\n            <div class=\"col-12\">\n                <div class=\"form\">\n                    <div class=\"form-title\">\n                        <h1>Login Form</h1>\n                    </div>\n                    <div class=\"form-body\">\n                        <input type= \"text\" name=\"username\" placeholder=\"username\" [(ngModel)]=\"username\" required>\n                        <input type= \"password\" name=\"password\" placeholder=\"password\" [(ngModel)]=\"password\" required>\n                        <p style=\"color:red\" *ngIf=\"error\">{{error}}</p>\n                        <button type=\"submit\" (click)=\"onSubmit()\">Login</button>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -345,15 +345,15 @@ var LoginComponent = (function () {
         var _this = this;
         this.service.login({ username: this.username, password: this.password })
             .subscribe(function (data) {
-            console.log(data.user);
             if (data.error) {
+                console.log(data.error);
+                _this.error = data.error;
             }
             else {
                 _this.event.logged(true);
                 localStorage.setItem('l_t', data.token);
                 _this.event.user(data.user);
                 _this.router.navigate(['/backend']);
-                //location.href = 'http://lortom.dev/backend';
             }
         });
     };
