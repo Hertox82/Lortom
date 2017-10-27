@@ -1,7 +1,6 @@
 
 
-import {Component, OnInit} from "@angular/core";
-import {EventService}   from "../../../../services/event.service";
+import {Component, OnInit, Input} from "@angular/core";
 
 @Component({
     selector : 'app-user-side',
@@ -10,15 +9,14 @@ import {EventService}   from "../../../../services/event.service";
 })
 export class UserSideComponent implements OnInit
 {
-    user : {username : string, name : string};
+    @Input() user : any;
 
-    constructor(private eService : EventService) {
-        this.eService.user$.subscribe(
-            (data : {username:string, name:string}) => {
-                this.user = data;
-                console.log(this.user);
-            }
-        );
+    constructor() {
     }
-    ngOnInit () {}
+    ngOnInit () {
+        if(!this.user)
+        {
+            this.user = JSON.parse(localStorage.getItem('user'));
+        }
+    }
 }

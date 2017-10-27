@@ -30,9 +30,10 @@ export class LoginComponent implements OnInit
 
                         }
                         else {
-                            this.event.user(data.user);
+
                             this.event.logged(true);
                             localStorage.setItem('l_t', data.token);
+                            this.event.user(data.user);
                             this.router.navigate(['/backend']);
                             //location.href = 'http://lortom.dev/backend';
                         }

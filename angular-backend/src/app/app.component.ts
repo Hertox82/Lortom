@@ -9,18 +9,24 @@ import {EventService} from "../services/event.service";
 export class AppComponent {
   title = 'app';
   isAuth = false;
+  user : any;
 
   constructor(private event : EventService) {
 
     let cookie = this.getCookie('l_t');
-
-    console.log(cookie);
     if(cookie)
     {
       this.isAuth = true;
     }
     this.event.logged$.subscribe(
         (isLogged : boolean) => this.isAuth = isLogged
+    );
+
+    this.event.user$.subscribe(
+        (user : any ) => {
+          this.user = user;
+          localStorage.setItem('user',JSON.stringify(user));
+        }
     );
   }
 

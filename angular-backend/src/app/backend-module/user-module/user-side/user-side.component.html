@@ -1,8 +1,10 @@
 <div class="user-panel">
     <div class="pull-left image">
-        Immagine
+       <div class="circle">
+           <i class="fa fa-user"></i>
+       </div>
     </div>
-    <div class="pull-left info" *ngIf="user != null">
-        {{user.name}}
+    <div class="pull-left info">
+        <p>{{(user)?.name}}</p>
     </div>
 </div>

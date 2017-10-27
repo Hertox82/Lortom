@@ -54,7 +54,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div *ngIf=\"isAuth; else login\">\n    <header class=\"main-header\">\n        <a class=\"logo\">\n            <span>Lortom</span>\n        </a>\n        <app-navbar></app-navbar>\n    </header>\n\n    <aside class=\"main-sidebar\">\n       <section class=\"sidebar\">\n           <app-user-side></app-user-side>\n           <app-menu-items></app-menu-items>\n       </section>\n    </aside>\n\n    <!-- Qui viene messo il rootlet-->\n    <div class=\"content-wrapper\">\n        <router-outlet></router-outlet>\n    </div>\n\n\n    <footer>\n        &copy; Lortom 2017 - MIT License - created by Hernan Ariel De Luca\n    </footer>\n</div>\n\n<ng-template #login>\n    <router-outlet></router-outlet>\n</ng-template>"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div *ngIf=\"isAuth; else login\">\n    <header class=\"main-header\">\n        <a class=\"logo\">\n            <span>Lortom</span>\n        </a>\n        <app-navbar></app-navbar>\n    </header>\n\n    <aside class=\"main-sidebar\">\n       <section class=\"sidebar\">\n           <app-user-side [user]=\"user\"></app-user-side>\n           <app-menu-items></app-menu-items>\n       </section>\n    </aside>\n\n    <!-- Qui viene messo il rootlet-->\n    <div class=\"content-wrapper\">\n        <router-outlet></router-outlet>\n    </div>\n\n\n    <footer>\n        &copy; Lortom 2017 - MIT License - created by Hernan Ariel De Luca\n    </footer>\n</div>\n\n<ng-template #login>\n    <router-outlet></router-outlet>\n</ng-template>"
 
 /***/ }),
 
@@ -83,11 +83,14 @@ var AppComponent = (function () {
         this.title = 'app';
         this.isAuth = false;
         var cookie = this.getCookie('l_t');
-        console.log(cookie);
         if (cookie) {
             this.isAuth = true;
         }
         this.event.logged$.subscribe(function (isLogged) { return _this.isAuth = isLogged; });
+        this.event.user$.subscribe(function (user) {
+            _this.user = user;
+            localStorage.setItem('user', JSON.stringify(user));
+        });
     }
     AppComponent.prototype.getCookie = function (name) {
         var ca = document.cookie.split(';');
@@ -346,9 +349,9 @@ var LoginComponent = (function () {
             if (data.error) {
             }
             else {
-                _this.event.user(data.user);
                 _this.event.logged(true);
                 localStorage.setItem('l_t', data.token);
+                _this.event.user(data.user);
                 _this.router.navigate(['/backend']);
                 //location.href = 'http://lortom.dev/backend';
             }
@@ -410,6 +413,9 @@ var LogoutComponent = (function () {
         this.router = router;
         this.eService = eService;
         this.menuService.logout().subscribe(function (data) {
+            if (localStorage.getItem('user')) {
+                localStorage.removeItem('user');
+            }
             _this.eService.logged(false);
             _this.eService.clicked({
                 object: null,
@@ -826,7 +832,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/backend-module/user-module/user-side/user-side.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"user-panel\">\n    <div class=\"pull-left image\">\n        Immagine\n    </div>\n    <div class=\"pull-left info\" *ngIf=\"user != null\">\n        {{user.name}}\n    </div>\n</div>"
+module.exports = "<div class=\"user-panel\">\n    <div class=\"pull-left image\">\n       <div class=\"circle\">\n           <i class=\"fa fa-user\"></i>\n       </div>\n    </div>\n    <div class=\"pull-left info\">\n        <p>{{(user)?.name}}</p>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -836,7 +842,6 @@ module.exports = "<div class=\"user-panel\">\n    <div class=\"pull-left image\"
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserSideComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -847,29 +852,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-
 var UserSideComponent = (function () {
-    function UserSideComponent(eService) {
-        var _this = this;
-        this.eService = eService;
-        this.eService.user$.subscribe(function (data) {
-            _this.user = data;
-            console.log(_this.user);
-        });
+    function UserSideComponent() {
     }
-    UserSideComponent.prototype.ngOnInit = function () { };
+    UserSideComponent.prototype.ngOnInit = function () {
+        if (!this.user) {
+            this.user = JSON.parse(localStorage.getItem('user'));
+        }
+    };
     return UserSideComponent;
 }());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    __metadata("design:type", Object)
+], UserSideComponent.prototype, "user", void 0);
 UserSideComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'app-user-side',
         template: __webpack_require__("../../../../../src/app/backend-module/user-module/user-side/user-side.component.html"),
         styles: [__webpack_require__("../../../../../src/app/backend-module/user-module/user-side/user-side.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_event_service__["a" /* EventService */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [])
 ], UserSideComponent);
 
-var _a;
 //# sourceMappingURL=user-side.component.js.map
 
 /***/ }),

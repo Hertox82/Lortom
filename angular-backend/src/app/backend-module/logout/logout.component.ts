@@ -18,6 +18,10 @@ export class LogoutComponent implements OnInit
     {
         this.menuService.logout().subscribe(
             (data : Observable<any>) => {
+                if(localStorage.getItem('user'))
+                {
+                    localStorage.removeItem('user');
+                }
                 this.eService.logged(false);
                 this.eService.clicked({
                     object: null,

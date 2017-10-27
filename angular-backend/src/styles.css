@@ -12,6 +12,10 @@
 .navbar-custom-menu .navbar-item li {float:unset !important; padding-left: 40px;}
 
 
+/* User Panel*/
+.user-panel .circle { width: 60px; height: 55px; text-align: center; font-size: 2.2rem; border-radius: 50%; border: 1px solid; margin-top: 10px; margin-left: 27px;}
+.user-panel p {    font-size: 12px; padding-top: 10px;}
+
 /* Aside Bar*/
 .main-sidebar { position: absolute; width:200px; min-height: 100%; top:0; left:0; padding-top: 40px; z-index:810; background-color: #5e5d5d; color:white;}
 .user-panel {padding: 5px 20px;  margin: 3px; display:table;}
