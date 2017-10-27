@@ -96,7 +96,7 @@ SettingsModule = __decorate([
 var routes = [
     { path: '', component: __WEBPACK_IMPORTED_MODULE_1__component_settings_component__["a" /* SettingsComponent */] }
 ];
-var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["b" /* RouterModule */].forChild(routes);
+var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["c" /* RouterModule */].forChild(routes);
 //# sourceMappingURL=settings.routing.js.map
 
 /***/ })

@@ -1,6 +1,7 @@
 import {Component, OnInit,Input} from "@angular/core";
 import {NavbarItem} from "../../../interfaces/navbar.interface";
 import {EventService} from "../../../services/event.service";
+import {NavigationEnd, Router} from "@angular/router";
 
 
 @Component({
@@ -13,9 +14,30 @@ export class NavbarItemComponent implements OnInit{
     @Input() navbarItem : NavbarItem;
     isShow:boolean;
     isClicked:boolean;
-    constructor(private eService : EventService){
+    constructor(private eService : EventService,private router : Router ){
         this.isShow = false;
         this.isClicked = false;
+
+        this.router.events.subscribe(
+            (event : any) => {
+                if(event instanceof NavigationEnd)
+                {
+                    if(this.navbarItem.href.length > 0)
+                    {
+                        if(this.navbarItem.href == event.url)
+                        {
+                            this.isClicked = true;
+                            sessionStorage.removeItem('navBarClicked');
+                            this.eService.clicked({
+                                object : this,
+                                close: false,
+                                active : false,
+                            });
+                        }
+                    }
+                }
+            }
+        );
        this.eService.clicked$.subscribe(
            (item : {object:NavbarItemComponent, close: boolean, active: boolean}) => {
                if(item.object != this)
@@ -32,7 +54,8 @@ export class NavbarItemComponent implements OnInit{
        );
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+    }
 
     show(event) {
 

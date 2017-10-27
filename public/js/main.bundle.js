@@ -198,7 +198,7 @@ var routes = [
     { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' },
     { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' }
 ];
-var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["b" /* RouterModule */].forRoot(routes);
+var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["c" /* RouterModule */].forRoot(routes);
 //# sourceMappingURL=app.routing.js.map
 
 /***/ }),
@@ -258,7 +258,7 @@ BackendModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_10__angular_router__["b" /* RouterModule */],
+            __WEBPACK_IMPORTED_MODULE_10__angular_router__["c" /* RouterModule */],
             __WEBPACK_IMPORTED_MODULE_11__angular_forms__["a" /* FormsModule */],
             __WEBPACK_IMPORTED_MODULE_13__user_module_user_module__["a" /* UserModule */]
         ],
@@ -375,7 +375,7 @@ LoginComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/backend-module/login/login.component.html"),
         styles: [__webpack_require__("../../../../../src/app/backend-module/login/login.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _c || Object])
 ], LoginComponent);
 
 var _a, _b, _c;
@@ -435,7 +435,7 @@ LogoutComponent = __decorate([
         template: '',
         styles: [''],
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_event_service__["a" /* EventService */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_event_service__["a" /* EventService */]) === "function" && _c || Object])
 ], LogoutComponent);
 
 var _a, _b, _c;
@@ -527,7 +527,7 @@ MenuItemComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/backend-module/menu-item/menu-item.component.html"),
         styles: [__webpack_require__("../../../../../src/app/backend-module/menu-item/menu-item.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* Router */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _c || Object])
 ], MenuItemComponent);
 
 var _a, _b, _c;
@@ -624,7 +624,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/backend-module/navbar-item/navbar-item.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<li class=\"navbar-item\"  *ngIf=\"navbarItem.href.length == 0; else withHref\" [ngClass]=\"isClicked ? 'active' : ''\">\n    <a  (click)=\"show($event)\" ><i class=\"{{navbarItem.name}}\"></i></a>\n    <ul class=\"navbar-submenu\" *ngIf=\"isShow == true;\">\n        <li class=\"navbar-submenu-item\" *ngFor=\"let nsub of navbarItem.subMenu\">\n            <a routerLink=\"{{nsub.href}}\">{{nsub.name}}</a>\n        </li>\n    </ul>\n\n</li>\n<ng-template #withHref>\n    <li class=\"navbar-item\" [routerLinkActive]=\"['active']\">\n        <a routerLink=\"{{navbarItem.href}}\"><i class=\"{{navbarItem.name}}\"></i></a>\n    </li>\n</ng-template>"
+module.exports = "<li class=\"navbar-item\"  *ngIf=\"navbarItem.href.length == 0; else withHref\" [ngClass]=\"isClicked ? 'active' : ''\">\n    <a  (click)=\"show($event)\" ><i class=\"{{navbarItem.name}}\"></i></a>\n    <ul class=\"navbar-submenu\" *ngIf=\"isShow == true;\">\n        <li class=\"navbar-submenu-item\" *ngFor=\"let nsub of navbarItem.subMenu\">\n            <a routerLink=\"{{nsub.href}}\">{{nsub.name}}</a>\n        </li>\n    </ul>\n\n</li>\n<ng-template #withHref>\n    <li class=\"navbar-item\" [ngClass] = \"isClicked ? 'active' : ''\">\n        <a routerLink=\"{{navbarItem.href}}\"><i class=\"{{navbarItem.name}}\"></i></a>\n    </li>\n</ng-template>"
 
 /***/ }),
 
@@ -637,6 +637,7 @@ module.exports = "<li class=\"navbar-item\"  *ngIf=\"navbarItem.href.length == 0
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_navbar_interface__ = __webpack_require__("../../../../../src/interfaces/navbar.interface.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_navbar_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_navbar_interface__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -649,12 +650,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var NavbarItemComponent = (function () {
-    function NavbarItemComponent(eService) {
+    function NavbarItemComponent(eService, router) {
         var _this = this;
         this.eService = eService;
+        this.router = router;
         this.isShow = false;
         this.isClicked = false;
+        this.router.events.subscribe(function (event) {
+            if (event instanceof __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* NavigationEnd */]) {
+                if (_this.navbarItem.href.length > 0) {
+                    if (_this.navbarItem.href == event.url) {
+                        _this.isClicked = true;
+                        sessionStorage.removeItem('navBarClicked');
+                        _this.eService.clicked({
+                            object: _this,
+                            close: false,
+                            active: false,
+                        });
+                    }
+                }
+            }
+        });
         this.eService.clicked$.subscribe(function (item) {
             if (item.object != _this) {
                 _this.isShow = item.close;
@@ -665,7 +683,8 @@ var NavbarItemComponent = (function () {
             }
         });
     }
-    NavbarItemComponent.prototype.ngOnInit = function () { };
+    NavbarItemComponent.prototype.ngOnInit = function () {
+    };
     NavbarItemComponent.prototype.show = function (event) {
         sessionStorage.removeItem('navBarClicked');
         sessionStorage.setItem('navBarClicked', event.target.className);
@@ -689,10 +708,10 @@ NavbarItemComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/backend-module/navbar-item/navbar-item.component.html"),
         styles: [__webpack_require__("../../../../../src/app/backend-module/navbar-item/navbar-item.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _c || Object])
 ], NavbarItemComponent);
 
-var _a, _b;
+var _a, _b, _c;
 //# sourceMappingURL=navbar-item.component.js.map
 
 /***/ }),
@@ -1001,7 +1020,7 @@ UserModule = __decorate([
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* RouterModule */]
+            __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* RouterModule */]
         ],
         declarations: [
             __WEBPACK_IMPORTED_MODULE_4__user_side_user_side_component__["a" /* UserSideComponent */],
