@@ -184,6 +184,8 @@ AppModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__backend_module_login_login_component__ = __webpack_require__("../../../../../src/app/backend-module/login/login.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__backend_module_logout_logout_component__ = __webpack_require__("../../../../../src/app/backend-module/logout/logout.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__backend_module_user_module_user_model_usermodel_component__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user-model/usermodel.component.ts");
+
 
 
 
@@ -191,6 +193,7 @@ var routes = [
     { path: 'backend', redirectTo: 'backend/dashboard', pathMatch: 'full' },
     { path: 'backend/login', component: __WEBPACK_IMPORTED_MODULE_1__backend_module_login_login_component__["a" /* LoginComponent */] },
     { path: 'backend/logout', component: __WEBPACK_IMPORTED_MODULE_2__backend_module_logout_logout_component__["a" /* LogoutComponent */] },
+    { path: 'backend/user/modifica', component: __WEBPACK_IMPORTED_MODULE_3__backend_module_user_module_user_model_usermodel_component__["a" /* UserModelComponent */] },
     { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' },
     { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' },
     { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' }
@@ -220,6 +223,7 @@ var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["b" /* RouterModule 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__logout_logout_component__ = __webpack_require__("../../../../../src/app/backend-module/logout/logout.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__user_module_user_module__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__user_module_user_side_user_side_component__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user-side/user-side.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__user_module_user_model_usermodel_component__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user-model/usermodel.component.ts");
 /**
  * Created by hernan on 26/10/2017.
  */
@@ -229,6 +233,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -275,7 +280,8 @@ BackendModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_4__menu_items_menu_items_component__["a" /* MenuItemsComponent */],
             __WEBPACK_IMPORTED_MODULE_7__login_login_component__["a" /* LoginComponent */],
             __WEBPACK_IMPORTED_MODULE_12__logout_logout_component__["a" /* LogoutComponent */],
-            __WEBPACK_IMPORTED_MODULE_14__user_module_user_side_user_side_component__["a" /* UserSideComponent */]
+            __WEBPACK_IMPORTED_MODULE_14__user_module_user_side_user_side_component__["a" /* UserSideComponent */],
+            __WEBPACK_IMPORTED_MODULE_15__user_module_user_model_usermodel_component__["a" /* UserModelComponent */]
         ]
     })
 ], BackendModule);
@@ -622,7 +628,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/backend-module/navbar-item/navbar-item.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<li class=\"navbar-item\" [ngClass]=\"isShow ? 'active' : ''\">\n    <a routerLink=\"{{navbarItem.href}}\" (click)=\"show()\" ><i class=\"{{navbarItem.name}}\"></i></a>\n    <ul class=\"navbar-submenu\" *ngIf=\"isShow == true;\">\n        <li class=\"navbar-submenu-item\" *ngFor=\"let nsub of navbarItem.subMenu\">\n            <a routerLink=\"{{nsub.href}}\">{{nsub.name}}</a>\n        </li>\n    </ul>\n</li>"
+module.exports = "<li class=\"navbar-item\" [ngClass]=\"isShow ? 'active' : ''\">\n    <a  *ngIf=\"navbarItem.href.length == 0; else withHref\"  (click)=\"show()\" ><i class=\"{{navbarItem.name}}\"></i></a>\n    <ul class=\"navbar-submenu\" *ngIf=\"isShow == true;\">\n        <li class=\"navbar-submenu-item\" *ngFor=\"let nsub of navbarItem.subMenu\">\n            <a routerLink=\"{{nsub.href}}\">{{nsub.name}}</a>\n        </li>\n    </ul>\n    <ng-template #withHref>\n        <a routerLink=\"{{navbarItem.href}}\"><i class=\"{{navbarItem.name}}\"></i></a>\n    </ng-template>\n</li>"
 
 /***/ }),
 
@@ -811,6 +817,51 @@ var _a;
 
 /***/ }),
 
+/***/ "../../../../../src/app/backend-module/user-module/user-model/usermodel.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\">\n        <h1>User Edit</h1>\n        <ol class=\"breadcrumb\">\n            <li><a>Backend</a></li>\n            <li class=\"active\"><a>User - Modifica</a></li>\n        </ol>\n    </div>\n    <div class=\"content\">\n\n        <form class=\"form\">\n            <div class=\"portlet\">\n                <div class=\"portlet-title\">\n                    <div class=\"caption\">\n                        <i class=\"fa fa-database\"></i>\n                        <span>Definizioni Generali</span>\n                    </div>\n                </div>\n                <div class=\"portlet-body\">\n                    <div class=\"portlet-form-body\">\n                        <div class=\"container\">\n                            <div class=\"row\">\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\">\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"email\" class=\"col-md-2 control-label\">Username</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"email\" class=\"form-control\" name=\"email\" placeholder=\"Username\" id=\"email\">\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"password\" class=\"col-md-2 control-label\">Password</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"password\" class=\"form-control\" name=\"password\" placeholder=\"password\" id=\"password\">\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"confirmPassword\" class=\"col-md-2 control-label\">Confirm Password</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"password\" class=\"form-control\" name=\"confirmPassword\" placeholder=\"Confirm Password\" id=\"confirmPassword\">\n                                            </div>\n                                        </div>\n                                    </div>\n\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-12\">\n                    <button class=\"btn orange\">Save</button>\n                    <button class=\"btn red\">Cancel</button>\n                </div>\n            </div>\n        </form>\n    </div>\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/backend-module/user-module/user-model/usermodel.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserModelComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+/**
+ * Created by hernan on 27/10/2017.
+ */
+var UserModelComponent = (function () {
+    function UserModelComponent() {
+    }
+    UserModelComponent.prototype.ngOnInit = function () { };
+    return UserModelComponent;
+}());
+UserModelComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-user-model',
+        template: __webpack_require__("../../../../../src/app/backend-module/user-module/user-model/usermodel.component.html"),
+        styles: ['']
+    }),
+    __metadata("design:paramtypes", [])
+], UserModelComponent);
+
+//# sourceMappingURL=usermodel.component.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/backend-module/user-module/user-side/user-side.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -890,12 +941,14 @@ UserSideComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__user_side_user_side_component__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user-side/user-side.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__user_model_usermodel_component__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user-model/usermodel.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -915,13 +968,15 @@ UserModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* RouterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_4__user_side_user_side_component__["a" /* UserSideComponent */]
+            __WEBPACK_IMPORTED_MODULE_4__user_side_user_side_component__["a" /* UserSideComponent */],
+            __WEBPACK_IMPORTED_MODULE_6__user_model_usermodel_component__["a" /* UserModelComponent */]
         ],
         providers: [
             __WEBPACK_IMPORTED_MODULE_5__services_event_service__["a" /* EventService */]
         ],
         exports: [
-            __WEBPACK_IMPORTED_MODULE_4__user_side_user_side_component__["a" /* UserSideComponent */]
+            __WEBPACK_IMPORTED_MODULE_4__user_side_user_side_component__["a" /* UserSideComponent */],
+            __WEBPACK_IMPORTED_MODULE_6__user_model_usermodel_component__["a" /* UserModelComponent */]
         ]
     })
 ], UserModule);

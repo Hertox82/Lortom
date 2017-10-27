@@ -4,6 +4,7 @@ import {FormsModule} from "@angular/forms";
 import {RouterModule} from "@angular/router";
 import {UserSideComponent} from "./user-side/user-side.component";
 import {EventService} from "../../../services/event.service";
+import {UserModelComponent} from "./user-model/usermodel.component";
 
 
 @NgModule({
@@ -13,14 +14,18 @@ import {EventService} from "../../../services/event.service";
         RouterModule
     ],
     declarations : [
-        UserSideComponent
+        UserSideComponent,
+        UserModelComponent
     ],
     providers : [
         EventService
     ],
     exports: [
-        UserSideComponent
+        UserSideComponent,
+        UserModelComponent
     ]
 })
 
 export class UserModule {}
+
+

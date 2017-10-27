@@ -17,6 +17,7 @@ import {FormsModule} from "@angular/forms";
 import {LogoutComponent} from "./logout/logout.component";
 import {UserModule} from "./user-module/user.module";
 import {UserSideComponent} from "./user-module/user-side/user-side.component";
+import {UserModelComponent} from "./user-module/user-model/usermodel.component";
 
 @NgModule({
     imports : [
@@ -43,7 +44,8 @@ import {UserSideComponent} from "./user-module/user-side/user-side.component";
         MenuItemsComponent,
         LoginComponent,
         LogoutComponent,
-        UserSideComponent
+        UserSideComponent,
+        UserModelComponent
     ]
 })
 export class BackendModule {}

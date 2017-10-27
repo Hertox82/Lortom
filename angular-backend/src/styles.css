@@ -40,7 +40,7 @@ color:gainsboro; background-color: #2F3133;
 .sidebar-menu li.active .submenu-item a { border:unset; background-color: rgb(123, 123, 123);}
 
 /*Content*/
-.content-wrapper { margin-left: 200px; background-color: #eaeaea; min-height: 910px;}
+.content-wrapper { margin-left: 200px; background-color: #eaeaea; min-height: 1008px;}
 
 .content-box { padding-top:15px; padding-left:15px; padding-right: 15px; position: relative;}
 .content-header > h1 { margin:0px; font-size: 24px; }
@@ -51,6 +51,21 @@ color:gainsboro; background-color: #2F3133;
 
 .content {  padding-top: 15px; padding-bottom:15px; margin-right: auto; margin-left:auto;}
 
+.content .form {width: 100%;}
+
 /*Footer*/
 
 footer { margin-left: 200px; padding: 10px; border:1px solid #dde0e6; font-size: 12px;}
+
+/* Portlet */
+
+.portlet {margin-top:0; margin-bottom: 25px; padding:12px 20px 15px; background-color: white; border:1px solid #eaeaea;}
+.portlet-title {padding:0px; min-height: 48px; border-bottom: 1px solid #eaeaea; margin-bottom: 10px;}
+.portlet-title .caption { color:orange; font-size: 19px; float:left; display: inline-block; padding:4px;}
+.portlet-body {}
+.portlet-form-body {margin-top:35px; padding-bottom: 30px;}
+.flex-group {display: flex;}
+.control-label {text-align: right;font-size: 15px; padding-top: 4px;}
+
+.orange {background-color: orange; color:white; border-radius: unset;}
+.red { background-color: red; color:white; border-radius: unset;}
