@@ -337,9 +337,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-/**
- * Created by hernan on 23/10/2017.
- */
 var LoginComponent = (function () {
     function LoginComponent(service, event, router) {
         this.service = service;
@@ -352,7 +349,6 @@ var LoginComponent = (function () {
         this.service.login({ username: this.username, password: this.password })
             .subscribe(function (data) {
             if (data.error) {
-                console.log(data.error);
                 _this.error = data.error;
             }
             else {
@@ -628,7 +624,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/backend-module/navbar-item/navbar-item.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<li class=\"navbar-item\" [ngClass]=\"isShow ? 'active' : ''\">\n    <a  *ngIf=\"navbarItem.href.length == 0; else withHref\"  (click)=\"show()\" ><i class=\"{{navbarItem.name}}\"></i></a>\n    <ul class=\"navbar-submenu\" *ngIf=\"isShow == true;\">\n        <li class=\"navbar-submenu-item\" *ngFor=\"let nsub of navbarItem.subMenu\">\n            <a routerLink=\"{{nsub.href}}\">{{nsub.name}}</a>\n        </li>\n    </ul>\n    <ng-template #withHref>\n        <a routerLink=\"{{navbarItem.href}}\"><i class=\"{{navbarItem.name}}\"></i></a>\n    </ng-template>\n</li>"
+module.exports = "<li class=\"navbar-item\"  *ngIf=\"navbarItem.href.length == 0; else withHref\" [ngClass]=\"isClicked ? 'active' : ''\">\n    <a  (click)=\"show($event)\" ><i class=\"{{navbarItem.name}}\"></i></a>\n    <ul class=\"navbar-submenu\" *ngIf=\"isShow == true;\">\n        <li class=\"navbar-submenu-item\" *ngFor=\"let nsub of navbarItem.subMenu\">\n            <a routerLink=\"{{nsub.href}}\">{{nsub.name}}</a>\n        </li>\n    </ul>\n\n</li>\n<ng-template #withHref>\n    <li class=\"navbar-item\" [routerLinkActive]=\"['active']\">\n        <a routerLink=\"{{navbarItem.href}}\"><i class=\"{{navbarItem.name}}\"></i></a>\n    </li>\n</ng-template>"
 
 /***/ }),
 
@@ -653,26 +649,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-/**
- * Created by hernan on 26/10/2017.
- */
 var NavbarItemComponent = (function () {
     function NavbarItemComponent(eService) {
         var _this = this;
         this.eService = eService;
         this.isShow = false;
+        this.isClicked = false;
         this.eService.clicked$.subscribe(function (item) {
             if (item.object != _this) {
                 _this.isShow = item.close;
+                _this.isClicked = item.active;
+            }
+            if (_this.navbarItem.name == sessionStorage.getItem('navBarClicked')) {
+                _this.isClicked = true;
             }
         });
     }
     NavbarItemComponent.prototype.ngOnInit = function () { };
-    NavbarItemComponent.prototype.show = function () {
+    NavbarItemComponent.prototype.show = function (event) {
+        sessionStorage.removeItem('navBarClicked');
+        sessionStorage.setItem('navBarClicked', event.target.className);
         this.isShow = true;
+        this.isClicked = true;
         this.eService.clicked({
             object: this,
-            close: false
+            close: false,
+            active: false,
         });
     };
     return NavbarItemComponent;
@@ -817,10 +819,20 @@ var _a;
 
 /***/ }),
 
+/***/ "../../../../../src/app/backend-module/user-module/user-model/user.interface.ts":
+/***/ (function(module, exports) {
+
+/**
+ * Created by hernan on 27/10/2017.
+ */
+//# sourceMappingURL=user.interface.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/backend-module/user-module/user-model/usermodel.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\">\n        <h1>User Edit</h1>\n        <ol class=\"breadcrumb\">\n            <li><a>Backend</a></li>\n            <li class=\"active\"><a>User - Modifica</a></li>\n        </ol>\n    </div>\n    <div class=\"content\">\n\n        <form class=\"form\">\n            <div class=\"portlet\">\n                <div class=\"portlet-title\">\n                    <div class=\"caption\">\n                        <i class=\"fa fa-database\"></i>\n                        <span>Definizioni Generali</span>\n                    </div>\n                </div>\n                <div class=\"portlet-body\">\n                    <div class=\"portlet-form-body\">\n                        <div class=\"container\">\n                            <div class=\"row\">\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\">\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"email\" class=\"col-md-2 control-label\">Username</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"email\" class=\"form-control\" name=\"email\" placeholder=\"Username\" id=\"email\">\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"password\" class=\"col-md-2 control-label\">Password</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"password\" class=\"form-control\" name=\"password\" placeholder=\"password\" id=\"password\">\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"confirmPassword\" class=\"col-md-2 control-label\">Confirm Password</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"password\" class=\"form-control\" name=\"confirmPassword\" placeholder=\"Confirm Password\" id=\"confirmPassword\">\n                                            </div>\n                                        </div>\n                                    </div>\n\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-12\">\n                    <button class=\"btn orange\">Save</button>\n                    <button class=\"btn red\">Cancel</button>\n                </div>\n            </div>\n        </form>\n    </div>\n</div>"
+module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\">\n        <h1>User Edit</h1>\n        <ol class=\"breadcrumb\">\n            <li><a>Backend</a></li>\n            <li class=\"active\"><a>User - Modifica</a></li>\n        </ol>\n    </div>\n    <div class=\"content\">\n\n        <form class=\"form\">\n            <div class=\"portlet\">\n                <div class=\"portlet-title\">\n                    <div class=\"caption\">\n                        <i class=\"fa fa-database\"></i>\n                        <span>Definizioni Generali</span>\n                    </div>\n                    <div class=\"actions\">\n                        <button class=\"btn darkorange\" (click)=\"editMode()\">\n                            <i class=\"fa fa-edit\"></i>\n                            Edit\n                        </button>\n                    </div>\n                </div>\n                <div class=\"portlet-body\">\n                    <div class=\"portlet-form-body\">\n                        <div class=\"container\">\n                            <div class=\"row\">\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"text\" class=\"form-control\" name=\"nome\" [ngModel] = \"user.name\" placeholder=\"Nome\" id=\"nome\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                                <ng-template #editName>\n                                                    <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"user.name\" >\n                                                </ng-template>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"email\" class=\"col-md-2 control-label\">Username</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"email\" class=\"form-control\" name=\"email\" [ngModel] = \"user.email\" placeholder=\"Username\" id=\"email\" *ngIf=\"isEdit === false; else editEmail\" readonly>\n                                                <ng-template #editEmail>\n                                                    <input type=\"email\" class=\"form-control\" name=\"email\" placeholder=\"Username\" id=\"email\" [(ngModel)] = \"user.email\">\n                                                </ng-template>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"password\" class=\"col-md-2 control-label\">Password</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"password\" class=\"form-control\" name=\"password\" [ngModel] = \"user.password\" placeholder=\"password\" id=\"password\" *ngIf=\"isEdit === false; else editPassword\" readonly>\n                                                <ng-template #editPassword>\n                                                    <input type=\"password\" class=\"form-control\" name=\"password\" placeholder=\"password\" id=\"password\" [(ngModel)] = \"user.password\">\n                                                </ng-template>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"col-12\">\n                                        <div class=\"form-group flex-group\">\n                                            <label for=\"confirmPassword\" class=\"col-md-2 control-label\">Confirm Password</label>\n                                            <div class=\"col-md-4\">\n                                                <input type=\"password\" class=\"form-control\" name=\"confirmPassword\" placeholder=\"Confirm Password\" id=\"confirmPassword\" *ngIf=\"isEdit === false; else editConfirmPassword\" readonly>\n                                                <ng-template #editConfirmPassword>\n                                                    <input type=\"password\" class=\"form-control\" name=\"confirmPassword\" placeholder=\"Confirm Password\" id=\"confirmPassword\">\n                                                </ng-template>\n                                            </div>\n                                        </div>\n                                    </div>\n\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-12\">\n                    <button class=\"btn orange\">Save</button>\n                    <button class=\"btn red\">Cancel</button>\n                </div>\n            </div>\n        </form>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -830,6 +842,9 @@ module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\"
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserModelComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user_interface__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user-model/user.interface.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__user_interface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -840,24 +855,45 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-/**
- * Created by hernan on 27/10/2017.
- */
+
+
 var UserModelComponent = (function () {
-    function UserModelComponent() {
+    function UserModelComponent(eService) {
+        this.eService = eService;
+        this.isEdit = false;
+        this.user = {
+            id: 1,
+            name: 'Hernan Ariel De Luca',
+            email: 'hadeluca@gmail.com',
+            password: '',
+        };
     }
-    UserModelComponent.prototype.ngOnInit = function () { };
+    UserModelComponent.prototype.ngOnInit = function () {
+        this.eService.clicked({
+            object: this,
+            close: false,
+            active: false,
+        });
+    };
+    UserModelComponent.prototype.editMode = function () {
+        this.isEdit = !this.isEdit;
+    };
     return UserModelComponent;
 }());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__user_interface__["User"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__user_interface__["User"]) === "function" && _a || Object)
+], UserModelComponent.prototype, "user", void 0);
 UserModelComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'app-user-model',
         template: __webpack_require__("../../../../../src/app/backend-module/user-module/user-model/usermodel.component.html"),
         styles: ['']
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object])
 ], UserModelComponent);
 
+var _a, _b;
 //# sourceMappingURL=usermodel.component.js.map
 
 /***/ }),

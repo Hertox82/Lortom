@@ -1,11 +1,14 @@
-<li class="navbar-item" [ngClass]="isShow ? 'active' : ''">
-    <a  *ngIf="navbarItem.href.length == 0; else withHref"  (click)="show()" ><i class="{{navbarItem.name}}"></i></a>
+<li class="navbar-item"  *ngIf="navbarItem.href.length == 0; else withHref" [ngClass]="isClicked ? 'active' : ''">
+    <a  (click)="show($event)" ><i class="{{navbarItem.name}}"></i></a>
     <ul class="navbar-submenu" *ngIf="isShow == true;">
         <li class="navbar-submenu-item" *ngFor="let nsub of navbarItem.subMenu">
             <a routerLink="{{nsub.href}}">{{nsub.name}}</a>
         </li>
     </ul>
-    <ng-template #withHref>
-        <a routerLink="{{navbarItem.href}}"><i class="{{navbarItem.name}}"></i></a>
-    </ng-template>
+
 </li>
+<ng-template #withHref>
+    <li class="navbar-item" [routerLinkActive]="['active']">
+        <a routerLink="{{navbarItem.href}}"><i class="{{navbarItem.name}}"></i></a>
+    </li>
+</ng-template>

@@ -1,7 +1,6 @@
-import {Component, OnInit} from "@angular/core";
-/**
- * Created by hernan on 27/10/2017.
- */
+import {Component, OnInit,Input} from "@angular/core";
+import {User} from "./user.interface";
+import {EventService} from "../../../../services/event.service";
 
 @Component({
     selector : 'app-user-model',
@@ -11,7 +10,29 @@ import {Component, OnInit} from "@angular/core";
 
 export class UserModelComponent implements OnInit{
 
-    constructor(){}
+    isEdit : boolean;
+    @Input() user : User;
 
-    ngOnInit(){}
+    constructor(private eService : EventService){
+        this.isEdit = false;
+        this.user = {
+            id : 1,
+            name : 'Hernan Ariel De Luca',
+            email : 'hadeluca@gmail.com',
+            password : '',
+        };
+    }
+
+    ngOnInit(){
+        this.eService.clicked({
+            object : this,
+            close: false,
+            active : false,
+        });
+    }
+
+    editMode()
+    {
+        this.isEdit = !this.isEdit;
+    }
 }
