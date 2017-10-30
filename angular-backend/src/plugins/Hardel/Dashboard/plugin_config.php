@@ -14,5 +14,6 @@
                 },
                 'migration-down'    => function(){
                     //here migration to delete tables
-                }
+                },
+                'permission'        => 'Hardel.Dashboard'
             ];

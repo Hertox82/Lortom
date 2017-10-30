@@ -13,5 +13,6 @@
                 },
                 'migration-down'    => function(){
                     //here migration to delete tables
-                }
+                },
+                'permission'        => '#Vendor#.#Name#'
             ];

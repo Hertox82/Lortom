@@ -13,7 +13,7 @@ Lortom is an Content Management System built in Laravel 5.5 + Angular 2
 - [x] Manage position on Menu
 - [x] Create System Auth on Backend
 - [x] Create logout from Backend
-- [ ] Implement UserModule for deleting, updating and creating new User
+- [x] Implement UserModule for deleting, updating and creating new User
 - [ ] Implement the Role and Permissions for Users
 - [ ] Create Artisan Command for Plugin's Migration
 - [ ] Create Component to Manage Breadcrumbs and Title

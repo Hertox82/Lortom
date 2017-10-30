@@ -9,12 +9,14 @@
             'serviceProvider'   => Plugins\Hardel\Settings\Providers\HardelSettingsServiceProvider::class,
             'subMenu'           => [
                 [
-                    'subPath'       => '/settings/primoSubmenu',
-                    'Name'          => 'Primo Submenu'
+                    'subPath'       => '/settings/roles',
+                    'Name'          => 'Roles',
+                    'permission'    => 'Hardel.Settings.Roles'
                 ],
                 [
-                    'subPath'       => '/settings/secondoSubmenu',
-                    'Name'          => 'Secondo Submenu'
+                    'subPath'       => '/settings/permissions',
+                    'Name'          => 'Permissions',
+                    'permission'    => 'Hardel.Settings.Permissions'
                 ],
 
             ],
@@ -23,5 +25,6 @@
             },
             'migration-down'    => function(){
                 //here migration rollback
-            }
+            },
+            'permission'        => 'Hardel.Settings'
         ];

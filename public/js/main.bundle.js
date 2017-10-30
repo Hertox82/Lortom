@@ -65,7 +65,6 @@ module.exports = "<!--The content below is only a placeholder and can be replace
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menuservice__ = __webpack_require__("../../../../../src/app/menuservice.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -77,12 +76,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-
 var AppComponent = (function () {
-    function AppComponent(event, mService) {
+    function AppComponent(event) {
         var _this = this;
         this.event = event;
-        this.mService = mService;
         this.title = 'app';
         this.isAuth = false;
         var cookie = this.getCookie('l_t');
@@ -92,7 +89,6 @@ var AppComponent = (function () {
         this.event.logged$.subscribe(function (isLogged) { return _this.isAuth = isLogged; });
         this.event.user$.subscribe(function (user) {
             _this.user = user;
-            //this.mService.setUser(this.user);
         });
     }
     AppComponent.prototype.getCookie = function (name) {
@@ -116,10 +112,10 @@ AppComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/app.component.html"),
         styles: [__webpack_require__("../../../../../src/app/app.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_event_service__["a" /* EventService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__menuservice__["a" /* MenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__menuservice__["a" /* MenuService */]) === "function" && _b || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_event_service__["a" /* EventService */]) === "function" && _a || Object])
 ], AppComponent);
 
-var _a, _b;
+var _a;
 //# sourceMappingURL=app.component.js.map
 
 /***/ }),
@@ -993,6 +989,7 @@ module.exports = "<div class=\"user-panel\">\n    <div class=\"pull-left image\"
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserSideComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menuservice__ = __webpack_require__("../../../../../src/app/menuservice.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1004,14 +1001,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var UserSideComponent = (function () {
-    function UserSideComponent(mService) {
+    function UserSideComponent(mService, eService) {
         this.mService = mService;
+        this.eService = eService;
     }
     UserSideComponent.prototype.ngOnInit = function () {
+        var _this = this;
         if (!this.user) {
             this.user = this.mService.getUser();
         }
+        this.eService.user$.subscribe(function (data) {
+            _this.user = _this.mService.getUser();
+        });
     };
     return UserSideComponent;
 }());
@@ -1025,10 +1028,10 @@ UserSideComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/backend-module/user-module/user-side/user-side.component.html"),
         styles: [__webpack_require__("../../../../../src/app/backend-module/user-module/user-side/user-side.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object])
 ], UserSideComponent);
 
-var _a;
+var _a, _b;
 //# sourceMappingURL=user-side.component.js.map
 
 /***/ }),

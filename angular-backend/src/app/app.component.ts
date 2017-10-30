@@ -12,7 +12,7 @@ export class AppComponent {
   isAuth = false;
   user : any;
 
-  constructor(private event : EventService, private mService : MenuService) {
+  constructor(private event : EventService) {
 
     let cookie = this.getCookie('l_t');
     if(cookie)
@@ -26,7 +26,6 @@ export class AppComponent {
     this.event.user$.subscribe(
         (user : any ) => {
           this.user = user;
-          //this.mService.setUser(this.user);
         }
     );
   }

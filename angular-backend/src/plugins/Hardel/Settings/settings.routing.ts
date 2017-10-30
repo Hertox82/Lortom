@@ -5,10 +5,11 @@
 import {RouterModule, Routes} from "@angular/router";
 import {SettingsComponent} from "./component/settings.component";
 import {ModuleWithProviders} from "@angular/core";
-
+import {RolesComponent} from "./component/Roles/roles.component";
 
 const routes : Routes = [
-    {path: '' , component:SettingsComponent}
+    {path: '' , component:SettingsComponent},
+    {path: '/roles', component:RolesComponent}
 ];
 
 export const routing : ModuleWithProviders = RouterModule.forChild(routes);
