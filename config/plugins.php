@@ -19,35 +19,9 @@ return [
                 },
                 'migration-down'    => function(){
                     //here migration to delete tables
-                }
+                },
+                'permission'        => 'Hardel.Dashboard'
             ], 
-
-        [
-            'vendor'            => 'Hardel',
-            'PluginName'        => 'Settings',
-            'position'          => 2,
-            'moduleName'        => 'settings.module',
-            'routingPath'       => '/settings',
-            'icon'              => 'fa fa-cogs',
-            'serviceProvider'   => Plugins\Hardel\Settings\Providers\HardelSettingsServiceProvider::class,
-            'subMenu'           => [
-                [
-                    'subPath'       => '/settings/primoSubmenu',
-                    'Name'          => 'Primo Submenu'
-                ],
-                [
-                    'subPath'       => '/settings/secondoSubmenu',
-                    'Name'          => 'Secondo Submenu'
-                ],
-
-            ],
-            'migration-up'      => function(){
-                //here migration for plugin
-            },
-            'migration-down'    => function(){
-                //here migration rollback
-            }
-        ], 
 
 
         [
@@ -64,7 +38,38 @@ return [
             },
             'migration-down'    => function(){
                 //here migration to delete tables
-            }
+            },
+            'permission'        => 'Hardel.Plugin'
+        ], 
+
+        [
+            'vendor'            => 'Hardel',
+            'PluginName'        => 'Settings',
+            'position'          => 2,
+            'moduleName'        => 'settings.module',
+            'routingPath'       => '/settings',
+            'icon'              => 'fa fa-cogs',
+            'serviceProvider'   => Plugins\Hardel\Settings\Providers\HardelSettingsServiceProvider::class,
+            'subMenu'           => [
+                [
+                    'subPath'       => '/settings/roles',
+                    'Name'          => 'Roles',
+                    'permission'    => 'Hardel.Settings.Roles'
+                ],
+                [
+                    'subPath'       => '/settings/permissions',
+                    'Name'          => 'Permissions',
+                    'permission'    => 'Hardel.Settings.Permissions'
+                ],
+
+            ],
+            'migration-up'      => function(){
+                //here migration for plugin
+            },
+            'migration-down'    => function(){
+                //here migration rollback
+            },
+            'permission'        => 'Hardel.Settings'
         ], 
 
 

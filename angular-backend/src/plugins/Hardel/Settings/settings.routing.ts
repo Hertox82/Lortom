@@ -8,8 +8,11 @@ import {ModuleWithProviders} from "@angular/core";
 import {RolesComponent} from "./component/Roles/roles.component";
 
 const routes : Routes = [
-    {path: '' , component:SettingsComponent},
-    {path: '/roles', component:RolesComponent}
+    {path: '' , component:SettingsComponent, children:[
+        {path: 'roles', component:RolesComponent}
+    ]}
 ];
 
 export const routing : ModuleWithProviders = RouterModule.forChild(routes);
+
+export const routedComponents = [SettingsComponent,RolesComponent];

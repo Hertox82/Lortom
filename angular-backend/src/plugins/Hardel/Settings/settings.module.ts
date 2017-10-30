@@ -5,11 +5,12 @@
 
 import {NgModule} from "@angular/core";
 import {SettingsComponent} from "./component/settings.component";
-import {routing} from "./settings.routing";
+import {RolesComponent} from "./component/Roles/roles.component";
+import {routing,routedComponents} from "./settings.routing";
 
 @NgModule({
     imports:[routing],
-    declarations: [SettingsComponent]
+    declarations: [routedComponents]
 })
 
 export class SettingsModule {}

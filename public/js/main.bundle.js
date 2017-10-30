@@ -181,21 +181,12 @@ AppModule = __decorate([
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return routing; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__backend_module_login_login_component__ = __webpack_require__("../../../../../src/app/backend-module/login/login.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__backend_module_logout_logout_component__ = __webpack_require__("../../../../../src/app/backend-module/logout/logout.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__backend_module_user_module_user_model_usermodel_component__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user-model/usermodel.component.ts");
-
-
-
 
 var routes = [
     { path: 'backend', redirectTo: 'backend/dashboard', pathMatch: 'full' },
-    { path: 'backend/login', component: __WEBPACK_IMPORTED_MODULE_1__backend_module_login_login_component__["a" /* LoginComponent */] },
-    { path: 'backend/logout', component: __WEBPACK_IMPORTED_MODULE_2__backend_module_logout_logout_component__["a" /* LogoutComponent */] },
-    { path: 'backend/profile/edit', component: __WEBPACK_IMPORTED_MODULE_3__backend_module_user_module_user_model_usermodel_component__["a" /* UserModelComponent */] },
     { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' },
-    { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' },
-    { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' }
+    { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' },
+    { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' }
 ];
 var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["c" /* RouterModule */].forRoot(routes);
 //# sourceMappingURL=app.routing.js.map
