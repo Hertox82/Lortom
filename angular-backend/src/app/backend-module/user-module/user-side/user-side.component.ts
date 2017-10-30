@@ -1,6 +1,7 @@
 
 
 import {Component, OnInit, Input} from "@angular/core";
+import {MenuService} from "../../../menuservice";
 
 @Component({
     selector : 'app-user-side',
@@ -11,12 +12,12 @@ export class UserSideComponent implements OnInit
 {
     @Input() user : any;
 
-    constructor() {
+    constructor( private mService : MenuService) {
     }
     ngOnInit () {
         if(!this.user)
         {
-            this.user = JSON.parse(localStorage.getItem('user'));
+            this.user = this.mService.getUser();
         }
     }
 }

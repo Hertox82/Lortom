@@ -33,9 +33,8 @@ class LortomUserProvider
 
     protected function isValidate()
     {
-        $query = LortomUser::where([['email',$this->username]])->first();
-
-        pr($query,1);
+        $query = $this->queryUser();
+        //pr($query);
         if(is_null($query))
             return false;
         else{
@@ -86,7 +85,7 @@ class LortomUserProvider
 
     public function refreshToken()
     {
-        $this->user = LortomUser::where([['email',$this->payload->sub]])->first();
+        //$this->user = LortomUser::where([['email',$this->payload->sub]])->first();
 
         return $this->setToken();
     }
@@ -104,6 +103,10 @@ class LortomUserProvider
 
         $this->payload = $payload;
 
+        $this->username = $this->payload->sub;
+
+        $this->user = $this->queryUser();
+
         $nowTime = strtotime(date('Y-m-d H:i:s'));
         $created = strtotime($payload->created);
         $expiration = $created + $payload->exp;
@@ -120,6 +123,13 @@ class LortomUserProvider
             //il token è expirato, bisogna farne uno nuovo
             return false;
         }
+    }
+
+    private function queryUser()
+    {
+        $query = LortomUser::where([['email',$this->username]])->first();
+
+        return $query;
     }
 
     private function getNameClass()

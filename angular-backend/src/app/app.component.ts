@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {EventService} from "../services/event.service";
+import {MenuService} from "./menuservice";
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ export class AppComponent {
   isAuth = false;
   user : any;
 
-  constructor(private event : EventService) {
+  constructor(private event : EventService, private mService : MenuService) {
 
     let cookie = this.getCookie('l_t');
     if(cookie)
@@ -25,7 +26,7 @@ export class AppComponent {
     this.event.user$.subscribe(
         (user : any ) => {
           this.user = user;
-          localStorage.setItem('user',JSON.stringify(user));
+          //this.mService.setUser(this.user);
         }
     );
   }

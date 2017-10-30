@@ -81,11 +81,11 @@ class SlideBarController extends Controller
 
     public function requestEditMyProfile(Request $request)
     {
-        $User = $this->auth->getUser();
+
+        $User = $request->get('User');
 
         $input = $request->all();
 
-        pr($User,1);
 
         if(isset($input['password']))
         {
@@ -98,7 +98,9 @@ class SlideBarController extends Controller
 
         $User->save();
 
-        return response()->json(['message' => 'Well done! All is up to date']);
+        $user = ['name' => $User->name, 'username' => $User->email];
+
+        return response()->json(['message' => 'Well done! All is up to date', 'user' => $user]);
     }
 
     static function sort($a,$b)

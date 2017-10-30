@@ -65,6 +65,7 @@ module.exports = "<!--The content below is only a placeholder and can be replace
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menuservice__ = __webpack_require__("../../../../../src/app/menuservice.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -76,10 +77,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var AppComponent = (function () {
-    function AppComponent(event) {
+    function AppComponent(event, mService) {
         var _this = this;
         this.event = event;
+        this.mService = mService;
         this.title = 'app';
         this.isAuth = false;
         var cookie = this.getCookie('l_t');
@@ -89,7 +92,7 @@ var AppComponent = (function () {
         this.event.logged$.subscribe(function (isLogged) { return _this.isAuth = isLogged; });
         this.event.user$.subscribe(function (user) {
             _this.user = user;
-            localStorage.setItem('user', JSON.stringify(user));
+            //this.mService.setUser(this.user);
         });
     }
     AppComponent.prototype.getCookie = function (name) {
@@ -113,10 +116,10 @@ AppComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/app.component.html"),
         styles: [__webpack_require__("../../../../../src/app/app.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_event_service__["a" /* EventService */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_event_service__["a" /* EventService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__menuservice__["a" /* MenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__menuservice__["a" /* MenuService */]) === "function" && _b || Object])
 ], AppComponent);
 
-var _a;
+var _a, _b;
 //# sourceMappingURL=app.component.js.map
 
 /***/ }),
@@ -354,6 +357,7 @@ var LoginComponent = (function () {
             else {
                 _this.event.logged(true);
                 localStorage.setItem('l_t', data.token);
+                _this.service.setUser(data.user);
                 _this.event.user(data.user);
                 _this.router.navigate(['/backend']);
             }
@@ -883,9 +887,7 @@ var UserModelComponent = (function () {
         this.eService = eService;
         this.mService = mService;
         this.isEdit = false;
-        this.user = {
-            name: 'Hernan Ariel De Luca',
-        };
+        this.user = this.mService.getUser();
         this.copyUser = Object.assign({}, this.user);
     }
     UserModelComponent.prototype.ngOnInit = function () {
@@ -928,8 +930,15 @@ var UserModelComponent = (function () {
         this.user = Object.assign({}, this.copyUser);
     };
     UserModelComponent.prototype.sendUserData = function () {
+        var _this = this;
         this.mService.editMyProfile(this.user).subscribe(function (response) {
-            console.log(response);
+            _this.user = { name: response.user.name };
+            _this.copyUser = Object.assign({}, _this.user);
+            _this.isEdit = false;
+            _this.mService.deleteUser();
+            _this.mService.setUser(response.user);
+            _this.eService.user(response.user);
+            alert(response.message);
         });
     };
     return UserModelComponent;
@@ -983,6 +992,7 @@ module.exports = "<div class=\"user-panel\">\n    <div class=\"pull-left image\"
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserSideComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menuservice__ = __webpack_require__("../../../../../src/app/menuservice.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -993,12 +1003,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var UserSideComponent = (function () {
-    function UserSideComponent() {
+    function UserSideComponent(mService) {
+        this.mService = mService;
     }
     UserSideComponent.prototype.ngOnInit = function () {
         if (!this.user) {
-            this.user = JSON.parse(localStorage.getItem('user'));
+            this.user = this.mService.getUser();
         }
     };
     return UserSideComponent;
@@ -1013,9 +1025,10 @@ UserSideComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/backend-module/user-module/user-side/user-side.component.html"),
         styles: [__webpack_require__("../../../../../src/app/backend-module/user-module/user-side/user-side.component.css")]
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */]) === "function" && _a || Object])
 ], UserSideComponent);
 
+var _a;
 //# sourceMappingURL=user-side.component.js.map
 
 /***/ }),
@@ -1129,8 +1142,21 @@ var MenuService = (function () {
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
         return this.http.put(this.urlManager.getPathByName('editMyProfile'), user, options)
             .map(function (response) {
-            return response;
+            return response.json();
         });
+    };
+    MenuService.prototype.setUser = function (user) {
+        this.user = user;
+        sessionStorage.setItem('user', JSON.stringify(user));
+    };
+    MenuService.prototype.getUser = function () {
+        if (this.user == 'undefined' || this.user == null) {
+            this.user = JSON.parse(sessionStorage.getItem('user'));
+        }
+        return this.user;
+    };
+    MenuService.prototype.deleteUser = function () {
+        sessionStorage.removeItem('user');
     };
     return MenuService;
 }());

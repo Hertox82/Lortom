@@ -82,6 +82,8 @@ class LortomAuthentication
             //autentica il token
             if($check = LtAuth::validateToken($token))
             {
+
+                $request->attributes->add(['User'=> LtAuth::getUser()]);
                 $response = $next($request);
                 $response->headers->set('X-FRAME-OPTIONS','DENY');
                 return $response->withCookie(Cookie::make('l_t',$token,10,$config['path'],$config['domain'],$config['secure'],false,false,'Lax'));
@@ -89,8 +91,8 @@ class LortomAuthentication
             else if($check === false)
             {
                 $token = LtAuth::refreshToken();
+                $request->attributes->add(['User'=> LtAuth::getUser()]);
                 $response = $next($request);
-
                 $response->headers->set('X-FRAME-OPTIONS','DENY');
                 return $response->withCookie(Cookie::make('l_t',$token,10,$config['path'],$config['domain'],$config['secure'],false,false,'Lax'));
             }

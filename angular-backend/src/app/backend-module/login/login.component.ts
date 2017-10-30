@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit
 
                             this.event.logged(true);
                             localStorage.setItem('l_t', data.token);
+                            this.service.setUser(data.user);
                             this.event.user(data.user);
                             this.router.navigate(['/backend']);
                         }

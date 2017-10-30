@@ -19,11 +19,7 @@ export class UserModelComponent implements OnInit{
 
     constructor(private eService : EventService, private mService : MenuService){
         this.isEdit = false;
-        this.user = {
-
-            name : 'Hernan Ariel De Luca',
-        };
-
+        this.user = this.mService.getUser();
         this.copyUser = Object.assign({}, this.user);
     }
 
@@ -82,8 +78,14 @@ export class UserModelComponent implements OnInit{
     private sendUserData()
     {
         this.mService.editMyProfile(this.user).subscribe(
-            (response: Response) => {
-                console.log(response);
+            (response: {message : string, user: {name:string, username:string}}) => {
+                this.user = {name : response.user.name};
+                this.copyUser = Object.assign({},this.user);
+                this.isEdit = false;
+                this.mService.deleteUser();
+                this.mService.setUser(response.user);
+                this.eService.user(response.user);
+                alert(response.message);
             }
         );
     }
