@@ -20,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/populate-slidebar',[
     'as'    => 'populateSlidebar',
     'uses'  => 'Backend\SlideBarController@populate'
-]);
+])->middleware('lortom.auth');
 
 Route::post('/login',[
     'as'    => 'apiLogin',

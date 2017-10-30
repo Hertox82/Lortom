@@ -7,6 +7,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\LortomUser;
 use App\Services\Classes\LortomAuth;
 use Illuminate\Http\Request;
 use Cookie;
@@ -24,6 +25,8 @@ class SlideBarController extends Controller
 
     public function populate(Request $request)
     {
+        $User = $request->get('User');
+
         $listaPlugin = config('plugins');
 
         //ReSort the list of plugins
@@ -32,12 +35,26 @@ class SlideBarController extends Controller
 
         foreach ($listaPlugin['plugins'] as $plug)
         {
-            $lista[] = [
-                'name'      => $plug['PluginName'],
-                'href'      => '/backend'.$plug['routingPath'],
-                'icon'      => $plug['icon'],
-                'subMenu'   => $this->setSubMenu(@$plug['subMenu'])
-            ];
+            if(isset($plug['permission']))
+            {
+                if($User->hasPermission($plug['permission']))
+                {
+                    $lista[] = [
+                        'name' => $plug['PluginName'],
+                        'href' => '/backend' . $plug['routingPath'],
+                        'icon' => $plug['icon'],
+                        'subMenu' => $this->setSubMenu(@$plug['subMenu'],$User)
+                    ];
+                }
+            }
+            else {
+                $lista[] = [
+                    'name' => $plug['PluginName'],
+                    'href' => '/backend' . $plug['routingPath'],
+                    'icon' => $plug['icon'],
+                    'subMenu' => $this->setSubMenu(@$plug['subMenu'],$User)
+                ];
+            }
         }
 
 
@@ -112,7 +129,7 @@ class SlideBarController extends Controller
         return ($a < $b) ? -1 : 1;
     }
 
-    private function setSubMenu($lista)
+    private function setSubMenu($lista, LortomUser &$user)
     {
         if(is_null($lista))
             return [];
@@ -121,10 +138,23 @@ class SlideBarController extends Controller
         $return = [];
         foreach ($lista as $sub)
         {
-            $return[] = [
-                  'name'    => $sub['Name'],
-                  'href'    => '/backend'.$sub['subPath']
-            ];
+            if(isset($stub['permission']))
+            {
+                if($user->hasPermission($stub['permission']))
+                {
+                    $return[] = [
+                        'name' => $sub['Name'],
+                        'href' => '/backend' . $sub['subPath']
+                    ];
+                }
+            }
+            else
+            {
+                $return[] = [
+                    'name' => $sub['Name'],
+                    'href' => '/backend' . $sub['subPath']
+                ];
+            }
         }
 
         return $return;
