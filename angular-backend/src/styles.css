@@ -72,3 +72,23 @@ footer { margin-left: 200px; padding: 10px; border:1px solid #dde0e6; font-size:
 .red { background-color: red; color:white; border-radius: unset; cursor: pointer}
 .darkorange {background-color: darkorange; color:white; border-radius: unset; cursor: pointer;}
 .form-control {border-radius: unset;}
+
+
+/* Tab Table*/
+
+.tabbable-custom {margin-bottom: 15px; padding: 0; overflow: hidden;}
+.tabbable-custom>.nav-tabs { border: none; margin: 0; font-size: 14px;}
+.tabbable-custom>.nav-tabs li { margin-right: 2px; float: left; margin-bottom: -1px;  padding: 10px;}
+.tabbable-custom>.nav-tabs>li.active { border-top: 3px solid #edc36b; margin-top: 0; position: relative; background-color: white; border-left: 1px solid #ddd; border-right: 1px solid #ddd;}
+
+.tabbable-custom>.nav-tabs>li.active>a { border-top: none !important; font-weight: 400; color: #555; background-color: #fff; border-bottom-color: transparent; cursor: default; }
+.tabbable-custom>.tab-content { background-color: #fff; border: 1px solid #ddd; padding: 10px; }
+
+.box {padding-left: 10px; padding-right: 10px;}
+.wrapper .dataTables_length label {display: inline-block;}
+.wrapper .dataTables_length label select { display: inline-block; width: 70px; margin: 0px 10px;}
+.wrapper .dataTables_filter label {display: inline-block;}
+.wrapper .dataTables_filter input {display: inline-block; width: 40%;}
+.box-body table { width: 100%; font-size: 14px; margin-top: 10px;}
+
+
