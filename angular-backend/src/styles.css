@@ -95,4 +95,11 @@ footer { margin-left: 200px; padding: 10px; border:1px solid #dde0e6; font-size:
 .page-item.active .page-link {background-color: orange; border-color:orange;}
 .page-link {color: orange;}
 
+/* Modal Custom*/
 .modal {z-index: 1080;}
+.modal-content {border-radius: unset;}
+.modal-header {border-bottom: unset; color:orange;}
+.modal-title {border-bottom: 1px solid #e9ecef; width: 100%; padding-bottom: 4px;}
+.modal-title > button {font-size: 19px; position: absolute; top: 16px; right: 16px; }
+.modal-footer {border-top: unset;}
+.m-footer {width: 100%; border-top:1px solid #e9ecef; min-height: 18px;}
