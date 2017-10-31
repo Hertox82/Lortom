@@ -181,9 +181,15 @@ AppModule = __decorate([
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return routing; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__backend_module_login_login_component__ = __webpack_require__("../../../../../src/app/backend-module/login/login.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__backend_module_logout_logout_component__ = __webpack_require__("../../../../../src/app/backend-module/logout/logout.component.ts");
+
+
 
 var routes = [
     { path: 'backend', redirectTo: 'backend/dashboard', pathMatch: 'full' },
+    { path: 'backend/login', component: __WEBPACK_IMPORTED_MODULE_1__backend_module_login_login_component__["a" /* LoginComponent */] },
+    { path: 'backend/logout', component: __WEBPACK_IMPORTED_MODULE_2__backend_module_logout_logout_component__["a" /* LogoutComponent */] },
     { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' },
     { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' },
     { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' }
