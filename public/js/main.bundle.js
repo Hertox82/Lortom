@@ -461,7 +461,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/backend-module/menu-item/menu-item.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<li [routerLinkActive]=\"['active']\">\n  <a routerLink=\"{{item.href}}\" (click)=\"onRouterClick()\"><i class=\"{{item.icon}}\"></i> {{item.name}}\n    <span class=\"pull-right-container\" *ngIf=\"item.subMenu?.length > 0\">\n      <i *ngIf=\"!isClicked && router.url != item.href; else iconBlock\" class=\"fa fa-angle-left pull-right\"></i>\n    </span>\n    <ng-template #iconBlock>\n      <i class=\"fa fa-angle-down pull-right\"></i>\n    </ng-template>\n  </a>\n\n  <ul [hidden] = \"!isClicked && router.url != item.href\">\n    <app-submenu-item *ngFor=\"let sub of item.subMenu\"[item]=\"sub\"></app-submenu-item>\n  </ul>\n</li>\n"
+module.exports = "<li [routerLinkActive]=\"['active']\">\n  <a routerLink=\"{{item.href}}\" (click)=\"onRouterClick()\"><i class=\"{{item.icon}}\"></i> {{item.name}}\n    <span class=\"pull-right-container\" *ngIf=\"item.subMenu?.length > 0\">\n      <i *ngIf=\"!isClicked && checkUrlRouter(); else iconBlock\" class=\"fa fa-angle-left pull-right\"></i>\n    </span>\n    <ng-template #iconBlock>\n      <i class=\"fa fa-angle-down pull-right\"></i>\n    </ng-template>\n  </a>\n\n  <ul [hidden] = \"!isClicked && checkUrlRouter()\">\n    <app-submenu-item *ngFor=\"let sub of item.subMenu\"[item]=\"sub\"></app-submenu-item>\n  </ul>\n</li>\n"
 
 /***/ }),
 
@@ -500,6 +500,16 @@ var MenuItemComponent = (function () {
                     _this.isClicked = item.close;
             }
         });
+        this.eService._subMenu$.subscribe(function (item) {
+            _this.item.subMenu.forEach(function (subItem) {
+                if (item === subItem) {
+                    _this.eService.clicked({
+                        object: _this,
+                        close: false,
+                    });
+                }
+            });
+        });
     }
     MenuItemComponent.prototype.ngOnInit = function () {
     };
@@ -511,6 +521,11 @@ var MenuItemComponent = (function () {
             object: this,
             close: !closeAll
         });
+    };
+    MenuItemComponent.prototype.checkUrlRouter = function () {
+        var substring = this.item.href;
+        var count = substring.length;
+        return (this.router.url.substring(0, count) !== substring);
     };
     return MenuItemComponent;
 }());
@@ -788,7 +803,7 @@ NavbarComponent = __decorate([
 /***/ "../../../../../src/app/backend-module/submenu-item/submenu-item.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<li class=\"submenu-item\">\n    <a routerLink=\"{{item.href}}\">{{item.name}}</a>\n</li>"
+module.exports = "<li class=\"submenu-item\">\n    <a routerLink=\"{{item.href}}\" (click)=\"send($event,item)\">{{item.name}}</a>\n</li>"
 
 /***/ }),
 
@@ -800,6 +815,7 @@ module.exports = "<li class=\"submenu-item\">\n    <a routerLink=\"{{item.href}}
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface__ = __webpack_require__("../../../../../src/interfaces/slideItem.interface.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -811,10 +827,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var SubMenuItemComponent = (function () {
-    function SubMenuItemComponent() {
+    function SubMenuItemComponent(eService) {
+        this.eService = eService;
     }
     SubMenuItemComponent.prototype.ngOnInit = function () {
+    };
+    SubMenuItemComponent.prototype.send = function (event, item) {
+        this.eService.emitEventSubMenu(item);
     };
     return SubMenuItemComponent;
 }());
@@ -827,10 +848,10 @@ SubMenuItemComponent = __decorate([
         selector: 'app-submenu-item',
         template: __webpack_require__("../../../../../src/app/backend-module/submenu-item/submenu-item.component.html")
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object])
 ], SubMenuItemComponent);
 
-var _a;
+var _a, _b;
 //# sourceMappingURL=submenu-item.component.js.map
 
 /***/ }),
@@ -1287,6 +1308,8 @@ var EventService = (function () {
         this.logged$ = this._logged.asObservable();
         this._user = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["Subject"]();
         this.user$ = this._user.asObservable();
+        this._subMenu = new __WEBPACK_IMPORTED_MODULE_1_rxjs_Subject__["Subject"]();
+        this._subMenu$ = this._subMenu.asObservable();
     }
     EventService.prototype.clicked = function (object) {
         this._clicked.next(object);
@@ -1296,6 +1319,9 @@ var EventService = (function () {
     };
     EventService.prototype.user = function (object) {
         this._user.next(object);
+    };
+    EventService.prototype.emitEventSubMenu = function (object) {
+        this._subMenu.next(object);
     };
     return EventService;
 }());

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SlideItem} from "../../../interfaces/slideItem.interface";
+import {SlideItem, SlideSubMenu} from "../../../interfaces/slideItem.interface";
 import {EventService} from "../../../services/event.service";
 import {Router} from "@angular/router";
 
@@ -24,6 +24,22 @@ export class MenuItemComponent implements OnInit {
           }
         }
     );
+
+    this.eService._subMenu$.subscribe(
+        (item : SlideSubMenu) => {
+          this.item.subMenu.forEach(
+              (subItem : SlideSubMenu) => {
+                  if(item === subItem)
+                  {
+                    this.eService.clicked({
+                      object : this,
+                      close : false,
+                    });
+                  }
+              }
+          );
+        }
+    );
   }
 
   ngOnInit() {
@@ -40,6 +56,13 @@ export class MenuItemComponent implements OnInit {
       object: this,
       close: !closeAll
     });
+  }
+
+  checkUrlRouter()
+  {
+    let substring = this.item.href;
+    let count = substring.length;
+    return (this.router.url.substring(0,count) !== substring);
   }
 
 

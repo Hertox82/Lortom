@@ -17,6 +17,9 @@ export class EventService {
     private _user = new Subject();
     user$ = this._user.asObservable();
 
+    private _subMenu = new Subject();
+    _subMenu$ = this._subMenu.asObservable();
+
     clicked(object) {
         this._clicked.next(object);
     }
@@ -27,5 +30,10 @@ export class EventService {
 
     user(object){
         this._user.next(object);
+    }
+
+    emitEventSubMenu(object)
+    {
+        this._subMenu.next(object);
     }
 }
