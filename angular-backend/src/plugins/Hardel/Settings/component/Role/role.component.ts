@@ -1,8 +1,9 @@
 
 
-import {Component, OnInit, Input} from "@angular/core";
+import {Component, OnInit, Input, OnDestroy} from "@angular/core";
 import {SettingsService} from "../../Services/settings.service";
 import {Role} from "../../Services/settings.interfaces";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
     selector : 'app-role',
@@ -10,11 +11,33 @@ import {Role} from "../../Services/settings.interfaces";
     styles : ['']
 })
 
-export class RoleComponent implements OnInit
+export class RoleComponent implements OnInit,OnDestroy
 {
     @Input() role : Role;
+    id : number;
+    private sub : any;
+    isEdit : boolean;
 
-    constructor(private sService : SettingsService){}
+    constructor(private sService : SettingsService, private router : ActivatedRoute){
+        console.log('roma merda');
+        this.isEdit = false;
+        this.sub = this.router.params.subscribe(
+            (params) => {
+                this.id = +params['id'];
+                this.role = this.sService.getRoleByProperty('id',this.id);
+            }
+        );
+    }
 
     ngOnInit(){}
+
+    ngOnDestroy() {
+        this.sub.unsubscribe();
+    }
+
+    editMode(){}
+
+    saveMode() {}
+
+    resetMode() {}
 }

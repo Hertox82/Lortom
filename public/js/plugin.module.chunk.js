@@ -97,7 +97,7 @@ PluginModule = __decorate([
 var routes = [
     { path: '', component: __WEBPACK_IMPORTED_MODULE_1__component_plugin_component__["a" /* PluginComponent */] }
 ];
-var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["c" /* RouterModule */].forChild(routes);
+var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["d" /* RouterModule */].forChild(routes);
 //# sourceMappingURL=plugin.routing.js.map
 
 /***/ })

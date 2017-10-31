@@ -10,7 +10,7 @@ import {RoleComponent} from "./component/Role/role.component";
 
 const routes : Routes = [
     {path: '' , component:SettingsComponent, children:[
-        {path: 'roles', component:RolesComponent},
+        {path: 'roles', component: RolesComponent},
         {path: 'role/:id', component:RoleComponent}
     ]}
 ];

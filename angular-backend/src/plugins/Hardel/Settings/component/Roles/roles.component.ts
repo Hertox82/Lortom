@@ -17,7 +17,7 @@ export class RolesComponent implements OnInit
 {
     listaRole : Role[];
 
-    constructor(private settService : SettingsService) {
+    constructor(private tService : SettingsService) {
 
        this.listaRole = [
            {id: 1, name: 'Admin', permissions : [
@@ -30,7 +30,7 @@ export class RolesComponent implements OnInit
            {id: 2, name: 'Web Operator', permissions : []}
         ];
 
-       this.settService.setRoles(this.listaRole);
+       this.tService.setRoles(this.listaRole);
     }
 
     ngOnInit() {

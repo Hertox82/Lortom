@@ -7,9 +7,13 @@ import {NgModule} from "@angular/core";
 import {routing,routedComponents} from "./settings.routing";
 import {SettingsService} from "./Services/settings.service";
 import {CommonModule} from "@angular/common";
-
+import {FormsModule} from "@angular/forms";
 @NgModule({
-    imports:[routing,CommonModule],
+    imports:[
+        CommonModule,
+        FormsModule,
+        routing
+    ],
     providers: [SettingsService],
     declarations: [routedComponents]
 })

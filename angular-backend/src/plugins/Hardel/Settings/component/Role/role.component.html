@@ -1,1 +1,41 @@
-<p> Mario</p>
+<form class="form">
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-database"></i>
+                <span>Definizioni Generali</span>
+            </div>
+            <div class="actions">
+                <button class="btn darkorange" (click)="editMode()">
+                    <i class="fa fa-edit"></i>
+                    Edit
+                </button>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="portlet-form-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="nome" class="col-md-2 control-label">Nome</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="nome" [ngModel] = "role.name" placeholder="Nome" id="nome" *ngIf="isEdit === false; else editName" readonly>
+                                    <ng-template #editName>
+                                        <input type="text" class="form-control" name="nome" placeholder="Nome" id="nome" [(ngModel)] = "role.name" >
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button class="btn orange" (click)="saveMode()">Save</button>
+            <button class="btn red" (click)="resetMode()">Reset</button>
+        </div>
+    </div>
+</form>

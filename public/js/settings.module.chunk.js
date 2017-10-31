@@ -58,7 +58,7 @@ SettingsService = __decorate([
 /***/ "../../../../../src/plugins/Hardel/Settings/component/Role/role.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p> Mario</p>"
+module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>Definizioni Generali</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn darkorange\" (click)=\"editMode()\">\n                    <i class=\"fa fa-edit\"></i>\n                    Edit\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"nome\" [ngModel] = \"role.name\" placeholder=\"Nome\" id=\"nome\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                    <ng-template #editName>\n                                        <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"role.name\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n</form>"
 
 /***/ }),
 
@@ -71,6 +71,7 @@ module.exports = "<p> Mario</p>"
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__ = __webpack_require__("../../../../../src/plugins/Hardel/Settings/Services/settings.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Services_settings_interfaces__ = __webpack_require__("../../../../../src/plugins/Hardel/Settings/Services/settings.interfaces.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Services_settings_interfaces___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__Services_settings_interfaces__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -83,11 +84,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var RoleComponent = (function () {
-    function RoleComponent(sService) {
+    function RoleComponent(sService, router) {
+        var _this = this;
         this.sService = sService;
+        this.router = router;
+        console.log('roma merda');
+        this.isEdit = false;
+        this.sub = this.router.params.subscribe(function (params) {
+            _this.id = +params['id'];
+            _this.role = _this.sService.getRoleByProperty('id', _this.id);
+        });
     }
     RoleComponent.prototype.ngOnInit = function () { };
+    RoleComponent.prototype.ngOnDestroy = function () {
+        this.sub.unsubscribe();
+    };
+    RoleComponent.prototype.editMode = function () { };
+    RoleComponent.prototype.saveMode = function () { };
+    RoleComponent.prototype.resetMode = function () { };
     return RoleComponent;
 }());
 __decorate([
@@ -100,10 +116,10 @@ RoleComponent = __decorate([
         template: __webpack_require__("../../../../../src/plugins/Hardel/Settings/component/Role/role.component.html"),
         styles: ['']
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__["a" /* SettingsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__["a" /* SettingsService */]) === "function" && _b || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__["a" /* SettingsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__["a" /* SettingsService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */]) === "function" && _c || Object])
 ], RoleComponent);
 
-var _a, _b;
+var _a, _b, _c;
 //# sourceMappingURL=role.component.js.map
 
 /***/ }),
@@ -137,8 +153,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var RolesComponent = (function () {
-    function RolesComponent(settService) {
-        this.settService = settService;
+    function RolesComponent(tService) {
+        this.tService = tService;
         this.listaRole = [
             { id: 1, name: 'Admin', permissions: [
                     { id: 1, name: 'Hardel.Settings' },
@@ -149,7 +165,7 @@ var RolesComponent = (function () {
                 ] },
             { id: 2, name: 'Web Operator', permissions: [] }
         ];
-        this.settService.setRoles(this.listaRole);
+        this.tService.setRoles(this.listaRole);
     }
     RolesComponent.prototype.ngOnInit = function () {
     };
@@ -223,6 +239,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__settings_routing__ = __webpack_require__("../../../../../src/plugins/Hardel/Settings/settings.routing.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Services_settings_service__ = __webpack_require__("../../../../../src/plugins/Hardel/Settings/Services/settings.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
 /**
  * Created by hernan on 17/10/2017.
  */
@@ -236,6 +253,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 var SettingsModule = (function () {
     function SettingsModule() {
     }
@@ -243,7 +261,11 @@ var SettingsModule = (function () {
 }());
 SettingsModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__settings_routing__["b" /* routing */], __WEBPACK_IMPORTED_MODULE_3__angular_common__["b" /* CommonModule */]],
+        imports: [
+            __WEBPACK_IMPORTED_MODULE_3__angular_common__["b" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_1__settings_routing__["b" /* routing */]
+        ],
         providers: [__WEBPACK_IMPORTED_MODULE_2__Services_settings_service__["a" /* SettingsService */]],
         declarations: [__WEBPACK_IMPORTED_MODULE_1__settings_routing__["a" /* routedComponents */]]
     })
@@ -276,7 +298,7 @@ var routes = [
             { path: 'role/:id', component: __WEBPACK_IMPORTED_MODULE_3__component_Role_role_component__["a" /* RoleComponent */] }
         ] }
 ];
-var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["c" /* RouterModule */].forChild(routes);
+var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["d" /* RouterModule */].forChild(routes);
 var routedComponents = [__WEBPACK_IMPORTED_MODULE_1__component_settings_component__["a" /* SettingsComponent */], __WEBPACK_IMPORTED_MODULE_2__component_Roles_roles_component__["a" /* RolesComponent */], __WEBPACK_IMPORTED_MODULE_3__component_Role_role_component__["a" /* RoleComponent */]];
 //# sourceMappingURL=settings.routing.js.map
 
