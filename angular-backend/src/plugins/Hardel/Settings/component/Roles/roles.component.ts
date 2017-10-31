@@ -4,6 +4,9 @@
 
 
 import {Component, OnInit} from "@angular/core";
+import {SettingsService} from "../../Services/settings.service";
+import {Role} from "../../Services/settings.interfaces";
+
 @Component({
     selector : 'app-roles-component',
     templateUrl : './roles.component.html',
@@ -12,7 +15,25 @@ import {Component, OnInit} from "@angular/core";
 
 export class RolesComponent implements OnInit
 {
-    constructor() {}
+    listaRole : Role[];
 
-    ngOnInit() {}
+    constructor(private settService : SettingsService) {
+
+       this.listaRole = [
+           {id: 1, name: 'Admin', permissions : [
+               {id: 1, name: 'Hardel.Settings'},
+               {id: 2, name: 'Hardel.Dashboard'},
+               {id: 3, name: 'Hardel.Settings.Roles'},
+               {id: 4, name: 'Hardel.Settings.Permissions'},
+               {id: 5, name: 'Hardel.Plugin'}
+           ]},
+           {id: 2, name: 'Web Operator', permissions : []}
+        ];
+
+       this.settService.setRoles(this.listaRole);
+    }
+
+    ngOnInit() {
+
+    }
 }

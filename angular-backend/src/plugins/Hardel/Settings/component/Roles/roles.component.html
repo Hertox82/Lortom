@@ -49,28 +49,17 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox">
-                                        </td>
-                                        <td>
-                                            Admin
-                                        </td>
-                                        <td>
-                                            <a><i class="fa fa-edit" style="color:orange; font-size: 16px;"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox">
-                                        </td>
-                                        <td>
-                                            Web Operator
-                                        </td>
-                                        <td>
-                                            <a><i class="fa fa-edit" style="color:orange; font-size: 16px;"></i></a>
-                                        </td>
-                                    </tr>
+                                        <tr *ngFor="let role of listaRole">
+                                            <td>
+                                                <input type="checkbox">
+                                            </td>
+                                            <td>
+                                                {{role.name}}
+                                            </td>
+                                            <td>
+                                                <a [routerLink] = "['/backend/settings/role',role.id]"><i class="fa fa-edit" style="color:orange; font-size: 16px;"></i></a>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
