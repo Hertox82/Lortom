@@ -1,9 +1,12 @@
+
+<h3>Roles</h3>
+
 <form class="form">
     <div class="portlet">
         <div class="portlet-title">
             <div class="caption">
                 <i class="fa fa-database"></i>
-                <span>Definizioni Generali</span>
+                <span>General Definitions</span>
             </div>
             <div class="actions">
                 <button class="btn darkorange" (click)="editMode()">
@@ -24,6 +27,103 @@
                                     <ng-template #editName>
                                         <input type="text" class="form-control" name="nome" placeholder="Nome" id="nome" [(ngModel)] = "role.name" >
                                     </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-list"></i>
+                <span>Permissions</span>
+            </div>
+            <div class="actions">
+                <button class="btn cyan" (click)="addPermissions()">
+                    <i class="fa fa-plus"></i>
+                    Add
+                </button>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="box">
+                <div class="box-header">
+
+                </div>
+                <div class="box-body">
+                    <div class="wrapper">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="dataTables_length">
+                                    <label>
+                                        Show
+                                        <select class="form-control input-sm" name="example_length">
+                                            <option value="10">10</option>
+                                        </select>
+                                        entries
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="dataTables_filter">
+                                    <label>
+                                        Search:
+                                        <input type="search" class="form-control input-sm">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 30px;"></th>
+                                        <th>
+                                            <a>Nome</a>
+                                        </th>
+                                        <th style="width: 50px;"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let permission of role.permissions">
+                                        <td>
+                                            <input type="checkbox">
+                                        </td>
+                                        <td>
+                                            {{permission.name}}
+                                        </td>
+                                        <td>
+                                            <a><i class="fa fa-window-close-o" style="color:orange; font-size: 16px;"></i></a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="dataTables_info">Showing 1 to 10 of 57 entries</div>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="dataTables_paginate">
+                                    <ul class="pagination">
+                                        <li class="page-item">
+                                            <a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a>
+                                        </li>
+                                        <li class="page-item active">
+                                            <a class="page-link" href="#">1</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">2</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>

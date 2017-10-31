@@ -40,4 +40,6 @@ export class RoleComponent implements OnInit,OnDestroy
     saveMode() {}
 
     resetMode() {}
+
+    addPermissions() {}
 }

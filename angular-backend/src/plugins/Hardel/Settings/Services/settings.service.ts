@@ -11,6 +11,7 @@ export class SettingsService {
 
     setRoles(roles : Role[])
     {
+        sessionStorage.setItem('roles',JSON.stringify(roles));
         this.listOfRoles = roles;
     }
 
@@ -18,6 +19,11 @@ export class SettingsService {
     {
         let response: Role;
         response = null;
+
+        if(this.listOfRoles == null)
+        {
+            this.listOfRoles = JSON.parse(sessionStorage.getItem('roles'));
+        }
         this.listOfRoles.forEach(
             (role : Role) => {
                 if(role[name] === value)

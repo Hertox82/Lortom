@@ -71,6 +71,7 @@ footer { margin-left: 200px; padding: 10px; border:1px solid #dde0e6; font-size:
 .orange {background-color: orange; color:white; border-radius: unset; cursor: pointer}
 .red { background-color: red; color:white; border-radius: unset; cursor: pointer}
 .darkorange {background-color: darkorange; color:white; border-radius: unset; cursor: pointer;}
+.cyan {background-color: #0fc1cc; color: white; border-radius: unset; cursor:pointer;}
 .form-control {border-radius: unset;}
 
 
