@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Header pannello Admin */
-.main-header{  height: 44px;  background-color: orange;  color: white;  position: relative; z-index: 1080;}
+.main-header{  height: 44px;  background-color: orange;  color: white;  position: relative; z-index: 1040;}
 .logo{  padding: 8px 25px;  text-align: left;  width: 200px;  float:left;  }
 .navbar-custom-menu{  float:right;}
 .navbar-custom-menu ul { float:left; margin:0; list-style: none; padding-left: 0; position:relative}
@@ -95,3 +95,4 @@ footer { margin-left: 200px; padding: 10px; border:1px solid #dde0e6; font-size:
 .page-item.active .page-link {background-color: orange; border-color:orange;}
 .page-link {color: orange;}
 
+.modal {z-index: 1080;}

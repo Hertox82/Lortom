@@ -42,7 +42,7 @@
                 <span>Permissions</span>
             </div>
             <div class="actions">
-                <button class="btn cyan" (click)="addPermissions()">
+                <button class="btn cyan" data-toggle="modal" data-target="#addModal">
                     <i class="fa fa-plus"></i>
                     Add
                 </button>
@@ -136,6 +136,21 @@
         <div class="col-12">
             <button class="btn orange" (click)="saveMode()">Save</button>
             <button class="btn red" (click)="resetMode()">Reset</button>
+        </div>
+    </div>
+    <div id="addModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addModal"  aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Prova
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
         </div>
     </div>
 </form>
