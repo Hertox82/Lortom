@@ -27,4 +27,22 @@ export class ApiManager{
         }
     }
 
+    addUrlApi(url : {namePath : string , path:string})
+    {
+        url.path = this.basePath+url.path;
+        this.apiUrl.push(url);
+    }
+
+    addListUrlApi(urls : {namePath : string , path:string} [])
+    {
+        urls.forEach((item) => {
+           this.addUrlApi(item);
+        });
+    }
+
+    consolePrint()
+    {
+        console.log(this.apiUrl);
+    }
+
 }

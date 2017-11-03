@@ -18,3 +18,19 @@ if(! function_exists('pr')){
             die();
     }
 }
+
+
+if(! function_exists('array_map_collection')) {
+
+    function array_map_collection(Closure $callback, $list)
+    {
+        $return = [];
+
+        foreach ($list as $item)
+        {
+            $return[] = $callback($item);
+        }
+
+        return $return;
+    }
+}

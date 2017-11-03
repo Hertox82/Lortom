@@ -9,10 +9,11 @@
 namespace Plugins\Hardel\Settings\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Services\PluginsConfigCompiler;
-
+use Route;
 class HardelSettingsServiceProvider extends ServiceProvider
 {
+
+    protected $namespace = 'Plugins\Hardel\Settings\Controller';
 
     public function boot()
     {
@@ -21,7 +22,10 @@ class HardelSettingsServiceProvider extends ServiceProvider
          */
         if(!$this->app->routesAreCached())
         {
-            require __DIR__.'/../routes.php';
+            Route::prefix('api')
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(__DIR__.'/../routes.php');
         }
     }
 }

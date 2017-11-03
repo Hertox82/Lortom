@@ -13,19 +13,51 @@ webpackJsonp(["settings.module"],{
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SettingsService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__ = __webpack_require__("../../../../rxjs/Rx.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_urlApi_api_manager__ = __webpack_require__("../../../../../src/app/urlApi/api.manager.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
 
 var SettingsService = (function () {
-    function SettingsService() {
+    function SettingsService(http) {
+        this.http = http;
+        this.apiManager = new __WEBPACK_IMPORTED_MODULE_3__app_urlApi_api_manager__["a" /* ApiManager */]();
+        var urls = [
+            { namePath: 'getPermission', path: 'permissions' },
+            { namePath: 'getRoles', path: 'roles' }
+        ];
+        this.apiManager.addListUrlApi(urls);
     }
+    SettingsService.prototype.getRolesFrom = function () {
+        return this.http.get(this.apiManager.getPathByName('getRoles'))
+            .map(function (response) {
+            return response.json().roles;
+        });
+    };
+    SettingsService.prototype.getPermissionsFrom = function () {
+        return this.http.get(this.apiManager.getPathByName('getPermission'))
+            .map(function (response) {
+            return response.json().permissions;
+        });
+    };
     SettingsService.prototype.setRoles = function (roles) {
         sessionStorage.setItem('roles', JSON.stringify(roles));
         this.listOfRoles = roles;
+    };
+    SettingsService.prototype.checkRolesExist = function () {
+        return (sessionStorage.getItem('roles') !== null);
     };
     SettingsService.prototype.getRoleByProperty = function (name, value) {
         var response;
@@ -49,12 +81,22 @@ var SettingsService = (function () {
         });
         return response;
     };
+    SettingsService.prototype.getRoles = function () {
+        if (this.listOfRoles == null) {
+            return JSON.parse(sessionStorage.getItem('roles'));
+        }
+        else {
+            return this.listOfRoles;
+        }
+    };
     return SettingsService;
 }());
 SettingsService = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])()
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]) === "function" && _a || Object])
 ], SettingsService);
 
+var _a;
 //# sourceMappingURL=settings.service.js.map
 
 /***/ }),
@@ -62,7 +104,7 @@ SettingsService = __decorate([
 /***/ "../../../../../src/plugins/Hardel/Settings/component/Role/role.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<h3>Roles</h3>\n\n<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn darkorange\" (click)=\"editMode()\">\n                    <i class=\"fa fa-edit\"></i>\n                    Edit\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"nome\" [ngModel] = \"role.name\" placeholder=\"Nome\" id=\"nome\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                    <ng-template #editName>\n                                        <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"role.name\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-list\"></i>\n                <span>Permissions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn cyan\" data-toggle=\"modal\" data-target=\"#addModal\">\n                    <i class=\"fa fa-plus\"></i>\n                    Add\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let permission of role.permissions\">\n                                        <td>\n                                            <input type=\"checkbox\">\n                                        </td>\n                                        <td>\n                                            {{permission.name}}\n                                        </td>\n                                        <td>\n                                            <a><i class=\"fa fa-window-close-o\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n    <div id=\"addModal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"addModal\"  aria-hidden=\"true\">\n        <div class=\"modal-dialog\">\n            <div class=\"modal-content\">\n                <div class=\"modal-header\">\n                    <div class=\"modal-title\">\n                        Searching For Permission \n                        <button class=\"close\" data-dismiss = \"modal\" aria-label=\"hidden\"><i class=\"fa fa-times\"></i></button>\n                    </div>\n                </div>\n                <div class=\"modal-body\">\n                    <div class=\"row\">\n                        <div class=\"col-md-12\">\n                            <div class=\"form-group flex-group\">\n                                <label class=\"col-md-4\">Nome Permesso</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"search\" class=\"form-control input-sm\">\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"modal-footer\">\n                    <div class=\"m-footer\">\n\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</form>"
+module.exports = "\n<h3>Roles</h3>\n\n<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn darkorange\" (click)=\"editMode()\">\n                    <i class=\"fa fa-edit\"></i>\n                    Edit\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"nome\" [ngModel] = \"role.name\" placeholder=\"Nome\" id=\"nome\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                    <ng-template #editName>\n                                        <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"role.name\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-list\"></i>\n                <span>Permissions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn cyan\" data-toggle=\"modal\" data-target=\"#addModal\" *ngIf=\"isEdit == true\">\n                    <i class=\"fa fa-plus\"></i>\n                    Add\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let permission of role.permissions\">\n                                        <td>\n                                            {{permission.name}}\n                                        </td>\n                                        <td>\n                                            <a class=\"td_orange\" (click)=\"erasePermission(permission)\" *ngIf=\"isEdit == true\"><i class=\"fa fa-window-close-o\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n    <div id=\"addModal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"addModal\"  aria-hidden=\"true\">\n        <div class=\"modal-dialog\">\n            <div class=\"modal-content\">\n                <div class=\"modal-header\">\n                    <div class=\"modal-title\">\n                        Searching For Permission \n                        <button class=\"close\" data-dismiss = \"modal\" aria-label=\"hidden\"><i class=\"fa fa-times\"></i></button>\n                    </div>\n                </div>\n                <div class=\"modal-body\">\n                    <div class=\"row\">\n                        <div class=\"col-md-12\">\n                            <div class=\"form-group flex-group\">\n                                <label class=\"col-md-4\">Name</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control input-sm\" name=\"query\" [(ngModel)]=\"query\" (keyup)=\"filter()\">\n                                    <div class=\"suggestions\" *ngIf=\"filteredList.length > 0\">\n                                        <ul>\n                                            <li class=\"suggestion-li\" *ngFor=\"let item of filteredList\">\n                                                <a (click)=\"addPermissions(item)\">{{item.name}}</a>\n                                            </li>\n                                        </ul>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"modal-footer\">\n                    <div class=\"m-footer\">\n\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</form>"
 
 /***/ }),
 
@@ -94,21 +136,72 @@ var RoleComponent = (function () {
         var _this = this;
         this.sService = sService;
         this.router = router;
-        console.log('roma merda');
+        this.listPermissions = [];
         this.isEdit = false;
+        this.filteredList = [];
+        this.query = '';
         this.sub = this.router.params.subscribe(function (params) {
             _this.id = +params['id'];
             _this.role = _this.sService.getRoleByProperty('id', _this.id);
         });
     }
-    RoleComponent.prototype.ngOnInit = function () { };
+    RoleComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.sService.getPermissionsFrom().subscribe(function (perms) {
+            _this.listPermissions = perms;
+            _this.role.permissions.forEach(function (item) {
+                var index = -1;
+                for (var i = 0; i < _this.listPermissions.length; i++) {
+                    var m = _this.listPermissions[i];
+                    if (m.id === item.id && m.name === item.name) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index > -1) {
+                    _this.listPermissions.splice(index, 1);
+                }
+            });
+        });
+    };
     RoleComponent.prototype.ngOnDestroy = function () {
         this.sub.unsubscribe();
     };
-    RoleComponent.prototype.editMode = function () { };
-    RoleComponent.prototype.saveMode = function () { };
+    RoleComponent.prototype.editMode = function () {
+        //passa in modalità edit
+        this.isEdit = !this.isEdit;
+    };
+    RoleComponent.prototype.saveMode = function () {
+        //salva i cambiamenti
+    };
     RoleComponent.prototype.resetMode = function () { };
-    RoleComponent.prototype.addPermissions = function () { };
+    RoleComponent.prototype.addPermissions = function (item) {
+        //aggiunge un permesso
+        this.filteredList = [];
+        this.query = item.name;
+        this.role.permissions.push(item);
+        var index = this.listPermissions.indexOf(item);
+        if (index > -1) {
+            this.listPermissions.splice(index, 1);
+        }
+    };
+    RoleComponent.prototype.erasePermission = function (item) {
+        // cancella il permesso
+        this.listPermissions.push(item);
+        var index = this.role.permissions.indexOf(item);
+        if (index > -1) {
+            this.role.permissions.splice(index, 1);
+        }
+    };
+    RoleComponent.prototype.filter = function () {
+        if (this.query !== "") {
+            this.filteredList = this.listPermissions.filter(function (el) {
+                return el.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
+            }.bind(this));
+        }
+        else {
+        }
+    };
     return RoleComponent;
 }());
 __decorate([
@@ -158,19 +251,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var RolesComponent = (function () {
-    function RolesComponent(tService) {
-        this.tService = tService;
-        this.listaRole = [
-            { id: 1, name: 'Admin', permissions: [
-                    { id: 1, name: 'Hardel.Settings' },
-                    { id: 2, name: 'Hardel.Dashboard' },
-                    { id: 3, name: 'Hardel.Settings.Roles' },
-                    { id: 4, name: 'Hardel.Settings.Permissions' },
-                    { id: 5, name: 'Hardel.Plugin' }
-                ] },
-            { id: 2, name: 'Web Operator', permissions: [] }
-        ];
-        this.tService.setRoles(this.listaRole);
+    function RolesComponent(mService) {
+        var _this = this;
+        this.mService = mService;
+        if (!this.mService.checkRolesExist()) {
+            this.mService.getRolesFrom().subscribe(function (roles) {
+                _this.listaRole = roles;
+                _this.mService.setRoles(_this.listaRole);
+            });
+        }
+        else {
+            this.listaRole = this.mService.getRoles();
+        }
     }
     RolesComponent.prototype.ngOnInit = function () {
     };
@@ -245,6 +337,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Services_settings_service__ = __webpack_require__("../../../../../src/plugins/Hardel/Settings/Services/settings.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 /**
  * Created by hernan on 17/10/2017.
  */
@@ -254,6 +347,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -269,6 +363,7 @@ SettingsModule = __decorate([
         imports: [
             __WEBPACK_IMPORTED_MODULE_3__angular_common__["b" /* CommonModule */],
             __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_5__angular_http__["c" /* HttpModule */],
             __WEBPACK_IMPORTED_MODULE_1__settings_routing__["b" /* routing */]
         ],
         providers: [__WEBPACK_IMPORTED_MODULE_2__Services_settings_service__["a" /* SettingsService */]],

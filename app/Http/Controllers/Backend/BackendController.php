@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use Cookie;
 use Session;
 
-class SlideBarController extends Controller
+class BackendController extends Controller
 {
 
     protected $auth;
@@ -30,16 +30,14 @@ class SlideBarController extends Controller
         $listaPlugin = config('plugins');
 
         //ReSort the list of plugins
-        usort($listaPlugin['plugins'],["App\\Http\\Controllers\\Backend\\SlideBarController","sort"]);
-        $lista = [];
+        usort($listaPlugin['plugins'],["App\\Http\\Controllers\\Backend\\BackendController","sort"]);
 
-        foreach ($listaPlugin['plugins'] as $plug)
-        {
+        $lista = array_map(function($plug)use($User){
             if(isset($plug['permission']))
             {
                 if($User->hasPermission($plug['permission']))
                 {
-                    $lista[] = [
+                    return [
                         'name' => $plug['PluginName'],
                         'href' => '/backend' . $plug['routingPath'],
                         'icon' => $plug['icon'],
@@ -48,19 +46,19 @@ class SlideBarController extends Controller
                 }
             }
             else {
-                $lista[] = [
+                return [
                     'name' => $plug['PluginName'],
                     'href' => '/backend' . $plug['routingPath'],
                     'icon' => $plug['icon'],
                     'subMenu' => $this->setSubMenu(@$plug['subMenu'],$User)
                 ];
             }
-        }
+        },$listaPlugin['plugins']);
 
-
-
-        return response()->json(['menulista' => $lista]);
+        return response()->json(['menulista' => array_filter($lista)]);
     }
+
+
 
     public function login(Request $request)
     {
@@ -134,15 +132,16 @@ class SlideBarController extends Controller
         if(is_null($lista))
             return [];
 
+        $array = [];
 
-        $return = [];
-        foreach ($lista as $sub)
-        {
-            if(isset($stub['permission']))
+        $array = array_map(function($sub)use($user){
+
+            if(isset($sub['permission']))
             {
-                if($user->hasPermission($stub['permission']))
+
+                if($user->hasPermission($sub['permission']))
                 {
-                    $return[] = [
+                   return [
                         'name' => $sub['Name'],
                         'href' => '/backend' . $sub['subPath']
                     ];
@@ -150,13 +149,16 @@ class SlideBarController extends Controller
             }
             else
             {
-                $return[] = [
+                return [
                     'name' => $sub['Name'],
                     'href' => '/backend' . $sub['subPath']
                 ];
             }
-        }
 
-        return $return;
+        },$lista);
+
+        return array_filter($array);
     }
+
+
 }

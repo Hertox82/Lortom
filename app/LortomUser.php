@@ -51,6 +51,7 @@ class LortomUser extends Model
 
         foreach ($this->permissions as $p)
         {
+
             if($p instanceof LortomPermission)
             {
                 if($p->name == $permission)

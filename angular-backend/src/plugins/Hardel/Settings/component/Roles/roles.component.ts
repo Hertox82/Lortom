@@ -17,23 +17,25 @@ export class RolesComponent implements OnInit
 {
     listaRole : Role[];
 
-    constructor(private tService : SettingsService) {
+    constructor(private mService : SettingsService) {
 
-       this.listaRole = [
-           {id: 1, name: 'Admin', permissions : [
-               {id: 1, name: 'Hardel.Settings'},
-               {id: 2, name: 'Hardel.Dashboard'},
-               {id: 3, name: 'Hardel.Settings.Roles'},
-               {id: 4, name: 'Hardel.Settings.Permissions'},
-               {id: 5, name: 'Hardel.Plugin'}
-           ]},
-           {id: 2, name: 'Web Operator', permissions : []}
-        ];
 
-       this.tService.setRoles(this.listaRole);
+        if(!this.mService.checkRolesExist())
+        {
+            this.mService.getRolesFrom().subscribe(
+                (roles: Role[]) => {
+                    this.listaRole = roles;
+                    this.mService.setRoles(this.listaRole);
+                }
+            );
+        }
+        else {
+            this.listaRole = this.mService.getRoles();
+        }
     }
 
     ngOnInit() {
 
     }
+
 }

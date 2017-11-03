@@ -19,20 +19,21 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/populate-slidebar',[
     'as'    => 'populateSlidebar',
-    'uses'  => 'Backend\SlideBarController@populate'
+    'uses'  => 'Backend\BackendController@populate'
 ])->middleware('lortom.auth');
 
 Route::post('/login',[
     'as'    => 'apiLogin',
-    'uses'  => 'Backend\SlideBarController@requestLogin'
+    'uses'  => 'Backend\BackendController@requestLogin'
 ]);
 
 Route::get('/logout',[
     'as'    => 'apiLogout',
-    'uses'  => 'Backend\SlideBarController@requestLogout'
+    'uses'  => 'Backend\BackendController@requestLogout'
 ]);
 
 Route::put('/edit-my-profile',[
     'as'     => 'apiEditMyProfile',
-    'uses'   => 'Backend\SlideBarController@requestEditMyProfile'
-])->middleware('lortom.auth');;
+    'uses'   => 'Backend\BackendController@requestEditMyProfile'
+])->middleware('lortom.auth');
+

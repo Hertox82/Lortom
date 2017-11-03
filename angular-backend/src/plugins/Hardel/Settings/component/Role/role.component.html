@@ -42,7 +42,7 @@
                 <span>Permissions</span>
             </div>
             <div class="actions">
-                <button class="btn cyan" data-toggle="modal" data-target="#addModal">
+                <button class="btn cyan" data-toggle="modal" data-target="#addModal" *ngIf="isEdit == true">
                     <i class="fa fa-plus"></i>
                     Add
                 </button>
@@ -60,7 +60,6 @@
                                 <table class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th style="width: 30px;"></th>
                                         <th>
                                             <a>Nome</a>
                                         </th>
@@ -70,13 +69,10 @@
                                     <tbody>
                                     <tr *ngFor="let permission of role.permissions">
                                         <td>
-                                            <input type="checkbox">
-                                        </td>
-                                        <td>
                                             {{permission.name}}
                                         </td>
                                         <td>
-                                            <a><i class="fa fa-window-close-o" style="color:orange; font-size: 16px;"></i></a>
+                                            <a class="td_orange" (click)="erasePermission(permission)" *ngIf="isEdit == true"><i class="fa fa-window-close-o"></i></a>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -107,9 +103,16 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group flex-group">
-                                <label class="col-md-4">Nome Permesso</label>
+                                <label class="col-md-4">Name</label>
                                 <div class="col-md-4">
-                                    <input type="search" class="form-control input-sm">
+                                    <input type="text" class="form-control input-sm" name="query" [(ngModel)]="query" (keyup)="filter()">
+                                    <div class="suggestions" *ngIf="filteredList.length > 0">
+                                        <ul>
+                                            <li class="suggestion-li" *ngFor="let item of filteredList">
+                                                <a (click)="addPermissions(item)">{{item.name}}</a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>

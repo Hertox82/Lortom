@@ -1215,6 +1215,19 @@ var ApiManager = (function () {
                 return this.apiUrl[i].path;
         }
     };
+    ApiManager.prototype.addUrlApi = function (url) {
+        url.path = this.basePath + url.path;
+        this.apiUrl.push(url);
+    };
+    ApiManager.prototype.addListUrlApi = function (urls) {
+        var _this = this;
+        urls.forEach(function (item) {
+            _this.addUrlApi(item);
+        });
+    };
+    ApiManager.prototype.consolePrint = function () {
+        console.log(this.apiUrl);
+    };
     return ApiManager;
 }());
 
