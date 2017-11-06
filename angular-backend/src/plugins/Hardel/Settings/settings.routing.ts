@@ -9,9 +9,10 @@ import {RolesComponent} from "./component/Roles/roles.component";
 import {RoleComponent} from "./component/Role/role.component";
 
 const routes : Routes = [
-    {path: '' , component:SettingsComponent, children:[
-        {path: 'roles', component: RolesComponent},
-        {path: 'role/:id', component:RoleComponent}
+    {path: '' , component:SettingsComponent, data : { breadcrumb : 'Settings'} , children:[
+        {path: 'roles', component: RolesComponent, data : { breadcrumb : 'Roles'}, children: [
+            {path: ':id', component:RoleComponent, data : {breadcrumb : 'Role'}}
+        ]},
     ]}
 ];
 

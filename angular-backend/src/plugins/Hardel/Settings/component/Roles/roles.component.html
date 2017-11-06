@@ -1,4 +1,4 @@
-<div class="tabbable-custom">
+<div class="tabbable-custom" *ngIf="isRoot === true">
     <ul class="nav nav-tabs">
         <li class="active">
             <a href="#tab_1" data-toggle="tab"> Roles</a>
@@ -57,7 +57,7 @@
                                                 {{role.name}}
                                             </td>
                                             <td>
-                                                <a [routerLink] = "['/backend/settings/role',role.id]"><i class="fa fa-edit" style="color:orange; font-size: 16px;"></i></a>
+                                                <a [routerLink] = "['/backend/settings/roles',role.id]"><i class="fa fa-edit" style="color:orange; font-size: 16px;"></i></a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -93,3 +93,5 @@
         </div>
     </div>
 </div>
+
+<router-outlet></router-outlet>

@@ -6,6 +6,7 @@
 import {Component, OnInit} from "@angular/core";
 import {SettingsService} from "../../Services/settings.service";
 import {Role} from "../../Services/settings.interfaces";
+import {NavigationEnd, Router} from "@angular/router";
 
 @Component({
     selector : 'app-roles-component',
@@ -16,21 +17,39 @@ import {Role} from "../../Services/settings.interfaces";
 export class RolesComponent implements OnInit
 {
     listaRole : Role[];
+    myRoot = '/backend/settings/roles';
+    isRoot = false;
 
-    constructor(private mService : SettingsService) {
+    constructor(private m_Service : SettingsService, private router :Router) {
 
 
-        if(!this.mService.checkRolesExist())
+        this.router.events.subscribe(
+            (val) => {
+                if(val instanceof NavigationEnd)
+                {
+                    if(this.myRoot === val.url)
+                    {
+                        this.isRoot = true;
+                    }
+                    else
+                    {
+                        this.isRoot = false;
+                    }
+                }
+            }
+        );
+
+        if(!this.m_Service.checkRolesExist())
         {
-            this.mService.getRolesFrom().subscribe(
+            this.m_Service.getRolesFrom().subscribe(
                 (roles: Role[]) => {
                     this.listaRole = roles;
-                    this.mService.setRoles(this.listaRole);
+                    this.m_Service.setRoles(this.listaRole);
                 }
             );
         }
         else {
-            this.listaRole = this.mService.getRoles();
+            this.listaRole = this.m_Service.getRoles();
         }
     }
 

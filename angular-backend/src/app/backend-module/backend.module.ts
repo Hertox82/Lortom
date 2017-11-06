@@ -18,13 +18,15 @@ import {LogoutComponent} from "./logout/logout.component";
 import {UserModule} from "./user-module/user.module";
 import {UserSideComponent} from "./user-module/user-side/user-side.component";
 import {UserModelComponent} from "./user-module/user-model/usermodel.component";
+import {BreadCrumbModule} from "./breadcrumbs/breadcrumbs.module";
 
 @NgModule({
     imports : [
         CommonModule,
         RouterModule,
         FormsModule,
-        UserModule
+        UserModule,
+        BreadCrumbModule
     ],
     declarations : [
         NavbarComponent,
@@ -33,7 +35,7 @@ import {UserModelComponent} from "./user-module/user-model/usermodel.component";
         MenuItemComponent,
         SubMenuItemComponent,
         LoginComponent,
-        LogoutComponent
+        LogoutComponent,
     ],
     providers: [
         MenuService,
@@ -45,7 +47,7 @@ import {UserModelComponent} from "./user-module/user-model/usermodel.component";
         LoginComponent,
         LogoutComponent,
         UserSideComponent,
-        UserModelComponent
+        UserModelComponent,
     ]
 })
 export class BackendModule {}

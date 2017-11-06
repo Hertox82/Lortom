@@ -1,0 +1,11 @@
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a>Backend</a></li>
+    <li *ngFor="let breadcrumb of breadcrumbs"  class="breadcrumb-item" [ngClass]="{'active' : breadcrumb.active}">
+
+        <a *ngIf="breadcrumb.active === false ; else other" [routerLink]="[breadcrumb.url]">{{ breadcrumb.label }}</a>
+
+        <ng-template #other>
+           {{breadcrumb.label}}
+        </ng-template>
+    </li>
+</ol>

@@ -9,7 +9,8 @@ import {ModuleWithProviders} from "@angular/core";
 
 
 const routes : Routes = [
-    {path:'', component: DashBoardComponent}
+    {path:'', component: DashBoardComponent, data : { breadcrumb : 'Dashboard'} }
 ];
 
 export const routing : ModuleWithProviders = RouterModule.forChild(routes);
+

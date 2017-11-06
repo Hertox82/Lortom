@@ -96,9 +96,9 @@ DashboardModule = __decorate([
 
 
 var routes = [
-    { path: '', component: __WEBPACK_IMPORTED_MODULE_1__component_dashboard_component__["a" /* DashBoardComponent */] }
+    { path: '', component: __WEBPACK_IMPORTED_MODULE_1__component_dashboard_component__["a" /* DashBoardComponent */], data: { breadcrumb: 'Dashboard' } }
 ];
-var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["d" /* RouterModule */].forChild(routes);
+var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["e" /* RouterModule */].forChild(routes);
 //# sourceMappingURL=dashboard.routing.js.map
 
 /***/ })

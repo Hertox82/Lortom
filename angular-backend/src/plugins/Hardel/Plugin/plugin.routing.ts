@@ -9,7 +9,7 @@ import {ModuleWithProviders} from "@angular/core";
 
 
 const routes : Routes = [
-    {path: '', component: PluginComponent}
+    {path: '', component: PluginComponent, data : { breadcrumb : 'Plugin'} }
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forChild(routes);

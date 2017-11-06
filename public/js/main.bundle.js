@@ -194,7 +194,7 @@ var routes = [
     { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' },
     { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' }
 ];
-var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["d" /* RouterModule */].forRoot(routes);
+var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["e" /* RouterModule */].forRoot(routes);
 //# sourceMappingURL=app.routing.js.map
 
 /***/ }),
@@ -220,6 +220,7 @@ var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["d" /* RouterModule 
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__user_module_user_module__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user.module.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__user_module_user_side_user_side_component__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user-side/user-side.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__user_module_user_model_usermodel_component__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user-model/usermodel.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__breadcrumbs_breadcrumbs_module__ = __webpack_require__("../../../../../src/app/backend-module/breadcrumbs/breadcrumbs.module.ts");
 /**
  * Created by hernan on 26/10/2017.
  */
@@ -245,6 +246,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 var BackendModule = (function () {
     function BackendModule() {
     }
@@ -254,9 +256,10 @@ BackendModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_10__angular_router__["d" /* RouterModule */],
+            __WEBPACK_IMPORTED_MODULE_10__angular_router__["e" /* RouterModule */],
             __WEBPACK_IMPORTED_MODULE_11__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_13__user_module_user_module__["a" /* UserModule */]
+            __WEBPACK_IMPORTED_MODULE_13__user_module_user_module__["a" /* UserModule */],
+            __WEBPACK_IMPORTED_MODULE_16__breadcrumbs_breadcrumbs_module__["a" /* BreadCrumbModule */]
         ],
         declarations: [
             __WEBPACK_IMPORTED_MODULE_2__navbar_navbar_component__["a" /* NavbarComponent */],
@@ -265,7 +268,7 @@ BackendModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_5__menu_item_menu_item_component__["a" /* MenuItemComponent */],
             __WEBPACK_IMPORTED_MODULE_6__submenu_item_submenu_item_component__["a" /* SubMenuItemComponent */],
             __WEBPACK_IMPORTED_MODULE_7__login_login_component__["a" /* LoginComponent */],
-            __WEBPACK_IMPORTED_MODULE_12__logout_logout_component__["a" /* LogoutComponent */]
+            __WEBPACK_IMPORTED_MODULE_12__logout_logout_component__["a" /* LogoutComponent */],
         ],
         providers: [
             __WEBPACK_IMPORTED_MODULE_8__menuservice__["a" /* MenuService */],
@@ -277,12 +280,173 @@ BackendModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_7__login_login_component__["a" /* LoginComponent */],
             __WEBPACK_IMPORTED_MODULE_12__logout_logout_component__["a" /* LogoutComponent */],
             __WEBPACK_IMPORTED_MODULE_14__user_module_user_side_user_side_component__["a" /* UserSideComponent */],
-            __WEBPACK_IMPORTED_MODULE_15__user_module_user_model_usermodel_component__["a" /* UserModelComponent */]
+            __WEBPACK_IMPORTED_MODULE_15__user_module_user_model_usermodel_component__["a" /* UserModelComponent */],
         ]
     })
 ], BackendModule);
 
 //# sourceMappingURL=backend.module.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/backend-module/breadcrumbs/breadcrumbs.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<ol class=\"breadcrumb\">\n    <li class=\"breadcrumb-item\"><a>Backend</a></li>\n    <li *ngFor=\"let breadcrumb of breadcrumbs\"  class=\"breadcrumb-item\" [ngClass]=\"{'active' : breadcrumb.active}\">\n\n        <a *ngIf=\"breadcrumb.active === false ; else other\" [routerLink]=\"[breadcrumb.url]\">{{ breadcrumb.label }}</a>\n\n        <ng-template #other>\n           {{breadcrumb.label}}\n        </ng-template>\n    </li>\n</ol>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/backend-module/breadcrumbs/breadcrumbs.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BreadCrumbsComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_filter__ = __webpack_require__("../../../../rxjs/add/operator/filter.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_filter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_filter__);
+/**
+ * Created by hernan on 06/11/2017.
+ */
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var BreadCrumbsComponent = (function () {
+    function BreadCrumbsComponent(activatedRoute, router) {
+        var _this = this;
+        this.activatedRoute = activatedRoute;
+        this.router = router;
+        this.breadcrumbs = [];
+        var ROUTE_DATA_BREADCRUMB = "breadcrumb";
+        //subscribe to the NavigationEnd event
+        this.router.events.filter(function (event) { return event instanceof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* NavigationEnd */]; }).subscribe(function (event) {
+            //set breadcrumbs
+            var root = _this.activatedRoute.root;
+            _this.breadcrumbs = _this.sanitizeBreadcrumbs(event, _this.getBreadcrumbs(root));
+        });
+    }
+    BreadCrumbsComponent.prototype.ngOnInit = function () {
+    };
+    BreadCrumbsComponent.prototype.sanitizeBreadcrumbs = function (route, breadcrumbs) {
+        for (var _i = 0, breadcrumbs_1 = breadcrumbs; _i < breadcrumbs_1.length; _i++) {
+            var b = breadcrumbs_1[_i];
+            if (b.url == route.url) {
+                b.active = true;
+            }
+        }
+        return breadcrumbs;
+    };
+    BreadCrumbsComponent.prototype.getBreadcrumbs = function (route, url, breadcrumbs) {
+        if (url === void 0) { url = ""; }
+        if (breadcrumbs === void 0) { breadcrumbs = []; }
+        var ROUTE_DATA_BREADCRUMB = "breadcrumb";
+        //get the child routes
+        var children = route.children;
+        //return if there are no more children
+        if (children.length === 0) {
+            return breadcrumbs;
+        }
+        //iterate over each children
+        for (var _i = 0, children_1 = children; _i < children_1.length; _i++) {
+            var child = children_1[_i];
+            if (child.routeConfig.hasOwnProperty('loadChildren')) {
+                this.basePath = child.routeConfig.path;
+            }
+            //verify primary route
+            if (child.outlet !== __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* PRIMARY_OUTLET */]) {
+                continue;
+            }
+            //verify the custom data property "breadcrumb" is specified on the route
+            if (!child.snapshot.data.hasOwnProperty(ROUTE_DATA_BREADCRUMB)) {
+                return this.getBreadcrumbs(child, url, breadcrumbs);
+            }
+            //get the route's URL segment
+            if (child.snapshot.url.length > 0) {
+                var routeURL = child.snapshot.url.map(function (segment) { return segment.path; }).join("/");
+                //append route URL to URL
+                url += "/" + routeURL;
+            }
+            else {
+                url = "/" + this.basePath;
+            }
+            //add breadcrumb
+            var breadcrumb = {
+                label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
+                params: child.snapshot.params,
+                url: url,
+                active: false
+            };
+            breadcrumbs.push(breadcrumb);
+            //recursive
+            return this.getBreadcrumbs(child, url, breadcrumbs);
+        }
+    };
+    return BreadCrumbsComponent;
+}());
+BreadCrumbsComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'breadcrumbs',
+        template: __webpack_require__("../../../../../src/app/backend-module/breadcrumbs/breadcrumbs.component.html"),
+        styles: ['']
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* Router */]) === "function" && _b || Object])
+], BreadCrumbsComponent);
+
+var _a, _b;
+//# sourceMappingURL=breadcrumbs.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/backend-module/breadcrumbs/breadcrumbs.module.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BreadCrumbModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__breadcrumbs_component__ = __webpack_require__("../../../../../src/app/backend-module/breadcrumbs/breadcrumbs.component.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+
+
+var BreadCrumbModule = (function () {
+    function BreadCrumbModule() {
+    }
+    return BreadCrumbModule;
+}());
+BreadCrumbModule = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
+        imports: [
+            __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_router__["e" /* RouterModule */]
+        ],
+        declarations: [
+            __WEBPACK_IMPORTED_MODULE_3__breadcrumbs_component__["a" /* BreadCrumbsComponent */]
+        ],
+        providers: [],
+        exports: [
+            __WEBPACK_IMPORTED_MODULE_3__breadcrumbs_component__["a" /* BreadCrumbsComponent */]
+        ]
+    })
+], BreadCrumbModule);
+
+//# sourceMappingURL=breadcrumbs.module.js.map
 
 /***/ }),
 
@@ -372,7 +536,7 @@ LoginComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/backend-module/login/login.component.html"),
         styles: [__webpack_require__("../../../../../src/app/backend-module/login/login.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["d" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["d" /* Router */]) === "function" && _c || Object])
 ], LoginComponent);
 
 var _a, _b, _c;
@@ -432,7 +596,7 @@ LogoutComponent = __decorate([
         template: '',
         styles: [''],
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_event_service__["a" /* EventService */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_event_service__["a" /* EventService */]) === "function" && _c || Object])
 ], LogoutComponent);
 
 var _a, _b, _c;
@@ -539,7 +703,7 @@ MenuItemComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/backend-module/menu-item/menu-item.component.html"),
         styles: [__webpack_require__("../../../../../src/app/backend-module/menu-item/menu-item.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["d" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["d" /* Router */]) === "function" && _c || Object])
 ], MenuItemComponent);
 
 var _a, _b, _c;
@@ -720,7 +884,7 @@ NavbarItemComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/backend-module/navbar-item/navbar-item.component.html"),
         styles: [__webpack_require__("../../../../../src/app/backend-module/navbar-item/navbar-item.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* Router */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["d" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["d" /* Router */]) === "function" && _c || Object])
 ], NavbarItemComponent);
 
 var _a, _b, _c;
@@ -1089,7 +1253,7 @@ UserModule = __decorate([
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_3__angular_router__["d" /* RouterModule */]
+            __WEBPACK_IMPORTED_MODULE_3__angular_router__["e" /* RouterModule */]
         ],
         declarations: [
             __WEBPACK_IMPORTED_MODULE_4__user_side_user_side_component__["a" /* UserSideComponent */],

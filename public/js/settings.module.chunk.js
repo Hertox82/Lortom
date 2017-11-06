@@ -17,6 +17,8 @@ webpackJsonp(["settings.module"],{
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__ = __webpack_require__("../../../../rxjs/Rx.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_urlApi_api_manager__ = __webpack_require__("../../../../../src/app/urlApi/api.manager.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Subject__ = __webpack_require__("../../../../rxjs/Subject.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_Subject__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -30,35 +32,63 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var SettingsService = (function () {
     function SettingsService(http) {
         this.http = http;
+        this._oC = new __WEBPACK_IMPORTED_MODULE_4_rxjs_Subject__["Subject"]();
+        this.oc$ = this._oC.asObservable();
+        // create the ApiManager
         this.apiManager = new __WEBPACK_IMPORTED_MODULE_3__app_urlApi_api_manager__["a" /* ApiManager */]();
+        // write the api route for setting
         var urls = [
             { namePath: 'getPermission', path: 'permissions' },
             { namePath: 'getRoles', path: 'roles' }
         ];
+        //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
     }
+    /**
+     * This function retrive the roles from the API (Laravel)
+     * @returns {Observable<R>}
+     */
     SettingsService.prototype.getRolesFrom = function () {
         return this.http.get(this.apiManager.getPathByName('getRoles'))
             .map(function (response) {
             return response.json().roles;
         });
     };
+    /**
+     * This function retrive the permissions from the API (Laravel)
+     * @returns {Observable<R>}
+     */
     SettingsService.prototype.getPermissionsFrom = function () {
         return this.http.get(this.apiManager.getPathByName('getPermission'))
             .map(function (response) {
             return response.json().permissions;
         });
     };
+    /**
+     * This function set the Roles
+     * @param roles
+     */
     SettingsService.prototype.setRoles = function (roles) {
         sessionStorage.setItem('roles', JSON.stringify(roles));
         this.listOfRoles = roles;
     };
+    /**
+     * This function check if Dataset of Roles exist
+     * @returns {boolean}
+     */
     SettingsService.prototype.checkRolesExist = function () {
         return (sessionStorage.getItem('roles') !== null);
     };
+    /**
+     * This function return Role passing a property
+     * @param name
+     * @param value
+     * @returns {Role}
+     */
     SettingsService.prototype.getRoleByProperty = function (name, value) {
         var response;
         response = null;
@@ -72,6 +102,12 @@ var SettingsService = (function () {
         });
         return response;
     };
+    /**
+     * This function check if a role has permission
+     * @param role
+     * @param permission
+     * @returns {boolean}
+     */
     SettingsService.prototype.roleHasPermission = function (role, permission) {
         var response = false;
         role.permissions.forEach(function (p) {
@@ -81,6 +117,10 @@ var SettingsService = (function () {
         });
         return response;
     };
+    /**
+     * This function get The Roles
+     * @returns {any}
+     */
     SettingsService.prototype.getRoles = function () {
         if (this.listOfRoles == null) {
             return JSON.parse(sessionStorage.getItem('roles'));
@@ -88,6 +128,9 @@ var SettingsService = (function () {
         else {
             return this.listOfRoles;
         }
+    };
+    SettingsService.prototype.emitOc = function (object) {
+        this._oC.next(object);
     };
     return SettingsService;
 }());
@@ -225,7 +268,7 @@ var _a, _b, _c;
 /***/ "../../../../../src/plugins/Hardel/Settings/component/Roles/roles.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tabbable-custom\">\n    <ul class=\"nav nav-tabs\">\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> Roles</a>\n        </li>\n        <li>\n            <a href=\"#tab_2\" data-toggle=\"tab\"> Permissions</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-10\">\n                                <div class=\"dataTables_length\">\n                                    <label>\n                                        Show\n                                        <select class=\"form-control input-sm\" name=\"example_length\">\n                                            <option value=\"10\">10</option>\n                                        </select>\n                                        entries\n                                    </label>\n                                </div>\n                            </div>\n                            <div class=\"col-md-2\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                        <tr *ngFor=\"let role of listaRole\">\n                                            <td>\n                                                <input type=\"checkbox\">\n                                            </td>\n                                            <td>\n                                                {{role.name}}\n                                            </td>\n                                            <td>\n                                                <a [routerLink] = \"['/backend/settings/role',role.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                            </td>\n                                        </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-5\">\n                                <div class=\"dataTables_info\">Showing 1 to 10 of 57 entries</div>\n                            </div>\n                            <div class=\"col-sm-7\">\n                                <div class=\"dataTables_paginate\">\n                                    <ul class=\"pagination\">\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\" aria-label=\"Previous\"><span aria-hidden=\"true\">«</span></a>\n                                        </li>\n                                        <li class=\"page-item active\">\n                                            <a class=\"page-link\" href=\"#\">1</a>\n                                        </li>\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\">2</a>\n                                        </li>\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\" aria-label=\"Next\"><span aria-hidden=\"true\">»</span></a>\n                                        </li>\n                                    </ul>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> Roles</a>\n        </li>\n        <li>\n            <a href=\"#tab_2\" data-toggle=\"tab\"> Permissions</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-10\">\n                                <div class=\"dataTables_length\">\n                                    <label>\n                                        Show\n                                        <select class=\"form-control input-sm\" name=\"example_length\">\n                                            <option value=\"10\">10</option>\n                                        </select>\n                                        entries\n                                    </label>\n                                </div>\n                            </div>\n                            <div class=\"col-md-2\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                        <tr *ngFor=\"let role of listaRole\">\n                                            <td>\n                                                <input type=\"checkbox\">\n                                            </td>\n                                            <td>\n                                                {{role.name}}\n                                            </td>\n                                            <td>\n                                                <a [routerLink] = \"['/backend/settings/roles',role.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                            </td>\n                                        </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-5\">\n                                <div class=\"dataTables_info\">Showing 1 to 10 of 57 entries</div>\n                            </div>\n                            <div class=\"col-sm-7\">\n                                <div class=\"dataTables_paginate\">\n                                    <ul class=\"pagination\">\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\" aria-label=\"Previous\"><span aria-hidden=\"true\">«</span></a>\n                                        </li>\n                                        <li class=\"page-item active\">\n                                            <a class=\"page-link\" href=\"#\">1</a>\n                                        </li>\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\">2</a>\n                                        </li>\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\" aria-label=\"Next\"><span aria-hidden=\"true\">»</span></a>\n                                        </li>\n                                    </ul>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -236,6 +279,7 @@ module.exports = "<div class=\"tabbable-custom\">\n    <ul class=\"nav nav-tabs\
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RolesComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__ = __webpack_require__("../../../../../src/plugins/Hardel/Settings/Services/settings.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /**
  * Created by hernan on 30/10/2017.
  */
@@ -250,18 +294,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var RolesComponent = (function () {
-    function RolesComponent(mService) {
+    function RolesComponent(m_Service, router) {
         var _this = this;
-        this.mService = mService;
-        if (!this.mService.checkRolesExist()) {
-            this.mService.getRolesFrom().subscribe(function (roles) {
+        this.m_Service = m_Service;
+        this.router = router;
+        this.myRoot = '/backend/settings/roles';
+        this.isRoot = false;
+        this.router.events.subscribe(function (val) {
+            if (val instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* NavigationEnd */]) {
+                if (_this.myRoot === val.url) {
+                    _this.isRoot = true;
+                }
+                else {
+                    _this.isRoot = false;
+                }
+            }
+        });
+        if (!this.m_Service.checkRolesExist()) {
+            this.m_Service.getRolesFrom().subscribe(function (roles) {
                 _this.listaRole = roles;
-                _this.mService.setRoles(_this.listaRole);
+                _this.m_Service.setRoles(_this.listaRole);
             });
         }
         else {
-            this.listaRole = this.mService.getRoles();
+            this.listaRole = this.m_Service.getRoles();
         }
     }
     RolesComponent.prototype.ngOnInit = function () {
@@ -274,10 +332,10 @@ RolesComponent = __decorate([
         template: __webpack_require__("../../../../../src/plugins/Hardel/Settings/component/Roles/roles.component.html"),
         styles: ['']
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__["a" /* SettingsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__["a" /* SettingsService */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__["a" /* SettingsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__["a" /* SettingsService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* Router */]) === "function" && _b || Object])
 ], RolesComponent);
 
-var _a;
+var _a, _b;
 //# sourceMappingURL=roles.component.js.map
 
 /***/ }),
@@ -285,7 +343,7 @@ var _a;
 /***/ "../../../../../src/plugins/Hardel/Settings/component/settings.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\">\n        <h1>Settings</h1>\n        <ol class=\"breadcrumb\">\n            <li><a>Backend</a></li>\n            <li class=\"active\"><a>Settings</a></li>\n        </ol>\n    </div>\n    <div class=\"content\">\n        <router-outlet></router-outlet>\n    </div>\n</div>"
+module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\">\n        <h1>Settings</h1>\n        <breadcrumbs></breadcrumbs>\n    </div>\n    <div class=\"content\">\n        <router-outlet></router-outlet>\n        <div class=\"portlet\" *ngIf=\"isRoot === true\">\n            <div class=\"portlet-title\">\n                <div class=\"caption\">\n                    <i class=\"fa fa-database\"></i>\n                    <span>Overviews</span>\n                </div>\n                <div class=\"actions\">\n                </div>\n            </div>\n            <div class=\"portlet-body\">\n                <div class=\"tiles\">\n                    <a [routerLink]=\"['/backend/settings/roles']\">\n                        <div class=\"tile bg-orange\">\n                            <div class=\"tile-body\">\n                                    <i class=\"fa fa-list fa-6\"></i>\n                            </div>\n                            <div class=\"tile-object\">\n                                <div class=\"name\">\n                                    Roles\n                                </div>\n                            </div>\n                        </div>\n                    </a>\n                </div>\n            </div>\n        </div>\n\n    </div>\n</div>"
 
 /***/ }),
 
@@ -295,6 +353,8 @@ module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\"
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SettingsComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__ = __webpack_require__("../../../../../src/plugins/Hardel/Settings/Services/settings.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /**
  * Created by hernan on 17/10/2017.
  */
@@ -308,10 +368,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var SettingsComponent = (function () {
-    function SettingsComponent() {
+    function SettingsComponent(eService, router) {
+        var _this = this;
+        this.eService = eService;
+        this.router = router;
+        this.myRoot = '/backend/settings';
+        this.isRoot = true;
+        //trigger the event for the overview
+        this.eService.oc$.subscribe(function (data) {
+            _this.isRoot = data;
+        });
+        this.router.events.subscribe(function (val) {
+            if (val instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* NavigationEnd */]) {
+                if (_this.myRoot === val.url) {
+                    _this.isRoot = true;
+                }
+                else {
+                    _this.isRoot = false;
+                }
+            }
+        });
     }
-    SettingsComponent.prototype.ngOnInit = function () { };
+    SettingsComponent.prototype.ngOnInit = function () {
+    };
     return SettingsComponent;
 }());
 SettingsComponent = __decorate([
@@ -319,9 +401,10 @@ SettingsComponent = __decorate([
         selector: 'app-settings',
         template: __webpack_require__("../../../../../src/plugins/Hardel/Settings/component/settings.component.html")
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__["a" /* SettingsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__["a" /* SettingsService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* Router */]) === "function" && _b || Object])
 ], SettingsComponent);
 
+var _a, _b;
 //# sourceMappingURL=settings.component.js.map
 
 /***/ }),
@@ -338,6 +421,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_backend_module_breadcrumbs_breadcrumbs_module__ = __webpack_require__("../../../../../src/app/backend-module/breadcrumbs/breadcrumbs.module.ts");
 /**
  * Created by hernan on 17/10/2017.
  */
@@ -347,6 +431,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -364,7 +449,8 @@ SettingsModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_3__angular_common__["b" /* CommonModule */],
             __WEBPACK_IMPORTED_MODULE_4__angular_forms__["a" /* FormsModule */],
             __WEBPACK_IMPORTED_MODULE_5__angular_http__["c" /* HttpModule */],
-            __WEBPACK_IMPORTED_MODULE_1__settings_routing__["b" /* routing */]
+            __WEBPACK_IMPORTED_MODULE_1__settings_routing__["b" /* routing */],
+            __WEBPACK_IMPORTED_MODULE_6__app_backend_module_breadcrumbs_breadcrumbs_module__["a" /* BreadCrumbModule */]
         ],
         providers: [__WEBPACK_IMPORTED_MODULE_2__Services_settings_service__["a" /* SettingsService */]],
         declarations: [__WEBPACK_IMPORTED_MODULE_1__settings_routing__["a" /* routedComponents */]]
@@ -393,12 +479,13 @@ SettingsModule = __decorate([
 
 
 var routes = [
-    { path: '', component: __WEBPACK_IMPORTED_MODULE_1__component_settings_component__["a" /* SettingsComponent */], children: [
-            { path: 'roles', component: __WEBPACK_IMPORTED_MODULE_2__component_Roles_roles_component__["a" /* RolesComponent */] },
-            { path: 'role/:id', component: __WEBPACK_IMPORTED_MODULE_3__component_Role_role_component__["a" /* RoleComponent */] }
+    { path: '', component: __WEBPACK_IMPORTED_MODULE_1__component_settings_component__["a" /* SettingsComponent */], data: { breadcrumb: 'Settings' }, children: [
+            { path: 'roles', component: __WEBPACK_IMPORTED_MODULE_2__component_Roles_roles_component__["a" /* RolesComponent */], data: { breadcrumb: 'Roles' }, children: [
+                    { path: ':id', component: __WEBPACK_IMPORTED_MODULE_3__component_Role_role_component__["a" /* RoleComponent */], data: { breadcrumb: 'Role' } }
+                ] },
         ] }
 ];
-var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["d" /* RouterModule */].forChild(routes);
+var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["e" /* RouterModule */].forChild(routes);
 var routedComponents = [__WEBPACK_IMPORTED_MODULE_1__component_settings_component__["a" /* SettingsComponent */], __WEBPACK_IMPORTED_MODULE_2__component_Roles_roles_component__["a" /* RolesComponent */], __WEBPACK_IMPORTED_MODULE_3__component_Role_role_component__["a" /* RoleComponent */]];
 //# sourceMappingURL=settings.routing.js.map
 
