@@ -16,15 +16,9 @@ export class SettingsComponent implements OnInit
 {
     isRoot : boolean;
     myRoot = '/backend/settings';
-    constructor(private eService : SettingsService, private router : Router) {
+    constructor(private router : Router) {
         this.isRoot = true;
         //trigger the event for the overview
-        this.eService.oc$.subscribe(
-            (data : boolean) => {
-                this.isRoot = data;
-            }
-        );
-
         this.router.events.subscribe(
             (val) => {
                 if(val instanceof NavigationEnd)

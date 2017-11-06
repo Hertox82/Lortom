@@ -2,18 +2,17 @@
 
 import {Injectable} from "@angular/core";
 import {Role,Permission} from "./settings.interfaces";
-import {Http,Response} from "@angular/http";
+import {Http,Response, RequestOptions, Headers} from "@angular/http";
 import 'rxjs/Rx';
 import {ApiManager} from "../../../../app/urlApi/api.manager";
 import {Subject} from "rxjs/Subject";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class SettingsService {
 
     apiManager : ApiManager;
     listOfRoles : Role[];
-    private _oC = new Subject();
-    oc$ = this._oC.asObservable();
 
     constructor(private http : Http)
     {
@@ -22,8 +21,9 @@ export class SettingsService {
         // write the api route for setting
          const urls = [
                 { namePath : 'getPermission', path: 'permissions'},
-                { namePath : 'getRoles', path: 'roles' }
-        ];
+                { namePath : 'getRoles', path: 'roles' },
+                { namePath : 'saveRole', path: 'role'}
+            ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
     }
@@ -134,9 +134,15 @@ export class SettingsService {
         }
     }
 
-    emitOc(object){
-        this._oC.next(object);
-    }
+    saveRole(role : Role) : Observable<any> {
+        let headers = new Headers({'Content-Type' : 'application/json'});
+        let options = new RequestOptions({headers : headers});
 
+        return this.http.put(this.apiManager.getPathByName('saveRole'),role,options)
+            .map((response : Response) => {
+                console.log(response);
+                return response;
+            });
+    }
 }
 

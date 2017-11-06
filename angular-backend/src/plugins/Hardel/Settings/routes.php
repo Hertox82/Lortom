@@ -14,3 +14,8 @@ Route::get('/roles',[
     'as'     => 'apiGetRoles',
     'uses'   => 'SettingsController@getRoles'
 ]);
+
+Route::put('/role',[
+    'as'    => 'apiSaveRole',
+    'uses'  => 'SettingsController@saveRole'
+])->middleware('lortom.auth');

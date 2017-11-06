@@ -15,6 +15,7 @@ import {element} from "protractor";
 export class RoleComponent implements OnInit,OnDestroy
 {
     @Input() role : Role;
+    copyRole : Role;
     id : number;
     private sub : any;
     isEdit : boolean;
@@ -30,6 +31,7 @@ export class RoleComponent implements OnInit,OnDestroy
             (params) => {
                 this.id = +params['id'];
                 this.role = this.sService.getRoleByProperty('id',this.id);
+                this.copyRole = Object.assign({},this.role);
             }
         );
     }
@@ -56,6 +58,7 @@ export class RoleComponent implements OnInit,OnDestroy
                 });
             }
         );
+        this.cloneRole();
     }
 
     ngOnDestroy() {
@@ -69,9 +72,31 @@ export class RoleComponent implements OnInit,OnDestroy
 
     saveMode() {
         //salva i cambiamenti
+        if(this.role !== this.copyRole)
+        {
+            if(this.role.name.length == 0)
+            {
+                alert('You must write a name of Role, please!');
+                this.cloneCopyRole();
+                return;
+            }
+
+            this.sService.saveRole(this.role).subscribe(
+                (response : any) => {
+
+                }
+            );
+        }
     }
 
-    resetMode() {}
+    resetMode() {
+
+        if(this.role !== this.copyRole) {
+            if (confirm('Are you sure you don\'t want to save this changement and restore it?')) {
+                this.cloneCopyRole();
+            }
+        }
+    }
 
     addPermissions(item : Permission) {
         //aggiunge un permesso
@@ -108,5 +133,30 @@ export class RoleComponent implements OnInit,OnDestroy
         else {
 
         }
+    }
+
+    cloneRole(){
+        let permissions: Permission[] = [];
+
+        for(let perm of this.role.permissions)
+        {
+            permissions.push(perm);
+        }
+
+        this.copyRole = Object.assign({},this.role);
+        this.copyRole.permissions = permissions;
+    }
+
+    cloneCopyRole()
+    {
+        let permissions: Permission[] = [];
+
+        for(let perm of this.copyRole.permissions)
+        {
+            permissions.push(perm);
+        }
+
+        this.role = Object.assign({},this.copyRole);
+        this.role.permissions = permissions;
     }
 }
