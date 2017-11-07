@@ -1,7 +1,6 @@
 import {Routes, RouterModule} from "@angular/router"; 
 import {ModuleWithProviders} from "@angular/core";
-import {LoginComponent} from "./backend-module/login/login.component";
-import {LogoutComponent} from "./backend-module/logout/logout.component";
+import {LoginComponent,LogoutComponent} from "./backend-module/login";
 
 const routes: Routes = [ 
        {path: 'backend', redirectTo:'backend/dashboard', pathMatch: 'full'},

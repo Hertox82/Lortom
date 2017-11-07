@@ -58,12 +58,12 @@ export class MenuService {
     }
 
 
-    setUser(user : User){
+    setUser(user : User) : void{
         this.user = user;
         sessionStorage.setItem('user',JSON.stringify(user));
     }
 
-    getUser() {
+    getUser() : User {
         if(this.user == 'undefined' || this.user == null)
         {
             this.user = JSON.parse(sessionStorage.getItem('user'));
@@ -72,7 +72,7 @@ export class MenuService {
         return this.user;
     }
 
-    deleteUser() {
+    deleteUser() : void {
         sessionStorage.removeItem('user');
     }
 }

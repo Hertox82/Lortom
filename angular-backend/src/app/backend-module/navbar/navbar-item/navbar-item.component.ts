@@ -1,7 +1,8 @@
 import {Component, OnInit,Input} from "@angular/core";
-import {NavbarItem} from "../../../interfaces/navbar.interface";
-import {EventService} from "../../../services/event.service";
+import {EventService} from "../../../../services/event.service";
 import {NavigationEnd, Router} from "@angular/router";
+import {NavbarItem} from "../public_api";
+
 
 
 @Component({

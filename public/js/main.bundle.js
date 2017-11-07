@@ -181,15 +181,13 @@ AppModule = __decorate([
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return routing; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__backend_module_login_login_component__ = __webpack_require__("../../../../../src/app/backend-module/login/login.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__backend_module_logout_logout_component__ = __webpack_require__("../../../../../src/app/backend-module/logout/logout.component.ts");
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__backend_module_login__ = __webpack_require__("../../../../../src/app/backend-module/login/index.ts");
 
 
 var routes = [
     { path: 'backend', redirectTo: 'backend/dashboard', pathMatch: 'full' },
-    { path: 'backend/login', component: __WEBPACK_IMPORTED_MODULE_1__backend_module_login_login_component__["a" /* LoginComponent */] },
-    { path: 'backend/logout', component: __WEBPACK_IMPORTED_MODULE_2__backend_module_logout_logout_component__["a" /* LogoutComponent */] },
+    { path: 'backend/login', component: __WEBPACK_IMPORTED_MODULE_1__backend_module_login__["a" /* LoginComponent */] },
+    { path: 'backend/logout', component: __WEBPACK_IMPORTED_MODULE_1__backend_module_login__["b" /* LogoutComponent */] },
     { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' },
     { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' },
     { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' }
@@ -206,21 +204,11 @@ var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["e" /* RouterModule 
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BackendModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__navbar_navbar_component__ = __webpack_require__("../../../../../src/app/backend-module/navbar/navbar.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__navbar_item_navbar_item_component__ = __webpack_require__("../../../../../src/app/backend-module/navbar-item/navbar-item.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__menu_items_menu_items_component__ = __webpack_require__("../../../../../src/app/backend-module/menu-items/menu-items.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__menu_item_menu_item_component__ = __webpack_require__("../../../../../src/app/backend-module/menu-item/menu-item.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__submenu_item_submenu_item_component__ = __webpack_require__("../../../../../src/app/backend-module/submenu-item/submenu-item.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__login_login_component__ = __webpack_require__("../../../../../src/app/backend-module/login/login.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__menuservice__ = __webpack_require__("../../../../../src/app/menuservice.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__logout_logout_component__ = __webpack_require__("../../../../../src/app/backend-module/logout/logout.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__user_module_user_module__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__user_module_user_side_user_side_component__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user-side/user-side.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__user_module_user_model_usermodel_component__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user-model/usermodel.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__breadcrumbs_breadcrumbs_module__ = __webpack_require__("../../../../../src/app/backend-module/breadcrumbs/breadcrumbs.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menuservice__ = __webpack_require__("../../../../../src/app/menuservice.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__backend_module__ = __webpack_require__("../../../../../src/app/backend-module/index.ts");
 /**
  * Created by hernan on 26/10/2017.
  */
@@ -237,16 +225,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-
-
-
-
-
-
-
-
-
-
 var BackendModule = (function () {
     function BackendModule() {
     }
@@ -256,31 +234,20 @@ BackendModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_10__angular_router__["e" /* RouterModule */],
-            __WEBPACK_IMPORTED_MODULE_11__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_13__user_module_user_module__["a" /* UserModule */],
-            __WEBPACK_IMPORTED_MODULE_16__breadcrumbs_breadcrumbs_module__["a" /* BreadCrumbModule */]
+            __WEBPACK_IMPORTED_MODULE_4__angular_router__["e" /* RouterModule */],
+            __WEBPACK_IMPORTED_MODULE_5__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_6__backend_module__["d" /* UserModule */],
+            __WEBPACK_IMPORTED_MODULE_6__backend_module__["c" /* BreadCrumbModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__navbar_navbar_component__["a" /* NavbarComponent */],
-            __WEBPACK_IMPORTED_MODULE_3__navbar_item_navbar_item_component__["a" /* NavbarItemComponent */],
-            __WEBPACK_IMPORTED_MODULE_4__menu_items_menu_items_component__["a" /* MenuItemsComponent */],
-            __WEBPACK_IMPORTED_MODULE_5__menu_item_menu_item_component__["a" /* MenuItemComponent */],
-            __WEBPACK_IMPORTED_MODULE_6__submenu_item_submenu_item_component__["a" /* SubMenuItemComponent */],
-            __WEBPACK_IMPORTED_MODULE_7__login_login_component__["a" /* LoginComponent */],
-            __WEBPACK_IMPORTED_MODULE_12__logout_logout_component__["a" /* LogoutComponent */],
+            __WEBPACK_IMPORTED_MODULE_6__backend_module__["b" /* BackendImportComponent */]
         ],
         providers: [
-            __WEBPACK_IMPORTED_MODULE_8__menuservice__["a" /* MenuService */],
-            __WEBPACK_IMPORTED_MODULE_9__services_event_service__["a" /* EventService */]
+            __WEBPACK_IMPORTED_MODULE_2__menuservice__["a" /* MenuService */],
+            __WEBPACK_IMPORTED_MODULE_3__services_event_service__["a" /* EventService */]
         ],
         exports: [
-            __WEBPACK_IMPORTED_MODULE_2__navbar_navbar_component__["a" /* NavbarComponent */],
-            __WEBPACK_IMPORTED_MODULE_4__menu_items_menu_items_component__["a" /* MenuItemsComponent */],
-            __WEBPACK_IMPORTED_MODULE_7__login_login_component__["a" /* LoginComponent */],
-            __WEBPACK_IMPORTED_MODULE_12__logout_logout_component__["a" /* LogoutComponent */],
-            __WEBPACK_IMPORTED_MODULE_14__user_module_user_side_user_side_component__["a" /* UserSideComponent */],
-            __WEBPACK_IMPORTED_MODULE_15__user_module_user_model_usermodel_component__["a" /* UserModelComponent */],
+            __WEBPACK_IMPORTED_MODULE_6__backend_module__["a" /* BackendExportComponent */]
         ]
     })
 ], BackendModule);
@@ -450,6 +417,48 @@ BreadCrumbModule = __decorate([
 
 /***/ }),
 
+/***/ "../../../../../src/app/backend-module/breadcrumbs/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__breadcrumbs_module__ = __webpack_require__("../../../../../src/app/backend-module/breadcrumbs/breadcrumbs.module.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__breadcrumbs_module__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__breadcrumbs_component__ = __webpack_require__("../../../../../src/app/backend-module/breadcrumbs/breadcrumbs.component.ts");
+/* unused harmony reexport BreadCrumbsComponent */
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/backend-module/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__public_api__ = __webpack_require__("../../../../../src/app/backend-module/public_api.ts");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__public_api__["a"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__public_api__["b"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_0__public_api__["c"]; });
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_0__public_api__["d"]; });
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/backend-module/login/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__login_component__ = __webpack_require__("../../../../../src/app/backend-module/login/login.component.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__login_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__logout_component__ = __webpack_require__("../../../../../src/app/backend-module/login/logout.component.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__logout_component__["a"]; });
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/backend-module/login/login.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -544,7 +553,7 @@ var _a, _b, _c;
 
 /***/ }),
 
-/***/ "../../../../../src/app/backend-module/logout/logout.component.ts":
+/***/ "../../../../../src/app/backend-module/login/logout.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -566,9 +575,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-/**
- * Created by hernan on 26/10/2017.
- */
 var LogoutComponent = (function () {
     function LogoutComponent(menuService, router, eService) {
         var _this = this;
@@ -604,7 +610,24 @@ var _a, _b, _c;
 
 /***/ }),
 
-/***/ "../../../../../src/app/backend-module/menu-item/menu-item.component.css":
+/***/ "../../../../../src/app/backend-module/menu-items/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__submenu_item_submenu_item_component__ = __webpack_require__("../../../../../src/app/backend-module/menu-items/submenu-item/submenu-item.component.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_0__submenu_item_submenu_item_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menu_item_menu_item_component__ = __webpack_require__("../../../../../src/app/backend-module/menu-items/menu-item/menu-item.component.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__menu_item_menu_item_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__menu_items_component__ = __webpack_require__("../../../../../src/app/backend-module/menu-items/menu-items.component.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__menu_items_component__["a"]; });
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/backend-module/menu-items/menu-item/menu-item.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -622,14 +645,14 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/backend-module/menu-item/menu-item.component.html":
+/***/ "../../../../../src/app/backend-module/menu-items/menu-item/menu-item.component.html":
 /***/ (function(module, exports) {
 
 module.exports = "<li [routerLinkActive]=\"['active']\">\n  <a routerLink=\"{{item.href}}\" (click)=\"onRouterClick()\"><i class=\"{{item.icon}}\"></i> {{item.name}}\n    <span class=\"pull-right-container\" *ngIf=\"item.subMenu?.length > 0\">\n      <i *ngIf=\"!isClicked && checkUrlRouter(); else iconBlock\" class=\"fa fa-angle-left pull-right\"></i>\n    </span>\n    <ng-template #iconBlock>\n      <i class=\"fa fa-angle-down pull-right\"></i>\n    </ng-template>\n  </a>\n\n  <ul [hidden] = \"!isClicked && checkUrlRouter()\">\n    <app-submenu-item *ngFor=\"let sub of item.subMenu\"[item]=\"sub\"></app-submenu-item>\n  </ul>\n</li>\n"
 
 /***/ }),
 
-/***/ "../../../../../src/app/backend-module/menu-item/menu-item.component.ts":
+/***/ "../../../../../src/app/backend-module/menu-items/menu-item/menu-item.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -700,8 +723,8 @@ __decorate([
 MenuItemComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'app-menu-item',
-        template: __webpack_require__("../../../../../src/app/backend-module/menu-item/menu-item.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/backend-module/menu-item/menu-item.component.css")]
+        template: __webpack_require__("../../../../../src/app/backend-module/menu-items/menu-item/menu-item.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/backend-module/menu-items/menu-item/menu-item.component.css")]
     }),
     __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["d" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["d" /* Router */]) === "function" && _c || Object])
 ], MenuItemComponent);
@@ -779,7 +802,77 @@ var _a;
 
 /***/ }),
 
-/***/ "../../../../../src/app/backend-module/navbar-item/navbar-item.component.css":
+/***/ "../../../../../src/app/backend-module/menu-items/submenu-item/submenu-item.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<li class=\"submenu-item\">\n    <a routerLink=\"{{item.href}}\" (click)=\"send($event,item)\">{{item.name}}</a>\n</li>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/backend-module/menu-items/submenu-item/submenu-item.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SubMenuItemComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface__ = __webpack_require__("../../../../../src/interfaces/slideItem.interface.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var SubMenuItemComponent = (function () {
+    function SubMenuItemComponent(eService) {
+        this.eService = eService;
+    }
+    SubMenuItemComponent.prototype.ngOnInit = function () {
+    };
+    SubMenuItemComponent.prototype.send = function (event, item) {
+        this.eService.emitEventSubMenu(item);
+    };
+    return SubMenuItemComponent;
+}());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface__["SlideSubMenu"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface__["SlideSubMenu"]) === "function" && _a || Object)
+], SubMenuItemComponent.prototype, "item", void 0);
+SubMenuItemComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-submenu-item',
+        template: __webpack_require__("../../../../../src/app/backend-module/menu-items/submenu-item/submenu-item.component.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object])
+], SubMenuItemComponent);
+
+var _a, _b;
+//# sourceMappingURL=submenu-item.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/backend-module/navbar/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__navbar_item_navbar_item_component__ = __webpack_require__("../../../../../src/app/backend-module/navbar/navbar-item/navbar-item.component.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__navbar_item_navbar_item_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__navbar_component__ = __webpack_require__("../../../../../src/app/backend-module/navbar/navbar.component.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__navbar_component__["a"]; });
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/backend-module/navbar/navbar-item/navbar-item.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
@@ -797,23 +890,23 @@ module.exports = module.exports.toString();
 
 /***/ }),
 
-/***/ "../../../../../src/app/backend-module/navbar-item/navbar-item.component.html":
+/***/ "../../../../../src/app/backend-module/navbar/navbar-item/navbar-item.component.html":
 /***/ (function(module, exports) {
 
 module.exports = "<li class=\"navbar-item\"  *ngIf=\"navbarItem.href.length == 0; else withHref\" [ngClass]=\"isClicked ? 'active' : ''\">\n    <a  (click)=\"show($event)\" ><i class=\"{{navbarItem.name}}\"></i></a>\n    <ul class=\"navbar-submenu\" *ngIf=\"isShow == true;\">\n        <li class=\"navbar-submenu-item\" *ngFor=\"let nsub of navbarItem.subMenu\">\n            <a routerLink=\"{{nsub.href}}\">{{nsub.name}}</a>\n        </li>\n    </ul>\n\n</li>\n<ng-template #withHref>\n    <li class=\"navbar-item\" [ngClass] = \"isClicked ? 'active' : ''\">\n        <a routerLink=\"{{navbarItem.href}}\"><i class=\"{{navbarItem.name}}\"></i></a>\n    </li>\n</ng-template>"
 
 /***/ }),
 
-/***/ "../../../../../src/app/backend-module/navbar-item/navbar-item.component.ts":
+/***/ "../../../../../src/app/backend-module/navbar/navbar-item/navbar-item.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NavbarItemComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_navbar_interface__ = __webpack_require__("../../../../../src/interfaces/navbar.interface.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_navbar_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_navbar_interface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__public_api__ = __webpack_require__("../../../../../src/app/backend-module/navbar/public_api.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__public_api___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__public_api__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -835,7 +928,7 @@ var NavbarItemComponent = (function () {
         this.isShow = false;
         this.isClicked = false;
         this.router.events.subscribe(function (event) {
-            if (event instanceof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* NavigationEnd */]) {
+            if (event instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* NavigationEnd */]) {
                 if (_this.navbarItem.href.length > 0) {
                     if (_this.navbarItem.href == event.url) {
                         _this.isClicked = true;
@@ -876,15 +969,15 @@ var NavbarItemComponent = (function () {
 }());
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__interfaces_navbar_interface__["NavbarItem"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__interfaces_navbar_interface__["NavbarItem"]) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__public_api__["NavbarItem"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__public_api__["NavbarItem"]) === "function" && _a || Object)
 ], NavbarItemComponent.prototype, "navbarItem", void 0);
 NavbarItemComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'app-navbar-item',
-        template: __webpack_require__("../../../../../src/app/backend-module/navbar-item/navbar-item.component.html"),
-        styles: [__webpack_require__("../../../../../src/app/backend-module/navbar-item/navbar-item.component.css")]
+        template: __webpack_require__("../../../../../src/app/backend-module/navbar/navbar-item/navbar-item.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/backend-module/navbar/navbar-item/navbar-item.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["d" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["d" /* Router */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_event_service__["a" /* EventService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* Router */]) === "function" && _c || Object])
 ], NavbarItemComponent);
 
 var _a, _b, _c;
@@ -933,9 +1026,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-/**
- * Created by hernan on 26/10/2017.
- */
 var NavbarComponent = (function () {
     function NavbarComponent() {
         this.navbarItems = [
@@ -964,59 +1054,69 @@ NavbarComponent = __decorate([
 
 /***/ }),
 
-/***/ "../../../../../src/app/backend-module/submenu-item/submenu-item.component.html":
+/***/ "../../../../../src/app/backend-module/navbar/public_api.ts":
 /***/ (function(module, exports) {
 
-module.exports = "<li class=\"submenu-item\">\n    <a routerLink=\"{{item.href}}\" (click)=\"send($event,item)\">{{item.name}}</a>\n</li>"
+//# sourceMappingURL=public_api.js.map
 
 /***/ }),
 
-/***/ "../../../../../src/app/backend-module/submenu-item/submenu-item.component.ts":
+/***/ "../../../../../src/app/backend-module/public_api.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SubMenuItemComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface__ = __webpack_require__("../../../../../src/interfaces/slideItem.interface.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_event_service__ = __webpack_require__("../../../../../src/services/event.service.ts");
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return BackendImportComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BackendExportComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__navbar__ = __webpack_require__("../../../../../src/app/backend-module/navbar/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menu_items__ = __webpack_require__("../../../../../src/app/backend-module/menu-items/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login__ = __webpack_require__("../../../../../src/app/backend-module/login/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__user_module___ = __webpack_require__("../../../../../src/app/backend-module/user-module/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__breadcrumbs__ = __webpack_require__("../../../../../src/app/backend-module/breadcrumbs/index.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_4__breadcrumbs__["a"]; });
+/* unused harmony reexport BreadCrumbsComponent */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__user_module__ = __webpack_require__("../../../../../src/app/backend-module/user-module/index.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_5__user_module__["b"]; });
 
 
 
-var SubMenuItemComponent = (function () {
-    function SubMenuItemComponent(eService) {
-        this.eService = eService;
-    }
-    SubMenuItemComponent.prototype.ngOnInit = function () {
-    };
-    SubMenuItemComponent.prototype.send = function (event, item) {
-        this.eService.emitEventSubMenu(item);
-    };
-    return SubMenuItemComponent;
-}());
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface__["SlideSubMenu"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__interfaces_slideItem_interface__["SlideSubMenu"]) === "function" && _a || Object)
-], SubMenuItemComponent.prototype, "item", void 0);
-SubMenuItemComponent = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
-        selector: 'app-submenu-item',
-        template: __webpack_require__("../../../../../src/app/backend-module/submenu-item/submenu-item.component.html")
-    }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_event_service__["a" /* EventService */]) === "function" && _b || Object])
-], SubMenuItemComponent);
 
-var _a, _b;
-//# sourceMappingURL=submenu-item.component.js.map
+
+
+var BackendImportComponent = [
+    __WEBPACK_IMPORTED_MODULE_0__navbar__["a" /* NavbarComponent */],
+    __WEBPACK_IMPORTED_MODULE_0__navbar__["b" /* NavbarItemComponent */],
+    __WEBPACK_IMPORTED_MODULE_1__menu_items__["b" /* MenuItemsComponent */],
+    __WEBPACK_IMPORTED_MODULE_1__menu_items__["a" /* MenuItemComponent */],
+    __WEBPACK_IMPORTED_MODULE_1__menu_items__["c" /* SubMenuItemComponent */],
+    __WEBPACK_IMPORTED_MODULE_2__login__["a" /* LoginComponent */],
+    __WEBPACK_IMPORTED_MODULE_2__login__["b" /* LogoutComponent */],
+];
+var BackendExportComponent = [
+    __WEBPACK_IMPORTED_MODULE_0__navbar__["a" /* NavbarComponent */],
+    __WEBPACK_IMPORTED_MODULE_1__menu_items__["b" /* MenuItemsComponent */],
+    __WEBPACK_IMPORTED_MODULE_2__login__["a" /* LoginComponent */],
+    __WEBPACK_IMPORTED_MODULE_2__login__["b" /* LogoutComponent */],
+    __WEBPACK_IMPORTED_MODULE_3__user_module___["c" /* UserSideComponent */],
+    __WEBPACK_IMPORTED_MODULE_3__user_module___["a" /* UserModelComponent */],
+];
+//# sourceMappingURL=public_api.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/backend-module/user-module/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_model_usermodel_component__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user-model/usermodel.component.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__user_model_usermodel_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__user_side_user_side_component__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user-side/user-side.component.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_1__user_side_user_side_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__user_module__ = __webpack_require__("../../../../../src/app/backend-module/user-module/user.module.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__user_module__["a"]; });
+
+
+
+//# sourceMappingURL=index.js.map
 
 /***/ }),
 
@@ -1413,16 +1513,6 @@ var environment = {
     production: false
 };
 //# sourceMappingURL=environment.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/interfaces/navbar.interface.ts":
-/***/ (function(module, exports) {
-
-/**
- * Created by hernan on 26/10/2017.
- */
-//# sourceMappingURL=navbar.interface.js.map
 
 /***/ }),
 

@@ -3,19 +3,18 @@
  * Created by hernan on 17/10/2017.
  */
 import {RouterModule, Routes} from "@angular/router";
-import {SettingsComponent} from "./component/settings.component";
 import {ModuleWithProviders} from "@angular/core";
-import {RolesComponent} from "./component/Roles/roles.component";
-import {RoleComponent} from "./component/Role/role.component";
+import {RoleComponent,RoleNewComponent,RolesComponent,SettingsComponent} from "./component";
 
 const routes : Routes = [
     {path: '' , component:SettingsComponent, data : { breadcrumb : 'Settings'} , children:[
         {path: 'roles', component: RolesComponent, data : { breadcrumb : 'Roles'}, children: [
-            {path: ':id', component:RoleComponent, data : {breadcrumb : 'Role'}}
+            {path: 'new', component:RoleNewComponent, data : { breadcrumb : 'New Role'} },
+            {path: ':id', component:RoleComponent, data : {breadcrumb : 'Role'}},
         ]},
     ]}
 ];
 
 export const routing : ModuleWithProviders = RouterModule.forChild(routes);
 
-export const routedComponents = [SettingsComponent,RolesComponent,RoleComponent];
+export const routedComponents = [SettingsComponent,RolesComponent,RoleComponent,RoleNewComponent];

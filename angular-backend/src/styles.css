@@ -87,6 +87,7 @@ footer { margin-left: 200px; padding: 10px; border:1px solid #dde0e6; font-size:
 .wrapper .dataTables_length label select { display: inline-block; width: 70px; margin: 0px 10px;}
 .wrapper .dataTables_filter label {display: inline-block;}
 .wrapper .dataTables_filter input {display: inline-block; width: 40%;}
+.wrapper .dataTables_filter a {display: inline-block; border-radius: unset; cursor:pointer; color:white;}
 .box-body table { width: 100%; font-size: 14px; margin-top: 10px;}
 .dataTables_paginate {float:right;}
 .page-item.active .page-link {background-color: orange; border-color:orange;}

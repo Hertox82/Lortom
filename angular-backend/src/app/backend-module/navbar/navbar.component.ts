@@ -1,9 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {NavbarItem} from "../../../interfaces/navbar.interface";
-/**
- * Created by hernan on 26/10/2017.
- */
-
+import {NavbarItem} from "./public_api";
 
 @Component({
     selector : 'app-navbar',
@@ -26,3 +22,6 @@ export class NavbarComponent implements OnInit
     }
     ngOnInit(){}
 }
+
+
+

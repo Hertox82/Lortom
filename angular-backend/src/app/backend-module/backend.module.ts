@@ -4,21 +4,11 @@
 
 import { NgModule } from '@angular/core';
 import {CommonModule} from "@angular/common";
-import {NavbarComponent} from "./navbar/navbar.component";
-import {NavbarItemComponent} from "./navbar-item/navbar-item.component";
-import {MenuItemsComponent} from "./menu-items/menu-items.component";
-import {MenuItemComponent} from "./menu-item/menu-item.component";
-import {SubMenuItemComponent} from "./submenu-item/submenu-item.component";
-import {LoginComponent} from "./login/login.component";
 import {MenuService} from "../menuservice";
 import {EventService} from "../../services/event.service";
 import {RouterModule} from "@angular/router";
 import {FormsModule} from "@angular/forms";
-import {LogoutComponent} from "./logout/logout.component";
-import {UserModule} from "./user-module/user.module";
-import {UserSideComponent} from "./user-module/user-side/user-side.component";
-import {UserModelComponent} from "./user-module/user-model/usermodel.component";
-import {BreadCrumbModule} from "./breadcrumbs/breadcrumbs.module";
+import {UserModule,BreadCrumbModule,BackendImportComponent,BackendExportComponent} from "../backend-module";
 
 @NgModule({
     imports : [
@@ -29,25 +19,14 @@ import {BreadCrumbModule} from "./breadcrumbs/breadcrumbs.module";
         BreadCrumbModule
     ],
     declarations : [
-        NavbarComponent,
-        NavbarItemComponent,
-        MenuItemsComponent,
-        MenuItemComponent,
-        SubMenuItemComponent,
-        LoginComponent,
-        LogoutComponent,
+        BackendImportComponent
     ],
     providers: [
         MenuService,
         EventService
     ],
     exports : [
-        NavbarComponent,
-        MenuItemsComponent,
-        LoginComponent,
-        LogoutComponent,
-        UserSideComponent,
-        UserModelComponent,
+        BackendExportComponent
     ]
 })
 export class BackendModule {}

@@ -1,7 +1,7 @@
 
 import {Component, Input, OnInit} from "@angular/core";
-import {SlideSubMenu} from "../../../interfaces/slideItem.interface";
-import {EventService} from "../../../services/event.service";
+import {SlideSubMenu} from "../../../../interfaces/slideItem.interface";
+import {EventService} from "../../../../services/event.service";
 
 @Component({
     selector : 'app-submenu-item',
