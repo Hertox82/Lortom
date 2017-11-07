@@ -141,7 +141,7 @@ export class SettingsService {
         return this.http.put(this.apiManager.getPathByName('saveRole'),role,options)
             .map((response : Response) => {
                 console.log(response);
-                return response;
+                return response.json().role;
             });
     }
 }

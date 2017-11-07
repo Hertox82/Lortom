@@ -37,6 +37,50 @@ export class RoleComponent implements OnInit,OnDestroy
     }
 
     ngOnInit(){
+        this.retrivePermission();
+    }
+
+    ngOnDestroy() {
+        this.sub.unsubscribe();
+    }
+
+    /**
+     * This function pass into edit Mode
+     */
+    editMode(){
+        //passa in modalità edit
+        this.isEdit = !this.isEdit;
+    }
+
+    /**
+     * This function go to save Mode
+     */
+    saveMode() {
+        //salva i cambiamenti
+        if(this.role !== this.copyRole)
+        {
+            if(this.role.name.length == 0)
+            {
+                alert('You must write a name of Role, please!');
+                this.cloneCopyRole();
+                return;
+            }
+
+            this.sService.saveRole(this.role).subscribe(
+                (role : Role) => {
+                    this.role = role;
+                    this.retrivePermission();
+                    this.editMode();
+                }
+            );
+        }
+    }
+
+    /**
+     * This function is to get Permission from API
+     */
+    private retrivePermission()
+    {
         this.sService.getPermissionsFrom().subscribe(
             (perms : Permission []) => {
                 this.listPermissions = perms;
@@ -61,34 +105,9 @@ export class RoleComponent implements OnInit,OnDestroy
         this.cloneRole();
     }
 
-    ngOnDestroy() {
-        this.sub.unsubscribe();
-    }
-
-    editMode(){
-        //passa in modalità edit
-        this.isEdit = !this.isEdit;
-    }
-
-    saveMode() {
-        //salva i cambiamenti
-        if(this.role !== this.copyRole)
-        {
-            if(this.role.name.length == 0)
-            {
-                alert('You must write a name of Role, please!');
-                this.cloneCopyRole();
-                return;
-            }
-
-            this.sService.saveRole(this.role).subscribe(
-                (response : any) => {
-
-                }
-            );
-        }
-    }
-
+    /**
+     * This function reset the Information of Role
+     */
     resetMode() {
 
         if(this.role !== this.copyRole) {
@@ -98,6 +117,10 @@ export class RoleComponent implements OnInit,OnDestroy
         }
     }
 
+    /**
+     * This Function add Permission at the moment to role.permissions
+     * @param item
+     */
     addPermissions(item : Permission) {
         //aggiunge un permesso
         this.filteredList = [];
@@ -112,6 +135,10 @@ export class RoleComponent implements OnInit,OnDestroy
 
     }
 
+    /**
+     * This function delete Permission from role.permissions
+     * @param item
+     */
     erasePermission(item) {
         // cancella il permesso
         this.listPermissions.push(item);
@@ -124,6 +151,9 @@ export class RoleComponent implements OnInit,OnDestroy
 
     }
 
+    /**
+     * This function filter permission for research
+     */
     filter(){
         if (this.query !== "") {
             this.filteredList = this.listPermissions.filter(function(el){
@@ -135,6 +165,9 @@ export class RoleComponent implements OnInit,OnDestroy
         }
     }
 
+    /**
+     * This function clone the Role
+     */
     cloneRole(){
         let permissions: Permission[] = [];
 
@@ -147,6 +180,9 @@ export class RoleComponent implements OnInit,OnDestroy
         this.copyRole.permissions = permissions;
     }
 
+    /**
+     * This function clone the CopyRole
+     */
     cloneCopyRole()
     {
         let permissions: Permission[] = [];

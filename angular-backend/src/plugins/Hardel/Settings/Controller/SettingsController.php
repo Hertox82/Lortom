@@ -67,7 +67,7 @@ class SettingsController extends Controller
         if($Role){
 
             //Check if changed the name
-            if($Role->name !== $input['name'])
+           if($Role->name !== $input['name'])
             {
                 $Role->name = $input['name'];
                 $Role->save();

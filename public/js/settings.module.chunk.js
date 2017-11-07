@@ -131,7 +131,7 @@ var SettingsService = (function () {
         return this.http.put(this.apiManager.getPathByName('saveRole'), role, options)
             .map(function (response) {
             console.log(response);
-            return response;
+            return response.json().role;
         });
     };
     return SettingsService;
@@ -192,6 +192,41 @@ var RoleComponent = (function () {
         });
     }
     RoleComponent.prototype.ngOnInit = function () {
+        this.retrivePermission();
+    };
+    RoleComponent.prototype.ngOnDestroy = function () {
+        this.sub.unsubscribe();
+    };
+    /**
+     * This function pass into edit Mode
+     */
+    RoleComponent.prototype.editMode = function () {
+        //passa in modalità edit
+        this.isEdit = !this.isEdit;
+    };
+    /**
+     * This function go to save Mode
+     */
+    RoleComponent.prototype.saveMode = function () {
+        var _this = this;
+        //salva i cambiamenti
+        if (this.role !== this.copyRole) {
+            if (this.role.name.length == 0) {
+                alert('You must write a name of Role, please!');
+                this.cloneCopyRole();
+                return;
+            }
+            this.sService.saveRole(this.role).subscribe(function (role) {
+                _this.role = role;
+                _this.retrivePermission();
+                _this.editMode();
+            });
+        }
+    };
+    /**
+     * This function is to get Permission from API
+     */
+    RoleComponent.prototype.retrivePermission = function () {
         var _this = this;
         this.sService.getPermissionsFrom().subscribe(function (perms) {
             _this.listPermissions = perms;
@@ -211,25 +246,9 @@ var RoleComponent = (function () {
         });
         this.cloneRole();
     };
-    RoleComponent.prototype.ngOnDestroy = function () {
-        this.sub.unsubscribe();
-    };
-    RoleComponent.prototype.editMode = function () {
-        //passa in modalità edit
-        this.isEdit = !this.isEdit;
-    };
-    RoleComponent.prototype.saveMode = function () {
-        //salva i cambiamenti
-        if (this.role !== this.copyRole) {
-            if (this.role.name.length == 0) {
-                alert('You must write a name of Role, please!');
-                this.cloneCopyRole();
-                return;
-            }
-            this.sService.saveRole(this.role).subscribe(function (response) {
-            });
-        }
-    };
+    /**
+     * This function reset the Information of Role
+     */
     RoleComponent.prototype.resetMode = function () {
         if (this.role !== this.copyRole) {
             if (confirm('Are you sure you don\'t want to save this changement and restore it?')) {
@@ -237,6 +256,10 @@ var RoleComponent = (function () {
             }
         }
     };
+    /**
+     * This Function add Permission at the moment to role.permissions
+     * @param item
+     */
     RoleComponent.prototype.addPermissions = function (item) {
         //aggiunge un permesso
         this.filteredList = [];
@@ -247,6 +270,10 @@ var RoleComponent = (function () {
             this.listPermissions.splice(index, 1);
         }
     };
+    /**
+     * This function delete Permission from role.permissions
+     * @param item
+     */
     RoleComponent.prototype.erasePermission = function (item) {
         // cancella il permesso
         this.listPermissions.push(item);
@@ -255,6 +282,9 @@ var RoleComponent = (function () {
             this.role.permissions.splice(index, 1);
         }
     };
+    /**
+     * This function filter permission for research
+     */
     RoleComponent.prototype.filter = function () {
         if (this.query !== "") {
             this.filteredList = this.listPermissions.filter(function (el) {
@@ -264,6 +294,9 @@ var RoleComponent = (function () {
         else {
         }
     };
+    /**
+     * This function clone the Role
+     */
     RoleComponent.prototype.cloneRole = function () {
         var permissions = [];
         for (var _i = 0, _a = this.role.permissions; _i < _a.length; _i++) {
@@ -273,6 +306,9 @@ var RoleComponent = (function () {
         this.copyRole = Object.assign({}, this.role);
         this.copyRole.permissions = permissions;
     };
+    /**
+     * This function clone the CopyRole
+     */
     RoleComponent.prototype.cloneCopyRole = function () {
         var permissions = [];
         for (var _i = 0, _a = this.copyRole.permissions; _i < _a.length; _i++) {
