@@ -125,3 +125,16 @@ footer { margin-left: 200px; padding: 10px; border:1px solid #dde0e6; font-size:
 /* Breadcrumbs */
 
 .breadcrumb-item + .breadcrumb-item::before { content: ">"}
+
+
+/* Error Page*/
+
+.error-page { margin: 30px auto 0 auto; width: 600px; background-color: white; padding:11px;}
+.headline {float:left; font-size:100px;  font-weight: 300;}
+.text-orange {color:orange;}
+.error-page>.error-content {margin-left:190px; display: block;}
+.error-page>.error-content>h3 {font-weight: 500; font-size: 25px; padding : 10px}
+.error-page>.error-content>h3>i {margin-right: 10px;}
+.error-page>.error-content>p {padding:10px; font-size: 14px;}
+.error-page>.error-content>p>a {color:orange; cursor: pointer;}
+.error-page>.error-content>p>a:hover {color:darkorange;}

@@ -4,6 +4,7 @@ import {NavbarComponent,NavbarItemComponent} from "./navbar";
 import {MenuItemsComponent,MenuItemComponent,SubMenuItemComponent} from "./menu-items";
 import {LoginComponent,LogoutComponent} from "./login";
 import {UserModelComponent,UserSideComponent} from "./user-module/";
+import {NotFoundComponent} from './notfoundpage';
 
 export {BreadCrumbModule,BreadCrumbsComponent} from "./breadcrumbs";
 export {UserModule} from "./user-module";
@@ -16,6 +17,7 @@ export const BackendImportComponent = [
     SubMenuItemComponent,
     LoginComponent,
     LogoutComponent,
+    NotFoundComponent
 ];
 
 export const BackendExportComponent = [
@@ -25,4 +27,5 @@ export const BackendExportComponent = [
     LogoutComponent,
     UserSideComponent,
     UserModelComponent,
+    NotFoundComponent,
 ];

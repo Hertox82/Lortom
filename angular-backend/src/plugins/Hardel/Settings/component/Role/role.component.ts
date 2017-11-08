@@ -3,7 +3,7 @@
 import {Component, OnInit, Input, OnDestroy} from "@angular/core";
 import {SettingsService} from "../../Services/settings.service";
 import {Permission, Role} from "../../Services/settings.interfaces";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {element} from "protractor";
 
 @Component({
@@ -22,15 +22,31 @@ export class RoleComponent implements OnInit,OnDestroy
     listPermissions = [];
     filteredList : Permission[];
     query : string;
+    notFound : boolean;
 
-    constructor(private sService : SettingsService, private router : ActivatedRoute){
+    constructor(private sService : SettingsService, private router : ActivatedRoute,private nav : Router){
         this.isEdit = false;
+        this.notFound = false;
         this.filteredList = [];
         this.query = '';
+        this.role = {
+            id : -2,
+            name : '',
+            state : false,
+            permissions : []
+        };
         this.sub = this.router.params.subscribe(
             (params) => {
                 this.id = +params['id'];
                 this.role = this.sService.getRoleByProperty('id',this.id);
+                if(this.role != null)
+                {
+                    this.notFound = true;
+                }
+                else
+                {
+                    this.nav.navigate(['/backend/not-found']);
+                }
                 this.copyRole = Object.assign({},this.role);
             }
         );
@@ -84,22 +100,22 @@ export class RoleComponent implements OnInit,OnDestroy
         this.sService.getPermissionsFrom().subscribe(
             (perms : Permission []) => {
                 this.listPermissions = perms;
-                this.role.permissions.forEach((item : Permission)=>{
-                    let index = -1;
-                    for(let i = 0; i<this.listPermissions.length; i++)
-                    {
-                        let m = this.listPermissions[i];
+                if(this.role != null) {
+                    this.role.permissions.forEach((item: Permission) => {
+                        let index = -1;
+                        for (let i = 0; i < this.listPermissions.length; i++) {
+                            let m = this.listPermissions[i];
 
-                        if(m.id === item.id && m.name === item.name)
-                        {
-                            index = i;
-                            break;
+                            if (m.id === item.id && m.name === item.name) {
+                                index = i;
+                                break;
+                            }
                         }
-                    }
-                    if(index > -1){
-                        this.listPermissions.splice(index,1);
-                    }
-                });
+                        if (index > -1) {
+                            this.listPermissions.splice(index, 1);
+                        }
+                    });
+                }
             }
         );
         this.cloneRole();
@@ -169,15 +185,16 @@ export class RoleComponent implements OnInit,OnDestroy
      * This function clone the Role
      */
     cloneRole(){
-        let permissions: Permission[] = [];
+        if(this.role != null) {
+            let permissions: Permission[] = [];
 
-        for(let perm of this.role.permissions)
-        {
-            permissions.push(perm);
+            for (let perm of this.role.permissions) {
+                permissions.push(perm);
+            }
+
+            this.copyRole = Object.assign({}, this.role);
+            this.copyRole.permissions = permissions;
         }
-
-        this.copyRole = Object.assign({},this.role);
-        this.copyRole.permissions = permissions;
     }
 
     /**

@@ -28,7 +28,7 @@ export class RoleNewComponent implements OnInit
 
         this.role = {
             id: -1,
-            name : 'Name',
+            name : '',
             state : false,
             permissions : []
         }
@@ -113,7 +113,8 @@ export class RoleNewComponent implements OnInit
      */
     saveMode() {
         //salva i cambiamenti
-        if(this.role !== this.copyRole)
+
+        if(!this.isEqual(this.role,this.copyRole))
         {
             if(this.role.name.length == 0)
             {
@@ -137,6 +138,11 @@ export class RoleNewComponent implements OnInit
             );
 
         }
+    }
+
+    isEqual(v,v2) : boolean
+    {
+        return (v.name == v2.name) && (v.state == v2.state) && (v.permissions.length == v2.permissions.length)
     }
 
     /**

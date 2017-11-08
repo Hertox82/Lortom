@@ -1,4 +1,4 @@
-<form class="form">
+<form class="form" *ngIf="notFound == true">
     <div class="portlet">
         <div class="portlet-title">
             <div class="caption">
@@ -102,7 +102,7 @@
                             <div class="form-group flex-group">
                                 <label class="col-md-4">Name</label>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control input-sm" name="query" [(ngModel)]="query" (keyup)="filter()">
+                                    <input type="text" class="form-control input-sm" name="query" [(ngModel)]="query" (keyup)="filter()" autocomplete="off">
                                     <div class="suggestions" *ngIf="filteredList.length > 0">
                                         <ul>
                                             <li class="suggestion-li" *ngFor="let item of filteredList">

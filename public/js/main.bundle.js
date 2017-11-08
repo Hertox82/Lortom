@@ -182,12 +182,15 @@ AppModule = __decorate([
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return routing; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__backend_module_login__ = __webpack_require__("../../../../../src/app/backend-module/login/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__backend_module_notfoundpage__ = __webpack_require__("../../../../../src/app/backend-module/notfoundpage/index.ts");
+
 
 
 var routes = [
     { path: 'backend', redirectTo: 'backend/dashboard', pathMatch: 'full' },
     { path: 'backend/login', component: __WEBPACK_IMPORTED_MODULE_1__backend_module_login__["a" /* LoginComponent */] },
     { path: 'backend/logout', component: __WEBPACK_IMPORTED_MODULE_1__backend_module_login__["b" /* LogoutComponent */] },
+    { path: 'backend/not-found', component: __WEBPACK_IMPORTED_MODULE_2__backend_module_notfoundpage__["a" /* NotFoundComponent */] },
     { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' },
     { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' },
     { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' }
@@ -1061,6 +1064,59 @@ NavbarComponent = __decorate([
 
 /***/ }),
 
+/***/ "../../../../../src/app/backend-module/notfoundpage/index.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__notfound_component__ = __webpack_require__("../../../../../src/app/backend-module/notfoundpage/notfound.component.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__notfound_component__["a"]; });
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/backend-module/notfoundpage/notfound.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <div class=\"error-page\">\n                <h2 class=\"headline text-orange\"> 404 </h2>\n                <div class=\"error-content\">\n                    <h3><i class=\"fa fa-warning fa-2x text-orange\"></i> Ooops! Page not found.</h3>\n                    <p> We could not find the page you were looking for. Meanwhile, you may <a>return to dashboard</a></p>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/backend-module/notfoundpage/notfound.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NotFoundComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var NotFoundComponent = (function () {
+    function NotFoundComponent() {
+    }
+    NotFoundComponent.prototype.ngOnInit = function () { };
+    return NotFoundComponent;
+}());
+NotFoundComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-not-found',
+        template: __webpack_require__("../../../../../src/app/backend-module/notfoundpage/notfound.component.html"),
+        styles: ['']
+    }),
+    __metadata("design:paramtypes", [])
+], NotFoundComponent);
+
+//# sourceMappingURL=notfound.component.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/backend-module/public_api.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1071,11 +1127,13 @@ NavbarComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menu_items__ = __webpack_require__("../../../../../src/app/backend-module/menu-items/index.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login__ = __webpack_require__("../../../../../src/app/backend-module/login/index.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__user_module___ = __webpack_require__("../../../../../src/app/backend-module/user-module/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__breadcrumbs__ = __webpack_require__("../../../../../src/app/backend-module/breadcrumbs/index.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_4__breadcrumbs__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__notfoundpage__ = __webpack_require__("../../../../../src/app/backend-module/notfoundpage/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__breadcrumbs__ = __webpack_require__("../../../../../src/app/backend-module/breadcrumbs/index.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_5__breadcrumbs__["a"]; });
 /* unused harmony reexport BreadCrumbsComponent */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__user_module__ = __webpack_require__("../../../../../src/app/backend-module/user-module/index.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_5__user_module__["b"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__user_module__ = __webpack_require__("../../../../../src/app/backend-module/user-module/index.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_6__user_module__["b"]; });
+
 
 
 
@@ -1090,6 +1148,7 @@ var BackendImportComponent = [
     __WEBPACK_IMPORTED_MODULE_1__menu_items__["c" /* SubMenuItemComponent */],
     __WEBPACK_IMPORTED_MODULE_2__login__["a" /* LoginComponent */],
     __WEBPACK_IMPORTED_MODULE_2__login__["b" /* LogoutComponent */],
+    __WEBPACK_IMPORTED_MODULE_4__notfoundpage__["a" /* NotFoundComponent */]
 ];
 var BackendExportComponent = [
     __WEBPACK_IMPORTED_MODULE_0__navbar__["a" /* NavbarComponent */],
@@ -1098,6 +1157,7 @@ var BackendExportComponent = [
     __WEBPACK_IMPORTED_MODULE_2__login__["b" /* LogoutComponent */],
     __WEBPACK_IMPORTED_MODULE_3__user_module___["c" /* UserSideComponent */],
     __WEBPACK_IMPORTED_MODULE_3__user_module___["a" /* UserModelComponent */],
+    __WEBPACK_IMPORTED_MODULE_4__notfoundpage__["a" /* NotFoundComponent */],
 ];
 //# sourceMappingURL=public_api.js.map
 
