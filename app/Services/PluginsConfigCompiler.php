@@ -8,6 +8,7 @@
 namespace App\Services;
 
 use File;
+use DB;
 
 class PluginsConfigCompiler
 {
@@ -151,5 +152,29 @@ class PluginsConfigCompiler
         }
 
         return false;
+    }
+
+    public function updatePermission($vendor,$namePlugin)
+    {
+        $this->loadPlugins();
+
+        //list not reduced
+        $listaPermessi = array_filter(array_map_collection(function($item)use($vendor,$namePlugin){
+            if($item['vendor'] === $vendor and $item['PluginName'] === $namePlugin){
+                $lista [] = $item['permission'];
+                $lista2 = array_map(function($m) {
+                    return $m['permission'];
+                },$item['subMenu']);
+                return array_merge($lista,$lista2);
+            }
+        },$this->arrayDataPlugins['plugins']));
+
+        //Santized list of Permissions
+        $listaSanitize = array_reduce($listaPermessi,function($carry,$item){
+           return  $item;
+        });
+        $Permission = DB::table('lt_permissions')->where('name','like','%'.$vendor.'.'.$namePlugin.'%')->get();
+
+        pr($Permission,1);
     }
 }

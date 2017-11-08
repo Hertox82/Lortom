@@ -182,7 +182,9 @@ AppModule = __decorate([
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return routing; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__backend_module_login__ = __webpack_require__("../../../../../src/app/backend-module/login/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__backend_module_notfoundpage__ = __webpack_require__("../../../../../src/app/backend-module/notfoundpage/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__backend_module_user_module__ = __webpack_require__("../../../../../src/app/backend-module/user-module/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__backend_module_notfoundpage__ = __webpack_require__("../../../../../src/app/backend-module/notfoundpage/index.ts");
+
 
 
 
@@ -190,7 +192,8 @@ var routes = [
     { path: 'backend', redirectTo: 'backend/dashboard', pathMatch: 'full' },
     { path: 'backend/login', component: __WEBPACK_IMPORTED_MODULE_1__backend_module_login__["a" /* LoginComponent */] },
     { path: 'backend/logout', component: __WEBPACK_IMPORTED_MODULE_1__backend_module_login__["b" /* LogoutComponent */] },
-    { path: 'backend/not-found', component: __WEBPACK_IMPORTED_MODULE_2__backend_module_notfoundpage__["a" /* NotFoundComponent */] },
+    { path: 'backend/profile/edit', component: __WEBPACK_IMPORTED_MODULE_2__backend_module_user_module__["a" /* UserModelComponent */] },
+    { path: 'backend/not-found', component: __WEBPACK_IMPORTED_MODULE_3__backend_module_notfoundpage__["a" /* NotFoundComponent */] },
     { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' },
     { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' },
     { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' }

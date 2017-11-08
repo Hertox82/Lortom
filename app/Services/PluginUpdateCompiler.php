@@ -48,4 +48,9 @@ class PluginUpdateCompiler extends AbstractPlugin
         $this->compileServiceInApp($appConfig);
 
     }
+
+    public function updatePermission(){
+
+        $this->updatePermissionByCompiler();
+    }
 }

@@ -214,21 +214,38 @@ abstract class AbstractPlugin
         $this->pluginConfigcompiler->write($data,$this->vendor,$this->name,$i);
     }
 
+    /**
+     * This function return Array of data from config/plugins.php
+     * @return array
+     */
     protected function getArrayDataPlugins()
     {
         return $this->pluginConfigcompiler->getArrayDataPlugins();
     }
 
+    /**
+     * This function return index of Array Plugins
+     * @return int
+     */
     protected function getIndexFromPlugins()
     {
         return $this->pluginConfigcompiler->getIndexFromPlugins($this->getArrayDataPlugins()['plugins'],$this->vendor,$this->name);
     }
 
+    /**
+     * This function remove the data from cached array list from /config/plugin.php
+     * @param $i
+     */
     protected function removeDataFromPlugins($i)
     {
         PluginsConfigCompiler::removeDataFromPlugin($this->getArrayDataPlugins(),$i);
     }
 
+    /**
+     * This function remove The Service Provider from app.config
+     * @param $data
+     * @return mixed
+     */
     protected function removeDataFromApp($data)
     {
 
@@ -251,5 +268,10 @@ abstract class AbstractPlugin
 
         return $data;
 
+    }
+
+    protected function updatePermissionByCompiler()
+    {
+        $this->pluginConfigcompiler->updatePermission($this->vendor,$this->name);
     }
 }

@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         Commands\CreatePlugin::class,
         Commands\DeletePlugin::class,
         Commands\UpdatePlugin::class,
+        Commands\UpdatePermission::class,
     ];
 
     /**

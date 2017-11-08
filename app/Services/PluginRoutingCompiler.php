@@ -45,8 +45,10 @@ class PluginRoutingCompiler
     {
         $stub = "import {Routes, RouterModule} from \"@angular/router\"; \n";
         $stub.= "import {ModuleWithProviders} from \"@angular/core\"; \n";
-        $stub.= "import {LoginComponent} from \"./backend-module/login/login.component\"; \n";
-        $stub.= "import {LogoutComponent} from \"./backend-module/logout/logout.component\"; \n";
+        $stub.= "import {LoginComponent,LogoutComponent} from \"./backend-module/login\"; \n";
+        $stub.= "import {UserModelComponent} from \"./backend-module/user-module\"; \n";
+        $stub.= "import {NotFoundComponent} from \"./backend-module/notfoundpage\"; \n";
+
 
         // Qui va ciclato l'array e va inserito dentro il contenuto di data
 
@@ -55,6 +57,9 @@ class PluginRoutingCompiler
         $stub.= "       {path: 'backend', redirectTo:'backend/dashboard', pathMatch: 'full'}, \n";
         $stub.= "              {path: 'backend/login', component: LoginComponent}, \n";
         $stub.= "              {path: 'backend/logout', component: LogoutComponent}, \n";
+        $stub.= "              {path: 'backend/profile/edit', component : UserModelComponent }, \n";
+        $stub.= "              {path: 'backend/not-found', component: NotFoundComponent}, \n";
+
         $i= 0;
         $length = count($this->data);
         foreach ($this->data as $plug)
