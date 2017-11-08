@@ -3,7 +3,7 @@
 import {Component, OnInit} from "@angular/core";
 import {Permission, Role} from "../../Services/settings.interfaces";
 import {SettingsService} from "../../Services/settings.service";
-import {ActivatedRoute} from "@angular/router";
+import {Router} from "@angular/router";
 @Component({
     selector : 'settings-new-role',
     templateUrl : './rolenew.component.html',
@@ -21,7 +21,7 @@ export class RoleNewComponent implements OnInit
     filteredList : Permission[];
     query : string;
 
-    constructor(private sService : SettingsService, private router : ActivatedRoute){
+    constructor(private sService : SettingsService, private router : Router){
         this.isEdit = false;
         this.filteredList = [];
         this.query = '';
@@ -29,6 +29,7 @@ export class RoleNewComponent implements OnInit
         this.role = {
             id: -1,
             name : 'Name',
+            state : false,
             permissions : []
         }
     }
@@ -70,9 +71,6 @@ export class RoleNewComponent implements OnInit
             this.filteredList = this.listPermissions.filter(function(el){
                 return el.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
             }.bind(this));
-        }
-        else {
-
         }
     }
 
@@ -123,6 +121,20 @@ export class RoleNewComponent implements OnInit
                 this.cloneCopyRole();
                 return;
             }
+
+            this.sService.newRole(this.role).subscribe(
+                (data : any) => {
+                    if(!data.hasOwnProperty('state'))
+                    {
+                        data.state = false;
+                    }
+                    //push the item into roles
+                        this.sService.setRole(data);
+                        this.sService.updateListOfRoles();
+                    //navigate to Settings Roles
+                        this.router.navigate(['/backend/settings/roles']);
+                }
+            );
 
         }
     }

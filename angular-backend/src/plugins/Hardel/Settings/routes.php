@@ -15,7 +15,17 @@ Route::get('/roles',[
     'uses'   => 'SettingsController@getRoles'
 ]);
 
+Route::put('/roles',[
+    'as'     => 'apiDeleteRoles',
+    'uses'   => 'SettingsController@deleteRoles'
+]);
+
 Route::put('/role',[
-    'as'    => 'apiSaveRole',
+    'as'    => 'apiUpdateRole',
     'uses'  => 'SettingsController@saveRole'
+])->middleware('lortom.auth');
+
+Route::post('/role',[
+    'as'    => 'apiNewRole',
+    'uses'  => 'SettingsController@newRole'
 ])->middleware('lortom.auth');

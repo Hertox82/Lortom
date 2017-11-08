@@ -34,6 +34,7 @@
                                         <input type="search" class="form-control input-sm">
                                     </label>
                                     <a class="btn btn-primary" [routerLink] = "['/backend/settings/roles/new']"><i class="fa fa-file"></i> New</a>
+                                    <a class="btn btn-danger" (click)="deleteRoles()"><i class="fa fa-times"></i> Delete</a>
                                 </div>
                             </div>
                         </div>
@@ -52,7 +53,7 @@
                                     <tbody>
                                         <tr *ngFor="let role of listaRole">
                                             <td>
-                                                <input type="checkbox">
+                                                <input type="checkbox" (change)="eventChange($event,role)" [(ngModel)] = "role.state">
                                             </td>
                                             <td>
                                                 {{role.name}}

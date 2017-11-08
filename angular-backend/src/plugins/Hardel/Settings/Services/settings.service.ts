@@ -13,6 +13,8 @@ export class SettingsService {
 
     apiManager : ApiManager;
     listOfRoles : Role[];
+    private _updateRoles = new Subject();
+    updateRoles$ = this._updateRoles.asObservable();
 
     constructor(private http : Http)
     {
@@ -22,7 +24,7 @@ export class SettingsService {
          const urls = [
                 { namePath : 'getPermission', path: 'permissions'},
                 { namePath : 'getRoles', path: 'roles' },
-                { namePath : 'saveRole', path: 'role'}
+                { namePath : 'saveRole', path: 'role'},
             ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -61,6 +63,21 @@ export class SettingsService {
     {
         sessionStorage.setItem('roles',JSON.stringify(roles));
         this.listOfRoles = roles;
+    }
+
+    setRole(role : Role)
+    {
+        let roles = this.getRoles();
+        roles.push(role);
+       this.deleteRoleFromCache();
+       this.setRoles(roles);
+    }
+
+
+    deleteRoleFromCache()
+    {
+        this.listOfRoles = null;
+        sessionStorage.removeItem('roles');
     }
 
     /**
@@ -142,6 +159,36 @@ export class SettingsService {
             .map((response : Response) => {
                 return response.json().role;
             });
+    }
+
+    newRole(role : Role) : Observable<any> {
+        let headers = new Headers({'Content-Type' : 'application/json'});
+        let options = new RequestOptions({headers : headers});
+
+        return this.http.post(this.apiManager.getPathByName('saveRole'),role,options)
+            .map(
+                (response : Response) => {
+                    return response.json().role;
+                }
+            );
+    }
+
+    deleteRoles(roles : Role[]) : Observable<any>
+    {
+        let headers = new Headers({'Content-Type' : 'application/json'});
+        let options = new RequestOptions({headers : headers});
+
+        return this.http.put(this.apiManager.getPathByName('getRoles'),roles,options)
+            .map(
+                (response : Response) => {
+                    return response.json().roles;
+                }
+            );
+    }
+
+    updateListOfRoles()
+    {
+        this._updateRoles.next();
     }
 }
 

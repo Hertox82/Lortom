@@ -17,6 +17,8 @@ webpackJsonp(["settings.module"],{
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__ = __webpack_require__("../../../../rxjs/Rx.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_urlApi_api_manager__ = __webpack_require__("../../../../../src/app/urlApi/api.manager.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Subject__ = __webpack_require__("../../../../rxjs/Subject.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_Subject__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -30,16 +32,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var SettingsService = (function () {
     function SettingsService(http) {
         this.http = http;
+        this._updateRoles = new __WEBPACK_IMPORTED_MODULE_4_rxjs_Subject__["Subject"]();
+        this.updateRoles$ = this._updateRoles.asObservable();
         // create the ApiManager
         this.apiManager = new __WEBPACK_IMPORTED_MODULE_3__app_urlApi_api_manager__["a" /* ApiManager */]();
         // write the api route for setting
         var urls = [
             { namePath: 'getPermission', path: 'permissions' },
             { namePath: 'getRoles', path: 'roles' },
-            { namePath: 'saveRole', path: 'role' }
+            { namePath: 'saveRole', path: 'role' },
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -71,6 +76,16 @@ var SettingsService = (function () {
     SettingsService.prototype.setRoles = function (roles) {
         sessionStorage.setItem('roles', JSON.stringify(roles));
         this.listOfRoles = roles;
+    };
+    SettingsService.prototype.setRole = function (role) {
+        var roles = this.getRoles();
+        roles.push(role);
+        this.deleteRoleFromCache();
+        this.setRoles(roles);
+    };
+    SettingsService.prototype.deleteRoleFromCache = function () {
+        this.listOfRoles = null;
+        sessionStorage.removeItem('roles');
     };
     /**
      * This function check if Dataset of Roles exist
@@ -133,6 +148,25 @@ var SettingsService = (function () {
             return response.json().role;
         });
     };
+    SettingsService.prototype.newRole = function (role) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/json' });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        return this.http.post(this.apiManager.getPathByName('saveRole'), role, options)
+            .map(function (response) {
+            return response.json().role;
+        });
+    };
+    SettingsService.prototype.deleteRoles = function (roles) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/json' });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        return this.http.put(this.apiManager.getPathByName('getRoles'), roles, options)
+            .map(function (response) {
+            return response.json().roles;
+        });
+    };
+    SettingsService.prototype.updateListOfRoles = function () {
+        this._updateRoles.next();
+    };
     return SettingsService;
 }());
 SettingsService = __decorate([
@@ -183,6 +217,7 @@ var RoleNewComponent = (function () {
         this.role = {
             id: -1,
             name: 'Name',
+            state: false,
             permissions: []
         };
     }
@@ -218,8 +253,6 @@ var RoleNewComponent = (function () {
                 return el.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
             }.bind(this));
         }
-        else {
-        }
     };
     /**
      * This function delete Permission from role.permissions
@@ -251,6 +284,7 @@ var RoleNewComponent = (function () {
      * This function go to save Mode
      */
     RoleNewComponent.prototype.saveMode = function () {
+        var _this = this;
         //salva i cambiamenti
         if (this.role !== this.copyRole) {
             if (this.role.name.length == 0) {
@@ -258,6 +292,16 @@ var RoleNewComponent = (function () {
                 this.cloneCopyRole();
                 return;
             }
+            this.sService.newRole(this.role).subscribe(function (data) {
+                if (!data.hasOwnProperty('state')) {
+                    data.state = false;
+                }
+                //push the item into roles
+                _this.sService.setRole(data);
+                _this.sService.updateListOfRoles();
+                //navigate to Settings Roles
+                _this.router.navigate(['/backend/settings/roles']);
+            });
         }
     };
     /**
@@ -292,7 +336,7 @@ RoleNewComponent = __decorate([
         template: __webpack_require__("../../../../../src/plugins/Hardel/Settings/component/NewRole/rolenew.component.html"),
         styles: ['']
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__["a" /* SettingsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__["a" /* SettingsService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* ActivatedRoute */]) === "function" && _b || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__["a" /* SettingsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__["a" /* SettingsService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* Router */]) === "function" && _b || Object])
 ], RoleNewComponent);
 
 var _a, _b;
@@ -495,7 +539,7 @@ var _a, _b, _c;
 /***/ "../../../../../src/plugins/Hardel/Settings/component/Roles/roles.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> Roles</a>\n        </li>\n        <li>\n            <a href=\"#tab_2\" data-toggle=\"tab\"> Permissions</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <div class=\"dataTables_length\">\n                                    <label>\n                                        Show\n                                        <select class=\"form-control input-sm\" name=\"example_length\">\n                                            <option value=\"10\">10</option>\n                                        </select>\n                                        entries\n                                    </label>\n                                </div>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/settings/roles/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                        <tr *ngFor=\"let role of listaRole\">\n                                            <td>\n                                                <input type=\"checkbox\">\n                                            </td>\n                                            <td>\n                                                {{role.name}}\n                                            </td>\n                                            <td>\n                                                <a [routerLink] = \"['/backend/settings/roles',role.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                            </td>\n                                        </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-5\">\n                                <div class=\"dataTables_info\">Showing 1 to 10 of 57 entries</div>\n                            </div>\n                            <div class=\"col-sm-7\">\n                                <div class=\"dataTables_paginate\">\n                                    <ul class=\"pagination\">\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\" aria-label=\"Previous\"><span aria-hidden=\"true\">«</span></a>\n                                        </li>\n                                        <li class=\"page-item active\">\n                                            <a class=\"page-link\" href=\"#\">1</a>\n                                        </li>\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\">2</a>\n                                        </li>\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\" aria-label=\"Next\"><span aria-hidden=\"true\">»</span></a>\n                                        </li>\n                                    </ul>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
+module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> Roles</a>\n        </li>\n        <li>\n            <a href=\"#tab_2\" data-toggle=\"tab\"> Permissions</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <div class=\"dataTables_length\">\n                                    <label>\n                                        Show\n                                        <select class=\"form-control input-sm\" name=\"example_length\">\n                                            <option value=\"10\">10</option>\n                                        </select>\n                                        entries\n                                    </label>\n                                </div>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/settings/roles/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deleteRoles()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                        <tr *ngFor=\"let role of listaRole\">\n                                            <td>\n                                                <input type=\"checkbox\" (change)=\"eventChange($event,role)\" [(ngModel)] = \"role.state\">\n                                            </td>\n                                            <td>\n                                                {{role.name}}\n                                            </td>\n                                            <td>\n                                                <a [routerLink] = \"['/backend/settings/roles',role.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                            </td>\n                                        </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-5\">\n                                <div class=\"dataTables_info\">Showing 1 to 10 of 57 entries</div>\n                            </div>\n                            <div class=\"col-sm-7\">\n                                <div class=\"dataTables_paginate\">\n                                    <ul class=\"pagination\">\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\" aria-label=\"Previous\"><span aria-hidden=\"true\">«</span></a>\n                                        </li>\n                                        <li class=\"page-item active\">\n                                            <a class=\"page-link\" href=\"#\">1</a>\n                                        </li>\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\">2</a>\n                                        </li>\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\" aria-label=\"Next\"><span aria-hidden=\"true\">»</span></a>\n                                        </li>\n                                    </ul>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -529,6 +573,7 @@ var RolesComponent = (function () {
         this.router = router;
         this.myRoot = '/backend/settings/roles';
         this.isRoot = false;
+        this.listaRoleDelete = [];
         this.router.events.subscribe(function (val) {
             if (val instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* NavigationEnd */]) {
                 if (_this.myRoot === val.url) {
@@ -539,17 +584,60 @@ var RolesComponent = (function () {
                 }
             }
         });
+        this.retrieveListOfRoles();
+        this.m_Service.updateRoles$.subscribe(function () {
+            _this.retrieveListOfRoles();
+        });
+    }
+    RolesComponent.prototype.ngOnInit = function () {
+    };
+    RolesComponent.prototype.retrieveListOfRoles = function () {
+        var _this = this;
         if (!this.m_Service.checkRolesExist()) {
             this.m_Service.getRolesFrom().subscribe(function (roles) {
                 _this.listaRole = roles;
+                _this.listaRole.forEach(function (role) {
+                    role.state = false;
+                });
                 _this.m_Service.setRoles(_this.listaRole);
             });
         }
         else {
             this.listaRole = this.m_Service.getRoles();
+            this.listaRole.forEach(function (item) {
+                if (!item.hasOwnProperty('state')) {
+                    item.state = false;
+                }
+            });
         }
-    }
-    RolesComponent.prototype.ngOnInit = function () {
+    };
+    /**
+     * function to push or splice item into Deleted List of Roles
+     * @param ev
+     * @param data
+     */
+    RolesComponent.prototype.eventChange = function (ev, data) {
+        if (ev.target.checked) {
+            this.listaRoleDelete.push(data);
+        }
+        else {
+            var index = this.listaRoleDelete.indexOf(data);
+            if (index > -1) {
+                this.listaRoleDelete.splice(index, 1);
+            }
+        }
+    };
+    RolesComponent.prototype.deleteRoles = function () {
+        var _this = this;
+        if (this.listaRoleDelete.length > 0) {
+            if (confirm('Do you really want delete this Roles?')) {
+                this.m_Service.deleteRoles(this.listaRoleDelete).subscribe(function (data) {
+                    _this.listaRoleDelete = [];
+                    _this.listaRole = data;
+                    _this.m_Service.setRoles(_this.listaRole);
+                });
+            }
+        }
     };
     return RolesComponent;
 }());
