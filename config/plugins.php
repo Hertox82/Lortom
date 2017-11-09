@@ -57,9 +57,9 @@ return [
                     'permission'    => 'Hardel.Settings.Roles'
                 ],
                 [
-                    'subPath'       => '/settings/permissions',
-                    'Name'          => 'Permissions',
-                    'permission'    => 'Hardel.Settings.Permissions'
+                    'subPath'       => '/settings/users',
+                    'Name'          => 'Users',
+                    'permission'    => 'Hardel.Settings.Users'
                 ],
 
             ],

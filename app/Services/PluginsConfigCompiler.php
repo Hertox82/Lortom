@@ -175,6 +175,30 @@ class PluginsConfigCompiler
         });
         $Permission = DB::table('lt_permissions')->where('name','like','%'.$vendor.'.'.$namePlugin.'%')->get();
 
-        pr($Permission,1);
+        $listaPerm = array_map_collection(function($p){
+            return $p->name;
+        },$Permission->toArray());
+
+        foreach ($listaSanitize as $perm)
+        {
+          if(!in_array($perm,$listaPerm))
+          {
+              //$PermToInsert[] = $perm;
+              DB::table('lt_permissions')->insert([
+                  'name'        => $perm,
+                  'created_at'  => date("Y-m-d H:i:s"),
+                  'updated_at'  => date("Y-m-d H:i:s")
+              ]);
+          }
+        }
+
+        foreach ($listaPerm as $perm)
+        {
+            if(!in_array($perm,$listaSanitize))
+            {
+                DB::table('lt_permissions')->where('name',$perm)->delete();
+            }
+        }
+
     }
 }
