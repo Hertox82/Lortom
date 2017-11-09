@@ -24,7 +24,6 @@ export class UserNewComponent implements OnInit
     query : string;
 
     constructor(private nService : SettingsService, private router : Router){
-        this.isEdit = false;
         this.filteredList = [];
         this.query = '';
 
@@ -122,15 +121,19 @@ export class UserNewComponent implements OnInit
 
     isEqual(v,v2) : boolean
     {
-        return (v.username == v2.username) && (v.state == v2.state) && (v.name == v2.name)
+        console.log(v);
+        console.log(v2);
+        return (v.email == v2.email) && (v.state == v2.state) && (v.name == v2.name)
     }
 
     /**
      * This function clone the User
      */
     cloneUser(){
+        console.log(this.copyUser);
         let permissions: Permission[] = [];
 
+        this.copyUser = Object.assign({}, this.user);
         if(this.user.role !== undefined) {
             for (let perm of this.user.role.permissions) {
                 permissions.push(perm);
@@ -139,11 +142,10 @@ export class UserNewComponent implements OnInit
             let role: Role;
 
             role = Object.assign({}, this.user.role);
-
-            this.copyUser = Object.assign({}, this.user);
             this.copyUser.role = role;
             this.copyUser.role.permissions = permissions;
         }
+        console.log(this.copyUser);
     }
 
     /**

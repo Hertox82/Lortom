@@ -440,7 +440,6 @@ var UserNewComponent = (function () {
         this.nService = nService;
         this.router = router;
         this.listRole = [];
-        this.isEdit = false;
         this.filteredList = [];
         this.query = '';
         this.user = {
@@ -518,13 +517,17 @@ var UserNewComponent = (function () {
         }
     };
     UserNewComponent.prototype.isEqual = function (v, v2) {
-        return (v.username == v2.username) && (v.state == v2.state) && (v.name == v2.name);
+        console.log(v);
+        console.log(v2);
+        return (v.email == v2.email) && (v.state == v2.state) && (v.name == v2.name);
     };
     /**
      * This function clone the User
      */
     UserNewComponent.prototype.cloneUser = function () {
+        console.log(this.copyUser);
         var permissions = [];
+        this.copyUser = Object.assign({}, this.user);
         if (this.user.role !== undefined) {
             for (var _i = 0, _a = this.user.role.permissions; _i < _a.length; _i++) {
                 var perm = _a[_i];
@@ -532,10 +535,10 @@ var UserNewComponent = (function () {
             }
             var role = void 0;
             role = Object.assign({}, this.user.role);
-            this.copyUser = Object.assign({}, this.user);
             this.copyUser.role = role;
             this.copyUser.role.permissions = permissions;
         }
+        console.log(this.copyUser);
     };
     /**
      * This function clone the CopyUser
