@@ -128,6 +128,43 @@ class SettingsController extends Controller
         return response()->json(['role' => $data]);
     }
 
+    public function newUser(Request $request)
+    {
+        $input = $request->all();
+
+        $data = [];
+        if($input['id'] == -1)
+        {
+            $name = $input['name'];
+            $password = bcrypt($input['password']);
+            $email = $input['email'];
+
+            $user = new LortomUser();
+
+            $user->name = $name;
+            $user->password = $password;
+            $user->email = $email;
+            $user->setCreatedAt(date("Y-m-d H:i:s"));
+            $user->setUpdatedAt(date("Y-m-d H:i:s"));
+
+            $user->save();
+
+            if(isset($input['role']))
+            {
+                $idRole = $input['role']['id'];
+
+                DB::table('lt_users_roles')->insert([
+                    'idRole' => $idRole,
+                    'idUser' => $user->id
+                ]);
+            }
+
+            $data = $this->getUserSerialized($user);
+        }
+
+        return response()->json(['user' => $data]);
+    }
+
     /**
      * This function delete role by passed list
      * @param Request $request

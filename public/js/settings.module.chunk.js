@@ -48,6 +48,7 @@ var SettingsService = (function () {
             { namePath: 'getRoles', path: 'roles' },
             { namePath: 'saveRole', path: 'role' },
             { namePath: 'getUsers', path: 'users' },
+            { namePath: 'saveUser', path: 'user' }
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
