@@ -98,6 +98,16 @@ In order to create a Plugin in Lortom, you must understand the folder structure
   ```bash
   $ php artisan lortom-routing:enable
   ```
+  
+  #### Permissions Update
+  
+  This command update into Database the permission write into the config/plugins.php
+  
+  ```bash
+    $ php artisan lortom-permission:update --vendor-name=Vendor,Name
+  ```
+    
+  
  
  
  
