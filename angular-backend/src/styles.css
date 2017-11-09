@@ -120,6 +120,10 @@ footer { margin-left: 200px; padding: 10px; border:1px solid #dde0e6; font-size:
 .bg-red:hover {border: 4px solid darkred;}
 .bg-orange { background-color: orange;}
 .bg-orange:hover {border: 4px solid darkorange;}
+.bg-blu {background-color: blue;}
+.bg-blu:hover {border: 4px solid darkblue;}
+.bg-cyan {background-color: #00c2ff;}
+.bg-cyan:hover {border : 4px solid #026e90}
 
 
 /* Breadcrumbs */

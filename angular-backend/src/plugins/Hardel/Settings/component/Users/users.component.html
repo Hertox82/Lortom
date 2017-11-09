@@ -1,10 +1,10 @@
 <div class="tabbable-custom" *ngIf="isRoot === true">
     <ul class="nav nav-tabs">
-        <li class="active">
-            <a href="#tab_1" data-toggle="tab"> Roles</a>
-        </li>
         <li>
-            <a [routerLink]="['/backend/settings/users']" data-toggle="tab"> Users</a>
+            <a [routerLink]="['/backend/settings/roles']" data-toggle="tab"> Roles</a>
+        </li>
+        <li class="active">
+            <a  href="#tab_1" data-toggle="tab"> Users</a>
         </li>
     </ul>
     <div class="tab-content">
@@ -33,8 +33,8 @@
                                         Search:
                                         <input type="search" class="form-control input-sm">
                                     </label>
-                                    <a class="btn btn-primary" [routerLink] = "['/backend/settings/roles/new']"><i class="fa fa-file"></i> New</a>
-                                    <a class="btn btn-danger" (click)="deleteRoles()"><i class="fa fa-times"></i> Delete</a>
+                                    <a class="btn btn-primary" [routerLink] = "['/backend/settings/users/new']"><i class="fa fa-file"></i> New</a>
+                                    <a class="btn btn-danger" (click)="deleteUsers()"><i class="fa fa-times"></i> Delete</a>
                                 </div>
                             </div>
                         </div>
@@ -47,21 +47,27 @@
                                         <th>
                                             <a>Nome</a>
                                         </th>
+                                        <th>
+                                            <a>Email</a>
+                                        </th>
                                         <th style="width: 50px;"></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let role of listaRole">
-                                            <td>
-                                                <input type="checkbox" (change)="eventChange($event,role)" [(ngModel)] = "role.state">
-                                            </td>
-                                            <td>
-                                                {{role.name}}
-                                            </td>
-                                            <td>
-                                                <a [routerLink] = "['/backend/settings/roles',role.id]"><i class="fa fa-edit" style="color:orange; font-size: 16px;"></i></a>
-                                            </td>
-                                        </tr>
+                                    <tr *ngFor="let user of listaUser">
+                                        <td>
+                                            <input type="checkbox" (change)="eventChange($event,user)" [(ngModel)] = "user.state">
+                                        </td>
+                                        <td>
+                                            {{user.name}}
+                                        </td>
+                                        <td>
+                                            {{user.email}}
+                                        </td>
+                                        <td>
+                                            <a [routerLink] = "['/backend/settings/users',user.id]"><i class="fa fa-edit" style="color:orange; font-size: 16px;"></i></a>
+                                        </td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>

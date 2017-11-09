@@ -11,6 +11,7 @@ namespace Plugins\Hardel\Settings\Controller;
 use App\Http\Controllers\Controller;
 use App\LortomPermission;
 use App\LortomRole;
+use App\LortomUser;
 use Illuminate\Http\Request;
 use DB;
 class SettingsController extends Controller
@@ -41,6 +42,13 @@ class SettingsController extends Controller
         $sanitizedList = $this->sanitizeRoles();
 
         return response()->json(['roles' => $sanitizedList]);
+    }
+
+    public function getUsers(Request $request)
+    {
+        $sanitizedList = $this->sanitizeUsers();
+
+        return response()->json(['users' => $sanitizedList]);
     }
 
     /**
@@ -192,6 +200,46 @@ class SettingsController extends Controller
         },$listaRoles));
 
         return $sanitizedList;
+    }
+
+    private function sanitizeUsers()
+    {
+        $listaUsers = LortomUser::all();
+
+        $listaPulita = array_filter(array_map_collection(function($user){
+            if($user instanceof LortomUser)
+            {
+                //pr($user->roles(),1);
+                return $this->getUserSerialized($user);
+            }
+        },$listaUsers));
+
+        return $listaPulita;
+    }
+
+    private function getUserSerialized(LortomUser $user)
+    {
+        $roles = $user->getRoles();
+
+        if(count($roles)>0) {
+            $role = $roles[0];
+            if ($role instanceof LortomRole) {
+                return [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role' => $this->getRoleSerialized($role)
+                ];
+            }
+        }
+        else{
+            return [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+            ];
+        }
+
     }
 
     /**

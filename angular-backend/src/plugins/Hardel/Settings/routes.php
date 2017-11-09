@@ -29,3 +29,8 @@ Route::post('/role',[
     'as'    => 'apiNewRole',
     'uses'  => 'SettingsController@newRole'
 ])->middleware('lortom.auth');
+
+Route::get('/users',[
+    'as'    => 'apiGetUsers',
+    'uses'  => 'SettingsController@getUsers'
+]);

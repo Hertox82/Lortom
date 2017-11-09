@@ -1,7 +1,7 @@
 
 
 import {Injectable} from "@angular/core";
-import {Role,Permission} from "./settings.interfaces";
+import {Role, Permission, User} from "./settings.interfaces";
 import {Http,Response, RequestOptions, Headers} from "@angular/http";
 import 'rxjs/Rx';
 import {ApiManager} from "../../../../app/urlApi/api.manager";
@@ -13,8 +13,12 @@ export class SettingsService {
 
     apiManager : ApiManager;
     listOfRoles : Role[];
+    listOfUsers : User[];
     private _updateRoles = new Subject();
     updateRoles$ = this._updateRoles.asObservable();
+
+    private _updateUsers = new Subject();
+    updateUsers$ = this._updateUsers.asObservable();
 
     constructor(private http : Http)
     {
@@ -25,6 +29,7 @@ export class SettingsService {
                 { namePath : 'getPermission', path: 'permissions'},
                 { namePath : 'getRoles', path: 'roles' },
                 { namePath : 'saveRole', path: 'role'},
+                { namePath : 'getUsers', path: 'users'},
             ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -41,6 +46,16 @@ export class SettingsService {
                 return response.json().roles;
             });
 
+    }
+
+    getUsersFrom()
+    {
+        return this.http.get(this.apiManager.getPathByName('getUsers'))
+            .map(
+                (response : Response) => {
+                    return response.json().users;
+                }
+            );
     }
 
     /**
@@ -65,12 +80,31 @@ export class SettingsService {
         this.listOfRoles = roles;
     }
 
+    setUsers(users : User[])
+    {
+        sessionStorage.setItem('users',JSON.stringify(users));
+        this.listOfUsers = users;
+    }
+
+
+    /**
+     * This function is to set new User into the listOfRoles
+     * @param role
+     */
     setRole(role : Role)
     {
         let roles = this.getRoles();
         roles.push(role);
        this.deleteRoleFromCache();
        this.setRoles(roles);
+    }
+
+    setUser(user : User)
+    {
+        let users = this.getUsers();
+        users.push(user);
+        this.deleteUserFromCache();
+        this.setUsers(users);
     }
 
 
@@ -80,6 +114,12 @@ export class SettingsService {
         sessionStorage.removeItem('roles');
     }
 
+    deleteUserFromCache()
+    {
+        this.listOfUsers = null;
+        sessionStorage.removeItem('users');
+    }
+
     /**
      * This function check if Dataset of Roles exist
      * @returns {boolean}
@@ -87,6 +127,11 @@ export class SettingsService {
     checkRolesExist()
     {
         return (sessionStorage.getItem('roles') !== null);
+    }
+
+    checkUsersExist()
+    {
+        return (sessionStorage.getItem('users') !== null);
     }
 
     /**
@@ -151,6 +196,18 @@ export class SettingsService {
         }
     }
 
+    getUsers()
+    {
+        if(this.listOfUsers == null)
+        {
+            return JSON.parse(sessionStorage.getItem('users'));
+        }
+        else
+        {
+            return this.listOfUsers;
+        }
+    }
+
     saveRole(role : Role) : Observable<any> {
         let headers = new Headers({'Content-Type' : 'application/json'});
         let options = new RequestOptions({headers : headers});
@@ -173,6 +230,18 @@ export class SettingsService {
             );
     }
 
+    newUser(user : User) : Observable<any> {
+        let headers = new Headers({'Content-Type' : 'application/json'});
+        let options = new RequestOptions({headers : headers});
+
+        return this.http.post(this.apiManager.getPathByName('saveUser'),user,options)
+            .map(
+                (response : Response) => {
+                    return response.json().user;
+                }
+            );
+    }
+
     deleteRoles(roles : Role[]) : Observable<any>
     {
         let headers = new Headers({'Content-Type' : 'application/json'});
@@ -186,9 +255,27 @@ export class SettingsService {
             );
     }
 
+    deleteUsers (users : User[]) : Observable<any>
+    {
+        let headers = new Headers({'Content-Type' : 'application/json'});
+        let options = new RequestOptions({headers : headers});
+
+        return this.http.put(this.apiManager.getPathByName('getUsers'),users,options)
+            .map(
+                (response : Response) => {
+                    return response.json().roles;
+                }
+            );
+    }
+
     updateListOfRoles()
     {
         this._updateRoles.next();
+    }
+
+    updateListOfUsers()
+    {
+        this._updateUsers.next();
     }
 }
 

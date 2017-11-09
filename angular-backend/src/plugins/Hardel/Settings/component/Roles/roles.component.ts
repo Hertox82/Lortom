@@ -23,7 +23,7 @@ export class RolesComponent implements OnInit
 
     listaRoleDelete : Role[];
 
-    constructor(private m_Service : SettingsService, private router :Router) {
+    constructor(private c_Service : SettingsService, private router :Router) {
 
         this.listaRoleDelete = [];
 
@@ -43,7 +43,7 @@ export class RolesComponent implements OnInit
             }
         );
             this.retrieveListOfRoles();
-            this.m_Service.updateRoles$.subscribe(
+            this.c_Service.updateRoles$.subscribe(
                 () => {
                     this.retrieveListOfRoles();
                 }
@@ -56,21 +56,21 @@ export class RolesComponent implements OnInit
 
     retrieveListOfRoles() : void
     {
-        if(!this.m_Service.checkRolesExist())
+        if(!this.c_Service.checkRolesExist())
         {
-            this.m_Service.getRolesFrom().subscribe(
+            this.c_Service.getRolesFrom().subscribe(
                 (roles: Role[]) => {
 
                     this.listaRole = roles;
                     this.listaRole.forEach((role : Role) => {
                         role.state = false;
                     });
-                    this.m_Service.setRoles(this.listaRole);
+                    this.c_Service.setRoles(this.listaRole);
                 }
             );
         }
         else {
-            this.listaRole = this.m_Service.getRoles();
+            this.listaRole = this.c_Service.getRoles();
             this.listaRole.forEach((item : any) => {
                 if(!item.hasOwnProperty('state'))
                 {
@@ -108,11 +108,11 @@ export class RolesComponent implements OnInit
         {
             if(confirm('Do you really want delete this Roles?'))
             {
-                this.m_Service.deleteRoles(this.listaRoleDelete).subscribe(
+                this.c_Service.deleteRoles(this.listaRoleDelete).subscribe(
                     (data : any) => {
                         this.listaRoleDelete = [];
                         this.listaRole = data;
-                        this.m_Service.setRoles(this.listaRole);
+                        this.c_Service.setRoles(this.listaRole);
                     }
                 );
             }
