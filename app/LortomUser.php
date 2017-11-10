@@ -41,6 +41,11 @@ class LortomUser extends Model
         return false;
     }
 
+    public function hasRoles()
+    {
+        return !empty($this->roles);
+    }
+
 
     public function hasPermission($permission)
     {

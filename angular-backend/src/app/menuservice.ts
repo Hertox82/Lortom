@@ -80,7 +80,7 @@ export class MenuService {
         {
             this.user = JSON.parse(sessionStorage.getItem('user'));
         }
-        
+
         for(let i = 0; i<this.user.permissions.length; i++)
         {
             if(this.user.permissions[i].name === name)

@@ -93,6 +93,51 @@ class SettingsController extends Controller
         return response()->json(['role' => $data]);
     }
 
+    public function saveUser(Request $request)
+    {
+        $input = $request->all();
+
+        $User = LortomUser::find($input['id']);
+
+        $data = [];
+
+        if($User){
+            if($User->name !== $input['name'])
+            {
+                $User->name = $input['name'];
+                $User->save();
+            }
+
+            if($User->hasRoles())
+            {
+                if(isset($input['role']))
+                {
+                    DB::table('lt_users_roles')->where('idUser',$User->id)->delete();
+
+                    DB::table(['lt_users_roles'])->insert([
+                        'idUser' => $User->id,
+                        'idRole' => $input['role']['id'],
+                    ]);
+                }
+            }
+            else
+            {
+                if(isset($input['role']))
+                {
+
+                    DB::table(['lt_users_roles'])->insert([
+                        'idUser' => $User->id,
+                        'idRole' => $input['role']['id'],
+                    ]);
+                }
+            }
+
+            $data = $this->getUserSerialized($User);
+        }
+
+        return response()->json(['user' => $data]);
+    }
+
     /**
      * This function create new Role
      * @param Request $request
@@ -218,20 +263,6 @@ class SettingsController extends Controller
         $sanitizedList = array_filter(array_map_collection(function($role){
             if($role instanceof LortomRole)
             {
-                /*$listaPermission = array_filter(array_map(function($perm){
-                    if($perm instanceof LortomPermission)
-                    {
-                        return [
-                            'id'    => $perm->id,
-                            'name'  => $perm->name
-                        ];
-                    }
-                },$role->permissions()->toArray()));
-                return [
-                    'id'            => $role->id,
-                    'name'          => $role->name,
-                    'permissions'   => $listaPermission
-                ];*/
                 return $this->getRoleSerialized($role);
             }
         },$listaRoles));

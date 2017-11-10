@@ -144,6 +144,19 @@ var SettingsService = (function () {
         });
         return response;
     };
+    SettingsService.prototype.getUserByProperty = function (name, value) {
+        var response;
+        response = null;
+        if (this.listOfUsers == null) {
+            this.listOfUsers = JSON.parse(sessionStorage.getItem('users'));
+        }
+        this.listOfUsers.forEach(function (user) {
+            if (user[name] === value) {
+                response = user;
+            }
+        });
+        return response;
+    };
     /**
      * This function check if a role has permission
      * @param role
@@ -185,6 +198,14 @@ var SettingsService = (function () {
         return this.http.put(this.apiManager.getPathByName('saveRole'), role, options)
             .map(function (response) {
             return response.json().role;
+        });
+    };
+    SettingsService.prototype.saveUser = function (user) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/json' });
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        return this.http.put(this.apiManager.getPathByName('saveUser'), user, options)
+            .map(function (response) {
+            return response.json().user;
         });
     };
     SettingsService.prototype.newRole = function (role) {
@@ -481,7 +502,7 @@ var UserNewComponent = (function () {
         }
     };
     /**
-     * This function delete Permission from role.permissions
+     * This function delete Role from user.role
      * @param item
      */
     UserNewComponent.prototype.eraseRole = function (item) {
@@ -490,7 +511,7 @@ var UserNewComponent = (function () {
         delete this.user.role;
     };
     /**
-     * This Function add Permission at the moment to role.permissions
+     * This Function add Role at the moment to user.role
      * @param item
      */
     UserNewComponent.prototype.addRole = function (item) {
@@ -528,15 +549,12 @@ var UserNewComponent = (function () {
         }
     };
     UserNewComponent.prototype.isEqual = function (v, v2) {
-        console.log(v);
-        console.log(v2);
         return (v.email == v2.email) && (v.state == v2.state) && (v.name == v2.name);
     };
     /**
      * This function clone the User
      */
     UserNewComponent.prototype.cloneUser = function () {
-        console.log(this.copyUser);
         var permissions = [];
         this.copyUser = Object.assign({}, this.user);
         if (this.user.role !== undefined) {
@@ -549,7 +567,6 @@ var UserNewComponent = (function () {
             this.copyUser.role = role;
             this.copyUser.role.permissions = permissions;
         }
-        console.log(this.copyUser);
     };
     /**
      * This function clone the CopyUser
@@ -914,6 +931,213 @@ var _a, _b;
 
 /***/ }),
 
+/***/ "../../../../../src/plugins/Hardel/Settings/component/User/user.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<form class=\"form\" *ngIf=\"notFound == true\">\n<div class=\"portlet\">\n    <div class=\"portlet-title\">\n        <div class=\"caption\">\n            <i class=\"fa fa-database\"></i>\n            <span>General Definitions</span>\n        </div>\n        <div class=\"actions\">\n            <button class=\"btn darkorange\" (click)=\"editMode()\">\n                <i class=\"fa fa-edit\"></i>\n                Edit\n            </button>\n        </div>\n    </div>\n    <div class=\"portlet-body\">\n        <div class=\"portlet-form-body\">\n            <div class=\"container\">\n                <div class=\"row\">\n                    <div class=\"col-12\">\n                        <div class=\"form-group flex-group\">\n                            <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                            <div class=\"col-md-4\">\n                                <input type=\"text\" class=\"form-control\" name=\"nome\" [ngModel] = \"user.name\" placeholder=\"Nome\" id=\"nome\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                <ng-template #editName>\n                                    <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"user.name\" >\n                                </ng-template>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"col-12\">\n                        <div class=\"form-group flex-group\">\n                            <label for=\"nome\" class=\"col-md-2 control-label\">Email</label>\n                            <div class=\"col-md-4\">\n                                <input type=\"text\" class=\"form-control\" name=\"email\" [ngModel] = \"user.email\" placeholder=\"Nome\" id=\"email\" readonly>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n<div class=\"portlet\">\n    <div class=\"portlet-title\">\n        <div class=\"caption\">\n            <i class=\"fa fa-list\"></i>\n            <span>Role</span>\n        </div>\n        <div class=\"actions\">\n            <button class=\"btn cyan\" data-toggle=\"modal\" data-target=\"#addModal\" *ngIf=\"isEdit == true\">\n                <i class=\"fa fa-plus\"></i>\n                Add\n            </button>\n        </div>\n    </div>\n    <div class=\"portlet-body\">\n        <div class=\"box\">\n            <div class=\"box-header\">\n\n            </div>\n            <div class=\"box-body\">\n                <div class=\"wrapper\">\n                    <div class=\"row\">\n                        <div class=\"col-sm-12\">\n                            <table class=\"table table-bordered table-striped\" *ngIf=\"user.role !== undefined\">\n                                <thead>\n                                <tr>\n                                    <th>\n                                        <a>Nome</a>\n                                    </th>\n                                    <th style=\"width: 50px;\"></th>\n                                </tr>\n                                </thead>\n                                <tbody>\n                                <tr>\n                                    <td>\n                                        {{user.role.name}}\n                                    </td>\n                                    <td>\n                                        <a class=\"td_orange\" (click)=\"eraseRole(user.role)\"><i class=\"fa fa-window-close-o\"></i></a>\n                                    </td>\n                                </tr>\n                                </tbody>\n                            </table>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n<div class=\"row\">\n    <div class=\"col-12\">\n        <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n        <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n    </div>\n</div>\n<div id=\"addModal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"addModal\"  aria-hidden=\"true\">\n    <div class=\"modal-dialog\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <div class=\"modal-title\">\n                    Searching For Permission\n                    <button class=\"close\" data-dismiss = \"modal\" aria-label=\"hidden\"><i class=\"fa fa-times\"></i></button>\n                </div>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"row\">\n                    <div class=\"col-md-12\">\n                        <div class=\"form-group flex-group\">\n                            <label class=\"col-md-4\">Name</label>\n                            <div class=\"col-md-4\">\n                                <input type=\"text\" class=\"form-control input-sm\" name=\"query\" [(ngModel)]=\"query\" (keyup)=\"filter()\" autocomplete=\"off\">\n                                <div class=\"suggestions\" *ngIf=\"filteredList.length > 0\">\n                                    <ul>\n                                        <li class=\"suggestion-li\" *ngFor=\"let item of filteredList\">\n                                            <a (click)=\"addRole(item)\">{{item.name}}</a>\n                                        </li>\n                                    </ul>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div class=\"modal-footer\">\n                <div class=\"m-footer\">\n\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n</form>"
+
+/***/ }),
+
+/***/ "../../../../../src/plugins/Hardel/Settings/component/User/user.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Services_settings_interfaces__ = __webpack_require__("../../../../../src/plugins/Hardel/Settings/Services/settings.interfaces.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Services_settings_interfaces___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Services_settings_interfaces__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Services_settings_service__ = __webpack_require__("../../../../../src/plugins/Hardel/Settings/Services/settings.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/**
+ * Created by hernan on 10/11/2017.
+ */
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var UserComponent = (function () {
+    function UserComponent(sService, router, nav) {
+        var _this = this;
+        this.sService = sService;
+        this.router = router;
+        this.nav = nav;
+        this.listRoles = [];
+        this.isEdit = false;
+        this.notFound = false;
+        this.filteredList = [];
+        this.query = '';
+        this.user = {
+            id: -2,
+            name: '',
+            email: '',
+            state: false,
+            role: null
+        };
+        this.sub = this.router.params.subscribe(function (params) {
+            _this.id = +params['id'];
+            _this.user = _this.sService.getUserByProperty('id', _this.id);
+            if (_this.user != null) {
+                _this.notFound = true;
+            }
+            else {
+                _this.nav.navigate(['/backend/not-found']);
+            }
+            _this.cloneUser();
+        });
+    }
+    UserComponent.prototype.ngOnInit = function () {
+        this.retriveRoles();
+    };
+    UserComponent.prototype.ngOnDestroy = function () {
+        this.sub.unsubscribe();
+    };
+    /**
+     * This function pass into edit Mode
+     */
+    UserComponent.prototype.editMode = function () {
+        //passa in modalità edit
+        this.isEdit = !this.isEdit;
+    };
+    /**
+     * This function go to save Mode
+     */
+    UserComponent.prototype.saveMode = function () {
+        var _this = this;
+        //salva i cambiamenti
+        if (this.user !== this.copyUser) {
+            if (this.user.email.length == 0) {
+                alert('You must write an email of User, please!');
+                this.cloneCopyUser();
+                return;
+            }
+            this.sService.saveUser(this.user).subscribe(function (user) {
+                _this.user = user;
+                _this.retriveRoles();
+                _this.editMode();
+            });
+        }
+    };
+    /**
+     * This function is to get Permission from API
+     */
+    UserComponent.prototype.retriveRoles = function () {
+        var _this = this;
+        this.sService.getRolesFrom().subscribe(function (roles) {
+            _this.listRoles = roles;
+            var index = _this.listRoles.indexOf(_this.user.role);
+            if (index > -1) {
+                _this.listRoles.splice(index, 1);
+            }
+        });
+        this.cloneUser();
+    };
+    /**
+     * This function reset the Information of Role
+     */
+    UserComponent.prototype.resetMode = function () {
+        if (this.isEqual(this.user, this.copyUser)) {
+            if (confirm('Are you sure you don\'t want to save this changement and restore it?')) {
+                this.cloneCopyUser();
+            }
+        }
+    };
+    UserComponent.prototype.isEqual = function (v, v2) {
+        return (v.email == v2.email) && (v.state == v2.state) && (v.name == v2.name);
+    };
+    /**
+     * This function delete Role from user.role
+     * @param item
+     */
+    UserComponent.prototype.eraseRole = function (item) {
+        // cancella il permesso
+        this.listRoles.push(item);
+        delete this.user.role;
+    };
+    /**
+     * This Function add Role at the moment to user.role
+     * @param item
+     */
+    UserComponent.prototype.addRole = function (item) {
+        //aggiunge un permesso
+        this.filteredList = [];
+        this.query = item.name;
+        this.user.role = item;
+        var index = this.listRoles.indexOf(item);
+        if (index > -1) {
+            this.listRoles.splice(index, 1);
+        }
+    };
+    /**
+     * This function filter permission for research
+     */
+    UserComponent.prototype.filter = function () {
+        if (this.query !== "") {
+            this.filteredList = this.listRoles.filter(function (el) {
+                return el.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
+            }.bind(this));
+        }
+    };
+    /**
+     * This function clone the User
+     */
+    UserComponent.prototype.cloneUser = function () {
+        var permissions = [];
+        this.copyUser = Object.assign({}, this.user);
+        if (this.user.role !== undefined) {
+            for (var _i = 0, _a = this.user.role.permissions; _i < _a.length; _i++) {
+                var perm = _a[_i];
+                permissions.push(perm);
+            }
+            var role = void 0;
+            role = Object.assign({}, this.user.role);
+            this.copyUser.role = role;
+            this.copyUser.role.permissions = permissions;
+        }
+    };
+    /**
+     * This function clone the CopyUser
+     */
+    UserComponent.prototype.cloneCopyUser = function () {
+        var permissions = [];
+        for (var _i = 0, _a = this.copyUser.role.permissions; _i < _a.length; _i++) {
+            var perm = _a[_i];
+            permissions.push(perm);
+        }
+        var role;
+        role = Object.assign({}, this.copyUser.role);
+        this.user = Object.assign({}, this.copyUser);
+        this.user.role = role;
+        this.user.role.permissions = permissions;
+    };
+    return UserComponent;
+}());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__Services_settings_interfaces__["User"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__Services_settings_interfaces__["User"]) === "function" && _a || Object)
+], UserComponent.prototype, "user", void 0);
+UserComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'settings-user',
+        template: __webpack_require__("../../../../../src/plugins/Hardel/Settings/component/User/user.component.html"),
+        styles: ['']
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__Services_settings_service__["a" /* SettingsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__Services_settings_service__["a" /* SettingsService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["d" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["d" /* Router */]) === "function" && _d || Object])
+], UserComponent);
+
+var _a, _b, _c, _d;
+//# sourceMappingURL=user.component.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/plugins/Hardel/Settings/component/Users/users.component.html":
 /***/ (function(module, exports) {
 
@@ -1049,9 +1273,12 @@ var _a, _b;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__NewRole_rolenew_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Settings/component/NewRole/rolenew.component.ts");
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_3__NewRole_rolenew_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Users_users_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Settings/component/Users/users.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_4__Users_users_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_4__Users_users_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__NewUser_usernew_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Settings/component/NewUser/usernew.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_5__NewUser_usernew_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_5__NewUser_usernew_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__User_user_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Settings/component/User/user.component.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_6__User_user_component__["a"]; });
+
 
 
 
@@ -1202,13 +1429,14 @@ var routes = [
                     { path: 'new', component: __WEBPACK_IMPORTED_MODULE_1__component__["b" /* RoleNewComponent */], data: { breadcrumb: 'New Role' } },
                     { path: ':id', component: __WEBPACK_IMPORTED_MODULE_1__component__["a" /* RoleComponent */], data: { breadcrumb: 'Role' } },
                 ] },
-            { path: 'users', component: __WEBPACK_IMPORTED_MODULE_1__component__["f" /* UsersComponent */], data: { breadcrumb: 'Users' }, children: [
-                    { path: 'new', component: __WEBPACK_IMPORTED_MODULE_1__component__["e" /* UserNewComponent */], data: { breadcrumb: 'New User' } },
+            { path: 'users', component: __WEBPACK_IMPORTED_MODULE_1__component__["g" /* UsersComponent */], data: { breadcrumb: 'Users' }, children: [
+                    { path: 'new', component: __WEBPACK_IMPORTED_MODULE_1__component__["f" /* UserNewComponent */], data: { breadcrumb: 'New User' } },
+                    { path: ':id', component: __WEBPACK_IMPORTED_MODULE_1__component__["e" /* UserComponent */], data: { breadcrumb: 'User' } }
                 ] }
         ] }
 ];
 var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["e" /* RouterModule */].forChild(routes);
-var routedComponents = [__WEBPACK_IMPORTED_MODULE_1__component__["d" /* SettingsComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["c" /* RolesComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["a" /* RoleComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["b" /* RoleNewComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["f" /* UsersComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["e" /* UserNewComponent */]];
+var routedComponents = [__WEBPACK_IMPORTED_MODULE_1__component__["d" /* SettingsComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["c" /* RolesComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["a" /* RoleComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["b" /* RoleNewComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["g" /* UsersComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["f" /* UserNewComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["e" /* UserComponent */]];
 //# sourceMappingURL=settings.routing.js.map
 
 /***/ })

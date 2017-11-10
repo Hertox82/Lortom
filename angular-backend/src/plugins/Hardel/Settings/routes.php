@@ -39,3 +39,8 @@ Route::post('/user',[
     'as'    => 'apiNewUser',
     'uses'  => 'SettingsController@newUser'
 ]);
+
+Route::put('/user',[
+    'as'    => 'apiUpdateUser',
+    'uses'  => 'SettingsController@saveUser'
+]);

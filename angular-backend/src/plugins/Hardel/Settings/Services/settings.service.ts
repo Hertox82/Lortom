@@ -164,6 +164,27 @@ export class SettingsService {
         return response;
     }
 
+    getUserByProperty(name : string, value : any) : User
+    {
+        let response: User;
+        response = null;
+
+        if(this.listOfUsers == null)
+        {
+            this.listOfUsers = JSON.parse(sessionStorage.getItem('users'));
+        }
+        this.listOfUsers.forEach(
+            (user : User) => {
+                if(user[name] === value)
+                {
+                    response = user;
+                }
+            }
+        );
+
+        return response;
+    }
+
     /**
      * This function check if a role has permission
      * @param role
@@ -218,6 +239,16 @@ export class SettingsService {
         return this.http.put(this.apiManager.getPathByName('saveRole'),role,options)
             .map((response : Response) => {
                 return response.json().role;
+            });
+    }
+
+    saveUser(user : User) : Observable<any> {
+        let headers = new Headers({'Content-Type' : 'application/json'});
+        let options = new RequestOptions({headers : headers});
+
+        return this.http.put(this.apiManager.getPathByName('saveUser'),user,options)
+            .map((response : Response) => {
+                return response.json().user;
             });
     }
 

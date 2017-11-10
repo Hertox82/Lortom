@@ -60,7 +60,7 @@ export class UserNewComponent implements OnInit
     }
 
     /**
-     * This function delete Permission from role.permissions
+     * This function delete Role from user.role
      * @param item
      */
     eraseRole(item) {
@@ -70,7 +70,7 @@ export class UserNewComponent implements OnInit
     }
 
     /**
-     * This Function add Permission at the moment to role.permissions
+     * This Function add Role at the moment to user.role
      * @param item
      */
     addRole(item : Role) {
@@ -121,8 +121,6 @@ export class UserNewComponent implements OnInit
 
     isEqual(v,v2) : boolean
     {
-        console.log(v);
-        console.log(v2);
         return (v.email == v2.email) && (v.state == v2.state) && (v.name == v2.name)
     }
 
@@ -130,7 +128,6 @@ export class UserNewComponent implements OnInit
      * This function clone the User
      */
     cloneUser(){
-        console.log(this.copyUser);
         let permissions: Permission[] = [];
 
         this.copyUser = Object.assign({}, this.user);
@@ -145,7 +142,6 @@ export class UserNewComponent implements OnInit
             this.copyUser.role = role;
             this.copyUser.role.permissions = permissions;
         }
-        console.log(this.copyUser);
     }
 
     /**

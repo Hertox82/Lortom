@@ -6,4 +6,5 @@ export {RolesComponent} from "./Roles/roles.component";
 export {RoleNewComponent} from "./NewRole/rolenew.component";
 export {UsersComponent} from "./Users/users.component";
 export {UserNewComponent} from "./NewUser/usernew.component";
+export {UserComponent}  from "./User/user.component";
 
