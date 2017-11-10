@@ -10,5 +10,6 @@ export interface NavbarItem
 {
     name : string,
     href : string,
-    subMenu : NavbarSubmenu []
+    subMenu : NavbarSubmenu [],
+    permission : string
 }

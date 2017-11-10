@@ -25,6 +25,10 @@ export class RolesComponent implements OnInit
 
     constructor(private c_Service : SettingsService, private router :Router) {
 
+        if(!this.c_Service.hasPermissions("Hardel.Settings.Roles"))
+        {
+            this.router.navigate(['/backend/dashboard']);
+        }
         this.listaRoleDelete = [];
 
         this.router.events.subscribe(

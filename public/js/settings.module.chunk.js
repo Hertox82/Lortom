@@ -225,6 +225,17 @@ var SettingsService = (function () {
     SettingsService.prototype.updateListOfUsers = function () {
         this._updateUsers.next();
     };
+    SettingsService.prototype.hasPermissions = function (name) {
+        if (this.user == null) {
+            this.user = JSON.parse(sessionStorage.getItem('user'));
+        }
+        for (var i = 0; i < this.user.permissions.length; i++) {
+            if (this.user.permissions[i].name === name) {
+                return true;
+            }
+        }
+        return false;
+    };
     return SettingsService;
 }());
 SettingsService = __decorate([
@@ -818,6 +829,9 @@ var RolesComponent = (function () {
         this.router = router;
         this.myRoot = '/backend/settings/roles';
         this.isRoot = false;
+        if (!this.c_Service.hasPermissions("Hardel.Settings.Roles")) {
+            this.router.navigate(['/backend/dashboard']);
+        }
         this.listaRoleDelete = [];
         this.router.events.subscribe(function (val) {
             if (val instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* NavigationEnd */]) {
@@ -937,6 +951,9 @@ var UsersComponent = (function () {
         this.router = router;
         this.myRoot = '/backend/settings/users';
         this.isRoot = false;
+        if (!this.s_Service.hasPermissions('Hardel.Settings.Users')) {
+            this.router.navigate(['/backend/dashboard']);
+        }
         this.listaUserDelete = [];
         this.router.events.subscribe(function (val) {
             if (val instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* NavigationEnd */]) {
@@ -1058,7 +1075,8 @@ module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\"
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SettingsComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__ = __webpack_require__("../../../../../src/plugins/Hardel/Settings/Services/settings.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /**
  * Created by hernan on 17/10/2017.
  */
@@ -1073,15 +1091,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var SettingsComponent = (function () {
-    function SettingsComponent(router) {
+    function SettingsComponent(router, service) {
         var _this = this;
         this.router = router;
+        this.service = service;
         this.myRoot = '/backend/settings';
+        if (!this.service.hasPermissions('Hardel.Settings')) {
+            this.router.navigate(['/backend/dashboard']);
+        }
         this.isRoot = true;
         //trigger the event for the overview
         this.router.events.subscribe(function (val) {
-            if (val instanceof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* NavigationEnd */]) {
+            if (val instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* NavigationEnd */]) {
                 if (_this.myRoot === val.url) {
                     _this.isRoot = true;
                 }
@@ -1100,10 +1123,10 @@ SettingsComponent = __decorate([
         selector: 'app-settings',
         template: __webpack_require__("../../../../../src/plugins/Hardel/Settings/component/settings.component.html")
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* Router */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* Router */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__["a" /* SettingsService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__Services_settings_service__["a" /* SettingsService */]) === "function" && _b || Object])
 ], SettingsComponent);
 
-var _a;
+var _a, _b;
 //# sourceMappingURL=settings.component.js.map
 
 /***/ }),

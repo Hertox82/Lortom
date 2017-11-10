@@ -35,7 +35,7 @@ Route::get('/users',[
     'uses'  => 'SettingsController@getUsers'
 ]);
 
-Route::post('/role',[
+Route::post('/user',[
     'as'    => 'apiNewUser',
     'uses'  => 'SettingsController@newUser'
 ]);

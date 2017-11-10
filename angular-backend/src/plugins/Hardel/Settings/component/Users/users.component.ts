@@ -24,6 +24,11 @@ export class UsersComponent implements OnInit
 
     constructor(private s_Service : SettingsService, private router : Router) {
 
+        if(!this.s_Service.hasPermissions('Hardel.Settings.Users'))
+        {
+            this.router.navigate(['/backend/dashboard']);
+        }
+
         this.listaUserDelete = [];
 
         this.router.events.subscribe(

@@ -7,6 +7,7 @@ import 'rxjs/Rx';
 import {ApiManager} from "../../../../app/urlApi/api.manager";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
+import {User as userFirst} from "../../../../app/backend-module/user-module/user-model/user.interface";
 
 @Injectable()
 export class SettingsService {
@@ -14,6 +15,7 @@ export class SettingsService {
     apiManager : ApiManager;
     listOfRoles : Role[];
     listOfUsers : User[];
+    user : userFirst;
     private _updateRoles = new Subject();
     updateRoles$ = this._updateRoles.asObservable();
 
@@ -277,6 +279,25 @@ export class SettingsService {
     updateListOfUsers()
     {
         this._updateUsers.next();
+    }
+
+
+    hasPermissions(name: string) : boolean
+    {
+        if(this.user == null)
+        {
+            this.user = JSON.parse(sessionStorage.getItem('user'));
+        }
+
+        for(let i = 0; i<this.user.permissions.length; i++)
+        {
+            if(this.user.permissions[i].name === name)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 

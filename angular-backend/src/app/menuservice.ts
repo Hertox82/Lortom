@@ -7,6 +7,7 @@ import 'rxjs/Rx';
 import {Observable} from "rxjs/Observable";
 import {ApiManager} from "./urlApi/api.manager";
 import {User} from "./backend-module/user-module/user-model/user.interface";
+import {Permission} from "../plugins/Hardel/Settings/Services/settings.interfaces";
 
 @Injectable()
 export class MenuService {
@@ -16,6 +17,7 @@ export class MenuService {
     user : User;
     constructor(private http: Http)
     {
+        this.user = null;
         this.urlManager = new ApiManager();
     }
 
@@ -64,12 +66,30 @@ export class MenuService {
     }
 
     getUser() : User {
-        if(this.user == 'undefined' || this.user == null)
+        if(this.user == null)
         {
             this.user = JSON.parse(sessionStorage.getItem('user'));
         }
 
         return this.user;
+    }
+
+    hasPermissions(name: string) : boolean
+    {
+        if(this.user == null)
+        {
+            this.user = JSON.parse(sessionStorage.getItem('user'));
+        }
+        
+        for(let i = 0; i<this.user.permissions.length; i++)
+        {
+            if(this.user.permissions[i].name === name)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     deleteUser() : void {

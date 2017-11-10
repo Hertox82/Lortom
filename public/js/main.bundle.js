@@ -1022,6 +1022,7 @@ module.exports = "<nav>\n    <div class=\"navbar-custom-menu\">\n        <ul>\n 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NavbarComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__menuservice__ = __webpack_require__("../../../../../src/app/menuservice.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1032,17 +1033,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var NavbarComponent = (function () {
-    function NavbarComponent() {
+    function NavbarComponent(sMenu) {
+        var _this = this;
+        this.sMenu = sMenu;
+        this.navbarItemsDelete = [];
         this.navbarItems = [
-            { name: 'fa fa-envelope', href: '', subMenu: [] },
-            { name: 'fa fa-bell', href: '', subMenu: [] },
-            { name: 'fa fa-cogs', href: '/backend/settings', subMenu: [] },
+            { name: 'fa fa-envelope', href: '', subMenu: [], permission: '' },
+            { name: 'fa fa-bell', href: '', subMenu: [], permission: '' },
+            { name: 'fa fa-cogs', href: '/backend/settings', subMenu: [], permission: 'Hardel.Settings' },
             { name: 'fa fa-user', href: '', subMenu: [
                     { name: 'Edit My Profile', href: '/backend/profile/edit' },
                     { name: 'Logout', href: '/backend/logout' }
-                ] }
+                ], permission: '' }
         ];
+        this.navbarItems.forEach(function (nav) {
+            if (nav.permission.length > 0) {
+                if (!sMenu.hasPermissions(nav.permission)) {
+                    _this.navbarItemsDelete.push(nav);
+                }
+            }
+        });
+        this.navbarItemsDelete.forEach(function (nav) {
+            var index = _this.navbarItems.indexOf(nav);
+            if (index > -1) {
+                _this.navbarItems.splice(index, 1);
+            }
+        });
     }
     NavbarComponent.prototype.ngOnInit = function () { };
     return NavbarComponent;
@@ -1053,9 +1071,10 @@ NavbarComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/backend-module/navbar/navbar.component.html"),
         styles: [__webpack_require__("../../../../../src/app/backend-module/navbar/navbar.component.css")]
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__menuservice__["a" /* MenuService */]) === "function" && _a || Object])
 ], NavbarComponent);
 
+var _a;
 //# sourceMappingURL=navbar.component.js.map
 
 /***/ }),
@@ -1186,9 +1205,6 @@ var BackendExportComponent = [
 /***/ "../../../../../src/app/backend-module/user-module/user-model/user.interface.ts":
 /***/ (function(module, exports) {
 
-/**
- * Created by hernan on 27/10/2017.
- */
 //# sourceMappingURL=user.interface.js.map
 
 /***/ }),
@@ -1273,7 +1289,7 @@ var UserModelComponent = (function () {
     UserModelComponent.prototype.sendUserData = function () {
         var _this = this;
         this.mService.editMyProfile(this.user).subscribe(function (response) {
-            _this.user = { name: response.user.name };
+            _this.user = { name: response.user.name, permissions: response.user.permissions };
             _this.copyUser = Object.assign({}, _this.user);
             _this.isEdit = false;
             _this.mService.deleteUser();
@@ -1465,6 +1481,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var MenuService = (function () {
     function MenuService(http) {
         this.http = http;
+        this.user = null;
         this.urlManager = new __WEBPACK_IMPORTED_MODULE_3__urlApi_api_manager__["a" /* ApiManager */]();
     }
     MenuService.prototype.getMenu = function () {
@@ -1498,10 +1515,21 @@ var MenuService = (function () {
         sessionStorage.setItem('user', JSON.stringify(user));
     };
     MenuService.prototype.getUser = function () {
-        if (this.user == 'undefined' || this.user == null) {
+        if (this.user == null) {
             this.user = JSON.parse(sessionStorage.getItem('user'));
         }
         return this.user;
+    };
+    MenuService.prototype.hasPermissions = function (name) {
+        if (this.user == null) {
+            this.user = JSON.parse(sessionStorage.getItem('user'));
+        }
+        for (var i = 0; i < this.user.permissions.length; i++) {
+            if (this.user.permissions[i].name === name) {
+                return true;
+            }
+        }
+        return false;
     };
     MenuService.prototype.deleteUser = function () {
         sessionStorage.removeItem('user');

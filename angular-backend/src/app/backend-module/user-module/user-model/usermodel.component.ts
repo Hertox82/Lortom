@@ -2,6 +2,7 @@ import {Component, OnInit,Input} from "@angular/core";
 import {User} from "./user.interface";
 import {EventService} from "../../../../services/event.service";
 import {MenuService} from "../../../menuservice";
+import {Permission} from "../../../../plugins/Hardel/Settings/Services/settings.interfaces";
 
 @Component({
     selector : 'app-user-model',
@@ -78,8 +79,8 @@ export class UserModelComponent implements OnInit{
     private sendUserData()
     {
         this.mService.editMyProfile(this.user).subscribe(
-            (response: {message : string, user: {name:string, username:string}}) => {
-                this.user = {name : response.user.name};
+            (response: {message : string, user: {name:string, username:string, permissions : Permission[]}}) => {
+                this.user = {name : response.user.name, permissions: response.user.permissions};
                 this.copyUser = Object.assign({},this.user);
                 this.isEdit = false;
                 this.mService.deleteUser();

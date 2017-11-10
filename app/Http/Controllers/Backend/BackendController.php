@@ -7,6 +7,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\LortomPermission;
 use App\LortomUser;
 use App\Services\Classes\LortomAuth;
 use Illuminate\Http\Request;
@@ -79,12 +80,27 @@ class BackendController extends Controller
 
         $User = $this->auth->getUser();
 
-        $UserObj = ['username' => $User->email, 'name' => $User->name];
+        $permission = array_filter(array_map_collection(function($perm){
+            if($perm instanceof LortomPermission)
+            {
+                return $this->sanitizePermission($perm);
+            }
+        },$User->permissions()));
+
+        $UserObj = ['username' => $User->email, 'name' => $User->name, 'permissions' => $permission];
         $response = ['token' => $token, 'user' => $UserObj];
 
        $config = config('session');
 
         return response()->json($response)->withCookie(Cookie::make('l_t',$token,10,$config['path'],$config['domain'],$config['secure'],false,false,'Lax'));
+    }
+
+    private function sanitizePermission(LortomPermission $perm)
+    {
+        return [
+            'id'    => $perm->id,
+            'name'  => $perm->name
+        ];
     }
 
     public function requestLogout(Request $request)

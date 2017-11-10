@@ -16,7 +16,12 @@ export class SettingsComponent implements OnInit
 {
     isRoot : boolean;
     myRoot = '/backend/settings';
-    constructor(private router : Router) {
+    constructor(private router : Router, private service : SettingsService) {
+        if(!this.service.hasPermissions('Hardel.Settings'))
+        {
+            this.router.navigate(['/backend/dashboard']);
+        }
+
         this.isRoot = true;
         //trigger the event for the overview
         this.router.events.subscribe(
