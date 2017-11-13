@@ -97,41 +97,47 @@ class SettingsController extends Controller
     {
         $input = $request->all();
 
+
         $User = LortomUser::find($input['id']);
 
         $data = [];
 
-        if($User){
+        if($User)
+        {
+
             if($User->name !== $input['name'])
             {
                 $User->name = $input['name'];
                 $User->save();
             }
 
-            if($User->hasRoles())
+            if($User instanceof LortomUser)
             {
-                if(isset($input['role']))
+                if ($User->hasRoles())
                 {
-                    DB::table('lt_users_roles')->where('idUser',$User->id)->delete();
+                    if (isset($input['role']))
+                    {
+                        DB::table('lt_users_roles')->where('idUser', $User->id)->delete();
 
-                    DB::table(['lt_users_roles'])->insert([
-                        'idUser' => $User->id,
-                        'idRole' => $input['role']['id'],
-                    ]);
+                        DB::table('lt_users_roles')->insert([
+                            'idUser' => $User->id,
+                            'idRole' => $input['role']['id'],
+                        ]);
+                    }
+                }
+                else
+                {
+                    if (isset($input['role']))
+                    {
+                       $idUser = $User->id;
+                       $idRole = $input['role']['id'];
+                        DB::table('lt_users_roles')->insert( [
+                            'idUser' => $idUser,
+                            'idRole' => $idRole
+                        ]);
+                    }
                 }
             }
-            else
-            {
-                if(isset($input['role']))
-                {
-
-                    DB::table(['lt_users_roles'])->insert([
-                        'idUser' => $User->id,
-                        'idRole' => $input['role']['id'],
-                    ]);
-                }
-            }
-
             $data = $this->getUserSerialized($User);
         }
 

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {EventService} from "../services/event.service";
 import {MenuService} from "./menuservice";
+import {NavigationEnd, Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -11,13 +12,39 @@ export class AppComponent {
   title = 'app';
   isAuth = false;
   user : any;
+  urlLogin = '/backend/login';
+  isLogin = true;
 
-  constructor(private event : EventService) {
+  constructor(private event : EventService, private router: Router) {
 
     let cookie = this.getCookie('l_t');
     if(cookie)
     {
+      this.isLogin = false;
       this.isAuth = true;
+    }
+
+    this.router.events.subscribe(
+        (val) => {
+          if(val instanceof NavigationEnd)
+          {
+            if(this.urlLogin === val.url)
+            {
+              this.isLogin = true;
+              this.isAuth = false;
+            }
+            else
+            {
+              this.isLogin = false;
+            }
+          }
+        }
+    );
+
+    if(!this.isAuth)
+    {
+      sessionStorage.removeItem('users');
+      sessionStorage.removeItem('roles');
     }
     this.event.logged$.subscribe(
         (isLogged : boolean) => this.isAuth = isLogged
