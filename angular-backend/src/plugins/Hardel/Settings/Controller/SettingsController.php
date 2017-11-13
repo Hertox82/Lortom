@@ -124,6 +124,10 @@ class SettingsController extends Controller
                             'idRole' => $input['role']['id'],
                         ]);
                     }
+                    else
+                    {
+                        DB::table('lt_users_roles')->where('idUser', $User->id)->delete();
+                    }
                 }
                 else
                 {

@@ -43,7 +43,10 @@ class LortomUser extends Model
 
     public function hasRoles()
     {
-        return !empty($this->roles);
+        if(empty($this->roles))
+            $this->roles();
+
+        return (count($this->roles) > 0);
     }
 
 
