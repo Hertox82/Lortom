@@ -170,6 +170,7 @@ return [
        Plugins\Hardel\Settings\Providers\HardelSettingsServiceProvider::class,
        Plugins\Hardel\Settings\Providers\HardelSettingsServiceProvider::class,
        Plugins\Hardel\Settings\Providers\HardelSettingsServiceProvider::class,
+       Plugins\Hardel\Settings\Providers\HardelSettingsServiceProvider::class,
        Plugins\Hardel\Settings\Providers\HardelSettingsServiceProvider::class
 
 

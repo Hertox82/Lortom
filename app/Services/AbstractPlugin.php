@@ -274,4 +274,15 @@ abstract class AbstractPlugin
     {
         $this->pluginConfigcompiler->updatePermission($this->vendor,$this->name);
     }
+
+
+    protected function migrationUpByCompiler()
+    {
+        $this->pluginConfigcompiler->migration($this->vendor,$this->name,'migration-up');
+    }
+
+    protected function migrationDownByCompiler()
+    {
+        $this->pluginConfigcompiler->migration($this->vendor,$this->name,'migration-down');
+    }
 }

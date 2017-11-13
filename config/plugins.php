@@ -65,9 +65,18 @@ return [
             ],
             'migration-up'      => function(){
                 //here migration for plugin
+                $Schema=  Illuminate\Support\Facades\Schema::class;
+
+                $Schema::create('lt_prova',function(Illuminate\Database\Schema\Blueprint $table){
+                    $table->increments('id');
+                    $table->string('prova');
+                });
             },
             'migration-down'    => function(){
                 //here migration rollback
+                $Schema=  Illuminate\Support\Facades\Schema::class;
+
+                $Schema::dropIfExists('lt_prova');
             },
             'permission'        => 'Hardel.Settings'
         ], 

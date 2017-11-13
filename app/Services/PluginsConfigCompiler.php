@@ -201,4 +201,24 @@ class PluginsConfigCompiler
         }
 
     }
+
+    public function migration($vendor,$namePlugin,$kind)
+    {
+        $this->loadPlugins();
+
+        $plugin = array_filter(array_map_collection(function($pl)use($vendor,$namePlugin){
+            if($pl['vendor'] === $vendor and $pl['PluginName'] === $namePlugin)
+            {
+                return $pl;
+            }
+        },$this->arrayDataPlugins['plugins']));
+
+        $listReduced = array_reduce($plugin,function($c,$i){
+            return $i;
+        });
+
+        $function = $listReduced[$kind];
+
+        $function();
+    }
 }

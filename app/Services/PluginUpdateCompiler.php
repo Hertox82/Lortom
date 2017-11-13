@@ -53,4 +53,11 @@ class PluginUpdateCompiler extends AbstractPlugin
 
         $this->updatePermissionByCompiler();
     }
+
+   public function migration($kind)
+   {
+       $function = "migration{$kind}ByCompiler";
+
+       $this->$function();
+   }
 }

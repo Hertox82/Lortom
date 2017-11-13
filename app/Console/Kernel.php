@@ -18,6 +18,8 @@ class Kernel extends ConsoleKernel
         Commands\DeletePlugin::class,
         Commands\UpdatePlugin::class,
         Commands\UpdatePermission::class,
+        Commands\UpdateMigrationUp::class,
+        Commands\UpdateMigrationDown::class,
     ];
 
     /**
