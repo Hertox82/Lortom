@@ -196,6 +196,8 @@ class PluginCreateCompiler extends AbstractPlugin
             $this->setStub($fileStubController)
                  ->replaceWith('#namespace#',$namespaceController)
                  ->replaceWith('#vendor-name#',$this->vendor.$this->name)
+                 ->replaceWith('#vendor#',$this->vendor)
+                 ->replaceWith('#name#',$this->name)
                  ->getStub());
     }
 

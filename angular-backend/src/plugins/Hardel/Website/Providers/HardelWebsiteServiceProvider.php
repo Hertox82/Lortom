@@ -1,25 +1,26 @@
 <?php
 
-namespace #namespace#;
+namespace Plugins\Hardel\Website\Providers;
 
 
 use Illuminate\Support\ServiceProvider;
 use Route;
 
-class #vendor-name#ServiceProvider extends ServiceProvider
+class HardelWebsiteServiceProvider extends ServiceProvider
 {
-    protected $namespace = 'Plugins\#vendor#\#name#\Controller';
+    protected $namespace = 'Plugins\Hardel\Website\Controller';
+
     public function boot()
     {
         /**
          * Routing
          */
-         if(!$this->app->routesAreCached())
-         {
+        if(!$this->app->routesAreCached())
+        {
             Route::prefix('api')
                 ->middleware('api')
                 ->namespace($this->namespace)
                 ->group(__DIR__.'/../routes.php');
-         }
+        }
     }
 }

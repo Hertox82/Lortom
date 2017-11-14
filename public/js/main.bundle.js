@@ -15,6 +15,10 @@ var map = {
 	"../plugins/Hardel/Settings/settings.module": [
 		"../../../../../src/plugins/Hardel/Settings/settings.module.ts",
 		"settings.module"
+	],
+	"../plugins/Hardel/Website/website.module": [
+		"../../../../../src/plugins/Hardel/Website/website.module.ts",
+		"website.module"
 	]
 };
 function webpackAsyncContext(req) {
@@ -217,7 +221,8 @@ var routes = [
     { path: 'backend/not-found', component: __WEBPACK_IMPORTED_MODULE_3__backend_module_notfoundpage__["a" /* NotFoundComponent */] },
     { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' },
     { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' },
-    { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' }
+    { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' },
+    { path: 'backend/website', loadChildren: '../plugins/Hardel/Website/website.module#WebsiteModule' }
 ];
 var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["e" /* RouterModule */].forRoot(routes);
 //# sourceMappingURL=app.routing.js.map
@@ -337,6 +342,7 @@ var BreadCrumbsComponent = (function () {
                 b.active = true;
             }
         }
+        console.log(breadcrumbs);
         return breadcrumbs;
     };
     BreadCrumbsComponent.prototype.getBreadcrumbs = function (route, url, breadcrumbs) {

@@ -1,0 +1,47 @@
+<div class="content-box">
+    <div class="content-header">
+        <h1>Website</h1>
+        <breadcrumbs></breadcrumbs>
+    </div>
+    <div class="content">
+        <router-outlet></router-outlet>
+        <div class="portlet" *ngIf="isRoot === true">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-database"></i>
+                    <span>Overviews</span>
+                </div>
+                <div class="actions">
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="tiles">
+                    <a [routerLink]="['/backend/website/pages']">
+                        <div class="tile double bg-cyan">
+                            <div class="tile-body">
+                                <i class="fa fa-clone fa-6"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    Pages
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <a [routerLink]="['/backend/website/menu']">
+                        <div class="tile bg-orange">
+                            <div class="tile-body">
+                                <i class="fa fa-list fa-6"></i>
+                            </div>
+                            <div class="tile-object">
+                                <div class="name">
+                                    Menu
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
