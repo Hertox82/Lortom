@@ -1,0 +1,74 @@
+<form class="form">
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-database"></i>
+                <span>General Definitions</span>
+            </div>
+            <div class="actions">
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="portlet-form-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="title" class="col-md-2 control-label">Title</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="title" placeholder="Title" id="title" [(ngModel)] = "page.title" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="slug" class="col-md-2 control-label">Slug</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="slug" placeholder="Slug" id="slug" [(ngModel)] = "page.slug" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="nomeFile" class="col-md-2 control-label">Nome File</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="nomeFile" placeholder="Nome File" id="nomeFile" [(ngModel)] = "page.nomeFile" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="meta_tag" class="col-md-2 control-label">Meta Tag</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="meta_tag" placeholder="Meta Tag" id="meta_tag" [(ngModel)] = "page.metaTag" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="meta_desc" class="col-md-2 control-label">Meta Desc</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="meta_desc" placeholder="Meta Desc" id="meta_desc" [(ngModel)] = "page.metaDesc" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="new-page" class="col-md-2 control-label">Content</label>
+                                <div class="col-md-10">
+                                   <app-editor [elementId]="'new-page'" id="new-page" [content]="page.content" (onEditorKeyup)="keyupHandlerFunction($event)"></app-editor>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button class="btn orange" (click)="saveMode()">Save</button>
+            <button class="btn red" (click)="resetMode()">Reset</button>
+        </div>
+    </div>
+</form>

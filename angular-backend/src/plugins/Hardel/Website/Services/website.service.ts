@@ -29,6 +29,7 @@ export class WebsiteService{
         // write the api route for setting
         const urls = [
             { namePath : 'getPages', path: 'pages'},
+            { namePath : 'savePage', path: 'page'}
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -102,6 +103,38 @@ export class WebsiteService{
                     return response.json().pages;
                 }
             );
+    }
+
+    createPage(page : Page) :Observable<any>
+    {
+        let headers = new Headers({'Content-Type' : 'application/json'});
+        let options = new RequestOptions({headers : headers});
+
+        return this.http.post(this.apiManager.getPathByName('saveRole'),page,options)
+            .map(
+                (response : Response) => {
+                    return response.json().page;
+                }
+            );
+    }
+
+    setPage(page : Page)
+    {
+        let pages = this.getPages();
+        pages.push(page);
+        this.deletePageFromCache();
+        this.setPages(pages);
+    }
+
+    deletePageFromCache() : void
+    {
+        this.listOfPages = null;
+        sessionStorage.removeItem('pages');
+    }
+
+    updateListOfPages()
+    {
+        this._updatePages.next();
     }
 
 }

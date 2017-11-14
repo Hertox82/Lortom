@@ -111,8 +111,9 @@ return [
                             $table->string('title');
                             $table->string('slug');
                             $table->text('content');
-                            $table->string('meta_tag');
-                            $table->string('meta_desc');
+                            $table->string('metaTag');
+                            $table->string('metaDesc');
+                            $table->string('nomeFile');
                         });
                     }
                 },

@@ -35,6 +35,7 @@ var WebsiteService = (function () {
         // write the api route for setting
         var urls = [
             { namePath: 'getPages', path: 'pages' },
+            { namePath: 'savePage', path: 'page' }
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -84,6 +85,27 @@ var WebsiteService = (function () {
             return response.json().pages;
         });
     };
+    WebsiteService.prototype.createPage = function (page) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/json' });
+        var options = new __WEBPACK_IMPORTED_MODULE_2__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        return this.http.post(this.apiManager.getPathByName('saveRole'), page, options)
+            .map(function (response) {
+            return response.json().page;
+        });
+    };
+    WebsiteService.prototype.setPage = function (page) {
+        var pages = this.getPages();
+        pages.push(page);
+        this.deletePageFromCache();
+        this.setPages(pages);
+    };
+    WebsiteService.prototype.deletePageFromCache = function () {
+        this.listOfPages = null;
+        sessionStorage.removeItem('pages');
+    };
+    WebsiteService.prototype.updateListOfPages = function () {
+        this._updatePages.next();
+    };
     return WebsiteService;
 }());
 WebsiteService = __decorate([
@@ -93,6 +115,82 @@ WebsiteService = __decorate([
 
 var _a;
 //# sourceMappingURL=website.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/plugins/Hardel/Website/component/NewPage/pagenew.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"title\" class=\"col-md-2 control-label\">Title</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"title\" placeholder=\"Title\" id=\"title\" [(ngModel)] = \"page.title\" >\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"slug\" class=\"col-md-2 control-label\">Slug</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"slug\" placeholder=\"Slug\" id=\"slug\" [(ngModel)] = \"page.slug\" >\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nomeFile\" class=\"col-md-2 control-label\">Nome File</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"nomeFile\" placeholder=\"Nome File\" id=\"nomeFile\" [(ngModel)] = \"page.nomeFile\" >\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"meta_tag\" class=\"col-md-2 control-label\">Meta Tag</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"meta_tag\" placeholder=\"Meta Tag\" id=\"meta_tag\" [(ngModel)] = \"page.metaTag\" >\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"meta_desc\" class=\"col-md-2 control-label\">Meta Desc</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"meta_desc\" placeholder=\"Meta Desc\" id=\"meta_desc\" [(ngModel)] = \"page.metaDesc\" >\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"new-page\" class=\"col-md-2 control-label\">Content</label>\n                                <div class=\"col-md-10\">\n                                   <app-editor [elementId]=\"'new-page'\" id=\"new-page\" [content]=\"page.content\" (onEditorKeyup)=\"keyupHandlerFunction($event)\"></app-editor>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n</form>"
+
+/***/ }),
+
+/***/ "../../../../../src/plugins/Hardel/Website/component/NewPage/pagenew.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PageNewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Services_website_service__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/Services/website.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var PageNewComponent = (function () {
+    function PageNewComponent(pn_Service) {
+        this.pn_Service = pn_Service;
+        this.page = {
+            id: -1,
+            title: '',
+            slug: '',
+            metaTag: '',
+            metaDesc: '',
+            state: false,
+            content: '',
+            nomeFile: '',
+        };
+    }
+    PageNewComponent.prototype.ngOnInit = function () { };
+    PageNewComponent.prototype.clonePage = function () {
+        this.copyPage = Object.assign({}, this.page);
+    };
+    PageNewComponent.prototype.cloneCopyPage = function () {
+        this.page = Object.assign({}, this.copyPage);
+    };
+    PageNewComponent.prototype.saveMode = function () {
+        var _this = this;
+        if (this.isEqual(this.page, this.copyPage)) {
+            this.pn_Service.createPage(this.page).subscribe(function (page) {
+                _this.pn_Service.setPage(page);
+            });
+        }
+    };
+    PageNewComponent.prototype.isEqual = function (v1, v2) {
+        return (v1.title != v2.title && v1.slug != v2.slug);
+    };
+    PageNewComponent.prototype.keyupHandlerFunction = function (event) {
+        this.page.content = event;
+    };
+    return PageNewComponent;
+}());
+PageNewComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'wb-new-page',
+        template: __webpack_require__("../../../../../src/plugins/Hardel/Website/component/NewPage/pagenew.component.html"),
+        styles: ['']
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__Services_website_service__["a" /* WebsiteService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__Services_website_service__["a" /* WebsiteService */]) === "function" && _a || Object])
+], PageNewComponent);
+
+var _a;
+//# sourceMappingURL=pagenew.component.js.map
 
 /***/ }),
 
@@ -220,12 +318,15 @@ var _a, _b;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__website_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/website.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__website_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_0__website_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Pages_pages_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/Pages/pages.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__Pages_pages_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__Pages_pages_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__NewPage_pagenew_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/NewPage/pagenew.component.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_2__NewPage_pagenew_component__["a"]; });
 /**
  * Created by hernan on 13/11/2017.
  */
+
 
 
 //# sourceMappingURL=index.js.map
@@ -303,12 +404,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Services_website_service__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/Services/website.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_backend_module_Editor_editor__ = __webpack_require__("../../../../../src/app/backend-module/Editor/editor.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -329,6 +432,7 @@ WebsiteModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_4__angular_http__["c" /* HttpModule */],
             __WEBPACK_IMPORTED_MODULE_1__website_routing__["a" /* routing */],
             __WEBPACK_IMPORTED_MODULE_2__app_backend_module_breadcrumbs_breadcrumbs_module__["a" /* BreadCrumbModule */],
+            __WEBPACK_IMPORTED_MODULE_7__app_backend_module_Editor_editor__["a" /* EditorModule */],
         ],
         providers: [__WEBPACK_IMPORTED_MODULE_6__Services_website_service__["a" /* WebsiteService */]],
         declarations: [__WEBPACK_IMPORTED_MODULE_1__website_routing__["b" /* websiteComponent */]]
@@ -350,12 +454,14 @@ WebsiteModule = __decorate([
 
 
 var routes = [
-    { path: '', component: __WEBPACK_IMPORTED_MODULE_1__component__["b" /* WebsiteComponent */], data: { breadcrumb: 'Website' }, children: [
-            { path: 'pages', component: __WEBPACK_IMPORTED_MODULE_1__component__["a" /* PagesComponent */], data: { breadcrumb: 'Pages' } }
+    { path: '', component: __WEBPACK_IMPORTED_MODULE_1__component__["c" /* WebsiteComponent */], data: { breadcrumb: 'Website' }, children: [
+            { path: 'pages', component: __WEBPACK_IMPORTED_MODULE_1__component__["b" /* PagesComponent */], data: { breadcrumb: 'Pages' }, children: [
+                    { path: 'new', component: __WEBPACK_IMPORTED_MODULE_1__component__["a" /* PageNewComponent */], data: { breadcrumb: 'New' } }
+                ] }
         ] }
 ];
 var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["e" /* RouterModule */].forChild(routes);
-var websiteComponent = [__WEBPACK_IMPORTED_MODULE_1__component__["b" /* WebsiteComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["a" /* PagesComponent */]];
+var websiteComponent = [__WEBPACK_IMPORTED_MODULE_1__component__["c" /* WebsiteComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["b" /* PagesComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["a" /* PageNewComponent */]];
 //# sourceMappingURL=website.routing.js.map
 
 /***/ })

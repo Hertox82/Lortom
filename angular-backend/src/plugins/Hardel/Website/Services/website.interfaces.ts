@@ -8,7 +8,8 @@ export interface Page {
     title : string,
     slug : string,
     content : string,
-    meta_tag : string,
-    meta_desc : string,
+    metaTag : string,
+    metaDesc : string,
+    nomeFile : string,
     state : boolean,
 }

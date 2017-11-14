@@ -35,8 +35,9 @@ class WebsiteController extends Controller
             'id'        => $page->id,
             'title'     => $page->title,
             'content'   => $page->content,
-            'meta_tag'  => $page->meta_tag,
-            'meta_desc' => $page->meta_desc
+            'metaTag'   => $page->metaTag,
+            'metaDesc'  => $page->metaDesc,
+            'nomeFile'  => $page->nomeFile,
         ];
     }
 }
