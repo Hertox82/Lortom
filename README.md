@@ -1,5 +1,5 @@
 # Lortom
-Lortom is an Content Management System built in Laravel 5.5 + Angular 2
+Lortom is an Content Management System built in Laravel 5.5 + Angular 4
 
 ### TODO LIST
 
