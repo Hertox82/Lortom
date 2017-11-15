@@ -10,6 +10,7 @@ export interface Page {
     content : string,
     metaTag : string,
     metaDesc : string,
-    nomeFile : string,
-    state : boolean,
+    fileName : string,
+    check : boolean,
+    state : { id? : number , label? : string },
 }

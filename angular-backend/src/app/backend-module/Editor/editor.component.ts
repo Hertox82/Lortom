@@ -30,11 +30,14 @@ export class EditorComponent implements AfterViewInit, OnDestroy
             skin_url: '../../../js/assets/skins/lightgray',
             setup : editor => {
                 this.editor = editor;
-                //editor.setContent(this.content);
+
                 editor.on('keyup', ()=> {
                     const content = editor.getContent();
                     this.onEditorKeyup.emit(content);
                 });
+            },
+            init_instance_callback : inst => {
+              inst.setContent(this.content);
             },
         });
     }

@@ -13,6 +13,8 @@ export class PageNewComponent implements OnInit
 {
     page : Page;
     copyPage : Page;
+    listOfState : {id? : number, label? : string}[];
+
     constructor(private pn_Service : WebsiteService){
         this.page =  {
             id : -1,
@@ -20,12 +22,27 @@ export class PageNewComponent implements OnInit
             slug : '',
             metaTag : '',
             metaDesc : '',
-            state : false,
+            check : false,
+            state : {},
             content: '',
-            nomeFile : '',
+            fileName : '',
         }
+
+        this.clonePage();
+
+        this.pn_Service.getPageAtt().subscribe(
+            (data : any) => {
+               this.listOfState = data.states;
+            }
+        );
     }
     ngOnInit() {}
+
+    resetMode(){
+        if (confirm('Do you want to reset all data?')) {
+            this.cloneCopyPage();
+        }
+    }
 
     clonePage()
     {

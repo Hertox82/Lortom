@@ -29,7 +29,8 @@ export class WebsiteService{
         // write the api route for setting
         const urls = [
             { namePath : 'getPages', path: 'pages'},
-            { namePath : 'savePage', path: 'page'}
+            { namePath : 'savePage', path: 'page'},
+            { namePath : 'getPageAtt', path: 'pages/attribute/list'},
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -58,6 +59,26 @@ export class WebsiteService{
         return false;
     }
 
+    getPageByProperty(name : string, value : any)
+    {
+        let response: Page;
+        response = null;
+
+        if(this.listOfPages == null)
+        {
+            this.listOfPages = JSON.parse(sessionStorage.getItem('pages'));
+        }
+        this.listOfPages.forEach(
+            (page : Page) => {
+                if(page[name] === value)
+                {
+                    response = page;
+                }
+            }
+        );
+
+        return response;
+    }
 
     checkPagesExist()
     {
@@ -97,7 +118,7 @@ export class WebsiteService{
         let headers = new Headers({'Content-Type' : 'application/json'});
         let options = new RequestOptions({headers : headers});
 
-        return this.http.put(this.apiManager.getPathByName('getRoles'),pages,options)
+        return this.http.put(this.apiManager.getPathByName('getPages'),pages,options)
             .map(
                 (response : Response) => {
                     return response.json().pages;
@@ -110,7 +131,7 @@ export class WebsiteService{
         let headers = new Headers({'Content-Type' : 'application/json'});
         let options = new RequestOptions({headers : headers});
 
-        return this.http.post(this.apiManager.getPathByName('saveRole'),page,options)
+        return this.http.post(this.apiManager.getPathByName('savePage'),page,options)
             .map(
                 (response : Response) => {
                     return response.json().page;
@@ -135,6 +156,17 @@ export class WebsiteService{
     updateListOfPages()
     {
         this._updatePages.next();
+    }
+
+
+    getPageAtt() : Observable<any>
+    {
+        return this.http.get(this.apiManager.getPathByName('getPageAtt'))
+            .map(
+                (response : Response) => {
+                    return response.json();
+                }
+            );
     }
 
 }

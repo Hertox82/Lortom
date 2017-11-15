@@ -1,0 +1,113 @@
+<form class="form">
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-database"></i>
+                <span>General Definitions</span>
+            </div>
+            <div class="actions">
+                <button class="btn darkorange" (click)="editMode()">
+                    <i class="fa fa-edit"></i>
+                    Edit
+                </button>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="portlet-form-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="title" class="col-md-2 control-label">Title</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="title" [ngModel] = "page.title" placeholder="Title" id="title" *ngIf="isEdit === false; else editTitle" readonly>
+                                    <ng-template #editTitle>
+                                        <input type="text" class="form-control" name="title" placeholder="Title" id="title" [(ngModel)] = "page.title" >
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="slug" class="col-md-2 control-label">Slug</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="slug" placeholder="Slug" id="slug" [ngModel] = "page.slug" *ngIf="isEdit === false; else editSlug" readonly>
+                                    <ng-template #editSlug>
+                                        <input type="text" class="form-control" name="slug" placeholder="Slug" id="slug" [(ngModel)] = "page.slug" >
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="fileName" class="col-md-2 control-label">File Name</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="fileName" placeholder="File Name" id="fileName" [ngModel] = "page.fileName" *ngIf="isEdit === false; else editFileName" readonly>
+                                    <ng-template #editFileName>
+                                        <input type="text" class="form-control" name="fileName" placeholder="File Name" id="fileName" [(ngModel)] = "page.fileName" >
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="meta_tag" class="col-md-2 control-label">Meta Tag</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="meta_tag" placeholder="Meta Tag" id="meta_tag" [ngModel] = "page.metaTag" *ngIf="isEdit === false; else editMetaTag" readonly>
+                                    <ng-template #editMetaTag>
+                                        <input type="text" class="form-control" name="meta_tag" placeholder="Meta Tag" id="meta_tag" [(ngModel)] = "page.metaTag" >
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="meta_desc" class="col-md-2 control-label">Meta Desc</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="meta_desc" placeholder="Meta Desc" id="meta_desc" [ngModel] = "page.metaDesc" *ngIf="isEdit === false; else editMetaDesc" readonly>
+                                    <ng-template #editMetaDesc>
+                                        <input type="text" class="form-control" name="meta_desc" placeholder="Meta Desc" id="meta_desc" [(ngModel)] = "page.metaDesc" >
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="state" class="col-md-2 control-label">State</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="state"  id="state" *ngIf="isEdit === false; else editState" disabled>
+                                        <ng-container>
+                                            <option *ngFor="let x of listOfState" [ngValue]="x" [attr.selected] = "x == page.state ? true : null">{{x.label}}</option>
+                                        </ng-container>
+                                    </select>
+                                    <ng-template #editState>
+                                        <select class="form-control" name="state" [(ngModel)] = "page.state">
+                                            <option *ngFor="let x of listOfState" [ngValue]="x" [attr.selected] = "x == page.state ? true : null">{{x.label}}</option>
+                                        </select>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="edit-page" class="col-md-2 control-label">Content</label>
+                                <div class="col-md-10">
+                                    <div class="form-control" [innerHtml] = "page.content" *ngIf="isEdit === false; else editContent" disabled></div>
+                                    <ng-template #editContent>
+                                        <app-editor [elementId]="'edit-page'" id="edit-page" [content]="page.content" (onEditorKeyup)="keyupHandlerFunction($event)"></app-editor>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button class="btn orange" (click)="saveMode()">Save</button>
+            <button class="btn red" (click)="resetMode()">Reset</button>
+        </div>
+    </div>
+</form>

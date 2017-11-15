@@ -30,9 +30,9 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group flex-group">
-                                <label for="nomeFile" class="col-md-2 control-label">Nome File</label>
+                                <label for="fileName" class="col-md-2 control-label">File Name</label>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="nomeFile" placeholder="Nome File" id="nomeFile" [(ngModel)] = "page.nomeFile" >
+                                    <input type="text" class="form-control" name="fileName" placeholder="File Name" id="fileName" [(ngModel)] = "page.fileName" >
                                 </div>
                             </div>
                         </div>
@@ -49,6 +49,16 @@
                                 <label for="meta_desc" class="col-md-2 control-label">Meta Desc</label>
                                 <div class="col-md-4">
                                     <input type="text" class="form-control" name="meta_desc" placeholder="Meta Desc" id="meta_desc" [(ngModel)] = "page.metaDesc" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="new-page" class="col-md-2 control-label">State</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="state" [(ngModel)] = "page.state">
+                                        <option *ngFor="let x of listOfState" [ngValue]="x">{{x.label}}</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

@@ -281,11 +281,13 @@ var EditorComponent = (function () {
             skin_url: '../../../js/assets/skins/lightgray',
             setup: function (editor) {
                 _this.editor = editor;
-                //editor.setContent(this.content);
                 editor.on('keyup', function () {
                     var content = editor.getContent();
                     _this.onEditorKeyup.emit(content);
                 });
+            },
+            init_instance_callback: function (inst) {
+                inst.setContent(_this.content);
             },
         });
     };

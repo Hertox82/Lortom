@@ -49,6 +49,8 @@ export class PagesComponent implements OnInit
             }
         );
 
+        console.log(this.listaPages);
+
     }
 
     ngOnInit() {
@@ -62,8 +64,8 @@ export class PagesComponent implements OnInit
                 (pages: Page[]) => {
 
                     this.listaPages = pages;
-                    this.listaPages.forEach((role : Page) => {
-                        role.state = false;
+                    this.listaPages.forEach((page : Page) => {
+                        page.check = false;
                     });
                     this.wb_Service.setPages(this.listaPages);
                 }
@@ -72,9 +74,9 @@ export class PagesComponent implements OnInit
         else {
             this.listaPages = this.wb_Service.getPages();
             this.listaPages.forEach((item : any) => {
-                if(!item.hasOwnProperty('state'))
+                if(!item.hasOwnProperty('check'))
                 {
-                    item.state = false;
+                    item.check = false;
                 }
             });
         }

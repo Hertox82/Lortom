@@ -110,10 +110,13 @@ return [
                             $table->increments('id');
                             $table->string('title');
                             $table->string('slug');
-                            $table->text('content');
-                            $table->string('metaTag');
-                            $table->string('metaDesc');
-                            $table->string('nomeFile');
+                            $table->text('content')->nullable();
+                            $table->string('metaTag')->nullable();
+                            $table->string('metaDesc')->nullable();
+                            $table->string('fileName');
+                            $table->tinyInteger('state');
+                            $table->tinyInteger('type')->default(0);
+                            $table->timestamps();
                         });
                     }
                 },
