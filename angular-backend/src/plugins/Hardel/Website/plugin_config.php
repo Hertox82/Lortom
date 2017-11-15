@@ -81,11 +81,23 @@
                            $table->foreign('idComponent')->references('id')->on('lt_components')->onUpdate('cascade')->onDelete('cascade');
                         });
                     }
+
+                    if($Schema::hasTable('lt_components') and $Schema::hasTable('lt_elements'))
+                    {
+                        $Schema::create('lt_component_element',function(Illuminate\Database\Schema\Blueprint $table){
+                            $table->increments('id');
+                            $table->integer('idComponent')->unsigned();
+                            $table->foreign('idComponent')->references('id')->on('lt_components')->onUpdate('cascade')->onDelete('cascade');
+                            $table->integer('idElement')->unsigned();
+                            $table->foreign('idElement')->references('id')->on('lt_elements')->onUpdate('cascade')->onDelete('cascade');
+                        });
+                    }
                 },
                 'migration-down'    => function(){
                     //here migration to delete tables
                     $Schema=  Illuminate\Support\Facades\Schema::class;
-
+                    $Schema::dropIfExists('lt_component_element');
+                    $Schema::dropIfExists('lt_page_component');
                     $Schema::dropIfExists('lt_element');
                     $Schema::dropIfExists('lt_component');
                     $Schema::dropIfExists('lt_pages');
