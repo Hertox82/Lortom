@@ -86,21 +86,23 @@ export class PageComponent implements OnInit
 
     saveMode()
     {
-        if(this.isEqual(this.page,this.copyPage))
+        if(this.page.slug.length>0)
         {
-            this.pService.createPage(this.page).subscribe(
+            this.pService.savePage(this.page).subscribe(
                 (page : Page) => {
-                    this.pService.setPage(page);
+                    this.page = page;
+                    this.clonePage();
+                    this.editMode();
                 }
             );
         }
+        else
+        {
+            alert('The slug cannot be empty, please!');
+            this.cloneCopyPage();
+            return;
+        }
     }
-
-    isEqual(v1,v2)
-    {
-        return (v1.title != v2.title && v1.slug != v2.slug);
-    }
-
 
     keyupHandlerFunction(event)
     {

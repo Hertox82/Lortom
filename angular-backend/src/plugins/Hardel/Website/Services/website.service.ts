@@ -169,4 +169,36 @@ export class WebsiteService{
             );
     }
 
+    /**
+     * This function delete from listOfPages one page
+     * @param page
+     */
+    erasePage (page : Page){
+        let index = this.listOfPages.indexOf(page);
+
+        if(index > -1)
+        {
+            this.listOfPages.splice(index,1);
+        }
+    }
+
+    /**
+     * this is HTTP request to API
+     * @param page
+     * @returns {Observable<R>}
+     */
+    savePage(page : Page) : Observable<any>
+    {
+        let headers = new Headers({'Content-Type' : 'application/json'});
+        let options = new RequestOptions({headers : headers});
+
+
+        return this.http.put(this.apiManager.getPathByName('savePage'),page,options)
+            .map(
+                (response : Response) => {
+                    return response.json().page;
+                }
+            );
+    }
+
 }

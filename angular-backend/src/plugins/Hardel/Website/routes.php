@@ -13,7 +13,12 @@ Route::put('/pages',[
 Route::post('/page',[
     'as'     => 'apiSavePage',
     'uses'   => 'WebsiteController@savePage'
-]);//->middleware('lortom.auth');
+])->middleware('lortom.auth');
+
+Route::put('/page',[
+    'as'     => 'apiUpdatePage',
+    'uses'   => 'WebsiteController@editPage'
+]);
 
 Route::get('/pages/attribute/list',[
     'as'     => 'apiGetPagesAttributeList',

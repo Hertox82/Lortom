@@ -75,7 +75,6 @@ export class UserComponent implements OnInit,OnDestroy
      */
     saveMode() {
         //salva i cambiamenti
-        console.log(this.user);
         if(this.user !== this.copyUser)
         {
             if(this.user.email.length == 0)

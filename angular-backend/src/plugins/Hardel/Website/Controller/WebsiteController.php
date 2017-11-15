@@ -88,6 +88,45 @@ class WebsiteController extends Controller
         return response()->json(['pages' => $sanitizedList]);
     }
 
+    /**
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function editPage(Request $request)
+    {
+        $input = $request->all();
+
+        $idPage = $input['id'];
+
+        $Page = LortomPages::find($idPage);
+
+        $keys = array_keys($input);
+
+        $toSave = ['title','slug','content','metaDesc','metaTag','state','fileName'];
+
+        foreach ($keys as $k)
+        {
+            if(in_array($k,$toSave))
+            {
+                if($k === 'state')
+                {
+                    if($Page->state !== $input[$k]['id'])
+                        $Page->state = $input[$k]['id'];
+                }
+                else {
+                    if($Page->$k != $input[$k])
+                        $Page->$k = $input[$k];
+                }
+            }
+        }
+
+        $Page->save();
+
+        return response()->json(['page' => $this->getPageSerialized($Page)]);
+
+    }
+
     private function sanitizePages()
     {
         $listaPages = LortomPages::all();
