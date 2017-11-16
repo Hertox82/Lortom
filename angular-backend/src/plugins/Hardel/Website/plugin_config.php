@@ -51,7 +51,7 @@
 
                     if(! $Schema::hasTable('lt_elements'))
                     {
-                        $Schema::create('lt_element',function(Illuminate\Database\Schema\Blueprint $table){
+                        $Schema::create('lt_elements',function(Illuminate\Database\Schema\Blueprint $table){
                             $table->increments('id');
                             $table->string('name');
                             $table->string('Object')->nullable();
@@ -98,7 +98,7 @@
                     $Schema=  Illuminate\Support\Facades\Schema::class;
                     $Schema::dropIfExists('lt_component_element');
                     $Schema::dropIfExists('lt_page_component');
-                    $Schema::dropIfExists('lt_element');
+                    $Schema::dropIfExists('lt_elements');
                     $Schema::dropIfExists('lt_component');
                     $Schema::dropIfExists('lt_pages');
                 },

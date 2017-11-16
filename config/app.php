@@ -176,6 +176,9 @@ return [
        Plugins\Hardel\Website\Providers\HardelWebsiteServiceProvider::class,
        Plugins\Hardel\Website\Providers\HardelWebsiteServiceProvider::class,
        Plugins\Hardel\Website\Providers\HardelWebsiteServiceProvider::class,
+       Plugins\Hardel\Website\Providers\HardelWebsiteServiceProvider::class,
+       Plugins\Hardel\Website\Providers\HardelWebsiteServiceProvider::class,
+       Plugins\Hardel\Website\Providers\HardelWebsiteServiceProvider::class,
        Plugins\Hardel\Website\Providers\HardelWebsiteServiceProvider::class
 
 

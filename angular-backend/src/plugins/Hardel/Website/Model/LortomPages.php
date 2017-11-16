@@ -39,4 +39,9 @@ class LortomPages extends Model
 
         return [];
     }
+
+    public function components()
+    {
+        return $this->belongsToMany('Plugins\Hardel\Website\Model\LortomComponent','lt_page_component','idPage','idComponent')->get();
+    }
 }
