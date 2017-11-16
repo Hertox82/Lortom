@@ -5,6 +5,7 @@ import {Component, OnInit} from "@angular/core";
 import {Page} from "../../Services/website.interfaces";
 import {WebsiteService} from "../../Services/website.service";
 import {NavigationEnd, Router} from "@angular/router";
+import {PaginationService} from "../../../../../services/pagination.service";
 @Component({
     selector : 'wb-pages',
     templateUrl : './pages.component.html',
@@ -14,10 +15,13 @@ import {NavigationEnd, Router} from "@angular/router";
 export class PagesComponent implements OnInit
 {
     listaPages : Page[];
+    listaShowPages : Page[];
     myRoot = '/backend/website/pages';
     isRoot = false;
 
     listaPageDelete : Page[];
+
+    pagServ : PaginationService;
 
     constructor(private wb_Service : WebsiteService, private router :Router) {
 
@@ -26,6 +30,8 @@ export class PagesComponent implements OnInit
             this.router.navigate(['/backend/dashboard']);
         }
         this.listaPageDelete = [];
+
+        this.pagServ = new PaginationService();
 
         this.router.events.subscribe(
             (val) => {
@@ -65,6 +71,11 @@ export class PagesComponent implements OnInit
                         page.check = false;
                     });
                     this.wb_Service.setPages(this.listaPages);
+                    this.listaShowPages = this.pagServ.getShowList({
+                        entry : 3,
+                        list : this.listaPages,
+                        pageToShow : 1
+                    });
                 }
             );
         }

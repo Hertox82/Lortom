@@ -3,6 +3,7 @@
 import {Component, OnInit} from "@angular/core";
 import {Page} from "../../Services/website.interfaces";
 import {WebsiteService} from "../../Services/website.service";
+import {Router} from "@angular/router";
 @Component({
     selector : 'wb-new-page',
     templateUrl : './pagenew.component.html',
@@ -15,7 +16,7 @@ export class PageNewComponent implements OnInit
     copyPage : Page;
     listOfState : {id? : number, label? : string}[];
 
-    constructor(private pn_Service : WebsiteService){
+    constructor(private pn_Service : WebsiteService, private rout : Router){
         this.page =  {
             id : -1,
             title : '',
@@ -58,11 +59,18 @@ export class PageNewComponent implements OnInit
     {
         if(this.isEqual(this.page,this.copyPage))
         {
+            console.log('forza lazio');
             this.pn_Service.createPage(this.page).subscribe(
                 (page : Page) => {
                     this.pn_Service.setPage(page);
+                    this.pn_Service.updateListOfPages();
+                    this.rout.navigate(['/backend/website/pages']);
                 }
             );
+        }
+        else
+        {
+            console.log('roma merda');
         }
     }
 

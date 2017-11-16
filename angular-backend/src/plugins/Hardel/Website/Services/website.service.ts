@@ -235,6 +235,7 @@ export class WebsiteService{
         return this.http.post(this.apiManager.getPathByName('savePage'),page,options)
             .map(
                 (response : Response) => {
+                    console.log(response);
                     return response.json().page;
                 }
             );

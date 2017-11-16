@@ -72,29 +72,13 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <div class="dataTables_info">Showing 1 to 10 of 57 entries</div>
-                            </div>
-                            <div class="col-sm-7">
-                                <div class="dataTables_paginate">
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a>
-                                        </li>
-                                        <li class="page-item active">
-                                            <a class="page-link" href="#">1</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">2</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        <lt-pagination
+                                [page] = "1"
+                                [count]="0"
+                                [loading]="false"
+                                [perPage]="5"
+                                [pagesToShow]="1" >
+                        </lt-pagination>
                     </div>
                 </div>
             </div>
