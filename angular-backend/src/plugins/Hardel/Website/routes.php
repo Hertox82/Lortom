@@ -8,7 +8,7 @@ Route::get('/pages',[
 Route::put('/pages',[
     'as'     => 'apiDeletePages',
     'uses'   => 'WebsiteController@deletePages'
-]);
+])->middleware('lortom.auth');
 
 Route::post('/page',[
     'as'     => 'apiSavePage',
@@ -18,9 +18,14 @@ Route::post('/page',[
 Route::put('/page',[
     'as'     => 'apiUpdatePage',
     'uses'   => 'WebsiteController@editPage'
-]);
+])->middleware('lortom.auth');
 
 Route::get('/pages/attribute/list',[
     'as'     => 'apiGetPagesAttributeList',
     'uses'   => 'WebsiteController@getPageAttributeList'
+]);
+
+Route::get('/elements',[
+    'as'     => 'apiGetElements',
+    'uses'   => 'WebsiteController@getElements'
 ]);

@@ -124,6 +124,10 @@ footer { margin-left: 200px; padding: 10px; border:1px solid #dde0e6; font-size:
 .bg-blu:hover {border: 4px solid darkblue;}
 .bg-cyan {background-color: #00c2ff;}
 .bg-cyan:hover {border : 4px solid #026e90}
+.bg-lightgreen {background-color: #42cc0c}
+.bg-lightgreen:hover {border : 4px solid #03bb57}
+.bg-fucsia {background-color: #ff00e9}
+.bg-fucsia:hover { border: 4px solid #bb02ab}
 
 
 /* Breadcrumbs */

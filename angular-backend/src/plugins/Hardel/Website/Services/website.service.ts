@@ -9,7 +9,7 @@ import {Headers, Http, RequestOptions, Response} from "@angular/http";
 import {User} from "../../../../app/backend-module/user-module/user-model/user.interface";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
-import {Page} from "./website.interfaces";
+import {LortomElement, Page} from "./website.interfaces";
 
 @Injectable()
 export class WebsiteService{
@@ -17,9 +17,13 @@ export class WebsiteService{
     apiManager : ApiManager;
     user : User;
     listOfPages : Page[];
+    listOfElements : LortomElement[];
 
     private _updatePages = new Subject();
     updatePages$ = this._updatePages.asObservable();
+
+    private _updateElements = new Subject();
+    updateElements$ = this._updateElements.asObservable();
 
     constructor(private http: Http)
     {
@@ -31,6 +35,7 @@ export class WebsiteService{
             { namePath : 'getPages', path: 'pages'},
             { namePath : 'savePage', path: 'page'},
             { namePath : 'getPageAtt', path: 'pages/attribute/list'},
+            { namePath : 'getElements', path: 'elements'},
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -59,6 +64,12 @@ export class WebsiteService{
         return false;
     }
 
+    /**
+     * This function return Page by Property
+     * @param name
+     * @param value
+     * @returns {Page}
+     */
     getPageByProperty(name : string, value : any)
     {
         let response: Page;
@@ -80,11 +91,34 @@ export class WebsiteService{
         return response;
     }
 
-    checkPagesExist()
+    /**
+     * this function return if Pages Exists
+     * @returns {boolean}
+     */
+    checkPagesExist() : boolean
     {
-        return (sessionStorage.getItem('pages') !== null);
+        return this.checkItemExist('pages');
     }
 
+    checkElementsExist() : boolean
+    {
+        return this.checkItemExist('elements');
+    }
+
+    /**
+     * Return if an Item exist
+     * @param name
+     * @returns {boolean}
+     */
+    private checkItemExist(name : string) : boolean
+    {
+        return (sessionStorage.getItem(name) !== null);
+    }
+
+    /**
+     * This function Call API to get List Of Pages
+     * @returns {Observable<R>}
+     */
     getPagesFrom() : Observable<any>
     {
         return this.http.get(this.apiManager.getPathByName('getPages'))
@@ -95,24 +129,73 @@ export class WebsiteService{
             );
     }
 
-    setPages(pages : Page[])
+    getElementsFrom() : Observable<any>
     {
-        sessionStorage.setItem('pages',JSON.stringify(pages));
+        return this.http.get(this.apiManager.getPathByName('getElements'))
+            .map(
+                (response : Response) => {
+                    return response.json().elements;
+                }
+            );
+    }
+
+    /**
+     * This function set pages and store into a Session
+     * @param pages
+     */
+    setPages(pages : Page[]) : void
+    {
+        this.setItem('pages',pages);
         this.listOfPages = pages;
     }
 
-    getPages()
+    setElements(elements : LortomElement[]) : void
     {
-        if(this.listOfPages == null)
-        {
-            return JSON.parse(sessionStorage.getItem('pages'));
+        this.setItem('elements',elements);
+        this.listOfElements = elements;
+    }
+
+    private setItem(name : string, list :any) : void
+    {
+        sessionStorage.setItem(name,JSON.stringify(list));
+    }
+
+    private getItem(name : string, prop : string) : any
+    {
+        if(this[prop] == null) {
+            return JSON.parse(sessionStorage.getItem(name));
         }
         else
         {
-            return this.listOfPages;
+            return this[prop];
         }
     }
 
+    private deleteItem(name : string, prop : string) : void
+    {
+        this[prop] = null;
+        sessionStorage.removeItem(name);
+    }
+
+    /**
+     * This function get listOfPages
+     * @returns {any}
+     */
+    getPages() : Page[]
+    {
+        return this.getItem('pages','listOfPages') as Page[];
+    }
+
+    getElements() : LortomElement []
+    {
+        return this.getItem('elements','listOfElements') as LortomElement[];
+    }
+
+    /**
+     * This Function call API in order to Delete a list of Pages
+     * @param pages
+     * @returns {Observable<R>}
+     */
     deletePages(pages : Page []) : Observable<any>
     {
         let headers = new Headers({'Content-Type' : 'application/json'});
@@ -126,6 +209,24 @@ export class WebsiteService{
             );
     }
 
+    deleteElements(el : LortomElement []) : Observable <any>
+    {
+        let headers = new Headers({'Content-Type' : 'application/json'});
+        let options = new RequestOptions({headers : headers});
+
+        return this.http.put(this.apiManager.getPathByName('getElements'),el,options)
+            .map(
+                (response : Response) => {
+                    return response.json().elements;
+                }
+            );
+    }
+
+    /**
+     *This function call API in order to create a Page.
+     * @param page
+     * @returns {Observable<R>}
+     */
     createPage(page : Page) :Observable<any>
     {
         let headers = new Headers({'Content-Type' : 'application/json'});
@@ -149,13 +250,17 @@ export class WebsiteService{
 
     deletePageFromCache() : void
     {
-        this.listOfPages = null;
-        sessionStorage.removeItem('pages');
+        this.deleteItem('pages','listOfPages');
     }
 
     updateListOfPages()
     {
         this._updatePages.next();
+    }
+
+    updateListOfElements()
+    {
+        this._updateElements.next();
     }
 
 

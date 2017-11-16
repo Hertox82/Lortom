@@ -4,6 +4,7 @@ namespace Plugins\Hardel\Website\Controller;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Plugins\Hardel\Website\Model\LortomElement;
 use Plugins\Hardel\Website\Model\LortomPages;
 use DB;
 
@@ -125,6 +126,38 @@ class WebsiteController extends Controller
 
         return response()->json(['page' => $this->getPageSerialized($Page)]);
 
+    }
+
+    public function getElements(Request $request)
+    {
+        $sanitizedList = $this->sanitizeElements();
+
+        return response()->json(['elements' => $sanitizedList]);
+    }
+
+    private function sanitizeElements()
+    {
+        $listaElements = LortomElement::all();
+
+        $sanitizedList = array_filter(array_map_collection(function($el){
+            if($el instanceof LortomElement)
+            {
+                return $this->getElementSerialized($el);
+            }
+        },$listaElements));
+
+        return $sanitizedList;
+    }
+
+    private function getElementSerialized(LortomElement $element)
+    {
+        return [
+            'id'            => $element->id,
+            'name'          => $element->name,
+            'Object'        => $element->Object,
+            'functions'     => $element->function,
+            'appearance'    => $element->appearance,
+        ];
     }
 
     private function sanitizePages()

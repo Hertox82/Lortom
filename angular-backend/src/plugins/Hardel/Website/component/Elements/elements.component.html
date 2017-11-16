@@ -1,7 +1,7 @@
 <div class="tabbable-custom" *ngIf="isRoot === true">
     <ul class="nav nav-tabs">
-        <li class="active">
-            <a href="#tab_1" data-toggle="tab"> Pages</a>
+        <li>
+            <a [routerLink]="['/backend/website/pages']" data-toggle="tab"> Pages</a>
         </li>
         <li>
             <a [routerLink]="['/backend/website/menu']" data-toggle="tab"> Menu</a>
@@ -9,8 +9,8 @@
         <li>
             <a [routerLink]="['/backend/website/components']" data-toggle="tab"> Component</a>
         </li>
-        <li>
-            <a [routerLink]="['/backend/website/elements']" data-toggle="tab"> Element</a>
+        <li class="active">
+            <a  href="#tab_1" data-toggle="tab"> Element</a>
         </li>
     </ul>
     <div class="tab-content">
@@ -39,8 +39,8 @@
                                         Search:
                                         <input type="search" class="form-control input-sm">
                                     </label>
-                                    <a class="btn btn-primary" [routerLink] = "['/backend/website/pages/new']"><i class="fa fa-file"></i> New</a>
-                                    <a class="btn btn-danger" (click)="deletePages()"><i class="fa fa-times"></i> Delete</a>
+                                    <a class="btn btn-primary" [routerLink] = "['/backend/website/elements/new']"><i class="fa fa-file"></i> New</a>
+                                    <a class="btn btn-danger" (click)="deleteElements()"><i class="fa fa-times"></i> Delete</a>
                                 </div>
                             </div>
                         </div>
@@ -51,27 +51,21 @@
                                     <tr>
                                         <th style="width: 30px;"></th>
                                         <th>
-                                            <a>Title</a>
-                                        </th>
-                                        <th>
-                                            Slug
+                                            <a>Name</a>
                                         </th>
                                         <th style="width: 50px;"></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr *ngFor="let page of listaPages">
+                                    <tr *ngFor="let el of listOfElements">
                                         <td>
-                                            <input type="checkbox" (change)="eventChange($event,page)" [(ngModel)] = "page.check">
+                                            <input type="checkbox" (change)="eventChange($event,page)" [(ngModel)] = "el.check">
                                         </td>
                                         <td>
-                                            {{page.title}}
+                                            {{el.name}}
                                         </td>
                                         <td>
-                                            {{page.slug}}
-                                        </td>
-                                        <td>
-                                            <a [routerLink] = "['/backend/website/pages',page.id]"><i class="fa fa-edit" style="color:orange; font-size: 16px;"></i></a>
+                                            <a [routerLink] = "['/backend/website/elements',el.id]"><i class="fa fa-edit" style="color:orange; font-size: 16px;"></i></a>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -107,5 +101,3 @@
         </div>
     </div>
 </div>
-
-<router-outlet></router-outlet>

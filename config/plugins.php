@@ -101,12 +101,12 @@ return [
                         'permission'    => 'Hardel.Website.Menu'
                     ],
                     [
-                        'subPath'       => '/website/component',
+                        'subPath'       => '/website/components',
                         'Name'          => 'Component',
                         'permission'    => 'Hardel.Website.Component'
                     ],
                     [
-                        'subPath'       => '/website/element',
+                        'subPath'       => '/website/elements',
                         'Name'          => 'Element',
                         'permission'    => 'Hardel.Website.Element'
                     ],

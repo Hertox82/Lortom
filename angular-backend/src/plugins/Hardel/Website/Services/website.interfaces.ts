@@ -14,3 +14,13 @@ export interface Page {
     check : boolean,
     state : { id? : number , label? : string },
 }
+
+
+export interface LortomElement {
+    id : number,
+    name : string,
+    Object : string,
+    functions : string,
+    appearance : string,
+    check : boolean
+}

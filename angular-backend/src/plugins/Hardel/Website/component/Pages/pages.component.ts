@@ -48,9 +48,6 @@ export class PagesComponent implements OnInit
                 this.retrieveListOfPages();
             }
         );
-
-        console.log(this.listaPages);
-
     }
 
     ngOnInit() {

@@ -8,10 +8,10 @@ import {NavigationEnd, Router} from "@angular/router";
 export class WebsiteComponent implements OnInit {
     isRoot : boolean;
     myRoot = '/backend/website';
-    constructor(private router: Router){
+    constructor(private r: Router){
         this.isRoot = true;
 
-        this.router.events.subscribe(
+        this.r.events.subscribe(
             (val) => {
                 if(val instanceof NavigationEnd)
                 {

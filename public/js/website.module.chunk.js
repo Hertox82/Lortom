@@ -41,12 +41,15 @@ var WebsiteService = (function () {
         this.http = http;
         this._updatePages = new __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__["Subject"]();
         this.updatePages$ = this._updatePages.asObservable();
+        this._updateElements = new __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__["Subject"]();
+        this.updateElements$ = this._updateElements.asObservable();
         this.apiManager = new __WEBPACK_IMPORTED_MODULE_1__app_urlApi_api_manager__["a" /* ApiManager */]();
         // write the api route for setting
         var urls = [
             { namePath: 'getPages', path: 'pages' },
             { namePath: 'savePage', path: 'page' },
             { namePath: 'getPageAtt', path: 'pages/attribute/list' },
+            { namePath: 'getElements', path: 'elements' },
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -67,6 +70,12 @@ var WebsiteService = (function () {
         }
         return false;
     };
+    /**
+     * This function return Page by Property
+     * @param name
+     * @param value
+     * @returns {Page}
+     */
     WebsiteService.prototype.getPageByProperty = function (name, value) {
         var response;
         response = null;
@@ -80,27 +89,82 @@ var WebsiteService = (function () {
         });
         return response;
     };
+    /**
+     * this function return if Pages Exists
+     * @returns {boolean}
+     */
     WebsiteService.prototype.checkPagesExist = function () {
-        return (sessionStorage.getItem('pages') !== null);
+        return this.checkItemExist('pages');
     };
+    WebsiteService.prototype.checkElementsExist = function () {
+        return this.checkItemExist('elements');
+    };
+    /**
+     * Return if an Item exist
+     * @param name
+     * @returns {boolean}
+     */
+    WebsiteService.prototype.checkItemExist = function (name) {
+        return (sessionStorage.getItem(name) !== null);
+    };
+    /**
+     * This function Call API to get List Of Pages
+     * @returns {Observable<R>}
+     */
     WebsiteService.prototype.getPagesFrom = function () {
         return this.http.get(this.apiManager.getPathByName('getPages'))
             .map(function (response) {
             return response.json().pages;
         });
     };
+    WebsiteService.prototype.getElementsFrom = function () {
+        return this.http.get(this.apiManager.getPathByName('getElements'))
+            .map(function (response) {
+            return response.json().elements;
+        });
+    };
+    /**
+     * This function set pages and store into a Session
+     * @param pages
+     */
     WebsiteService.prototype.setPages = function (pages) {
-        sessionStorage.setItem('pages', JSON.stringify(pages));
+        this.setItem('pages', pages);
         this.listOfPages = pages;
     };
-    WebsiteService.prototype.getPages = function () {
-        if (this.listOfPages == null) {
-            return JSON.parse(sessionStorage.getItem('pages'));
+    WebsiteService.prototype.setElements = function (elements) {
+        this.setItem('elements', elements);
+        this.listOfElements = elements;
+    };
+    WebsiteService.prototype.setItem = function (name, list) {
+        sessionStorage.setItem(name, JSON.stringify(list));
+    };
+    WebsiteService.prototype.getItem = function (name, prop) {
+        if (this[prop] == null) {
+            return JSON.parse(sessionStorage.getItem(name));
         }
         else {
-            return this.listOfPages;
+            return this[prop];
         }
     };
+    WebsiteService.prototype.deleteItem = function (name, prop) {
+        this[prop] = null;
+        sessionStorage.removeItem(name);
+    };
+    /**
+     * This function get listOfPages
+     * @returns {any}
+     */
+    WebsiteService.prototype.getPages = function () {
+        return this.getItem('pages', 'listOfPages');
+    };
+    WebsiteService.prototype.getElements = function () {
+        return this.getItem('elements', 'listOfElements');
+    };
+    /**
+     * This Function call API in order to Delete a list of Pages
+     * @param pages
+     * @returns {Observable<R>}
+     */
     WebsiteService.prototype.deletePages = function (pages) {
         var headers = new __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/json' });
         var options = new __WEBPACK_IMPORTED_MODULE_2__angular_http__["d" /* RequestOptions */]({ headers: headers });
@@ -109,6 +173,19 @@ var WebsiteService = (function () {
             return response.json().pages;
         });
     };
+    WebsiteService.prototype.deleteElements = function (el) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/json' });
+        var options = new __WEBPACK_IMPORTED_MODULE_2__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        return this.http.put(this.apiManager.getPathByName('getElements'), el, options)
+            .map(function (response) {
+            return response.json().elements;
+        });
+    };
+    /**
+     *This function call API in order to create a Page.
+     * @param page
+     * @returns {Observable<R>}
+     */
     WebsiteService.prototype.createPage = function (page) {
         var headers = new __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/json' });
         var options = new __WEBPACK_IMPORTED_MODULE_2__angular_http__["d" /* RequestOptions */]({ headers: headers });
@@ -124,11 +201,13 @@ var WebsiteService = (function () {
         this.setPages(pages);
     };
     WebsiteService.prototype.deletePageFromCache = function () {
-        this.listOfPages = null;
-        sessionStorage.removeItem('pages');
+        this.deleteItem('pages', 'listOfPages');
     };
     WebsiteService.prototype.updateListOfPages = function () {
         this._updatePages.next();
+    };
+    WebsiteService.prototype.updateListOfElements = function () {
+        this._updateElements.next();
     };
     WebsiteService.prototype.getPageAtt = function () {
         return this.http.get(this.apiManager.getPathByName('getPageAtt'))
@@ -168,6 +247,122 @@ WebsiteService = __decorate([
 
 var _a;
 //# sourceMappingURL=website.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/plugins/Hardel/Website/component/Elements/elements.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li>\n            <a [routerLink]=\"['/backend/website/pages']\" data-toggle=\"tab\"> Pages</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/menu']\" data-toggle=\"tab\"> Menu</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/components']\" data-toggle=\"tab\"> Component</a>\n        </li>\n        <li class=\"active\">\n            <a  href=\"#tab_1\" data-toggle=\"tab\"> Element</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <div class=\"dataTables_length\">\n                                    <label>\n                                        Show\n                                        <select class=\"form-control input-sm\" name=\"example_length\">\n                                            <option value=\"10\">10</option>\n                                        </select>\n                                        entries\n                                    </label>\n                                </div>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/website/elements/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deleteElements()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Name</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let el of listOfElements\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,page)\" [(ngModel)] = \"el.check\">\n                                        </td>\n                                        <td>\n                                            {{el.name}}\n                                        </td>\n                                        <td>\n                                            <a [routerLink] = \"['/backend/website/elements',el.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-5\">\n                                <div class=\"dataTables_info\">Showing 1 to 10 of 57 entries</div>\n                            </div>\n                            <div class=\"col-sm-7\">\n                                <div class=\"dataTables_paginate\">\n                                    <ul class=\"pagination\">\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\" aria-label=\"Previous\"><span aria-hidden=\"true\">«</span></a>\n                                        </li>\n                                        <li class=\"page-item active\">\n                                            <a class=\"page-link\" href=\"#\">1</a>\n                                        </li>\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\">2</a>\n                                        </li>\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\" aria-label=\"Next\"><span aria-hidden=\"true\">»</span></a>\n                                        </li>\n                                    </ul>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/plugins/Hardel/Website/component/Elements/elements.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ElementsComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Services_website_service__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/Services/website.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/**
+ * Created by hernan on 16/11/2017.
+ */
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var ElementsComponent = (function () {
+    function ElementsComponent(ecService, router) {
+        var _this = this;
+        this.ecService = ecService;
+        this.router = router;
+        this.myRoot = '/backend/website/elements';
+        this.isRoot = false;
+        if (!this.ecService.hasPermissions("Hardel.Website.Pages")) {
+            this.router.navigate(['/backend/dashboard']);
+        }
+        this.listaElementsDelete = [];
+        this.router.events.subscribe(function (val) {
+            if (val instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* NavigationEnd */]) {
+                if (_this.myRoot === val.url) {
+                    _this.isRoot = true;
+                }
+                else {
+                    _this.isRoot = false;
+                }
+            }
+        });
+        this.retrieveListOfElements();
+        this.ecService.updateElements$.subscribe(function () {
+            _this.retrieveListOfElements();
+        });
+    }
+    ElementsComponent.prototype.ngOnInit = function () { };
+    ElementsComponent.prototype.retrieveListOfElements = function () {
+        var _this = this;
+        if (!this.ecService.checkElementsExist()) {
+            this.ecService.getElementsFrom().subscribe(function (elements) {
+                _this.listOfElements = elements;
+                _this.listOfElements.forEach(function (el) {
+                    el.check = false;
+                });
+                _this.ecService.setElements(_this.listOfElements);
+            });
+        }
+        else {
+            this.listOfElements = this.ecService.getElements();
+            this.listOfElements.forEach(function (item) {
+                if (!item.hasOwnProperty('check')) {
+                    item.check = false;
+                }
+            });
+        }
+    };
+    ElementsComponent.prototype.eventChange = function (ev, data) {
+        if (ev.target.checked) {
+            this.listaElementsDelete.push(data);
+        }
+        else {
+            var index = this.listaElementsDelete.indexOf(data);
+            if (index > -1) {
+                this.listaElementsDelete.splice(index, 1);
+            }
+        }
+    };
+    ElementsComponent.prototype.deleteElements = function () {
+        var _this = this;
+        if (this.listaElementsDelete.length > 0) {
+            if (confirm('Do you really want delete this Roles?')) {
+                this.ecService.deleteElements(this.listaElementsDelete).subscribe(function (data) {
+                    _this.listaElementsDelete = [];
+                    _this.listOfElements = data;
+                    _this.ecService.setElements(_this.listOfElements);
+                });
+            }
+        }
+    };
+    return ElementsComponent;
+}());
+ElementsComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'wb-elements',
+        template: __webpack_require__("../../../../../src/plugins/Hardel/Website/component/Elements/elements.component.html"),
+        styles: ['']
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__Services_website_service__["a" /* WebsiteService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__Services_website_service__["a" /* WebsiteService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* Router */]) === "function" && _b || Object])
+], ElementsComponent);
+
+var _a, _b;
+//# sourceMappingURL=elements.component.js.map
 
 /***/ }),
 
@@ -383,7 +578,7 @@ var _a, _b, _c, _d;
 /***/ "../../../../../src/plugins/Hardel/Website/component/Pages/pages.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> Pages</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/menu']\" data-toggle=\"tab\"> Menu</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <div class=\"dataTables_length\">\n                                    <label>\n                                        Show\n                                        <select class=\"form-control input-sm\" name=\"example_length\">\n                                            <option value=\"10\">10</option>\n                                        </select>\n                                        entries\n                                    </label>\n                                </div>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/website/pages/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deletePages()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Title</a>\n                                        </th>\n                                        <th>\n                                            Slug\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let page of listaPages\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,page)\" [(ngModel)] = \"page.check\">\n                                        </td>\n                                        <td>\n                                            {{page.title}}\n                                        </td>\n                                        <td>\n                                            {{page.slug}}\n                                        </td>\n                                        <td>\n                                            <a [routerLink] = \"['/backend/website/pages',page.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-5\">\n                                <div class=\"dataTables_info\">Showing 1 to 10 of 57 entries</div>\n                            </div>\n                            <div class=\"col-sm-7\">\n                                <div class=\"dataTables_paginate\">\n                                    <ul class=\"pagination\">\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\" aria-label=\"Previous\"><span aria-hidden=\"true\">«</span></a>\n                                        </li>\n                                        <li class=\"page-item active\">\n                                            <a class=\"page-link\" href=\"#\">1</a>\n                                        </li>\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\">2</a>\n                                        </li>\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\" aria-label=\"Next\"><span aria-hidden=\"true\">»</span></a>\n                                        </li>\n                                    </ul>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
+module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> Pages</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/menu']\" data-toggle=\"tab\"> Menu</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/components']\" data-toggle=\"tab\"> Component</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/elements']\" data-toggle=\"tab\"> Element</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <div class=\"dataTables_length\">\n                                    <label>\n                                        Show\n                                        <select class=\"form-control input-sm\" name=\"example_length\">\n                                            <option value=\"10\">10</option>\n                                        </select>\n                                        entries\n                                    </label>\n                                </div>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/website/pages/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deletePages()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Title</a>\n                                        </th>\n                                        <th>\n                                            Slug\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let page of listaPages\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,page)\" [(ngModel)] = \"page.check\">\n                                        </td>\n                                        <td>\n                                            {{page.title}}\n                                        </td>\n                                        <td>\n                                            {{page.slug}}\n                                        </td>\n                                        <td>\n                                            <a [routerLink] = \"['/backend/website/pages',page.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-5\">\n                                <div class=\"dataTables_info\">Showing 1 to 10 of 57 entries</div>\n                            </div>\n                            <div class=\"col-sm-7\">\n                                <div class=\"dataTables_paginate\">\n                                    <ul class=\"pagination\">\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\" aria-label=\"Previous\"><span aria-hidden=\"true\">«</span></a>\n                                        </li>\n                                        <li class=\"page-item active\">\n                                            <a class=\"page-link\" href=\"#\">1</a>\n                                        </li>\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\">2</a>\n                                        </li>\n                                        <li class=\"page-item\">\n                                            <a class=\"page-link\" href=\"#\" aria-label=\"Next\"><span aria-hidden=\"true\">»</span></a>\n                                        </li>\n                                    </ul>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -432,7 +627,6 @@ var PagesComponent = (function () {
         this.wb_Service.updatePages$.subscribe(function () {
             _this.retrieveListOfPages();
         });
-        console.log(this.listaPages);
     }
     PagesComponent.prototype.ngOnInit = function () {
     };
@@ -505,16 +699,19 @@ var _a, _b;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__website_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/website.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_0__website_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_0__website_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Pages_pages_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/Pages/pages.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_1__Pages_pages_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_1__Pages_pages_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__NewPage_pagenew_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/NewPage/pagenew.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__NewPage_pagenew_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__NewPage_pagenew_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Page_page_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/Page/page.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_3__Page_page_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_3__Page_page_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Elements_elements_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/Elements/elements.component.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_4__Elements_elements_component__["a"]; });
 /**
  * Created by hernan on 13/11/2017.
  */
+
 
 
 
@@ -526,7 +723,7 @@ var _a, _b;
 /***/ "../../../../../src/plugins/Hardel/Website/component/website.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\">\n        <h1>Website</h1>\n        <breadcrumbs></breadcrumbs>\n    </div>\n    <div class=\"content\">\n        <router-outlet></router-outlet>\n        <div class=\"portlet\" *ngIf=\"isRoot === true\">\n            <div class=\"portlet-title\">\n                <div class=\"caption\">\n                    <i class=\"fa fa-database\"></i>\n                    <span>Overviews</span>\n                </div>\n                <div class=\"actions\">\n                </div>\n            </div>\n            <div class=\"portlet-body\">\n                <div class=\"tiles\">\n                    <a [routerLink]=\"['/backend/website/pages']\">\n                        <div class=\"tile double bg-cyan\">\n                            <div class=\"tile-body\">\n                                <i class=\"fa fa-clone fa-6\"></i>\n                            </div>\n                            <div class=\"tile-object\">\n                                <div class=\"name\">\n                                    Pages\n                                </div>\n                            </div>\n                        </div>\n                    </a>\n                    <a [routerLink]=\"['/backend/website/menu']\">\n                        <div class=\"tile bg-orange\">\n                            <div class=\"tile-body\">\n                                <i class=\"fa fa-list fa-6\"></i>\n                            </div>\n                            <div class=\"tile-object\">\n                                <div class=\"name\">\n                                    Menu\n                                </div>\n                            </div>\n                        </div>\n                    </a>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>"
+module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\">\n        <h1>Website</h1>\n        <breadcrumbs></breadcrumbs>\n    </div>\n    <div class=\"content\">\n        <router-outlet></router-outlet>\n        <div class=\"portlet\" *ngIf=\"isRoot === true\">\n            <div class=\"portlet-title\">\n                <div class=\"caption\">\n                    <i class=\"fa fa-database\"></i>\n                    <span>Overviews</span>\n                </div>\n                <div class=\"actions\">\n                </div>\n            </div>\n            <div class=\"portlet-body\">\n                <div class=\"tiles\">\n                    <a [routerLink]=\"['/backend/website/pages']\">\n                        <div class=\"tile double bg-cyan\">\n                            <div class=\"tile-body\">\n                                <i class=\"fa fa-clone fa-6\"></i>\n                            </div>\n                            <div class=\"tile-object\">\n                                <div class=\"name\">\n                                    Pages\n                                </div>\n                            </div>\n                        </div>\n                    </a>\n                    <a [routerLink]=\"['/backend/website/menu']\">\n                        <div class=\"tile bg-orange\">\n                            <div class=\"tile-body\">\n                                <i class=\"fa fa-list fa-6\"></i>\n                            </div>\n                            <div class=\"tile-object\">\n                                <div class=\"name\">\n                                    Menu\n                                </div>\n                            </div>\n                        </div>\n                    </a>\n                    <a [routerLink]=\"['/backend/website/components']\">\n                        <div class=\"tile bg-lightgreen\">\n                            <div class=\"tile-body\">\n                                <i class=\"fa fa-cubes fa-6\"></i>\n                            </div>\n                            <div class=\"tile-object\">\n                                <div class=\"name\">\n                                    Component\n                                </div>\n                            </div>\n                        </div>\n                    </a>\n                    <a [routerLink]=\"['/backend/website/elements']\">\n                        <div class=\"tile bg-fucsia\">\n                            <div class=\"tile-body\">\n                                <i class=\"fa fa-cube fa-6\"></i>\n                            </div>\n                            <div class=\"tile-object\">\n                                <div class=\"name\">\n                                    Element\n                                </div>\n                            </div>\n                        </div>\n                    </a>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -549,12 +746,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var WebsiteComponent = (function () {
-    function WebsiteComponent(router) {
+    function WebsiteComponent(r) {
         var _this = this;
-        this.router = router;
+        this.r = r;
         this.myRoot = '/backend/website';
         this.isRoot = true;
-        this.router.events.subscribe(function (val) {
+        this.r.events.subscribe(function (val) {
             if (val instanceof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* NavigationEnd */]) {
                 if (_this.myRoot === val.url) {
                     _this.isRoot = true;
@@ -644,15 +841,17 @@ WebsiteModule = __decorate([
 
 
 var routes = [
-    { path: '', component: __WEBPACK_IMPORTED_MODULE_1__component__["d" /* WebsiteComponent */], data: { breadcrumb: 'Website' }, children: [
-            { path: 'pages', component: __WEBPACK_IMPORTED_MODULE_1__component__["c" /* PagesComponent */], data: { breadcrumb: 'Pages' }, children: [
-                    { path: 'new', component: __WEBPACK_IMPORTED_MODULE_1__component__["b" /* PageNewComponent */], data: { breadcrumb: 'New' } },
-                    { path: ':id', component: __WEBPACK_IMPORTED_MODULE_1__component__["a" /* PageComponent */], data: { breadcrumb: 'Page' } }
-                ] }
+    { path: '', component: __WEBPACK_IMPORTED_MODULE_1__component__["e" /* WebsiteComponent */], data: { breadcrumb: 'Website' }, children: [
+            { path: 'pages', component: __WEBPACK_IMPORTED_MODULE_1__component__["d" /* PagesComponent */], data: { breadcrumb: 'Pages' }, children: [
+                    { path: 'new', component: __WEBPACK_IMPORTED_MODULE_1__component__["c" /* PageNewComponent */], data: { breadcrumb: 'New' } },
+                    { path: ':id', component: __WEBPACK_IMPORTED_MODULE_1__component__["b" /* PageComponent */], data: { breadcrumb: 'Page' } }
+                ] },
+            { path: 'elements', component: __WEBPACK_IMPORTED_MODULE_1__component__["a" /* ElementsComponent */], data: { breadcrumb: 'Elements' } }
         ] }
 ];
 var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["e" /* RouterModule */].forChild(routes);
-var websiteComponent = [__WEBPACK_IMPORTED_MODULE_1__component__["d" /* WebsiteComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["c" /* PagesComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["b" /* PageNewComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["a" /* PageComponent */]];
+var websiteComponent = [__WEBPACK_IMPORTED_MODULE_1__component__["e" /* WebsiteComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["d" /* PagesComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["c" /* PageNewComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["b" /* PageComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["a" /* ElementsComponent */]];
+console.log(websiteComponent);
 //# sourceMappingURL=website.routing.js.map
 
 /***/ })
