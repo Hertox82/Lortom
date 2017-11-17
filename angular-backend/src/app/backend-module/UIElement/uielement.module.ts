@@ -7,14 +7,15 @@ import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {PaginationComponent} from "./pagination/pagination.component";
+import {ShowEntryComponent} from "./pagination/show-entry.component";
 @NgModule({
     imports : [
         CommonModule,
         FormsModule
     ],
-    declarations : [PaginationComponent],
+    declarations : [PaginationComponent,ShowEntryComponent],
     providers : [],
-    exports : [PaginationComponent]
+    exports : [PaginationComponent,ShowEntryComponent]
 })
 
 export class UIElementModule {}

@@ -23,15 +23,11 @@
                     <div class="wrapper">
                         <div class="row">
                             <div class="col-md-8">
-                                <div class="dataTables_length">
-                                    <label>
-                                        Show
-                                        <select class="form-control input-sm" name="example_length">
-                                            <option value="10">10</option>
-                                        </select>
-                                        entries
-                                    </label>
-                                </div>
+                                <lt-entry-pagination
+                                [entry]="'50-5'"
+                                (onEntry)="onPerPage($event)"
+                                >
+                                </lt-entry-pagination>
                             </div>
                             <div class="col-md-4">
                                 <div class="dataTables_filter">
@@ -83,7 +79,10 @@
                             [perPage]="5"
                             [count]="listaPages.length"
                             [loading]="false"
-                            [page]="1"
+                            [page]="actualPage"
+                            (goNext)="onNext($event)"
+                            (goPage)="onPage($event)"
+                            (goPrev)="onPrev()"
                         ></lt-pagination>
                     </div>
                 </div>

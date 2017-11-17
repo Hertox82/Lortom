@@ -1,0 +1,9 @@
+<div class="dataTables_length">
+    <label>
+        Show
+        <select class="form-control input-sm" name="example_length" (change)="passVal($event.target.value)">
+            <option *ngFor="let val of listEntry" value = "{{val}}">{{val}}</option>
+        </select>
+        entries
+    </label>
+</div>

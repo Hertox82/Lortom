@@ -14,10 +14,12 @@ import {PaginationService} from "../../../../../services/pagination.service";
 
 export class PagesComponent implements OnInit
 {
-    listaPages : Page[];
+    listaPages : Page[] = [];
     listaShowPages : Page[];
     myRoot = '/backend/website/pages';
     isRoot = false;
+    actualPage : number;
+    perPage : number;
 
     listaPageDelete : Page[];
 
@@ -31,7 +33,10 @@ export class PagesComponent implements OnInit
         }
         this.listaPageDelete = [];
 
+        //This is to manage the Pagination
         this.pagServ = new PaginationService();
+        this.actualPage = 1;
+        this.perPage = 3;
 
         this.router.events.subscribe(
             (val) => {
@@ -71,11 +76,7 @@ export class PagesComponent implements OnInit
                         page.check = false;
                     });
                     this.wb_Service.setPages(this.listaPages);
-                    this.listaShowPages = this.pagServ.getShowList({
-                        entry : 3,
-                        list : this.listaPages,
-                        pageToShow : 1
-                    });
+                   this.updateListaShow();
                 }
             );
         }
@@ -87,7 +88,40 @@ export class PagesComponent implements OnInit
                     item.check = false;
                 }
             });
+            this.updateListaShow();
         }
+    }
+
+    onPerPage(n : number)
+    {
+        this.perPage = n;
+    }
+
+    private updateListaShow()
+    {
+        this.listaShowPages = this.pagServ.getShowList({
+            entry : this.perPage,
+            list : this.listaPages,
+            pageToShow : this.actualPage
+        });
+    }
+
+    onPrev()
+    {
+        this.actualPage--;
+        this.updateListaShow();
+    }
+
+    onNext(ev)
+    {
+        this.actualPage++;
+        this.updateListaShow();
+    }
+
+    onPage(page)
+    {
+        this.actualPage = page;
+        this.updateListaShow();
     }
 
     /**

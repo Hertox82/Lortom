@@ -125,6 +125,74 @@ PaginationComponent = __decorate([
 
 /***/ }),
 
+/***/ "../../../../../src/app/backend-module/UIElement/pagination/show-entry.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"dataTables_length\">\n    <label>\n        Show\n        <select class=\"form-control input-sm\" name=\"example_length\" (change)=\"passVal($event.target.value)\">\n            <option *ngFor=\"let val of listEntry\" value = \"{{val}}\">{{val}}</option>\n        </select>\n        entries\n    </label>\n</div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/backend-module/UIElement/pagination/show-entry.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ShowEntryComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/**
+ * Created by hernan on 17/11/2017.
+ */
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var ShowEntryComponent = (function () {
+    function ShowEntryComponent() {
+        this.listEntry = [];
+        this.onEntry = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* EventEmitter */]();
+    }
+    ShowEntryComponent.prototype.ngOnInit = function () {
+        var entries = this.entry.split('-');
+        var maxNumber = parseInt(entries[0]);
+        var grouping = parseInt(entries[1]);
+        var iterator = maxNumber / grouping;
+        for (var i = 0; i < iterator; i++) {
+            var number = (i + 1) * grouping;
+            this.listEntry.push(number);
+        }
+        this.onEntry.emit(this.listEntry[0]);
+    };
+    ShowEntryComponent.prototype.passVal = function (event) {
+        this.onEntry.emit(parseInt(event));
+    };
+    return ShowEntryComponent;
+}());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    __metadata("design:type", String)
+], ShowEntryComponent.prototype, "entry", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["T" /* Output */])(),
+    __metadata("design:type", Object)
+], ShowEntryComponent.prototype, "onEntry", void 0);
+ShowEntryComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'lt-entry-pagination',
+        template: __webpack_require__("../../../../../src/app/backend-module/UIElement/pagination/show-entry.component.html"),
+        styles: ['']
+    }),
+    __metadata("design:paramtypes", [])
+], ShowEntryComponent);
+
+//# sourceMappingURL=show-entry.component.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/backend-module/UIElement/uielement.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -134,6 +202,7 @@ PaginationComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pagination_pagination_component__ = __webpack_require__("../../../../../src/app/backend-module/UIElement/pagination/pagination.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pagination_show_entry_component__ = __webpack_require__("../../../../../src/app/backend-module/UIElement/pagination/show-entry.component.ts");
 /**
  * Created by hernan on 16/11/2017.
  */
@@ -143,6 +212,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -158,9 +228,9 @@ UIElementModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */]
         ],
-        declarations: [__WEBPACK_IMPORTED_MODULE_3__pagination_pagination_component__["a" /* PaginationComponent */]],
+        declarations: [__WEBPACK_IMPORTED_MODULE_3__pagination_pagination_component__["a" /* PaginationComponent */], __WEBPACK_IMPORTED_MODULE_4__pagination_show_entry_component__["a" /* ShowEntryComponent */]],
         providers: [],
-        exports: [__WEBPACK_IMPORTED_MODULE_3__pagination_pagination_component__["a" /* PaginationComponent */]]
+        exports: [__WEBPACK_IMPORTED_MODULE_3__pagination_pagination_component__["a" /* PaginationComponent */], __WEBPACK_IMPORTED_MODULE_4__pagination_show_entry_component__["a" /* ShowEntryComponent */]]
     })
 ], UIElementModule);
 
@@ -756,7 +826,7 @@ var _a, _b, _c, _d;
 /***/ "../../../../../src/plugins/Hardel/Website/component/Pages/pages.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> Pages</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/menu']\" data-toggle=\"tab\"> Menu</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/components']\" data-toggle=\"tab\"> Component</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/elements']\" data-toggle=\"tab\"> Element</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <div class=\"dataTables_length\">\n                                    <label>\n                                        Show\n                                        <select class=\"form-control input-sm\" name=\"example_length\">\n                                            <option value=\"10\">10</option>\n                                        </select>\n                                        entries\n                                    </label>\n                                </div>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/website/pages/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deletePages()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Title</a>\n                                        </th>\n                                        <th>\n                                            Slug\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let page of listaPages\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,page)\" [(ngModel)] = \"page.check\">\n                                        </td>\n                                        <td>\n                                            {{page.title}}\n                                        </td>\n                                        <td>\n                                            {{page.slug}}\n                                        </td>\n                                        <td>\n                                            <a [routerLink] = \"['/backend/website/pages',page.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                            [pagesToShow]=\"3\"\n                            [perPage]=\"5\"\n                            [count]=\"listaPages.length\"\n                            [loading]=\"false\"\n                            [page]=\"1\"\n                        ></lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
+module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> Pages</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/menu']\" data-toggle=\"tab\"> Menu</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/components']\" data-toggle=\"tab\"> Component</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/elements']\" data-toggle=\"tab\"> Element</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <lt-entry-pagination\n                                [entry]=\"'50-5'\"\n                                (onEntry)=\"onPerPage($event)\"\n                                >\n                                </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/website/pages/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deletePages()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Title</a>\n                                        </th>\n                                        <th>\n                                            Slug\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let page of listaPages\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,page)\" [(ngModel)] = \"page.check\">\n                                        </td>\n                                        <td>\n                                            {{page.title}}\n                                        </td>\n                                        <td>\n                                            {{page.slug}}\n                                        </td>\n                                        <td>\n                                            <a [routerLink] = \"['/backend/website/pages',page.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                            [pagesToShow]=\"3\"\n                            [perPage]=\"5\"\n                            [count]=\"listaPages.length\"\n                            [loading]=\"false\"\n                            [page]=\"actualPage\"\n                            (goNext)=\"onNext($event)\"\n                            (goPage)=\"onPage($event)\"\n                            (goPrev)=\"onPrev()\"\n                        ></lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -787,13 +857,17 @@ var PagesComponent = (function () {
         var _this = this;
         this.wb_Service = wb_Service;
         this.router = router;
+        this.listaPages = [];
         this.myRoot = '/backend/website/pages';
         this.isRoot = false;
         if (!this.wb_Service.hasPermissions("Hardel.Website.Pages")) {
             this.router.navigate(['/backend/dashboard']);
         }
         this.listaPageDelete = [];
+        //This is to manage the Pagination
         this.pagServ = new __WEBPACK_IMPORTED_MODULE_3__services_pagination_service__["a" /* PaginationService */]();
+        this.actualPage = 1;
+        this.perPage = 3;
         this.router.events.subscribe(function (val) {
             if (val instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* NavigationEnd */]) {
                 if (_this.myRoot === val.url) {
@@ -820,11 +894,7 @@ var PagesComponent = (function () {
                     page.check = false;
                 });
                 _this.wb_Service.setPages(_this.listaPages);
-                _this.listaShowPages = _this.pagServ.getShowList({
-                    entry: 3,
-                    list: _this.listaPages,
-                    pageToShow: 1
-                });
+                _this.updateListaShow();
             });
         }
         else {
@@ -834,7 +904,30 @@ var PagesComponent = (function () {
                     item.check = false;
                 }
             });
+            this.updateListaShow();
         }
+    };
+    PagesComponent.prototype.onPerPage = function (n) {
+        this.perPage = n;
+    };
+    PagesComponent.prototype.updateListaShow = function () {
+        this.listaShowPages = this.pagServ.getShowList({
+            entry: this.perPage,
+            list: this.listaPages,
+            pageToShow: this.actualPage
+        });
+    };
+    PagesComponent.prototype.onPrev = function () {
+        this.actualPage--;
+        this.updateListaShow();
+    };
+    PagesComponent.prototype.onNext = function (ev) {
+        this.actualPage++;
+        this.updateListaShow();
+    };
+    PagesComponent.prototype.onPage = function (page) {
+        this.actualPage = page;
+        this.updateListaShow();
     };
     /**
      * function to push or splice item into Deleted List of Roles
