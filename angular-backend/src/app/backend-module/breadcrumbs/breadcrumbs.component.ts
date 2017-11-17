@@ -50,7 +50,7 @@ export class BreadCrumbsComponent implements OnInit{
                 b.active = true;
             }
         }
-        console.log(breadcrumbs);
+        //console.log(breadcrumbs);
         return breadcrumbs;
     }
 

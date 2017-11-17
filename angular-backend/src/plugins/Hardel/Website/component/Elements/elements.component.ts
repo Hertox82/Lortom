@@ -7,6 +7,7 @@ import {Component, OnInit} from "@angular/core";
 import {WebsiteService} from "../../Services/website.service";
 import {NavigationEnd, Router} from "@angular/router";
 import {LortomElement} from "../../Services/website.interfaces";
+import {PaginationService} from "../../../../../services/pagination.service";
 @Component({
     selector : 'wb-elements',
     templateUrl : './elements.component.html',
@@ -15,20 +16,29 @@ import {LortomElement} from "../../Services/website.interfaces";
 
 export class ElementsComponent implements OnInit
 {
-    listOfElements : LortomElement [];
+    listOfElements : LortomElement [] = [];
+    listShowElements : LortomElement [];
     myRoot = '/backend/website/elements';
     isRoot = false;
+    actualPage : number;
+    perPage : number;
+    pagServ : PaginationService;
 
     listaElementsDelete : LortomElement[];
 
     constructor(private ecService : WebsiteService, private router : Router) {
 
-        if(!this.ecService.hasPermissions("Hardel.Website.Pages"))
+        if(!this.ecService.hasPermissions("Hardel.Website.Element"))
         {
             this.router.navigate(['/backend/dashboard']);
         }
 
         this.listaElementsDelete = [];
+
+        //This is to manage the Pagination
+        this.pagServ = new PaginationService();
+        this.actualPage = 1;
+        this.perPage = 3;
 
         this.router.events.subscribe(
             (val) => {
@@ -67,6 +77,7 @@ export class ElementsComponent implements OnInit
                         el.check = false;
                     });
                     this.ecService.setElements(this.listOfElements);
+                    this.updateListaShow();
                 }
             );
         }
@@ -78,7 +89,40 @@ export class ElementsComponent implements OnInit
                     item.check = false;
                 }
             });
+            this.updateListaShow();
         }
+    }
+
+    onPerPage(n : number)
+    {
+        this.perPage = n;
+    }
+
+    private updateListaShow()
+    {
+        this.listShowElements = this.pagServ.getShowList({
+            entry : this.perPage,
+            list : this.listOfElements,
+            pageToShow : this.actualPage
+        });
+    }
+
+    onPrev()
+    {
+        this.actualPage--;
+        this.updateListaShow();
+    }
+
+    onNext(ev)
+    {
+        this.actualPage++;
+        this.updateListaShow();
+    }
+
+    onPage(page)
+    {
+        this.actualPage = page;
+        this.updateListaShow();
     }
 
     eventChange(ev,data : LortomElement) : void

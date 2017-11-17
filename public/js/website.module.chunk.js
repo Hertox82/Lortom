@@ -254,7 +254,7 @@ var _a;
 /***/ "../../../../../src/plugins/Hardel/Website/component/Elements/elements.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li>\n            <a [routerLink]=\"['/backend/website/pages']\" data-toggle=\"tab\"> Pages</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/menu']\" data-toggle=\"tab\"> Menu</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/components']\" data-toggle=\"tab\"> Component</a>\n        </li>\n        <li class=\"active\">\n            <a  href=\"#tab_1\" data-toggle=\"tab\"> Element</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <div class=\"dataTables_length\">\n                                    <label>\n                                        Show\n                                        <select class=\"form-control input-sm\" name=\"example_length\">\n                                            <option value=\"10\">10</option>\n                                        </select>\n                                        entries\n                                    </label>\n                                </div>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/website/elements/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deleteElements()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Name</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let el of listOfElements\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,page)\" [(ngModel)] = \"el.check\">\n                                        </td>\n                                        <td>\n                                            {{el.name}}\n                                        </td>\n                                        <td>\n                                            <a [routerLink] = \"['/backend/website/elements',el.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                                [page] = \"1\"\n                                [count]=\"0\"\n                                [loading]=\"false\"\n                                [perPage]=\"5\"\n                                [pagesToShow]=\"1\" >\n                        </lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n"
+module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li>\n            <a [routerLink]=\"['/backend/website/pages']\" data-toggle=\"tab\"> Pages</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/menu']\" data-toggle=\"tab\"> Menu</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/components']\" data-toggle=\"tab\"> Component</a>\n        </li>\n        <li class=\"active\">\n            <a  href=\"#tab_1\" data-toggle=\"tab\"> Element</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <lt-entry-pagination\n                                    [entry]=\"'50-5'\"\n                                    (onEntry)=\"onPerPage($event)\">\n                                </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/website/elements/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deleteElements()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Name</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let el of listOfElements\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,page)\" [(ngModel)] = \"el.check\">\n                                        </td>\n                                        <td>\n                                            {{el.name}}\n                                        </td>\n                                        <td>\n                                            <a [routerLink] = \"['/backend/website/elements',el.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                            [pagesToShow]=\"3\"\n                            [perPage]=\"perPage\"\n                            [count]=\"listOfElements.length\"\n                            [loading]=\"false\"\n                            [page]=\"actualPage\"\n                            (goNext)=\"onNext($event)\"\n                            (goPage)=\"onPage($event)\"\n                            (goPrev)=\"onPrev()\">\n                        </lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n"
 
 /***/ }),
 
@@ -266,6 +266,7 @@ module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n   
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Services_website_service__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/Services/website.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_pagination_service__ = __webpack_require__("../../../../../src/services/pagination.service.ts");
 /**
  * Created by hernan on 16/11/2017.
  */
@@ -281,17 +282,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ElementsComponent = (function () {
     function ElementsComponent(ecService, router) {
         var _this = this;
         this.ecService = ecService;
         this.router = router;
+        this.listOfElements = [];
         this.myRoot = '/backend/website/elements';
         this.isRoot = false;
-        if (!this.ecService.hasPermissions("Hardel.Website.Pages")) {
+        if (!this.ecService.hasPermissions("Hardel.Website.Element")) {
             this.router.navigate(['/backend/dashboard']);
         }
         this.listaElementsDelete = [];
+        //This is to manage the Pagination
+        this.pagServ = new __WEBPACK_IMPORTED_MODULE_3__services_pagination_service__["a" /* PaginationService */]();
+        this.actualPage = 1;
+        this.perPage = 3;
         this.router.events.subscribe(function (val) {
             if (val instanceof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* NavigationEnd */]) {
                 if (_this.myRoot === val.url) {
@@ -317,6 +324,7 @@ var ElementsComponent = (function () {
                     el.check = false;
                 });
                 _this.ecService.setElements(_this.listOfElements);
+                _this.updateListaShow();
             });
         }
         else {
@@ -326,7 +334,30 @@ var ElementsComponent = (function () {
                     item.check = false;
                 }
             });
+            this.updateListaShow();
         }
+    };
+    ElementsComponent.prototype.onPerPage = function (n) {
+        this.perPage = n;
+    };
+    ElementsComponent.prototype.updateListaShow = function () {
+        this.listShowElements = this.pagServ.getShowList({
+            entry: this.perPage,
+            list: this.listOfElements,
+            pageToShow: this.actualPage
+        });
+    };
+    ElementsComponent.prototype.onPrev = function () {
+        this.actualPage--;
+        this.updateListaShow();
+    };
+    ElementsComponent.prototype.onNext = function (ev) {
+        this.actualPage++;
+        this.updateListaShow();
+    };
+    ElementsComponent.prototype.onPage = function (page) {
+        this.actualPage = page;
+        this.updateListaShow();
     };
     ElementsComponent.prototype.eventChange = function (ev, data) {
         if (ev.target.checked) {
@@ -895,7 +926,7 @@ var routes = [
 ];
 var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["e" /* RouterModule */].forChild(routes);
 var websiteComponent = [__WEBPACK_IMPORTED_MODULE_1__component__["e" /* WebsiteComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["d" /* PagesComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["c" /* PageNewComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["b" /* PageComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["a" /* ElementsComponent */]];
-console.log(websiteComponent);
+//console.log(websiteComponent); 
 //# sourceMappingURL=website.routing.js.map
 
 /***/ })

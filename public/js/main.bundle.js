@@ -495,7 +495,7 @@ var BreadCrumbsComponent = (function () {
                 b.active = true;
             }
         }
-        console.log(breadcrumbs);
+        //console.log(breadcrumbs);
         return breadcrumbs;
     };
     BreadCrumbsComponent.prototype.getBreadcrumbs = function (route, url, breadcrumbs) {

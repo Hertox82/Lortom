@@ -18,4 +18,4 @@ export const routing : ModuleWithProviders = RouterModule.forChild(routes);
 
 export const websiteComponent = [WebsiteComponent,PagesComponent, PageNewComponent,PageComponent,ElementsComponent];
 
-console.log(websiteComponent);
+//console.log(websiteComponent);
