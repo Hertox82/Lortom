@@ -36,6 +36,7 @@ export class WebsiteService{
             { namePath : 'savePage', path: 'page'},
             { namePath : 'getPageAtt', path: 'pages/attribute/list'},
             { namePath : 'getElements', path: 'elements'},
+            { namePath : 'saveElement', path : 'element'}
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -235,13 +236,33 @@ export class WebsiteService{
         return this.http.post(this.apiManager.getPathByName('savePage'),page,options)
             .map(
                 (response : Response) => {
-                    console.log(response);
                     return response.json().page;
                 }
             );
     }
 
-    setPage(page : Page)
+    createElement(elem : LortomElement)
+    {
+        let headers = new Headers({'Content-Type' : 'application/json'});
+        let options = new RequestOptions({headers : headers});
+
+        return this.http.post(this.apiManager.getPathByName('saveElement'),elem,options)
+            .map(
+                (response : Response) => {
+                    return response.json().element;
+                }
+            );
+    }
+
+    setElement(elem : LortomElement) : void
+    {
+        let el = this.getElements();
+        el.push(elem);
+        this.deleteElementFromCache();
+        this.setElements(el);
+    }
+
+    setPage(page : Page) : void
     {
         let pages = this.getPages();
         pages.push(page);
@@ -252,6 +273,11 @@ export class WebsiteService{
     deletePageFromCache() : void
     {
         this.deleteItem('pages','listOfPages');
+    }
+
+    deleteElementFromCache() : void
+    {
+        this.deleteItem('elements','listOfElements');
     }
 
     updateListOfPages()

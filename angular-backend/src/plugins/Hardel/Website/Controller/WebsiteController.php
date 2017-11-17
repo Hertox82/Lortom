@@ -128,11 +128,46 @@ class WebsiteController extends Controller
 
     }
 
+    /**
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getElements(Request $request)
     {
         $sanitizedList = $this->sanitizeElements();
 
         return response()->json(['elements' => $sanitizedList]);
+    }
+
+    public function saveElement(Request $request)
+    {
+        $input = $request->all();
+
+        $keys = array_keys($input);
+
+        $toSave = ['name', 'Object', 'functions', 'appearance'];
+
+        $Element = new LortomElement();
+
+        foreach ($keys as $k)
+        {
+            if(in_array($k,$toSave))
+            {
+                if($k === 'functions')
+                {
+                    $Element->function = $input[$k];
+                }
+                else
+                {
+                    $Element->$k = $input[$k];
+                }
+            }
+        }
+
+        $Element->save();
+
+        return response()->json(['element' => $this->getElementSerialized($Element)]);
     }
 
     private function sanitizeElements()

@@ -59,7 +59,6 @@ export class PageNewComponent implements OnInit
     {
         if(this.isEqual(this.page,this.copyPage))
         {
-            console.log('forza lazio');
             this.pn_Service.createPage(this.page).subscribe(
                 (page : Page) => {
                     this.pn_Service.setPage(page);
@@ -67,10 +66,6 @@ export class PageNewComponent implements OnInit
                     this.rout.navigate(['/backend/website/pages']);
                 }
             );
-        }
-        else
-        {
-            console.log('roma merda');
         }
     }
 

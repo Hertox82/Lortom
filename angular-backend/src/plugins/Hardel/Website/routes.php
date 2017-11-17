@@ -29,3 +29,8 @@ Route::get('/elements',[
     'as'     => 'apiGetElements',
     'uses'   => 'WebsiteController@getElements'
 ]);
+
+Route::post('/element',[
+    'as'     => 'apiSaveElement',
+    'uses'   => 'WebsiteController@saveElement'
+]);

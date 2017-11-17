@@ -50,6 +50,7 @@ var WebsiteService = (function () {
             { namePath: 'savePage', path: 'page' },
             { namePath: 'getPageAtt', path: 'pages/attribute/list' },
             { namePath: 'getElements', path: 'elements' },
+            { namePath: 'saveElement', path: 'element' }
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -191,9 +192,22 @@ var WebsiteService = (function () {
         var options = new __WEBPACK_IMPORTED_MODULE_2__angular_http__["d" /* RequestOptions */]({ headers: headers });
         return this.http.post(this.apiManager.getPathByName('savePage'), page, options)
             .map(function (response) {
-            console.log(response);
             return response.json().page;
         });
+    };
+    WebsiteService.prototype.createElement = function (elem) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/json' });
+        var options = new __WEBPACK_IMPORTED_MODULE_2__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        return this.http.post(this.apiManager.getPathByName('saveElement'), elem, options)
+            .map(function (response) {
+            return response.json().element;
+        });
+    };
+    WebsiteService.prototype.setElement = function (elem) {
+        var el = this.getElements();
+        el.push(elem);
+        this.deleteElementFromCache();
+        this.setElements(el);
     };
     WebsiteService.prototype.setPage = function (page) {
         var pages = this.getPages();
@@ -203,6 +217,9 @@ var WebsiteService = (function () {
     };
     WebsiteService.prototype.deletePageFromCache = function () {
         this.deleteItem('pages', 'listOfPages');
+    };
+    WebsiteService.prototype.deleteElementFromCache = function () {
+        this.deleteItem('elements', 'listOfElements');
     };
     WebsiteService.prototype.updateListOfPages = function () {
         this._updatePages.next();
@@ -254,7 +271,7 @@ var _a;
 /***/ "../../../../../src/plugins/Hardel/Website/component/Elements/elements.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li>\n            <a [routerLink]=\"['/backend/website/pages']\" data-toggle=\"tab\"> Pages</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/menu']\" data-toggle=\"tab\"> Menu</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/components']\" data-toggle=\"tab\"> Component</a>\n        </li>\n        <li class=\"active\">\n            <a  href=\"#tab_1\" data-toggle=\"tab\"> Element</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <lt-entry-pagination\n                                    [entry]=\"'50-5'\"\n                                    (onEntry)=\"onPerPage($event)\">\n                                </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/website/elements/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deleteElements()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Name</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let el of listOfElements\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,page)\" [(ngModel)] = \"el.check\">\n                                        </td>\n                                        <td>\n                                            {{el.name}}\n                                        </td>\n                                        <td>\n                                            <a [routerLink] = \"['/backend/website/elements',el.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                            [pagesToShow]=\"3\"\n                            [perPage]=\"perPage\"\n                            [count]=\"listOfElements.length\"\n                            [loading]=\"false\"\n                            [page]=\"actualPage\"\n                            (goNext)=\"onNext($event)\"\n                            (goPage)=\"onPage($event)\"\n                            (goPrev)=\"onPrev()\">\n                        </lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n"
+module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li>\n            <a [routerLink]=\"['/backend/website/pages']\" data-toggle=\"tab\"> Pages</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/menu']\" data-toggle=\"tab\"> Menu</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/components']\" data-toggle=\"tab\"> Component</a>\n        </li>\n        <li class=\"active\">\n            <a  href=\"#tab_1\" data-toggle=\"tab\"> Element</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <lt-entry-pagination\n                                    [entry]=\"'50-5'\"\n                                    (onEntry)=\"onPerPage($event)\">\n                                </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/website/elements/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deleteElements()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Name</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let el of listOfElements\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,page)\" [(ngModel)] = \"el.check\">\n                                        </td>\n                                        <td>\n                                            {{el.name}}\n                                        </td>\n                                        <td>\n                                            <a [routerLink] = \"['/backend/website/elements',el.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                            [pagesToShow]=\"3\"\n                            [perPage]=\"perPage\"\n                            [count]=\"listOfElements.length\"\n                            [loading]=\"false\"\n                            [page]=\"actualPage\"\n                            (goNext)=\"onNext($event)\"\n                            (goPage)=\"onPage($event)\"\n                            (goPrev)=\"onPrev()\">\n                        </lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n<router-outlet></router-outlet>\n"
 
 /***/ }),
 
@@ -398,6 +415,91 @@ var _a, _b;
 
 /***/ }),
 
+/***/ "../../../../../src/plugins/Hardel/Website/component/NewElement/elementnew.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"name\" class=\"col-md-2 control-label\">Name</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"name\" placeholder=\"Name\" id=\"name\" [(ngModel)] = \"element.name\" >\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"object\" class=\"col-md-2 control-label\">Object</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"object\" placeholder=\"Object\" id=\"object\" [(ngModel)] = \"element.Object\" >\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"function\" class=\"col-md-2 control-label\">Functions</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"function\" placeholder=\"Functions\" id=\"function\" [(ngModel)] = \"element.functions\" >\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"appearance\" class=\"col-md-2 control-label\">Appearance</label>\n                                <div class=\"col-md-4\">\n                                    <textarea type=\"text\" class=\"form-control\" name=\"appearance\" id=\"appearance\" [(ngModel)] = \"element.appearance\" ></textarea>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n</form>"
+
+/***/ }),
+
+/***/ "../../../../../src/plugins/Hardel/Website/component/NewElement/elementnew.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ElementNewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Services_website_service__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/Services/website.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/**
+ * Created by hernan on 17/11/2017.
+ */
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var ElementNewComponent = (function () {
+    function ElementNewComponent(neService, router) {
+        this.neService = neService;
+        this.router = router;
+        this.element = {
+            id: -1,
+            name: '',
+            Object: '',
+            functions: '',
+            appearance: '',
+            check: false
+        };
+        this.cloneElement();
+    }
+    ElementNewComponent.prototype.ngOnInit = function () { };
+    ElementNewComponent.prototype.saveMode = function () {
+        var _this = this;
+        if (!this.isEqual(this.element, this.copyElement)) {
+            this.neService.createElement(this.element).subscribe(function (element) {
+                _this.neService.setElement(element);
+                _this.neService.updateListOfElements();
+                _this.router.navigate(['/backend/website/elements']);
+            });
+        }
+    };
+    ElementNewComponent.prototype.resetMode = function () {
+        if (confirm("Do you really want reset all fields?")) {
+            this.cloneCopyElement();
+        }
+    };
+    ElementNewComponent.prototype.cloneElement = function () {
+        this.copyElement = Object.assign({}, this.element);
+    };
+    ElementNewComponent.prototype.cloneCopyElement = function () {
+        this.element = Object.assign({}, this.copyElement);
+    };
+    ElementNewComponent.prototype.isEqual = function (v1, v2) {
+        return (v1.name == v2.name);
+    };
+    return ElementNewComponent;
+}());
+ElementNewComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'wb-new-element',
+        template: __webpack_require__("../../../../../src/plugins/Hardel/Website/component/NewElement/elementnew.component.html"),
+        styles: ['']
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__Services_website_service__["a" /* WebsiteService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__Services_website_service__["a" /* WebsiteService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["d" /* Router */]) === "function" && _b || Object])
+], ElementNewComponent);
+
+var _a, _b;
+//# sourceMappingURL=elementnew.component.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/plugins/Hardel/Website/component/NewPage/pagenew.component.html":
 /***/ (function(module, exports) {
 
@@ -461,15 +563,11 @@ var PageNewComponent = (function () {
     PageNewComponent.prototype.saveMode = function () {
         var _this = this;
         if (this.isEqual(this.page, this.copyPage)) {
-            console.log('forza lazio');
             this.pn_Service.createPage(this.page).subscribe(function (page) {
                 _this.pn_Service.setPage(page);
                 _this.pn_Service.updateListOfPages();
                 _this.rout.navigate(['/backend/website/pages']);
             });
-        }
-        else {
-            console.log('roma merda');
         }
     };
     PageNewComponent.prototype.isEqual = function (v1, v2) {
@@ -771,18 +869,21 @@ var _a, _b;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__website_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/website.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_0__website_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_0__website_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Pages_pages_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/Pages/pages.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_1__Pages_pages_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_1__Pages_pages_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__NewPage_pagenew_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/NewPage/pagenew.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__NewPage_pagenew_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_2__NewPage_pagenew_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Page_page_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/Page/page.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_3__Page_page_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_3__Page_page_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Elements_elements_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/Elements/elements.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_4__Elements_elements_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_4__Elements_elements_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__NewElement_elementnew_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/NewElement/elementnew.component.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_5__NewElement_elementnew_component__["a"]; });
 /**
  * Created by hernan on 13/11/2017.
  */
+
 
 
 
@@ -916,16 +1017,18 @@ WebsiteModule = __decorate([
 
 
 var routes = [
-    { path: '', component: __WEBPACK_IMPORTED_MODULE_1__component__["e" /* WebsiteComponent */], data: { breadcrumb: 'Website' }, children: [
-            { path: 'pages', component: __WEBPACK_IMPORTED_MODULE_1__component__["d" /* PagesComponent */], data: { breadcrumb: 'Pages' }, children: [
-                    { path: 'new', component: __WEBPACK_IMPORTED_MODULE_1__component__["c" /* PageNewComponent */], data: { breadcrumb: 'New' } },
-                    { path: ':id', component: __WEBPACK_IMPORTED_MODULE_1__component__["b" /* PageComponent */], data: { breadcrumb: 'Page' } }
+    { path: '', component: __WEBPACK_IMPORTED_MODULE_1__component__["f" /* WebsiteComponent */], data: { breadcrumb: 'Website' }, children: [
+            { path: 'pages', component: __WEBPACK_IMPORTED_MODULE_1__component__["e" /* PagesComponent */], data: { breadcrumb: 'Pages' }, children: [
+                    { path: 'new', component: __WEBPACK_IMPORTED_MODULE_1__component__["d" /* PageNewComponent */], data: { breadcrumb: 'New' } },
+                    { path: ':id', component: __WEBPACK_IMPORTED_MODULE_1__component__["c" /* PageComponent */], data: { breadcrumb: 'Page' } }
                 ] },
-            { path: 'elements', component: __WEBPACK_IMPORTED_MODULE_1__component__["a" /* ElementsComponent */], data: { breadcrumb: 'Elements' } }
+            { path: 'elements', component: __WEBPACK_IMPORTED_MODULE_1__component__["b" /* ElementsComponent */], data: { breadcrumb: 'Elements' }, children: [
+                    { path: 'new', component: __WEBPACK_IMPORTED_MODULE_1__component__["a" /* ElementNewComponent */], data: { breadcrumb: 'New' } }
+                ] }
         ] }
 ];
 var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["e" /* RouterModule */].forChild(routes);
-var websiteComponent = [__WEBPACK_IMPORTED_MODULE_1__component__["e" /* WebsiteComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["d" /* PagesComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["c" /* PageNewComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["b" /* PageComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["a" /* ElementsComponent */]];
+var websiteComponent = [__WEBPACK_IMPORTED_MODULE_1__component__["f" /* WebsiteComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["e" /* PagesComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["d" /* PageNewComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["c" /* PageComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["b" /* ElementsComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["a" /* ElementNewComponent */]];
 //console.log(websiteComponent); 
 //# sourceMappingURL=website.routing.js.map
 
