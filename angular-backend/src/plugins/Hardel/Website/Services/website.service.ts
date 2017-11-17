@@ -92,6 +92,29 @@ export class WebsiteService{
         return response;
     }
 
+    getElementByProperty(name : string, value : any)
+    {
+       return this.getItemByProperty(name,value,'elements','listOfElements') as LortomElement;
+    }
+
+    private getItemByProperty(propertyName : string, value: any, sessionName : string, prop : string)
+    {
+        let list = this.getItem(sessionName,prop);
+
+        let response = null;
+
+        list.forEach(
+            (item : any) => {
+                if(item[propertyName] === value)
+                {
+                    response = item;
+                }
+            }
+        );
+
+        return response;
+    }
+
     /**
      * this function return if Pages Exists
      * @returns {boolean}
@@ -330,6 +353,20 @@ export class WebsiteService{
             .map(
                 (response : Response) => {
                     return response.json().page;
+                }
+            );
+    }
+
+    saveElement(element : LortomElement) : Observable <any>
+    {
+        let headers = new Headers({'Content-Type' : 'application/json'});
+        let options = new RequestOptions({headers : headers});
+
+
+        return this.http.put(this.apiManager.getPathByName('saveElement'),element,options)
+            .map(
+                (response : Response) => {
+                    return response.json().element;
                 }
             );
     }

@@ -90,6 +90,19 @@ var WebsiteService = (function () {
         });
         return response;
     };
+    WebsiteService.prototype.getElementByProperty = function (name, value) {
+        return this.getItemByProperty(name, value, 'elements', 'listOfElements');
+    };
+    WebsiteService.prototype.getItemByProperty = function (propertyName, value, sessionName, prop) {
+        var list = this.getItem(sessionName, prop);
+        var response = null;
+        list.forEach(function (item) {
+            if (item[propertyName] === value) {
+                response = item;
+            }
+        });
+        return response;
+    };
     /**
      * this function return if Pages Exists
      * @returns {boolean}
@@ -257,6 +270,14 @@ var WebsiteService = (function () {
             return response.json().page;
         });
     };
+    WebsiteService.prototype.saveElement = function (element) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Headers */]({ 'Content-Type': 'application/json' });
+        var options = new __WEBPACK_IMPORTED_MODULE_2__angular_http__["d" /* RequestOptions */]({ headers: headers });
+        return this.http.put(this.apiManager.getPathByName('saveElement'), element, options)
+            .map(function (response) {
+            return response.json().element;
+        });
+    };
     return WebsiteService;
 }());
 WebsiteService = __decorate([
@@ -266,6 +287,117 @@ WebsiteService = __decorate([
 
 var _a;
 //# sourceMappingURL=website.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/plugins/Hardel/Website/component/Element/element.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn darkorange\" (click)=\"editMode()\">\n                    <i class=\"fa fa-edit\"></i>\n                    Edit\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"name\" class=\"col-md-2 control-label\">Name</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"name\" placeholder=\"Name\" id=\"name\" [ngModel] = \"element.name\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                    <ng-template #editName>\n                                        <input type=\"text\" class=\"form-control\" name=\"name\" placeholder=\"Name\" id=\"name\" [(ngModel)] = \"element.name\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"object\" class=\"col-md-2 control-label\">Object</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"object\" placeholder=\"Object\" id=\"object\" [ngModel] = \"element.Object\" *ngIf=\"isEdit === false; else editObject\" readonly>\n                                    <ng-template #editObject>\n                                        <input type=\"text\" class=\"form-control\" name=\"object\" placeholder=\"Object\" id=\"object\" [(ngModel)] = \"element.Object\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"function\" class=\"col-md-2 control-label\">Functions</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"function\" placeholder=\"Functions\" id=\"function\" [ngModel] = \"element.functions\" *ngIf=\"isEdit === false; else editFunctions\" readonly>\n                                    <ng-template #editFunctions>\n                                        <input type=\"text\" class=\"form-control\" name=\"function\" placeholder=\"Functions\" id=\"function\" [(ngModel)] = \"element.functions\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"appearance\" class=\"col-md-2 control-label\">Appearance</label>\n                                <div class=\"col-md-4\">\n                                    <textarea type=\"text\" class=\"form-control\" name=\"appearance\" id=\"appearance\" [ngModel] = \"element.appearance\" *ngIf=\"isEdit === false; else editAppearance\" disabled></textarea>\n                                    <ng-template #editAppearance>\n                                        <textarea type=\"text\" class=\"form-control\" name=\"appearance\" id=\"appearance\" [(ngModel)] = \"element.appearance\" ></textarea>\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n</form>"
+
+/***/ }),
+
+/***/ "../../../../../src/plugins/Hardel/Website/component/Element/element.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ElementComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Services_website_interfaces__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/Services/website.interfaces.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Services_website_interfaces___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Services_website_interfaces__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Services_website_service__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/Services/website.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/**
+ * Created by hernan on 17/11/2017.
+ */
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ElementComponent = (function () {
+    function ElementComponent(ueService, router, nav) {
+        var _this = this;
+        this.ueService = ueService;
+        this.router = router;
+        this.nav = nav;
+        this.isEdit = false;
+        this.notFound = false;
+        this.element = {
+            id: -2,
+            name: '',
+            Object: '',
+            functions: '',
+            appearance: '',
+            check: false
+        };
+        this.sub = this.router.params.subscribe(function (params) {
+            _this.id = +params['id'];
+            _this.element = _this.ueService.getElementByProperty('id', _this.id);
+            if (_this.element != null) {
+                _this.notFound = true;
+            }
+            else {
+                _this.nav.navigate(['/backend/not-found']);
+            }
+            _this.cloneElement();
+        });
+    }
+    ElementComponent.prototype.ngOnInit = function () { };
+    ElementComponent.prototype.editMode = function () {
+        //passa in modalità edit
+        this.isEdit = !this.isEdit;
+    };
+    ElementComponent.prototype.saveMode = function () {
+        var _this = this;
+        if (!this.isEqual(this.element, this.copyElement)) {
+            this.ueService.saveElement(this.element).subscribe(function (element) {
+                _this.element = element;
+                _this.cloneElement();
+                _this.ueService.updateListOfElements();
+                _this.editMode();
+            });
+        }
+    };
+    ElementComponent.prototype.resetMode = function () {
+        if (confirm("Do you really want reset all fields?")) {
+            this.cloneCopyElement();
+        }
+    };
+    ElementComponent.prototype.cloneElement = function () {
+        this.copyElement = Object.assign({}, this.element);
+    };
+    ElementComponent.prototype.cloneCopyElement = function () {
+        this.element = Object.assign({}, this.copyElement);
+    };
+    ElementComponent.prototype.isEqual = function (v1, v2) {
+        return (v1.name == v2.name);
+    };
+    return ElementComponent;
+}());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__Services_website_interfaces__["LortomElement"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__Services_website_interfaces__["LortomElement"]) === "function" && _a || Object)
+], ElementComponent.prototype, "element", void 0);
+ElementComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'wb-element',
+        template: __webpack_require__("../../../../../src/plugins/Hardel/Website/component/Element/element.component.html"),
+        styles: ['']
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__Services_website_service__["a" /* WebsiteService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__Services_website_service__["a" /* WebsiteService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* ActivatedRoute */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["d" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["d" /* Router */]) === "function" && _d || Object])
+], ElementComponent);
+
+var _a, _b, _c, _d;
+//# sourceMappingURL=element.component.js.map
 
 /***/ }),
 
@@ -355,6 +487,7 @@ var ElementsComponent = (function () {
             });
             this.updateListaShow();
         }
+        console.log(this.listOfElements);
     };
     ElementsComponent.prototype.onPerPage = function (n) {
         this.perPage = n;
@@ -874,20 +1007,23 @@ var _a, _b;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__website_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/website.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_0__website_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_0__website_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Pages_pages_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/Pages/pages.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_1__Pages_pages_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_1__Pages_pages_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__NewPage_pagenew_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/NewPage/pagenew.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_2__NewPage_pagenew_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_2__NewPage_pagenew_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Page_page_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/Page/page.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_3__Page_page_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_3__Page_page_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Elements_elements_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/Elements/elements.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_4__Elements_elements_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_4__Elements_elements_component__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__NewElement_elementnew_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/NewElement/elementnew.component.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_5__NewElement_elementnew_component__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_5__NewElement_elementnew_component__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Element_element_component__ = __webpack_require__("../../../../../src/plugins/Hardel/Website/component/Element/element.component.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_6__Element_element_component__["a"]; });
 /**
  * Created by hernan on 13/11/2017.
  */
+
 
 
 
@@ -1022,18 +1158,19 @@ WebsiteModule = __decorate([
 
 
 var routes = [
-    { path: '', component: __WEBPACK_IMPORTED_MODULE_1__component__["f" /* WebsiteComponent */], data: { breadcrumb: 'Website' }, children: [
-            { path: 'pages', component: __WEBPACK_IMPORTED_MODULE_1__component__["e" /* PagesComponent */], data: { breadcrumb: 'Pages' }, children: [
-                    { path: 'new', component: __WEBPACK_IMPORTED_MODULE_1__component__["d" /* PageNewComponent */], data: { breadcrumb: 'New' } },
-                    { path: ':id', component: __WEBPACK_IMPORTED_MODULE_1__component__["c" /* PageComponent */], data: { breadcrumb: 'Page' } }
+    { path: '', component: __WEBPACK_IMPORTED_MODULE_1__component__["g" /* WebsiteComponent */], data: { breadcrumb: 'Website' }, children: [
+            { path: 'pages', component: __WEBPACK_IMPORTED_MODULE_1__component__["f" /* PagesComponent */], data: { breadcrumb: 'Pages' }, children: [
+                    { path: 'new', component: __WEBPACK_IMPORTED_MODULE_1__component__["e" /* PageNewComponent */], data: { breadcrumb: 'New' } },
+                    { path: ':id', component: __WEBPACK_IMPORTED_MODULE_1__component__["d" /* PageComponent */], data: { breadcrumb: 'Page' } }
                 ] },
-            { path: 'elements', component: __WEBPACK_IMPORTED_MODULE_1__component__["b" /* ElementsComponent */], data: { breadcrumb: 'Elements' }, children: [
-                    { path: 'new', component: __WEBPACK_IMPORTED_MODULE_1__component__["a" /* ElementNewComponent */], data: { breadcrumb: 'New' } }
+            { path: 'elements', component: __WEBPACK_IMPORTED_MODULE_1__component__["c" /* ElementsComponent */], data: { breadcrumb: 'Elements' }, children: [
+                    { path: 'new', component: __WEBPACK_IMPORTED_MODULE_1__component__["b" /* ElementNewComponent */], data: { breadcrumb: 'New' } },
+                    { path: ':id', component: __WEBPACK_IMPORTED_MODULE_1__component__["a" /* ElementComponent */], data: { breadcrumb: 'Element' } }
                 ] }
         ] }
 ];
 var routing = __WEBPACK_IMPORTED_MODULE_0__angular_router__["e" /* RouterModule */].forChild(routes);
-var websiteComponent = [__WEBPACK_IMPORTED_MODULE_1__component__["f" /* WebsiteComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["e" /* PagesComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["d" /* PageNewComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["c" /* PageComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["b" /* ElementsComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["a" /* ElementNewComponent */]];
+var websiteComponent = [__WEBPACK_IMPORTED_MODULE_1__component__["g" /* WebsiteComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["f" /* PagesComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["e" /* PageNewComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["d" /* PageComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["c" /* ElementsComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["b" /* ElementNewComponent */], __WEBPACK_IMPORTED_MODULE_1__component__["a" /* ElementComponent */]];
 //console.log(websiteComponent); 
 //# sourceMappingURL=website.routing.js.map
 

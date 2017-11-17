@@ -1,0 +1,74 @@
+<form class="form">
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-database"></i>
+                <span>General Definitions</span>
+            </div>
+            <div class="actions">
+                <button class="btn darkorange" (click)="editMode()">
+                    <i class="fa fa-edit"></i>
+                    Edit
+                </button>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="portlet-form-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="name" class="col-md-2 control-label">Name</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="name" placeholder="Name" id="name" [ngModel] = "element.name" *ngIf="isEdit === false; else editName" readonly>
+                                    <ng-template #editName>
+                                        <input type="text" class="form-control" name="name" placeholder="Name" id="name" [(ngModel)] = "element.name" >
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="object" class="col-md-2 control-label">Object</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="object" placeholder="Object" id="object" [ngModel] = "element.Object" *ngIf="isEdit === false; else editObject" readonly>
+                                    <ng-template #editObject>
+                                        <input type="text" class="form-control" name="object" placeholder="Object" id="object" [(ngModel)] = "element.Object" >
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="function" class="col-md-2 control-label">Functions</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="function" placeholder="Functions" id="function" [ngModel] = "element.functions" *ngIf="isEdit === false; else editFunctions" readonly>
+                                    <ng-template #editFunctions>
+                                        <input type="text" class="form-control" name="function" placeholder="Functions" id="function" [(ngModel)] = "element.functions" >
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="appearance" class="col-md-2 control-label">Appearance</label>
+                                <div class="col-md-4">
+                                    <textarea type="text" class="form-control" name="appearance" id="appearance" [ngModel] = "element.appearance" *ngIf="isEdit === false; else editAppearance" disabled></textarea>
+                                    <ng-template #editAppearance>
+                                        <textarea type="text" class="form-control" name="appearance" id="appearance" [(ngModel)] = "element.appearance" ></textarea>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button class="btn orange" (click)="saveMode()">Save</button>
+            <button class="btn red" (click)="resetMode()">Reset</button>
+        </div>
+    </div>
+</form>

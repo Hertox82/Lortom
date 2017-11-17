@@ -39,3 +39,8 @@ Route::post('/element',[
     'as'     => 'apiSaveElement',
     'uses'   => 'WebsiteController@saveElement'
 ])->middleware('lortom.auth');
+
+Route::put('/element',[
+    'as'     => 'apiUpdateElement',
+    'uses'   => 'WebsiteController@editElement'
+])->middleware('lortom.auth');

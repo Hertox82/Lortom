@@ -171,11 +171,43 @@ class WebsiteController extends Controller
             {
                 if($k === 'functions')
                 {
-                    $Element->function = $input[$k];
+                        $Element->function = $input[$k];
                 }
                 else
                 {
-                    $Element->$k = $input[$k];
+                        $Element->$k = $input[$k];
+                }
+            }
+        }
+
+        $Element->save();
+
+        return response()->json(['element' => $this->getElementSerialized($Element)]);
+    }
+
+    public function editElement(Request $request)
+    {
+        $input = $request->all();
+
+        $Element = LortomElement::find($input['id']);
+
+        $keys = array_keys($input);
+
+        $toSave = ['name', 'Object', 'functions', 'appearance'];
+
+        foreach ($keys as $k)
+        {
+            if(in_array($k,$toSave))
+            {
+                if($k === 'functions')
+                {
+                    if($Element->function != $input[$k])
+                        $Element->function = $input[$k];
+                }
+                else
+                {
+                    if($Element->$k != $input[$k])
+                        $Element->$k = $input[$k];
                 }
             }
         }
