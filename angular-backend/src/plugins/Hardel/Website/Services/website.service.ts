@@ -218,6 +218,7 @@ export class WebsiteService{
         return this.http.put(this.apiManager.getPathByName('getElements'),el,options)
             .map(
                 (response : Response) => {
+                    console.log(response);
                     return response.json().elements;
                 }
             );

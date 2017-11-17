@@ -30,7 +30,12 @@ Route::get('/elements',[
     'uses'   => 'WebsiteController@getElements'
 ]);
 
+Route::put('/elements',[
+    'as'     => 'apiDeleteElement',
+    'uses'   => 'WebsiteController@deleteElements'
+])->middleware('lortom.auth');
+
 Route::post('/element',[
     'as'     => 'apiSaveElement',
     'uses'   => 'WebsiteController@saveElement'
-]);
+])->middleware('lortom.auth');

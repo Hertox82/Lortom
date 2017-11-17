@@ -52,9 +52,9 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr *ngFor="let el of listOfElements">
+                                    <tr *ngFor="let el of listShowElements">
                                         <td>
-                                            <input type="checkbox" (change)="eventChange($event,page)" [(ngModel)] = "el.check">
+                                            <input type="checkbox" (change)="eventChange($event,el)" [(ngModel)] = "el.check">
                                         </td>
                                         <td>
                                             {{el.name}}

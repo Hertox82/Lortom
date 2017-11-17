@@ -161,6 +161,7 @@ export class UsersComponent implements OnInit
                         this.listaUserDelete = [];
                         this.listaUser = data;
                         this.s_Service.setUsers(this.listaUser);
+                        this.updateListaShow();
                     }
                 );
             }

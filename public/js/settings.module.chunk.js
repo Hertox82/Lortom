@@ -942,6 +942,7 @@ var RolesComponent = (function () {
                     _this.listaRoleDelete = [];
                     _this.listaRole = data;
                     _this.c_Service.setRoles(_this.listaRole);
+                    _this.updateListaShow();
                 });
             }
         }
@@ -1302,6 +1303,7 @@ var UsersComponent = (function () {
                     _this.listaUserDelete = [];
                     _this.listaUser = data;
                     _this.s_Service.setUsers(_this.listaUser);
+                    _this.updateListaShow();
                 });
             }
         }

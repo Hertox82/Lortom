@@ -157,6 +157,7 @@ export class PagesComponent implements OnInit
                         this.listaPageDelete = [];
                         this.listaPages = data;
                         this.wb_Service.setPages(this.listaPages);
+                        this.updateListaShow();
                     }
                 );
             }

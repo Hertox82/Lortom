@@ -34,6 +34,7 @@ export class ElementsComponent implements OnInit
         }
 
         this.listaElementsDelete = [];
+        this.listOfElements = [];
 
         //This is to manage the Pagination
         this.pagServ = new PaginationService();
@@ -83,6 +84,7 @@ export class ElementsComponent implements OnInit
         }
         else {
             this.listOfElements = this.ecService.getElements();
+
             this.listOfElements.forEach((item : any) => {
                 if(!item.hasOwnProperty('check'))
                 {
@@ -148,11 +150,13 @@ export class ElementsComponent implements OnInit
         {
             if(confirm('Do you really want delete this Roles?'))
             {
+                console.log(this.listaElementsDelete);
                 this.ecService.deleteElements(this.listaElementsDelete).subscribe(
                     (data : any) => {
                         this.listaElementsDelete = [];
                         this.listOfElements = data;
                         this.ecService.setElements(this.listOfElements);
+                        this.updateListaShow();
                     }
                 );
             }

@@ -161,6 +161,7 @@ export class RolesComponent implements OnInit
                         this.listaRoleDelete = [];
                         this.listaRole = data;
                         this.c_Service.setRoles(this.listaRole);
+                        this.updateListaShow();
                     }
                 );
             }

@@ -140,6 +140,21 @@ class WebsiteController extends Controller
         return response()->json(['elements' => $sanitizedList]);
     }
 
+    public function deleteElements(Request $request)
+    {
+        $input = $request->all();
+        foreach ($input as $el)
+        {
+            $idElement = $el['id'];
+            //delete page
+            DB::table('lt_elements')->where('id',$idElement)->delete();
+        }
+
+        $sanitizedList = $this->sanitizeElements();
+
+        return response()->json(['elements' => $sanitizedList]);
+    }
+
     public function saveElement(Request $request)
     {
         $input = $request->all();
