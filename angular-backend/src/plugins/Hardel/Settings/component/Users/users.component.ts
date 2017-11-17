@@ -7,6 +7,7 @@ import {Component, OnInit} from "@angular/core";
 import {Role,User} from "../../Services/settings.interfaces";
 import {SettingsService} from "../../Services/settings.service";
 import {NavigationEnd, Router} from "@angular/router";
+import {PaginationService} from "../../../../../services/pagination.service";
 
 @Component({
     selector : 'settings-users',
@@ -16,9 +17,13 @@ import {NavigationEnd, Router} from "@angular/router";
 
 export class UsersComponent implements OnInit
 {
-    listaUser : User[];
+    listaUser : User[] = [];
+    listaShowUser : User[];
     myRoot = '/backend/settings/users';
     isRoot = false;
+    actualPage : number;
+    perPage : number;
+    pagServ : PaginationService;
 
     listaUserDelete : User[];
 
@@ -28,6 +33,11 @@ export class UsersComponent implements OnInit
         {
             this.router.navigate(['/backend/dashboard']);
         }
+
+        //This is to manage the Pagination
+        this.pagServ = new PaginationService();
+        this.actualPage = 1;
+        this.perPage = 3;
 
         this.listaUserDelete = [];
 
@@ -70,6 +80,7 @@ export class UsersComponent implements OnInit
                         user.state = false;
                     });
                     this.s_Service.setUsers(this.listaUser);
+                    this.updateListaShow();
                 }
             );
         }
@@ -81,7 +92,40 @@ export class UsersComponent implements OnInit
                     item.state = false;
                 }
             });
+            this.updateListaShow();
         }
+    }
+
+    onPerPage(n : number)
+    {
+        this.perPage = n;
+    }
+
+    private updateListaShow()
+    {
+        this.listaShowUser = this.pagServ.getShowList({
+            entry : this.perPage,
+            list : this.listaUser,
+            pageToShow : this.actualPage
+        });
+    }
+
+    onPrev()
+    {
+        this.actualPage--;
+        this.updateListaShow();
+    }
+
+    onNext(ev)
+    {
+        this.actualPage++;
+        this.updateListaShow();
+    }
+
+    onPage(page)
+    {
+        this.actualPage = page;
+        this.updateListaShow();
     }
 
     /**

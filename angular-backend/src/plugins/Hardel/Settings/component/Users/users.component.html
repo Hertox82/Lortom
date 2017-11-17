@@ -17,15 +17,11 @@
                     <div class="wrapper">
                         <div class="row">
                             <div class="col-md-8">
-                                <div class="dataTables_length">
-                                    <label>
-                                        Show
-                                        <select class="form-control input-sm" name="example_length">
-                                            <option value="10">10</option>
-                                        </select>
-                                        entries
-                                    </label>
-                                </div>
+                               <lt-entry-pagination
+                               [entry]="'50-5'"
+                               (onEntry)="onPerPage($event)"
+                               >
+                               </lt-entry-pagination>
                             </div>
                             <div class="col-md-4">
                                 <div class="dataTables_filter">
@@ -54,7 +50,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr *ngFor="let user of listaUser">
+                                    <tr *ngFor="let user of listaShowUser">
                                         <td>
                                             <input type="checkbox" (change)="eventChange($event,user)" [(ngModel)] = "user.state">
                                         </td>
@@ -72,29 +68,16 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <div class="dataTables_info">Showing 1 to 10 of 57 entries</div>
-                            </div>
-                            <div class="col-sm-7">
-                                <div class="dataTables_paginate">
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a>
-                                        </li>
-                                        <li class="page-item active">
-                                            <a class="page-link" href="#">1</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">2</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        <lt-pagination
+                            [pagesToShow]="3"
+                            [perPage]="perPage"
+                            [count]="listaUser.length"
+                            [loading]="false"
+                            [page]="actualPage"
+                            (goNext)="onNext($event)"
+                            (goPage)="onPage($event)"
+                            (goPrev)="onPrev()"
+                        ></lt-pagination>
                     </div>
                 </div>
             </div>

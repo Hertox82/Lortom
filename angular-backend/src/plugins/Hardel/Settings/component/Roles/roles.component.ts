@@ -8,6 +8,7 @@ import {SettingsService} from "../../Services/settings.service";
 import {Role} from "../../Services/settings.interfaces";
 import {NavigationEnd, Router} from "@angular/router";
 import {hasOwnProperty} from "tslint/lib/utils";
+import {PaginationService} from "../../../../../services/pagination.service";
 
 @Component({
     selector : 'app-roles-component',
@@ -17,9 +18,13 @@ import {hasOwnProperty} from "tslint/lib/utils";
 
 export class RolesComponent implements OnInit
 {
-    listaRole : Role[];
+    listaRole : Role[] = [];
+    listaShowRole : Role[];
     myRoot = '/backend/settings/roles';
     isRoot = false;
+    actualPage : number;
+    perPage : number;
+    pagServ : PaginationService;
 
     listaRoleDelete : Role[];
 
@@ -29,6 +34,11 @@ export class RolesComponent implements OnInit
         {
             this.router.navigate(['/backend/dashboard']);
         }
+        //This is to manage the Pagination
+        this.pagServ = new PaginationService();
+        this.actualPage = 1;
+        this.perPage = 3;
+
         this.listaRoleDelete = [];
 
         this.router.events.subscribe(
@@ -70,6 +80,7 @@ export class RolesComponent implements OnInit
                         role.state = false;
                     });
                     this.c_Service.setRoles(this.listaRole);
+                    this.updateListaShow();
                 }
             );
         }
@@ -81,7 +92,40 @@ export class RolesComponent implements OnInit
                     item.state = false;
                 }
             });
+            this.updateListaShow();
         }
+    }
+
+    onPerPage(n : number)
+    {
+        this.perPage = n;
+    }
+
+    private updateListaShow()
+    {
+        this.listaShowRole = this.pagServ.getShowList({
+            entry : this.perPage,
+            list : this.listaRole,
+            pageToShow : this.actualPage
+        });
+    }
+
+    onPrev()
+    {
+        this.actualPage--;
+        this.updateListaShow();
+    }
+
+    onNext(ev)
+    {
+        this.actualPage++;
+        this.updateListaShow();
+    }
+
+    onPage(page)
+    {
+        this.actualPage = page;
+        this.updateListaShow();
     }
 
     /**

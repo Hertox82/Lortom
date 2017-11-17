@@ -14,18 +14,20 @@ var map = {
 	],
 	"../plugins/Hardel/Settings/settings.module": [
 		"../../../../../src/plugins/Hardel/Settings/settings.module.ts",
-		"settings.module"
+		"settings.module",
+		"common"
 	],
 	"../plugins/Hardel/Website/website.module": [
 		"../../../../../src/plugins/Hardel/Website/website.module.ts",
-		"website.module"
+		"website.module",
+		"common"
 	]
 };
 function webpackAsyncContext(req) {
 	var ids = map[req];
 	if(!ids)
 		return Promise.reject(new Error("Cannot find module '" + req + "'."));
-	return __webpack_require__.e(ids[1]).then(function() {
+	return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(function() {
 		return __webpack_require__(ids[0]);
 	});
 };

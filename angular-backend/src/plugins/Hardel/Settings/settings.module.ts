@@ -10,6 +10,7 @@ import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {BreadCrumbModule} from "../../../app/backend-module/";
+import {UIElementModule} from "../../../app/backend-module/UIElement/uielement.module";
 
 @NgModule({
     imports:[
@@ -17,7 +18,8 @@ import {BreadCrumbModule} from "../../../app/backend-module/";
         FormsModule,
         HttpModule,
         routing,
-        BreadCrumbModule
+        BreadCrumbModule,
+        UIElementModule
     ],
     providers: [SettingsService],
     declarations: [routedComponents]
