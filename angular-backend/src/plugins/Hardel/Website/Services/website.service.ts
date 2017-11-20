@@ -10,12 +10,12 @@ import {User} from "../../../../app/backend-module/user-module/user-model/user.i
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
 import {LortomElement, Page} from "./website.interfaces";
+import {MasterService} from "@Lortom/services/master.service";
 
 @Injectable()
-export class WebsiteService{
+export class WebsiteService extends MasterService{
 
-    apiManager : ApiManager;
-    user : User;
+
     listOfPages : Page[];
     listOfElements : LortomElement[];
 
@@ -27,8 +27,7 @@ export class WebsiteService{
 
     constructor(private http: Http)
     {
-        this.apiManager = new ApiManager();
-
+        super();
 
         // write the api route for setting
         const urls = [
@@ -43,29 +42,6 @@ export class WebsiteService{
     }
 
     /**
-     * Check if User has permission
-     * @param name
-     * @returns {boolean}
-     */
-    hasPermissions(name: string) : boolean
-    {
-        if(this.user == null)
-        {
-            this.user = JSON.parse(sessionStorage.getItem('user'));
-        }
-
-        for(let i = 0; i<this.user.permissions.length; i++)
-        {
-            if(this.user.permissions[i].name === name)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * This function return Page by Property
      * @param name
      * @param value
@@ -73,47 +49,41 @@ export class WebsiteService{
      */
     getPageByProperty(name : string, value : any)
     {
-        let response: Page;
-        response = null;
-
-        if(this.listOfPages == null)
-        {
-            this.listOfPages = JSON.parse(sessionStorage.getItem('pages'));
-        }
-        this.listOfPages.forEach(
-            (page : Page) => {
-                if(page[name] === value)
-                {
-                    response = page;
-                }
-            }
-        );
-
-        return response;
+        return this.getItemByProperty(name,value,'pages','listOfPages') as Page;
     }
+
+    /**
+     * This function return Element by Property
+     * @param name
+     * @param value
+     * @returns {LortomElement}
+     */
 
     getElementByProperty(name : string, value : any)
     {
        return this.getItemByProperty(name,value,'elements','listOfElements') as LortomElement;
     }
 
-    private getItemByProperty(propertyName : string, value: any, sessionName : string, prop : string)
+
+    /**
+     * This function update Element in listOfElements
+     * @param el
+     */
+    updateElementInList(el : LortomElement) : void
     {
-        let list = this.getItem(sessionName,prop);
-
-        let response = null;
-
-        list.forEach(
-            (item : any) => {
-                if(item[propertyName] === value)
-                {
-                    response = item;
-                }
-            }
-        );
-
-        return response;
+      this.updateItemInList(el,'listOfElements');
     }
+
+
+    /**
+     * This function update Page in listOfPages
+     * @param page
+     */
+    updatePageInList(page : Page) : void
+    {
+        this.updateItemInList(page,'listOfPages');
+    }
+
 
     /**
      * this function return if Pages Exists
@@ -130,16 +100,6 @@ export class WebsiteService{
     }
 
     /**
-     * Return if an Item exist
-     * @param name
-     * @returns {boolean}
-     */
-    private checkItemExist(name : string) : boolean
-    {
-        return (sessionStorage.getItem(name) !== null);
-    }
-
-    /**
      * This function Call API to get List Of Pages
      * @returns {Observable<R>}
      */
@@ -153,6 +113,10 @@ export class WebsiteService{
             );
     }
 
+    /**
+     * This function call API to get Elements
+     * @returns {Observable<R>}
+     */
     getElementsFrom() : Observable<any>
     {
         return this.http.get(this.apiManager.getPathByName('getElements'))
@@ -177,28 +141,6 @@ export class WebsiteService{
     {
         this.setItem('elements',elements);
         this.listOfElements = elements;
-    }
-
-    private setItem(name : string, list :any) : void
-    {
-        sessionStorage.setItem(name,JSON.stringify(list));
-    }
-
-    private getItem(name : string, prop : string) : any
-    {
-        if(this[prop] == null) {
-            return JSON.parse(sessionStorage.getItem(name));
-        }
-        else
-        {
-            return this[prop];
-        }
-    }
-
-    private deleteItem(name : string, prop : string) : void
-    {
-        this[prop] = null;
-        sessionStorage.removeItem(name);
     }
 
     /**

@@ -92,6 +92,8 @@ export class PageComponent implements OnInit
                 (page : Page) => {
                     this.page = page;
                     this.clonePage();
+                    this.pService.updatePageInList(this.page);
+                    this.pService.updateListOfElements();
                     this.editMode();
                 }
             );

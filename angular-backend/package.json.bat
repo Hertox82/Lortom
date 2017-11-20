@@ -4,14 +4,13 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "webpack-dev-server --port=4200",
-    "build": "webpack",
-    "test": "karma start ./karma.conf.js",
+    "start": "ng serve",
+    "build": "ng build --deploy-url='/js/'",
+    "test": "ng test",
     "lint": "ng lint",
-    "e2e": "protractor ./protractor.conf.js",
+    "e2e": "ng e2e",
     "try-watch": "ng build --watch --deploy-url='/js/'",
-    "postbuild": "(cp ../public/js/index.html ../resources/views/backend/backend-angular.blade.php)",
-    "pree2e": "webdriver-manager update --standalone false --gecko false --quiet"
+    "postbuild": "(cp ../public/js/index.html ../resources/views/backend/backend-angular.blade.php)"
   },
   "private": true,
   "dependencies": {
@@ -57,27 +56,6 @@
     "protractor": "~5.1.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.3.2",
-    "typescript": "~2.3.3",
-    "webpack-dev-server": "~2.7.1",
-    "webpack": "~3.5.5",
-    "autoprefixer": "^6.5.3",
-    "css-loader": "^0.28.1",
-    "cssnano": "^3.10.0",
-    "exports-loader": "^0.6.3",
-    "file-loader": "^0.10.0",
-    "html-webpack-plugin": "^2.29.0",
-    "less-loader": "^4.0.5",
-    "postcss-loader": "^1.3.3",
-    "postcss-url": "^5.1.2",
-    "raw-loader": "^0.5.1",
-    "sass-loader": "^6.0.3",
-    "source-map-loader": "^0.2.0",
-    "istanbul-instrumenter-loader": "^2.0.0",
-    "style-loader": "^0.13.1",
-    "stylus-loader": "^3.0.1",
-    "url-loader": "^0.5.7",
-    "circular-dependency-plugin": "^3.0.0",
-    "webpack-concat-plugin": "1.4.0",
-    "copy-webpack-plugin": "^4.0.1"
+    "typescript": "~2.3.3"
   }
 }

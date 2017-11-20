@@ -66,6 +66,7 @@ export class ElementComponent implements OnInit
                 (element : LortomElement) => {
                     this.element = element;
                     this.cloneElement();
+                    this.ueService.updateElementInList(this.element);
                     this.ueService.updateListOfElements();
                     this.editMode();
                 }
