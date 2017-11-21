@@ -94,7 +94,6 @@ export class ElementsComponent implements OnInit
             this.updateListaShow();
         }
 
-        console.log(this.listOfElements);
     }
 
     onPerPage(n : number)

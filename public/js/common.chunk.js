@@ -288,14 +288,13 @@ var MasterService = (function () {
      * @param item
      * @param list
      */
-    MasterService.prototype.updateItemInList = function (item, list) {
-        console.log(list);
-        console.log(this[list]);
-        this[list].forEach(function (it) {
-            if (it.id === item.id) {
-                it = item;
+    MasterService.prototype.updateItemInList = function (item, iList) {
+        for (var i = 0; i < iList.length; i++) {
+            if (iList[i].id === item.id) {
+                iList[i] = item;
             }
-        });
+        }
+        return iList;
     };
     /**
      * Return if an Item exist
@@ -320,7 +319,7 @@ var MasterService = (function () {
      * @returns {any}
      */
     MasterService.prototype.getItem = function (name, prop) {
-        if (this[prop] == null) {
+        if (this[prop] == null || this[prop] == undefined) {
             return JSON.parse(sessionStorage.getItem(name));
         }
         else {

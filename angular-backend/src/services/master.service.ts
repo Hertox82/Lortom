@@ -71,16 +71,17 @@ export class MasterService {
      * @param item
      * @param list
      */
-    protected updateItemInList(item : any, list : string) :void
+    protected updateItemInList(item : any, iList : any) :any
     {
-        console.log(list);
-        console.log(this[list]);
-        this[list].forEach((it : any) => {
-            if(it.id === item.id)
-            {
-                it = item;
-            }
-        });
+       for(let i=0; i<iList.length; i++)
+       {
+         if(iList[i].id === item.id)
+         {
+            iList[i] = item;
+         }
+       }
+
+        return iList;
     }
 
     /**
@@ -111,7 +112,7 @@ export class MasterService {
      */
     protected getItem(name : string, prop : string) : any
     {
-        if(this[prop] == null) {
+        if(this[prop] == null || this[prop] == undefined) {
             return JSON.parse(sessionStorage.getItem(name));
         }
         else

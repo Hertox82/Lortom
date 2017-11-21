@@ -93,14 +93,22 @@ var WebsiteService = (function (_super) {
      * @param el
      */
     WebsiteService.prototype.updateElementInList = function (el) {
-        this.updateItemInList(el, 'listOfElements');
+        if (this.listOfElements == undefined) {
+            this.listOfElements = this.getElements();
+        }
+        var elm = this.updateItemInList(el, this.listOfElements);
+        this.setElements(elm);
     };
     /**
      * This function update Page in listOfPages
      * @param page
      */
     WebsiteService.prototype.updatePageInList = function (page) {
-        this.updateItemInList(page, 'listOfPages');
+        if (this.listOfPages == undefined) {
+            this.listOfPages = this.getPages();
+        }
+        var p = this.updateItemInList(page, this.listOfPages);
+        this.setPages(p);
     };
     /**
      * this function return if Pages Exists
@@ -694,7 +702,6 @@ var ElementsComponent = (function () {
             });
             this.updateListaShow();
         }
-        console.log(this.listOfElements);
     };
     ElementsComponent.prototype.onPerPage = function (n) {
         this.perPage = n;

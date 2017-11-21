@@ -17,27 +17,28 @@ class LortomController extends BaseController
     protected $functionName;
 
 
-
+    /**
+     * This function get List of everything
+     * @param $options
+     * @return array
+     */
     protected function getList($options)
     {
+        //extract the array and do available a variables
         extract($options);
 
+        //store my function into a variable
         $function = $this->functionName;
 
         return [$responseKey => $function()->sanitizeItem($Class,$name)];
     }
 
-    /*protected function storeObj($options)
-    {
-        extract($options);
 
-        $function = $this->functionName;
-
-        $Obj = $function()->saveObject($Class,$type,$input,$ToSave);
-
-        return [$responseKey => $function()->getItemSerialized($name,$Obj)];
-    }*/
-
+    /**
+     * This function Create and Update a certain type of Model and the SubTable
+     * @param $options
+     * @return array
+     */
     protected function storeObj($options){
 
         extract($options);
@@ -59,6 +60,11 @@ class LortomController extends BaseController
         return [$responseKey => $function()->getItemSerialized($name,$Obj)];
     }
 
+    /**
+     * This function delete a certain type of Model
+     * @param $options
+     * @return array
+     */
     protected function deleteObj($options)
     {
         extract($options);

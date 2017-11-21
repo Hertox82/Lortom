@@ -77,7 +77,13 @@ export class WebsiteService extends MasterService{
      */
     updateElementInList(el : LortomElement) : void
     {
-      this.updateItemInList(el,'listOfElements');
+        if(this.listOfElements == undefined)
+        {
+            this.listOfElements = this.getElements();
+        }
+        let elm = this.updateItemInList(el,this.listOfElements) as LortomElement[];
+
+        this.setElements(elm);
     }
 
 
@@ -87,7 +93,13 @@ export class WebsiteService extends MasterService{
      */
     updatePageInList(page : Page) : void
     {
-        this.updateItemInList(page,'listOfPages');
+        if(this.listOfPages == undefined)
+        {
+            this.listOfPages = this.getPages();
+        }
+       let p = this.updateItemInList(page,this.listOfPages) as Page[];
+
+       this.setPages(p);
     }
 
 
