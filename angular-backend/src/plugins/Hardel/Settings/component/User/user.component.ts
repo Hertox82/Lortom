@@ -88,6 +88,7 @@ export class UserComponent implements OnInit,OnDestroy
                 (user : User) => {
                     this.user = user;
                     this.retriveRoles();
+                    this.sService.updateUserInList(this.user);
                     this.editMode();
                 }
             );

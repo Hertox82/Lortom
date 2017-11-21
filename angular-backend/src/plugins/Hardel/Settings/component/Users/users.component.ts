@@ -99,6 +99,7 @@ export class UsersComponent implements OnInit
     onPerPage(n : number)
     {
         this.perPage = n;
+        this.updateListaShow();
     }
 
     private updateListaShow()

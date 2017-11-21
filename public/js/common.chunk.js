@@ -1,18 +1,17 @@
 webpackJsonp(["common"],{
 
-/***/ "../../../../../src/app/backend-module/UIElement/pagination/pagination.component.html":
+/***/ "./src/app/backend-module/UIElement/pagination/pagination.component.html":
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"row\" *ngIf=\"count !== 0\">\n    <div class=\"col-sm-5\">\n        <div class=\"dataTables_info\">Showing {{getMin()}} to {{getMax()}} of {{count}} entries</div>\n    </div>\n    <div class=\"col-sm-7\">\n        <div class=\"dataTables_paginate\">\n            <ul class=\"pagination\">\n                <li class=\"page-item\">\n                    <a class=\"page-link\" (click)=\"onPrev()\" [ngClass]=\"{ 'disabled': page === 1 || loading }\" aria-label=\"Previous\"><span aria-hidden=\"true\">«</span></a>\n                </li>\n                <li class=\"page-item\" *ngFor=\"let pageNum of getPages()\" [ngClass]=\"{'active' : pageNum === page, 'disabled' : loading}\">\n                    <a class=\"page-link\" (click)=\"onPage(pageNum)\">{{pageNum}}</a>\n                </li>\n                <li class=\"page-item\">\n                    <a class=\"page-link\" (click)=\"onNext(true)\"  [ngClass]=\"{ 'disabled': page === 1 || loading }\" aria-label=\"Next\"><span aria-hidden=\"true\">»</span></a>\n                </li>\n            </ul>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
-/***/ "../../../../../src/app/backend-module/UIElement/pagination/pagination.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./src/app/backend-module/UIElement/pagination/pagination.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PaginationComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+
 /**
  * Created by hernan on 16/11/2017.
  */
@@ -25,13 +24,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 var PaginationComponent = (function () {
     function PaginationComponent() {
         this.loading = false;
-        this.goPrev = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* EventEmitter */]();
-        this.goNext = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* EventEmitter */]();
-        this.goPage = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* EventEmitter */]();
+        this.goPrev = new core_1.EventEmitter();
+        this.goNext = new core_1.EventEmitter();
+        this.goPage = new core_1.EventEmitter();
     }
     PaginationComponent.prototype.ngOnInit = function () { };
     PaginationComponent.prototype.getMin = function () {
@@ -81,63 +81,62 @@ var PaginationComponent = (function () {
     return PaginationComponent;
 }());
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    core_1.Input(),
     __metadata("design:type", Number)
 ], PaginationComponent.prototype, "count", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    core_1.Input(),
     __metadata("design:type", Number)
 ], PaginationComponent.prototype, "page", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    core_1.Input(),
     __metadata("design:type", Object)
 ], PaginationComponent.prototype, "loading", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    core_1.Input(),
     __metadata("design:type", Number)
 ], PaginationComponent.prototype, "perPage", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    core_1.Input(),
     __metadata("design:type", Number)
 ], PaginationComponent.prototype, "pagesToShow", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["T" /* Output */])(),
+    core_1.Output(),
     __metadata("design:type", Object)
 ], PaginationComponent.prototype, "goPrev", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["T" /* Output */])(),
+    core_1.Output(),
     __metadata("design:type", Object)
 ], PaginationComponent.prototype, "goNext", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["T" /* Output */])(),
+    core_1.Output(),
     __metadata("design:type", Object)
 ], PaginationComponent.prototype, "goPage", void 0);
 PaginationComponent = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+    core_1.Component({
         selector: 'lt-pagination',
-        template: __webpack_require__("../../../../../src/app/backend-module/UIElement/pagination/pagination.component.html"),
+        template: __webpack_require__("./src/app/backend-module/UIElement/pagination/pagination.component.html"),
         styles: ['']
     }),
     __metadata("design:paramtypes", [])
 ], PaginationComponent);
-
+exports.PaginationComponent = PaginationComponent;
 //# sourceMappingURL=pagination.component.js.map
 
 /***/ }),
 
-/***/ "../../../../../src/app/backend-module/UIElement/pagination/show-entry.component.html":
+/***/ "./src/app/backend-module/UIElement/pagination/show-entry.component.html":
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"dataTables_length\">\n    <label>\n        Show\n        <select class=\"form-control input-sm\" name=\"example_length\" (change)=\"passVal($event.target.value)\">\n            <option *ngFor=\"let val of listEntry\" value = \"{{val}}\">{{val}}</option>\n        </select>\n        entries\n    </label>\n</div>"
 
 /***/ }),
 
-/***/ "../../../../../src/app/backend-module/UIElement/pagination/show-entry.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./src/app/backend-module/UIElement/pagination/show-entry.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ShowEntryComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+
 /**
  * Created by hernan on 17/11/2017.
  */
@@ -150,11 +149,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 var ShowEntryComponent = (function () {
     function ShowEntryComponent() {
         this.listEntry = [];
-        this.onEntry = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* EventEmitter */]();
+        this.onEntry = new core_1.EventEmitter();
     }
     ShowEntryComponent.prototype.ngOnInit = function () {
         var entries = this.entry.split('-');
@@ -173,36 +173,31 @@ var ShowEntryComponent = (function () {
     return ShowEntryComponent;
 }());
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    core_1.Input(),
     __metadata("design:type", String)
 ], ShowEntryComponent.prototype, "entry", void 0);
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["T" /* Output */])(),
+    core_1.Output(),
     __metadata("design:type", Object)
 ], ShowEntryComponent.prototype, "onEntry", void 0);
 ShowEntryComponent = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+    core_1.Component({
         selector: 'lt-entry-pagination',
-        template: __webpack_require__("../../../../../src/app/backend-module/UIElement/pagination/show-entry.component.html"),
+        template: __webpack_require__("./src/app/backend-module/UIElement/pagination/show-entry.component.html"),
         styles: ['']
     }),
     __metadata("design:paramtypes", [])
 ], ShowEntryComponent);
-
+exports.ShowEntryComponent = ShowEntryComponent;
 //# sourceMappingURL=show-entry.component.js.map
 
 /***/ }),
 
-/***/ "../../../../../src/app/backend-module/UIElement/uielement.module.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./src/app/backend-module/UIElement/uielement.module.ts":
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UIElementModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pagination_pagination_component__ = __webpack_require__("../../../../../src/app/backend-module/UIElement/pagination/pagination.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pagination_show_entry_component__ = __webpack_require__("../../../../../src/app/backend-module/UIElement/pagination/show-entry.component.ts");
+
 /**
  * Created by hernan on 16/11/2017.
  */
@@ -212,40 +207,154 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-
-
-
-
-
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var common_1 = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+var forms_1 = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+var pagination_component_1 = __webpack_require__("./src/app/backend-module/UIElement/pagination/pagination.component.ts");
+var show_entry_component_1 = __webpack_require__("./src/app/backend-module/UIElement/pagination/show-entry.component.ts");
 var UIElementModule = (function () {
     function UIElementModule() {
     }
     return UIElementModule;
 }());
 UIElementModule = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgModule */])({
+    core_1.NgModule({
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1__angular_common__["b" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */]
+            common_1.CommonModule,
+            forms_1.FormsModule
         ],
-        declarations: [__WEBPACK_IMPORTED_MODULE_3__pagination_pagination_component__["a" /* PaginationComponent */], __WEBPACK_IMPORTED_MODULE_4__pagination_show_entry_component__["a" /* ShowEntryComponent */]],
+        declarations: [pagination_component_1.PaginationComponent, show_entry_component_1.ShowEntryComponent],
         providers: [],
-        exports: [__WEBPACK_IMPORTED_MODULE_3__pagination_pagination_component__["a" /* PaginationComponent */], __WEBPACK_IMPORTED_MODULE_4__pagination_show_entry_component__["a" /* ShowEntryComponent */]]
+        exports: [pagination_component_1.PaginationComponent, show_entry_component_1.ShowEntryComponent]
     })
 ], UIElementModule);
-
+exports.UIElementModule = UIElementModule;
 //# sourceMappingURL=uielement.module.js.map
 
 /***/ }),
 
-/***/ "../../../../../src/services/pagination.service.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ "./src/services/master.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PaginationService; });
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var api_manager_1 = __webpack_require__("./src/app/urlApi/api.manager.ts");
+var http_1 = __webpack_require__("./node_modules/@angular/http/@angular/http.es5.js");
+/**
+ * Created by hernan on 20/11/2017.
+ */
+var MasterService = (function () {
+    function MasterService() {
+        this.apiManager = new api_manager_1.ApiManager();
+    }
+    /**
+     * Check if User has permission
+     * @param name
+     * @returns {boolean}
+     */
+    MasterService.prototype.hasPermissions = function (name) {
+        if (this.user == null) {
+            this.user = JSON.parse(sessionStorage.getItem('user'));
+        }
+        for (var i = 0; i < this.user.permissions.length; i++) {
+            if (this.user.permissions[i].name === name) {
+                return true;
+            }
+        }
+        return false;
+    };
+    /**
+     * This function is abstraction of getting item by property
+     * @param propertyName
+     * @param value
+     * @param sessionName
+     * @param prop
+     * @returns {null | any }
+     */
+    MasterService.prototype.getItemByProperty = function (propertyName, value, sessionName, prop) {
+        var list = this.getItem(sessionName, prop);
+        var response = null;
+        list.forEach(function (item) {
+            if (item[propertyName] === value) {
+                response = item;
+            }
+        });
+        return response;
+    };
+    /**
+     * this function update every type of item into the own List
+     * @param item
+     * @param list
+     */
+    MasterService.prototype.updateItemInList = function (item, list) {
+        console.log(list);
+        this[list].forEach(function (it) {
+            if (it.id === item.id) {
+                it = item;
+            }
+        });
+    };
+    /**
+     * Return if an Item exist
+     * @param name
+     * @returns {boolean}
+     */
+    MasterService.prototype.checkItemExist = function (name) {
+        return (sessionStorage.getItem(name) !== null);
+    };
+    /**
+     * Set Item into a SessionStorage
+     * @param name
+     * @param list
+     */
+    MasterService.prototype.setItem = function (name, list) {
+        sessionStorage.setItem(name, JSON.stringify(list));
+    };
+    /**
+     * Get Item from SessionStorage
+     * @param name
+     * @param prop
+     * @returns {any}
+     */
+    MasterService.prototype.getItem = function (name, prop) {
+        if (this[prop] == null) {
+            return JSON.parse(sessionStorage.getItem(name));
+        }
+        else {
+            return this[prop];
+        }
+    };
+    /**
+     * Delete item from SessionStorage
+     * @param name
+     * @param prop
+     */
+    MasterService.prototype.deleteItem = function (name, prop) {
+        this[prop] = null;
+        sessionStorage.removeItem(name);
+    };
+    MasterService.prototype.getOptions = function () {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        return new http_1.RequestOptions({ headers: headers });
+    };
+    return MasterService;
+}());
+exports.MasterService = MasterService;
+//# sourceMappingURL=master.service.js.map
+
+/***/ }),
+
+/***/ "./src/services/pagination.service.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 /**
  * Created by hernan on 16/11/2017.
  */
+Object.defineProperty(exports, "__esModule", { value: true });
 var PaginationService = (function () {
     function PaginationService() {
     }
@@ -269,7 +378,7 @@ var PaginationService = (function () {
     };
     return PaginationService;
 }());
-
+exports.PaginationService = PaginationService;
 //# sourceMappingURL=pagination.service.js.map
 
 /***/ })

@@ -10,3 +10,5 @@ export {PageComponent} from './Page/page.component';
 export {ElementsComponent} from './Elements/elements.component';
 export {ElementNewComponent} from './NewElement/elementnew.component';
 export {ElementComponent} from './Element/element.component';
+export {ComponentsComponent} from './Components/components.component';
+export {NewComponent} from './NewComponent/componentnew.component';

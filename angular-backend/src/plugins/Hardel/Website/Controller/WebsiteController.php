@@ -4,6 +4,7 @@ namespace Plugins\Hardel\Website\Controller;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Plugins\Hardel\Website\Model\LortomComponent;
 use Plugins\Hardel\Website\Model\LortomElement;
 use Plugins\Hardel\Website\Model\LortomPages;
 use DB;
@@ -18,9 +19,7 @@ class WebsiteController extends Controller
      */
     public function getPages(Request $request)
     {
-        $sanitizedList = $this->sanitizePages();
-
-        return response()->json(['pages' => $sanitizedList]);
+        return response()->json(['pages' => wbservice()->sanitizeItem(LortomPages::class,'Page')]);
     }
 
     /**
@@ -42,30 +41,9 @@ class WebsiteController extends Controller
     {
         $input = $request->all();
 
-        $Page = new LortomPages();
+        $Page = wbservice()->saveObject(LortomPages::class,'Save',$input,['title','slug','content','metaDesc','metaTag','state','fileName']);
 
-        $keys = array_keys($input);
-
-        $toSave = ['title','slug','content','metaDesc','metaTag','state','fileName'];
-
-        foreach ($keys as $key)
-        {
-
-            if(in_array($key,$toSave))
-            {
-                if($key === 'state')
-                {
-                    $Page->state = $input[$key]['id'];
-                }
-                else {
-                    $Page->$key = $input[$key];
-                }
-            }
-        }
-
-        $Page->save();
-
-        return response()->json(['page' => $this->getPageSerialized($Page)]);
+        return response()->json(['page' => wbservice()->getItemSerialized('Page',$Page)]);
     }
 
     /**
@@ -84,9 +62,7 @@ class WebsiteController extends Controller
             DB::table('lt_pages')->where('id',$idPage)->delete();
         }
 
-        $sanitizedList = $this->sanitizePages();
-
-        return response()->json(['pages' => $sanitizedList]);
+        return response()->json(['pages' => wbservice()->sanitizeItem(LortomPages::class,'Page')]);
     }
 
     /**
@@ -98,34 +74,9 @@ class WebsiteController extends Controller
     {
         $input = $request->all();
 
-        $idPage = $input['id'];
+        $Page = wbservice()->saveObject(LortomPages::class,'Edit',$input,['title','slug','content','metaDesc','metaTag','state','fileName']);
 
-        $Page = LortomPages::find($idPage);
-
-        $keys = array_keys($input);
-
-        $toSave = ['title','slug','content','metaDesc','metaTag','state','fileName'];
-
-        foreach ($keys as $k)
-        {
-            if(in_array($k,$toSave))
-            {
-                if($k === 'state')
-                {
-                    if($Page->state !== $input[$k]['id'])
-                        $Page->state = $input[$k]['id'];
-                }
-                else {
-                    if($Page->$k != $input[$k])
-                        $Page->$k = $input[$k];
-                }
-            }
-        }
-
-        $Page->save();
-
-        return response()->json(['page' => $this->getPageSerialized($Page)]);
-
+        return response()->json(['page' => wbservice()->getItemSerialized('Page',$Page)]);
     }
 
     /**
@@ -135,9 +86,7 @@ class WebsiteController extends Controller
      */
     public function getElements(Request $request)
     {
-        $sanitizedList = $this->sanitizeElements();
-
-        return response()->json(['elements' => $sanitizedList]);
+        return response()->json(['elements' => wbservice()->sanitizeItem(LortomElement::class,'Element')]);
     }
 
     public function deleteElements(Request $request)
@@ -150,123 +99,84 @@ class WebsiteController extends Controller
             DB::table('lt_elements')->where('id',$idElement)->delete();
         }
 
-        $sanitizedList = $this->sanitizeElements();
-
-        return response()->json(['elements' => $sanitizedList]);
+        return response()->json(['elements' => wbservice()->sanitizeItem(LortomElement::class,'Element')]);
     }
 
+    /**
+     * This function create a new LortomElement
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function saveElement(Request $request)
     {
+        //get all input from body
         $input = $request->all();
 
-        $keys = array_keys($input);
+        //create a new LortomElement with WebsiteService
+        $Element = wbservice()->saveObject(LortomElement::class,'Save',$input,['name', 'Object', 'functions', 'appearance']);
 
-        $toSave = ['name', 'Object', 'functions', 'appearance'];
-
-        $Element = new LortomElement();
-
-        foreach ($keys as $k)
-        {
-            if(in_array($k,$toSave))
-            {
-                if($k === 'functions')
-                {
-                        $Element->function = $input[$k];
-                }
-                else
-                {
-                        $Element->$k = $input[$k];
-                }
-            }
-        }
-
-        $Element->save();
-
-        return response()->json(['element' => $this->getElementSerialized($Element)]);
+        //return a response in JSON to backend
+        return response()->json(['element' => wbservice()->getItemSerialized('Element',$Element)]);
     }
 
+    /**
+     * This function Edit a LortomElement
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function editElement(Request $request)
     {
         $input = $request->all();
 
-        $Element = LortomElement::find($input['id']);
+        $Element = wbservice()->saveObject(LortomElement::class,'Edit',$input,['name', 'Object', 'functions', 'appearance']);
 
-        $keys = array_keys($input);
+        return response()->json(['element' => wbservice()->getItemSerialized('Element',$Element)]);
+    }
 
-        $toSave = ['name', 'Object', 'functions', 'appearance'];
+    /**
+     * This function
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getComponents(Request $request)
+    {
+        return response()->json(['components' => wbservice()->sanitizeItem(LortomComponent::class,'Component')]);
+    }
 
-        foreach ($keys as $k)
+    public function saveComponent(Request $request)
+    {
+        $input = $request->all();
+
+        $Component = wbservice()->saveObject(LortomComponent::class,'Save',$input,['name','appearance']);
+
+        $listOfElement = $input['elements'];
+
+        foreach ($listOfElement as $el)
         {
-            if(in_array($k,$toSave))
-            {
-                if($k === 'functions')
-                {
-                    if($Element->function != $input[$k])
-                        $Element->function = $input[$k];
-                }
-                else
-                {
-                    if($Element->$k != $input[$k])
-                        $Element->$k = $input[$k];
-                }
-            }
+            DB::table('lt_component_element')->insert(['idElement' => $el['id'],'idComponent' => $Component->id]);
         }
 
-        $Element->save();
-
-        return response()->json(['element' => $this->getElementSerialized($Element)]);
+        return response()->json(['component' => wbservice()->getItemSerialized('Component',$Component)]);
     }
 
-    private function sanitizeElements()
+    public function editComponent(Request $request)
     {
-        $listaElements = LortomElement::all();
+        $input = $request->all();
 
-        $sanitizedList = array_filter(array_map_collection(function($el){
-            if($el instanceof LortomElement)
-            {
-                return $this->getElementSerialized($el);
-            }
-        },$listaElements));
+        $Component = wbservice()->saveObject(LortomComponent::class,'Edit',$input,['name','appearance']);
 
-        return $sanitizedList;
+        $listOfElement = $input['elements'];
+
+        //Before save listOfElements, i want to delete them
+
+        DB::table('lt_component_element')->where('idComponent',$Component->id)->delete();
+
+        foreach ($listOfElement as $el)
+        {
+            DB::table('lt_component_element')->insert(['idElement' => $el['id'],'idComponent' => $Component->id]);
+        }
+
+        return response()->json(['component' => wbservice()->getItemSerialized('Component',$Component)]);
     }
 
-    private function getElementSerialized(LortomElement $element)
-    {
-        return [
-            'id'            => $element->id,
-            'name'          => $element->name,
-            'Object'        => $element->Object,
-            'functions'     => $element->function,
-            'appearance'    => $element->appearance,
-        ];
-    }
-
-    private function sanitizePages()
-    {
-        $listaPages = LortomPages::all();
-
-        $sanitizedList = array_filter(array_map_collection(function($page){
-            if($page instanceof LortomPages)
-            {
-                return $this->getPageSerialized($page);
-            }
-        },$listaPages));
-
-        return $sanitizedList;
-    }
-
-    private function getPageSerialized(LortomPages $page)
-    {
-        return [
-            'id'            => $page->id,
-            'title'         => $page->title,
-            'slug'          => $page->slug,
-            'content'       => $page->content,
-            'metaTag'       => $page->metaTag,
-            'metaDesc'      => $page->metaDesc,
-            'fileName'      => $page->fileName,
-            'state'         => LortomPages::gValBack($page->state,'state')
-        ];
-    }
 }

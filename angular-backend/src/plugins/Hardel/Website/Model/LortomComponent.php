@@ -19,4 +19,16 @@ class LortomComponent extends Model
     {
         return $this->belongsToMany('Plugins\Hardel\Website\Model\LortomElement','lt_component_element','idComponent','idElement')->get();
     }
+
+    public function checkPropertyEdit($key, &$array)
+    {
+        if($this->$key != $array[$key])
+            $this->$key = $array[$key];
+
+    }
+
+    public function checkPropertySave($key, &$array)
+    {
+        $this->$key = $array[$key];
+    }
 }

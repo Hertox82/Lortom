@@ -24,3 +24,12 @@ export interface LortomElement {
     appearance : string,
     check : boolean
 }
+
+
+export interface LortomComponent {
+    id : number,
+    name : string,
+    appearance : string,
+    elements : LortomElement [],
+    check : boolean
+}

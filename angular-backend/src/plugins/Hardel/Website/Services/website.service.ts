@@ -9,7 +9,7 @@ import {Headers, Http, RequestOptions, Response} from "@angular/http";
 import {User} from "../../../../app/backend-module/user-module/user-model/user.interface";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
-import {LortomElement, Page} from "./website.interfaces";
+import {LortomComponent, LortomElement, Page} from "./website.interfaces";
 import {MasterService} from "@Lortom/services/master.service";
 
 @Injectable()
@@ -18,12 +18,16 @@ export class WebsiteService extends MasterService{
 
     listOfPages : Page[];
     listOfElements : LortomElement[];
+    listOfComponents : LortomComponent[];
 
     private _updatePages = new Subject();
     updatePages$ = this._updatePages.asObservable();
 
     private _updateElements = new Subject();
     updateElements$ = this._updateElements.asObservable();
+
+    private _updateComponents = new Subject();
+    updateComponents$ = this._updateComponents.asObservable();
 
     constructor(private http: Http)
     {
@@ -35,7 +39,9 @@ export class WebsiteService extends MasterService{
             { namePath : 'savePage', path: 'page'},
             { namePath : 'getPageAtt', path: 'pages/attribute/list'},
             { namePath : 'getElements', path: 'elements'},
-            { namePath : 'saveElement', path : 'element'}
+            { namePath : 'saveElement', path : 'element'},
+            { namePath : 'getComponents', path : 'components'},
+            { namePath : 'saveComponent', path : 'component'}
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -94,9 +100,22 @@ export class WebsiteService extends MasterService{
         return this.checkItemExist('pages');
     }
 
+    /**
+     * This function check if Elements exist
+     * @returns {boolean}
+     */
     checkElementsExist() : boolean
     {
         return this.checkItemExist('elements');
+    }
+
+    /**
+     * This function check if Components exist
+     * @returns {boolean}
+     */
+    checkComponentsExist() : boolean
+    {
+        return this.checkItemExist('components');
     }
 
     /**
@@ -127,6 +146,16 @@ export class WebsiteService extends MasterService{
             );
     }
 
+    getComponentsFrom() : Observable<any>
+    {
+        return this.http.get(this.apiManager.getPathByName('getComponents'))
+            .map(
+                (response : Response) => {
+                    return response.json().components;
+                }
+            );
+    }
+
     /**
      * This function set pages and store into a Session
      * @param pages
@@ -137,10 +166,20 @@ export class WebsiteService extends MasterService{
         this.listOfPages = pages;
     }
 
+    /**
+     * This function set a list Of Elements
+     * @param elements
+     */
     setElements(elements : LortomElement[]) : void
     {
         this.setItem('elements',elements);
         this.listOfElements = elements;
+    }
+
+    setComponents(components : LortomComponent []) : void
+    {
+        this.setItem('components',components);
+        this.listOfComponents = components;
     }
 
     /**
@@ -152,9 +191,18 @@ export class WebsiteService extends MasterService{
         return this.getItem('pages','listOfPages') as Page[];
     }
 
+    /**
+     * This function return a list Of Elements
+     * @returns {LortomElement[]}
+     */
     getElements() : LortomElement []
     {
         return this.getItem('elements','listOfElements') as LortomElement[];
+    }
+
+    getComponents() : LortomComponent []
+    {
+        return this.getItem('components','listOfComponents') as LortomComponent[];
     }
 
     /**
@@ -162,12 +210,9 @@ export class WebsiteService extends MasterService{
      * @param pages
      * @returns {Observable<R>}
      */
-    deletePages(pages : Page []) : Observable<any>
-    {
-        let headers = new Headers({'Content-Type' : 'application/json'});
-        let options = new RequestOptions({headers : headers});
+    deletePages(pages : Page []) : Observable<any> {
 
-        return this.http.put(this.apiManager.getPathByName('getPages'),pages,options)
+        return this.http.put(this.apiManager.getPathByName('getPages'),pages,this.getOptions())
             .map(
                 (response : Response) => {
                     return response.json().pages;
@@ -175,16 +220,27 @@ export class WebsiteService extends MasterService{
             );
     }
 
-    deleteElements(el : LortomElement []) : Observable <any>
-    {
-        let headers = new Headers({'Content-Type' : 'application/json'});
-        let options = new RequestOptions({headers : headers});
+    /**
+     * This function call API in order to Delete an Array of Element
+     * @param el
+     * @returns {Observable<R>}
+     */
+    deleteElements(el : LortomElement []) : Observable <any> {
 
-        return this.http.put(this.apiManager.getPathByName('getElements'),el,options)
+        return this.http.put(this.apiManager.getPathByName('getElements'),el,this.getOptions())
             .map(
                 (response : Response) => {
-                    console.log(response);
                     return response.json().elements;
+                }
+            );
+    }
+
+    deleteComponents(cmp : LortomComponent []) : Observable<any>
+    {
+        return this.http.put(this.apiManager.getPathByName('getComponents'),cmp,this.getOptions())
+            .map(
+                (response : Response) => {
+                    return response.json().components;
                 }
             );
     }
@@ -194,12 +250,9 @@ export class WebsiteService extends MasterService{
      * @param page
      * @returns {Observable<R>}
      */
-    createPage(page : Page) :Observable<any>
-    {
-        let headers = new Headers({'Content-Type' : 'application/json'});
-        let options = new RequestOptions({headers : headers});
+    createPage(page : Page) :Observable<any> {
 
-        return this.http.post(this.apiManager.getPathByName('savePage'),page,options)
+        return this.http.post(this.apiManager.getPathByName('savePage'),page,this.getOptions())
             .map(
                 (response : Response) => {
                     return response.json().page;
@@ -207,12 +260,14 @@ export class WebsiteService extends MasterService{
             );
     }
 
-    createElement(elem : LortomElement)
-    {
-        let headers = new Headers({'Content-Type' : 'application/json'});
-        let options = new RequestOptions({headers : headers});
+    /**
+     * This function call API in order to Create an Element
+     * @param elem
+     * @returns {Observable<R>}
+     */
+    createElement(elem : LortomElement) : Observable<any> {
 
-        return this.http.post(this.apiManager.getPathByName('saveElement'),elem,options)
+        return this.http.post(this.apiManager.getPathByName('saveElement'),elem,this.getOptions())
             .map(
                 (response : Response) => {
                     return response.json().element;
@@ -220,45 +275,97 @@ export class WebsiteService extends MasterService{
             );
     }
 
-    setElement(elem : LortomElement) : void
-    {
+    createComponent(comp : LortomComponent) : Observable<any>{
+
+        return this.http.post(this.apiManager.getPathByName('saveComponent'),comp,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().component;
+                }
+            )
+    }
+
+    /**
+     * This function set an Element into the listOfElements
+     * @param elem
+     */
+    setElement(elem : LortomElement) : void {
+
         let el = this.getElements();
         el.push(elem);
         this.deleteElementFromCache();
         this.setElements(el);
     }
 
-    setPage(page : Page) : void
-    {
+    /**
+     * This function set a Page into the listOfPages
+     * @param page
+     */
+    setPage(page : Page) : void {
+
         let pages = this.getPages();
         pages.push(page);
         this.deletePageFromCache();
         this.setPages(pages);
     }
 
+    /**
+     * This function set a Component into the listOfComponents
+     * @param cmp
+     */
+    setComponent(cmp : LortomComponent) : void {
+
+        let comp = this.getComponents();
+        comp.push(cmp);
+        this.deleteComponentFromCache();
+        this.setComponents(comp);
+    }
+
+    /**
+     * this function delete pages from cache
+     */
     deletePageFromCache() : void
     {
         this.deleteItem('pages','listOfPages');
     }
 
-    deleteElementFromCache() : void
-    {
+    /**
+     * This function delete elements from cache
+     */
+    deleteElementFromCache() : void {
         this.deleteItem('elements','listOfElements');
     }
 
+    /**
+     * This function delete components from cache
+     */
+    deleteComponentFromCache() :void {
+        this.deleteItem('components','listOfComponents');
+    }
+
+    /**
+     * this function fire event
+     */
     updateListOfPages()
     {
         this._updatePages.next();
     }
 
+    /**
+     * this function fire event
+     */
     updateListOfElements()
     {
         this._updateElements.next();
     }
 
-
-    getPageAtt() : Observable<any>
+    updateListOfComponents()
     {
+        this._updateComponents.next();
+    }
+
+
+    getPageAtt() : Observable<any> {
         return this.http.get(this.apiManager.getPathByName('getPageAtt'))
             .map(
                 (response : Response) => {
@@ -285,13 +392,9 @@ export class WebsiteService extends MasterService{
      * @param page
      * @returns {Observable<R>}
      */
-    savePage(page : Page) : Observable<any>
-    {
-        let headers = new Headers({'Content-Type' : 'application/json'});
-        let options = new RequestOptions({headers : headers});
+    savePage(page : Page) : Observable<any> {
 
-
-        return this.http.put(this.apiManager.getPathByName('savePage'),page,options)
+        return this.http.put(this.apiManager.getPathByName('savePage'),page,this.getOptions())
             .map(
                 (response : Response) => {
                     return response.json().page;
@@ -299,13 +402,14 @@ export class WebsiteService extends MasterService{
             );
     }
 
-    saveElement(element : LortomElement) : Observable <any>
-    {
-        let headers = new Headers({'Content-Type' : 'application/json'});
-        let options = new RequestOptions({headers : headers});
+    /**
+     * This function call API in order to update an Element
+     * @param element
+     * @returns {Observable<R>}
+     */
+    saveElement(element : LortomElement) : Observable <any> {
 
-
-        return this.http.put(this.apiManager.getPathByName('saveElement'),element,options)
+        return this.http.put(this.apiManager.getPathByName('saveElement'),element,this.getOptions())
             .map(
                 (response : Response) => {
                     return response.json().element;

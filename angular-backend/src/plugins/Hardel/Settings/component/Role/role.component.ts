@@ -86,6 +86,7 @@ export class RoleComponent implements OnInit,OnDestroy
                 (role : Role) => {
                     this.role = role;
                     this.retrivePermission();
+                    this.sService.updateRoleInList(this.role);
                     this.editMode();
                 }
             );

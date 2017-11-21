@@ -1,5 +1,6 @@
 import {ApiManager} from "@Lortom/app/urlApi/api.manager";
 import {User} from "@Lortom-Backend/user-module/user-model/user.interface";
+import {RequestOptions, Headers} from "@angular/http";
 /**
  * Created by hernan on 20/11/2017.
  */
@@ -72,6 +73,7 @@ export class MasterService {
      */
     protected updateItemInList(item : any, list : string) :void
     {
+        console.log(list);
         this[list].forEach((it : any) => {
             if(it.id === item.id)
             {
@@ -126,5 +128,12 @@ export class MasterService {
     {
         this[prop] = null;
         sessionStorage.removeItem(name);
+    }
+
+    protected getOptions() : RequestOptions
+    {
+        let headers = new Headers({'Content-Type' : 'application/json'});
+
+        return new RequestOptions({headers : headers});
     }
 }

@@ -4,6 +4,7 @@ namespace Plugins\Hardel\Website\Providers;
 
 
 use Illuminate\Support\ServiceProvider;
+use Plugins\Hardel\Website\Services\WebsiteService;
 use Route;
 
 class HardelWebsiteServiceProvider extends ServiceProvider
@@ -21,6 +22,25 @@ class HardelWebsiteServiceProvider extends ServiceProvider
                 ->middleware('api')
                 ->namespace($this->namespace)
                 ->group(__DIR__.'/../routes.php');
+        }
+
+        $this->registerHelperFile();
+    }
+
+    public function register()
+    {
+        $this->app->bind('wbService',function($app){
+            return new WebsiteService();
+        });
+
+    }
+
+
+    private function registerHelperFile()
+    {
+        if(file_exists($file = __DIR__.'/../helpers.php'))
+        {
+            require $file;
         }
     }
 }

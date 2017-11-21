@@ -1,6 +1,15 @@
 
 import {RouterModule, Routes} from "@angular/router";
-import {WebsiteComponent,PagesComponent,PageNewComponent,PageComponent,ElementsComponent,ElementNewComponent,ElementComponent} from './component';
+import {WebsiteComponent,
+        PagesComponent,
+        PageNewComponent,
+        PageComponent,
+        ElementsComponent,
+        ElementNewComponent,
+        ElementComponent,
+        ComponentsComponent,
+        NewComponent,
+} from './component';
 import {ModuleWithProviders} from "@angular/core";
 
 
@@ -13,12 +22,15 @@ const routes : Routes = [
         {path: 'elements', component: ElementsComponent, data : {breadcrumb : 'Elements'}, children: [
             {path: 'new', component : ElementNewComponent, data : {breadcrumb : 'New'}},
             {path : ':id', component : ElementComponent, data : {breadcrumb : 'Element'}}
+        ]},
+        {path : 'components', component: ComponentsComponent, data : {breadcrumb : 'Components'}, children : [
+            {path : 'new', component : NewComponent, data : {breadcrumb : 'New'}}
         ]}
     ]}
 ];
 
 export const routing : ModuleWithProviders = RouterModule.forChild(routes);
 
-export const websiteComponent = [WebsiteComponent,PagesComponent, PageNewComponent,PageComponent,ElementsComponent,ElementNewComponent,ElementComponent];
+export const websiteComponent = [WebsiteComponent,PagesComponent, PageNewComponent,PageComponent,ElementsComponent,ElementNewComponent,ElementComponent,ComponentsComponent,NewComponent];
 
 //console.log(websiteComponent);

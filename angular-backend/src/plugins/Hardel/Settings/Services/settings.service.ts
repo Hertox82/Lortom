@@ -2,20 +2,17 @@
 
 import {Injectable} from "@angular/core";
 import {Role, Permission, User} from "./settings.interfaces";
-import {Http,Response, RequestOptions, Headers} from "@angular/http";
+import {Http,Response} from "@angular/http";
 import 'rxjs/Rx';
-import {ApiManager} from "../../../../app/urlApi/api.manager";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
-import {User as userFirst} from "../../../../app/backend-module/user-module/user-model/user.interface";
+import {MasterService} from "@Lortom/services/master.service";
 
 @Injectable()
-export class SettingsService {
+export class SettingsService extends MasterService{
 
-    apiManager : ApiManager;
     listOfRoles : Role[];
     listOfUsers : User[];
-    user : userFirst;
     private _updateRoles = new Subject();
     updateRoles$ = this._updateRoles.asObservable();
 
@@ -24,8 +21,7 @@ export class SettingsService {
 
     constructor(private http : Http)
     {
-        // create the ApiManager
-        this.apiManager = new ApiManager();
+        super();
         // write the api route for setting
          const urls = [
                 { namePath : 'getPermission', path: 'permissions'},
@@ -61,6 +57,16 @@ export class SettingsService {
             );
     }
 
+    updateRoleInList(role : Role) : void
+    {
+        this.updateItemInList(role,'listOfRoles');
+    }
+
+    updateUserInList(user : User) : void
+    {
+        this.updateItemInList(user,'listOfUsers');
+    }
+
     /**
      * This function retrive the permissions from the API (Laravel)
      * @returns {Observable<R>}
@@ -77,21 +83,25 @@ export class SettingsService {
      * This function set the Roles
      * @param roles
      */
-    setRoles(roles : Role[])
+    setRoles(roles : Role[]) : void
     {
-        sessionStorage.setItem('roles',JSON.stringify(roles));
+        this.setItem('roles',roles);
         this.listOfRoles = roles;
     }
 
-    setUsers(users : User[])
+    /**
+     * This function set the Users
+     * @param users
+     */
+    setUsers(users : User[]) : void
     {
-        sessionStorage.setItem('users',JSON.stringify(users));
+        this.setItem('users',users);
         this.listOfUsers = users;
     }
 
 
     /**
-     * This function is to set new User into the listOfRoles
+     * This function is to set new role into the listOfRoles
      * @param role
      */
     setRole(role : Role)
@@ -102,6 +112,10 @@ export class SettingsService {
        this.setRoles(roles);
     }
 
+    /**
+     * This function is to set new User into the listOfUsers
+     * @param user
+     */
     setUser(user : User)
     {
         let users = this.getUsers();
@@ -111,16 +125,20 @@ export class SettingsService {
     }
 
 
-    deleteRoleFromCache()
+    /**
+     * This function delete listOfRoles from Cache
+     */
+    deleteRoleFromCache() : void
     {
-        this.listOfRoles = null;
-        sessionStorage.removeItem('roles');
+        this.deleteItem('roles','listOfRoles');
     }
 
-    deleteUserFromCache()
+    /**
+     * This function delete listOfUsers from Cache
+     */
+    deleteUserFromCache() : void
     {
-        this.listOfUsers = null;
-        sessionStorage.removeItem('users');
+        this.deleteItem('users','listOfUsers');
     }
 
     /**
@@ -129,12 +147,16 @@ export class SettingsService {
      */
     checkRolesExist()
     {
-        return (sessionStorage.getItem('roles') !== null);
+        return this.checkItemExist('roles');
     }
 
+    /**
+     * This function check if Dataset of Users exist
+     * @returns {boolean}
+     */
     checkUsersExist()
     {
-        return (sessionStorage.getItem('users') !== null);
+        return this.checkItemExist('users');
     }
 
     /**
@@ -145,44 +167,18 @@ export class SettingsService {
      */
     getRoleByProperty(name : string, value : any)
     {
-        let response: Role;
-        response = null;
-
-        if(this.listOfRoles == null)
-        {
-            this.listOfRoles = JSON.parse(sessionStorage.getItem('roles'));
-        }
-        this.listOfRoles.forEach(
-            (role : Role) => {
-                if(role[name] === value)
-                {
-                    response = role;
-                }
-            }
-        );
-
-        return response;
+        return this.getItemByProperty(name,value,'roles','listOfRoles') as Role;
     }
 
+    /**
+     * This function return User passing a property
+     * @param name
+     * @param value
+     * @returns {User}
+     */
     getUserByProperty(name : string, value : any) : User
     {
-        let response: User;
-        response = null;
-
-        if(this.listOfUsers == null)
-        {
-            this.listOfUsers = JSON.parse(sessionStorage.getItem('users'));
-        }
-        this.listOfUsers.forEach(
-            (user : User) => {
-                if(user[name] === value)
-                {
-                    response = user;
-                }
-            }
-        );
-
-        return response;
+        return this.getItemByProperty(name,value,'users','listOfUsers') as User;
     }
 
     /**
@@ -206,57 +202,57 @@ export class SettingsService {
     }
 
     /**
-     * This function get The Roles
-     * @returns {any}
+     * This function return a Role Array
+     * @returns {Role[]}
      */
-    getRoles(){
-        if(this.listOfRoles == null)
-        {
-            return JSON.parse(sessionStorage.getItem('roles'));
-        }
-        else
-        {
-            return this.listOfRoles;
-        }
+    getRoles() : Role [] {
+
+        return this.getItem('roles','listOfRoles') as Role[];
     }
 
-    getUsers()
+    /**
+     * This function return a User Array
+     * @returns {User[]}
+     */
+    getUsers() : User []
     {
-        if(this.listOfUsers == null)
-        {
-            return JSON.parse(sessionStorage.getItem('users'));
-        }
-        else
-        {
-            return this.listOfUsers;
-        }
+        return this.getItem('users','listOfUsers') as User[];
     }
 
+    /**
+     * This function call API in order to Update the Role
+     * @param role
+     * @returns {Observable<R>}
+     */
     saveRole(role : Role) : Observable<any> {
-        let headers = new Headers({'Content-Type' : 'application/json'});
-        let options = new RequestOptions({headers : headers});
 
-        return this.http.put(this.apiManager.getPathByName('saveRole'),role,options)
+        return this.http.put(this.apiManager.getPathByName('saveRole'),role,this.getOptions())
             .map((response : Response) => {
                 return response.json().role;
             });
     }
 
+    /**
+     * This function call API in order to update the User
+     * @param user
+     * @returns {Observable<R>}
+     */
     saveUser(user : User) : Observable<any> {
-        let headers = new Headers({'Content-Type' : 'application/json'});
-        let options = new RequestOptions({headers : headers});
 
-        return this.http.put(this.apiManager.getPathByName('saveUser'),user,options)
+        return this.http.put(this.apiManager.getPathByName('saveUser'),user,this.getOptions())
             .map((response : Response) => {
                 return response.json().user;
             });
     }
 
+    /**
+     * This function call API in order to create new Role
+     * @param role
+     * @returns {Observable<R>}
+     */
     newRole(role : Role) : Observable<any> {
-        let headers = new Headers({'Content-Type' : 'application/json'});
-        let options = new RequestOptions({headers : headers});
 
-        return this.http.post(this.apiManager.getPathByName('saveRole'),role,options)
+        return this.http.post(this.apiManager.getPathByName('saveRole'),role,this.getOptions())
             .map(
                 (response : Response) => {
                     return response.json().role;
@@ -264,11 +260,14 @@ export class SettingsService {
             );
     }
 
+    /**
+     * This function call API in order to create new User
+     * @param user
+     * @returns {Observable<R>}
+     */
     newUser(user : User) : Observable<any> {
-        let headers = new Headers({'Content-Type' : 'application/json'});
-        let options = new RequestOptions({headers : headers});
 
-        return this.http.post(this.apiManager.getPathByName('saveUser'),user,options)
+        return this.http.post(this.apiManager.getPathByName('saveUser'),user,this.getOptions())
             .map(
                 (response : Response) => {
                     return response.json().user;
@@ -276,12 +275,14 @@ export class SettingsService {
             );
     }
 
-    deleteRoles(roles : Role[]) : Observable<any>
-    {
-        let headers = new Headers({'Content-Type' : 'application/json'});
-        let options = new RequestOptions({headers : headers});
+    /**
+     * This function call API in order to delete Array of Role
+     * @param roles
+     * @returns {Observable<R>}
+     */
+    deleteRoles(roles : Role[]) : Observable<any> {
 
-        return this.http.put(this.apiManager.getPathByName('getRoles'),roles,options)
+        return this.http.put(this.apiManager.getPathByName('getRoles'),roles,this.getOptions())
             .map(
                 (response : Response) => {
                     return response.json().roles;
@@ -289,12 +290,14 @@ export class SettingsService {
             );
     }
 
-    deleteUsers (users : User[]) : Observable<any>
-    {
-        let headers = new Headers({'Content-Type' : 'application/json'});
-        let options = new RequestOptions({headers : headers});
+    /**
+     * This function call API in order to delete Array of User
+     * @param users
+     * @returns {Observable<R>}
+     */
+    deleteUsers (users : User[]) : Observable<any> {
 
-        return this.http.put(this.apiManager.getPathByName('getUsers'),users,options)
+        return this.http.put(this.apiManager.getPathByName('getUsers'),users,this.getOptions())
             .map(
                 (response : Response) => {
                     return response.json().roles;
@@ -302,33 +305,20 @@ export class SettingsService {
             );
     }
 
+    /**
+     * This function emit an Event
+     */
     updateListOfRoles()
     {
         this._updateRoles.next();
     }
 
+    /**
+     * This function emit an Event
+     */
     updateListOfUsers()
     {
         this._updateUsers.next();
-    }
-
-
-    hasPermissions(name: string) : boolean
-    {
-        if(this.user == null)
-        {
-            this.user = JSON.parse(sessionStorage.getItem('user'));
-        }
-
-        for(let i = 0; i<this.user.permissions.length; i++)
-        {
-            if(this.user.permissions[i].name === name)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
 
