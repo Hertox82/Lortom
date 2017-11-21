@@ -87,6 +87,30 @@ class WebsiteService{
         return $Obj;
     }
 
+    public function subTable($listOfItem,$id,$ToSave)
+    {
+        $keys = array_keys($ToSave);
+
+        $insert = array_filter(array_map(function($item)use($id,$ToSave,$keys){
+            $return = [];
+
+            foreach ($keys as $k)
+            {
+                if($ToSave[$k])
+                {
+                    $return[$k] = $item['id'];
+                }
+                else
+                {
+                    $return[$k] = $id;
+                }
+            }
+            return $return;
+        },$listOfItem));
+
+        return $insert;
+    }
+
     /**
      * This function serialize Element Object into Array
      * @param LortomElement $element

@@ -12,12 +12,12 @@ Route::put('/pages',[
 
 Route::post('/page',[
     'as'     => 'apiSavePage',
-    'uses'   => 'WebsiteController@savePage'
+    'uses'   => 'WebsiteController@storePage'
 ])->middleware('lortom.auth');
 
 Route::put('/page',[
     'as'     => 'apiUpdatePage',
-    'uses'   => 'WebsiteController@editPage'
+    'uses'   => 'WebsiteController@storePage'
 ])->middleware('lortom.auth');
 
 Route::get('/pages/attribute/list',[
@@ -37,12 +37,12 @@ Route::put('/elements',[
 
 Route::post('/element',[
     'as'     => 'apiSaveElement',
-    'uses'   => 'WebsiteController@saveElement'
+    'uses'   => 'WebsiteController@storeElement'
 ])->middleware('lortom.auth');
 
 Route::put('/element',[
     'as'     => 'apiUpdateElement',
-    'uses'   => 'WebsiteController@editElement'
+    'uses'   => 'WebsiteController@storeElement'
 ])->middleware('lortom.auth');
 
 Route::get('/components',[
@@ -50,7 +50,17 @@ Route::get('/components',[
     'uses'   => 'WebsiteController@getComponents'
 ]);
 
+Route::put('/components',[
+    'as'     => 'apiDeleteComponents',
+    'uses'   => 'WebsiteController@deleteComponents'
+]);
+
 Route::post('/component',[
     'as'     => 'apiSaveComponent',
-    'uses'   => 'WebsiteController@saveComponent'
+    'uses'   => 'WebsiteController@storeComponent'
+]);
+
+Route::put('/component',[
+    'as'     => 'apiUpdateComponent',
+    'uses'   => 'WebsiteController@storeComponent'
 ]);

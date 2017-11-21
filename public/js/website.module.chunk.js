@@ -1185,7 +1185,7 @@ var PageComponent = (function () {
                 _this.page = page;
                 _this.clonePage();
                 _this.pService.updatePageInList(_this.page);
-                _this.pService.updateListOfElements();
+                _this.pService.updateListOfPages();
                 _this.editMode();
             });
         }

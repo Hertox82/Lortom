@@ -290,6 +290,7 @@ var MasterService = (function () {
      */
     MasterService.prototype.updateItemInList = function (item, list) {
         console.log(list);
+        console.log(this[list]);
         this[list].forEach(function (it) {
             if (it.id === item.id) {
                 it = item;

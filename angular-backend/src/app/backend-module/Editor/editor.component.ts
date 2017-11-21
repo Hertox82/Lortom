@@ -37,7 +37,11 @@ export class EditorComponent implements AfterViewInit, OnDestroy
                 });
             },
             init_instance_callback : inst => {
-              inst.setContent(this.content);
+                if(this.content != null || this.content != undefined)
+                {
+                    if(this.content.length>0)
+                        inst.setContent(this.content);
+                }
             },
         });
     }

@@ -74,6 +74,7 @@ export class MasterService {
     protected updateItemInList(item : any, list : string) :void
     {
         console.log(list);
+        console.log(this[list]);
         this[list].forEach((it : any) => {
             if(it.id === item.id)
             {

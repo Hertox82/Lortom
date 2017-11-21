@@ -260,7 +260,10 @@ var EditorComponent = (function () {
                 });
             },
             init_instance_callback: function (inst) {
-                inst.setContent(_this.content);
+                if (_this.content != null || _this.content != undefined) {
+                    if (_this.content.length > 0)
+                        inst.setContent(_this.content);
+                }
             },
         });
     };

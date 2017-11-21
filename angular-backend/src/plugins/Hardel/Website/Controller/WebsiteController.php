@@ -2,7 +2,7 @@
 
 namespace Plugins\Hardel\Website\Controller;
 
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\LortomController as Controller;
 use Illuminate\Http\Request;
 use Plugins\Hardel\Website\Model\LortomComponent;
 use Plugins\Hardel\Website\Model\LortomElement;
@@ -12,6 +12,12 @@ use DB;
 class WebsiteController extends Controller
 {
 
+
+    public function __construct()
+    {
+        $this->functionName = 'wbservice';
+    }
+
     /**
      * Api Request for get All Pages
      * @param Request $request
@@ -19,8 +25,12 @@ class WebsiteController extends Controller
      */
     public function getPages(Request $request)
     {
-        return response()->json(['pages' => wbservice()->sanitizeItem(LortomPages::class,'Page')]);
+        $responseKey = 'pages';
+        $Class = LortomPages::class;
+        $name = 'Page';
+        return response()->json($this->getList(compact('responseKey','Class','name')));
     }
+
 
     /**
      * Api Request to get the Attribute List
@@ -30,20 +40,26 @@ class WebsiteController extends Controller
     public function getPageAttributeList(Request $request)
     {
         return response()->json(['states' => LortomPages::gVal('state')]);
+
     }
 
+
     /**
-     * Api Request to create Page
+     * This Create or Update a LortomPage
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function savePage(Request $request)
+    public function storePage(Request $request)
     {
         $input = $request->all();
+        $ToSave = ['title','slug','content','metaDesc','metaTag','state','fileName'];
+        $Class = LortomPages::class;
+        $type = ($request->method() == 'POST') ? 'Save' : 'Edit';
+        $responseKey = 'page';
+        $name = 'Page';
+        $subTables = [];
 
-        $Page = wbservice()->saveObject(LortomPages::class,'Save',$input,['title','slug','content','metaDesc','metaTag','state','fileName']);
-
-        return response()->json(['page' => wbservice()->getItemSerialized('Page',$Page)]);
+        return response()->json($this->storeObj(compact('Class','type','input','ToSave','responseKey','name','subTables')));
     }
 
     /**
@@ -54,83 +70,59 @@ class WebsiteController extends Controller
     public function deletePages(Request $request)
     {
         $input = $request->all();
+        $tableCol = ['lt_pages' => 'id'];
+        $Class = LortomPages::class;
+        $name = 'Page';
+        $responseKey = 'pages';
 
-        foreach ($input as $page)
-        {
-            $idPage = $page['id'];
-            //delete page
-            DB::table('lt_pages')->where('id',$idPage)->delete();
-        }
-
-        return response()->json(['pages' => wbservice()->sanitizeItem(LortomPages::class,'Page')]);
+        return response()->json($this->deleteObj(compact('input','tableCol','Class','name','responseKey')));
     }
 
     /**
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function editPage(Request $request)
-    {
-        $input = $request->all();
-
-        $Page = wbservice()->saveObject(LortomPages::class,'Edit',$input,['title','slug','content','metaDesc','metaTag','state','fileName']);
-
-        return response()->json(['page' => wbservice()->getItemSerialized('Page',$Page)]);
-    }
-
-    /**
-     *
+     *This function get all list of LortomElement
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function getElements(Request $request)
     {
-        return response()->json(['elements' => wbservice()->sanitizeItem(LortomElement::class,'Element')]);
+        $responseKey = 'elements';
+        $Class = LortomElement::class;
+        $name = 'Element';
+        return response()->json($this->getList(compact('responseKey','Class','name')));
     }
 
+    /**
+     * This function delete LortomElement
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deleteElements(Request $request)
     {
         $input = $request->all();
-        foreach ($input as $el)
-        {
-            $idElement = $el['id'];
-            //delete page
-            DB::table('lt_elements')->where('id',$idElement)->delete();
-        }
+        $tableCol = ['lt_elements' => 'id'];
+        $Class = LortomElement::class;
+        $name = 'Element';
+        $responseKey = 'elements';
 
-        return response()->json(['elements' => wbservice()->sanitizeItem(LortomElement::class,'Element')]);
+        return response()->json($this->deleteObj(compact('input','tableCol','Class','name','responseKey')));
     }
 
     /**
-     * This function create a new LortomElement
+     * This function Create or Update a LortomElement
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function saveElement(Request $request)
-    {
-        //get all input from body
-        $input = $request->all();
-
-        //create a new LortomElement with WebsiteService
-        $Element = wbservice()->saveObject(LortomElement::class,'Save',$input,['name', 'Object', 'functions', 'appearance']);
-
-        //return a response in JSON to backend
-        return response()->json(['element' => wbservice()->getItemSerialized('Element',$Element)]);
-    }
-
-    /**
-     * This function Edit a LortomElement
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function editElement(Request $request)
+    public function storeElement(Request $request)
     {
         $input = $request->all();
+        $ToSave = ['name', 'Object', 'functions', 'appearance'];
+        $Class = LortomElement::class;
+        $type =  ($request->method() == 'POST') ? 'Save' : 'Edit';
+        $responseKey = 'element';
+        $name = 'Element';
+        $subTables = [];
 
-        $Element = wbservice()->saveObject(LortomElement::class,'Edit',$input,['name', 'Object', 'functions', 'appearance']);
-
-        return response()->json(['element' => wbservice()->getItemSerialized('Element',$Element)]);
+        return response()->json($this->storeObj(compact('Class','type','input','ToSave','responseKey','name','subTables')));
     }
 
     /**
@@ -140,43 +132,58 @@ class WebsiteController extends Controller
      */
     public function getComponents(Request $request)
     {
-        return response()->json(['components' => wbservice()->sanitizeItem(LortomComponent::class,'Component')]);
+        $responseKey = 'components';
+        $Class = LortomComponent::class;
+        $name = 'Component';
+        return response()->json($this->getList(compact('responseKey','Class','name')));
     }
 
-    public function saveComponent(Request $request)
+    /**
+     * This function Create or Update LortomComponent
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function storeComponent(Request $request)
     {
         $input = $request->all();
+        $Class = LortomComponent::class;
+        $type = ($request->method() == 'POST') ? 'Save' : 'Edit';
+        $ToSave = ['name','appearance'];
+        $responseKey = 'component';
+        $name = 'Component';
+        $subTables = [
+            'lt_component_element' => [
 
-        $Component = wbservice()->saveObject(LortomComponent::class,'Save',$input,['name','appearance']);
+                'lista' => $input['elements'],
 
-        $listOfElement = $input['elements'];
+                'subTableKey' => [
+                    'idElement'     => true,
+                    'idComponent'   => false
+                ]
+            ],
+        ];
 
-        foreach ($listOfElement as $el)
-        {
-            DB::table('lt_component_element')->insert(['idElement' => $el['id'],'idComponent' => $Component->id]);
-        }
-
-        return response()->json(['component' => wbservice()->getItemSerialized('Component',$Component)]);
+        return response()->json($this->storeObj(compact('input','Class','type','ToSave','subTables','responseKey','name')));
     }
 
-    public function editComponent(Request $request)
+    /**
+     * This function delete LortomComponent
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deleteComponents(Request $request)
     {
         $input = $request->all();
+        $tableCol = [
+            'lt_page_component' => 'idComponent',
+            'lt_component_element' => 'idComponent',
+            'lt_elements' => 'id'
+        ];
+        $Class = LortomComponent::class;
+        $name = 'Component';
+        $responseKey = 'components';
 
-        $Component = wbservice()->saveObject(LortomComponent::class,'Edit',$input,['name','appearance']);
+        return response()->json($this->deleteObj(compact('input','tableCol','Class','name','responseKey')));
 
-        $listOfElement = $input['elements'];
-
-        //Before save listOfElements, i want to delete them
-
-        DB::table('lt_component_element')->where('idComponent',$Component->id)->delete();
-
-        foreach ($listOfElement as $el)
-        {
-            DB::table('lt_component_element')->insert(['idElement' => $el['id'],'idComponent' => $Component->id]);
-        }
-
-        return response()->json(['component' => wbservice()->getItemSerialized('Component',$Component)]);
     }
-
 }
