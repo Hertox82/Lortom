@@ -40,7 +40,7 @@
                             <div class="form-group flex-group">
                                 <label for="appearance" class="col-md-2 control-label">Appearance</label>
                                 <div class="col-md-4">
-                                    <textarea type="text" class="form-control" name="appearance" id="appearance" [(ngModel)] = "element.appearance" ></textarea>
+                                    <codemirror class="form-control" name="appearance" id="appearance" [(ngModel)] = "element.appearance" [config] = "config"></codemirror>
                                 </div>
                             </div>
                         </div>

@@ -17,6 +17,7 @@ export class ElementNewComponent implements OnInit
 {
     element : LortomElement;
     copyElement : LortomElement;
+    config : any;
 
     constructor(private neService : WebsiteService, private router : Router) {
         this.element = {
@@ -28,6 +29,14 @@ export class ElementNewComponent implements OnInit
             check : false
         };
 
+
+        this.config = {
+            lineNumbers: true,
+            mode : 'htmlmixed',
+            styleActiveLine: true,
+            matchBrackets: true,
+            theme:'dracula'
+        };
         this.cloneElement();
 
     }

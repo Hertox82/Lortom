@@ -22,6 +22,7 @@ export class ElementComponent implements OnInit
     private sub : any;
     isEdit : boolean;
     notFound : boolean;
+    config : any;
 
     constructor(private ueService : WebsiteService,private router : ActivatedRoute, private nav : Router) {
         this.isEdit = false;
@@ -33,6 +34,14 @@ export class ElementComponent implements OnInit
             functions : '',
             appearance : '',
             check : false
+        };
+
+        this.config = {
+            lineNumbers: true,
+            mode : 'htmlmixed',
+            styleActiveLine: true,
+            matchBrackets: true,
+            theme:'dracula'
         };
 
         this.sub = this.router.params.subscribe(

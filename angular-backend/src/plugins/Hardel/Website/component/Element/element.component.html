@@ -55,7 +55,7 @@
                                 <div class="col-md-10">
                                     <textarea type="text" style="height: 348px;" class="form-control" name="appearance" id="appearance" [ngModel] = "element.appearance" *ngIf="isEdit === false; else editAppearance" disabled></textarea>
                                     <ng-template #editAppearance>
-                                        <textarea type="text" style="height: 348px;" class="form-control" name="appearance" id="appearance" [(ngModel)] = "element.appearance" ></textarea>
+                                        <codemirror class="form-control" name="appearance" id="appearance" [(ngModel)] = "element.appearance" [config] = "config"></codemirror>
                                     </ng-template>
                                 </div>
                             </div>
