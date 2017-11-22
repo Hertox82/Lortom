@@ -120,9 +120,9 @@ export class NewComponent implements OnInit
 
             this.ncsService.createComponent(this.component).subscribe(
                 (data : any) => {
-                    if(!data.hasOwnProperty('state'))
+                    if(!data.hasOwnProperty('check'))
                     {
-                        data.state = false;
+                        data.check = false;
                     }
                     //push the item into roles
                     this.ncsService.setComponent(data);
@@ -137,7 +137,7 @@ export class NewComponent implements OnInit
 
     isEqual(v,v2) : boolean
     {
-        return (v.name == v2.name) && (v.state == v2.state) && (v.elements.length == v2.elements.length)
+        return (v.name == v2.name) && (v.elements.length == v2.elements.length)
     }
 
     /**

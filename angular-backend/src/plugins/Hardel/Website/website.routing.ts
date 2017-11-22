@@ -9,6 +9,7 @@ import {WebsiteComponent,
         ElementComponent,
         ComponentsComponent,
         NewComponent,
+        ComponentComponent,
 } from './component';
 import {ModuleWithProviders} from "@angular/core";
 
@@ -24,13 +25,25 @@ const routes : Routes = [
             {path : ':id', component : ElementComponent, data : {breadcrumb : 'Element'}}
         ]},
         {path : 'components', component: ComponentsComponent, data : {breadcrumb : 'Components'}, children : [
-            {path : 'new', component : NewComponent, data : {breadcrumb : 'New'}}
+            {path : 'new', component : NewComponent, data : {breadcrumb : 'New'}},
+            {path : ':id', component : ComponentComponent, data : {breadcrumb : 'Component'}}
         ]}
     ]}
 ];
 
 export const routing : ModuleWithProviders = RouterModule.forChild(routes);
 
-export const websiteComponent = [WebsiteComponent,PagesComponent, PageNewComponent,PageComponent,ElementsComponent,ElementNewComponent,ElementComponent,ComponentsComponent,NewComponent];
+export const websiteComponent = [
+    WebsiteComponent,
+    PagesComponent,
+    PageNewComponent,
+    PageComponent,
+    ElementsComponent,
+    ElementNewComponent,
+    ElementComponent,
+    ComponentsComponent,
+    NewComponent,
+    ComponentComponent
+];
 
 //console.log(websiteComponent);

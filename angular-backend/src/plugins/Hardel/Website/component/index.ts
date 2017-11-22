@@ -12,3 +12,4 @@ export {ElementNewComponent} from './NewElement/elementnew.component';
 export {ElementComponent} from './Element/element.component';
 export {ComponentsComponent} from './Components/components.component';
 export {NewComponent} from './NewComponent/componentnew.component';
+export {ComponentComponent} from './Component/component.component';

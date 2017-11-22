@@ -70,6 +70,11 @@ export class WebsiteService extends MasterService{
        return this.getItemByProperty(name,value,'elements','listOfElements') as LortomElement;
     }
 
+    getComponentByProperty(name : string, value: any)
+    {
+        return this.getItemByProperty(name,value,'components','listOfComponents') as LortomComponent;
+    }
+
 
     /**
      * This function update Element in listOfElements
@@ -100,6 +105,18 @@ export class WebsiteService extends MasterService{
        let p = this.updateItemInList(page,this.listOfPages) as Page[];
 
        this.setPages(p);
+    }
+
+    updateComponentInList(cmp : LortomComponent) : void{
+
+        if(this.listOfComponents == undefined)
+        {
+            this.listOfComponents = this.getComponents();
+        }
+
+        let cs = this.updateItemInList(cmp,this.listOfComponents) as LortomComponent[];
+
+        this.setComponents(cs);
     }
 
 
@@ -429,4 +446,13 @@ export class WebsiteService extends MasterService{
             );
     }
 
+    saveComponent(comp : LortomComponent) : Observable <any> {
+
+        return this.http.put(this.apiManager.getPathByName('saveComponent'),comp,this.getOptions())
+            .map(
+                (response : Response) => {
+                    return response.json().component;
+                }
+            );
+    }
 }

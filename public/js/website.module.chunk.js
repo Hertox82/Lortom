@@ -88,6 +88,9 @@ var WebsiteService = (function (_super) {
     WebsiteService.prototype.getElementByProperty = function (name, value) {
         return this.getItemByProperty(name, value, 'elements', 'listOfElements');
     };
+    WebsiteService.prototype.getComponentByProperty = function (name, value) {
+        return this.getItemByProperty(name, value, 'components', 'listOfComponents');
+    };
     /**
      * This function update Element in listOfElements
      * @param el
@@ -109,6 +112,13 @@ var WebsiteService = (function (_super) {
         }
         var p = this.updateItemInList(page, this.listOfPages);
         this.setPages(p);
+    };
+    WebsiteService.prototype.updateComponentInList = function (cmp) {
+        if (this.listOfComponents == undefined) {
+            this.listOfComponents = this.getComponents();
+        }
+        var cs = this.updateItemInList(cmp, this.listOfComponents);
+        this.setComponents(cs);
     };
     /**
      * this function return if Pages Exists
@@ -351,6 +361,12 @@ var WebsiteService = (function (_super) {
             return response.json().element;
         });
     };
+    WebsiteService.prototype.saveComponent = function (comp) {
+        return this.http.put(this.apiManager.getPathByName('saveComponent'), comp, this.getOptions())
+            .map(function (response) {
+            return response.json().component;
+        });
+    };
     return WebsiteService;
 }(master_service_1.MasterService));
 WebsiteService = __decorate([
@@ -360,6 +376,213 @@ WebsiteService = __decorate([
 exports.WebsiteService = WebsiteService;
 var _a;
 //# sourceMappingURL=website.service.js.map
+
+/***/ }),
+
+/***/ "./src/plugins/Hardel/Website/component/Component/component.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn darkorange\" (click)=\"editMode()\">\n                    <i class=\"fa fa-edit\"></i>\n                    Edit\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [ngModel] = \"component.name\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                    <ng-template #editName>\n                                        <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"component.name\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"appearance\" class=\"col-md-2 control-label\">Appearance</label>\n                                <div class=\"col-md-4\">\n                                        <textarea type=\"text\" class=\"form-control\" name=\"appearance\" id=\"appearance\" [(ngModel)] = \"component.appearance\" *ngIf=\"isEdit === false; else editAppearance\" disabled></textarea>\n                                    <ng-template #editAppearance>\n                                        <textarea type=\"text\" class=\"form-control\" name=\"appearance\" id=\"appearance\" [(ngModel)] = \"component.appearance\" ></textarea>\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-list\"></i>\n                <span>Elements</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn cyan\" data-toggle=\"modal\" data-target=\"#addModal\" *ngIf=\"isEdit === true\">\n                    <i class=\"fa fa-plus\"></i>\n                    Add\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\" *ngIf=\"component.elements.length > 0\">\n                                    <thead>\n                                    <tr>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let el of component.elements\">\n                                        <td>\n                                            {{el.name}}\n                                        </td>\n                                        <td>\n                                            <a class=\"td_orange\" (click)=\"eraseElement(el)\" *ngIf=\"isEdit == true\"><i class=\"fa fa-window-close-o\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n\n                                </table>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n    <div id=\"addModal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"addModal\"  aria-hidden=\"true\">\n        <div class=\"modal-dialog\">\n            <div class=\"modal-content\">\n                <div class=\"modal-header\">\n                    <div class=\"modal-title\">\n                        Searching For Permission\n                        <button class=\"close\" data-dismiss = \"modal\" aria-label=\"hidden\"><i class=\"fa fa-times\"></i></button>\n                    </div>\n                </div>\n                <div class=\"modal-body\">\n                    <div class=\"row\">\n                        <div class=\"col-md-12\">\n                            <div class=\"form-group flex-group\">\n                                <label class=\"col-md-4\">Name</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control input-sm\" name=\"query\" [(ngModel)]=\"query\" (keyup)=\"filter()\" autocomplete=\"off\">\n                                    <div class=\"suggestions\" *ngIf=\"filteredList.length > 0\">\n                                        <ul>\n                                            <li class=\"suggestion-li\" *ngFor=\"let item of filteredList\">\n                                                <a (click)=\"addElement(item)\">{{item.name}}</a>\n                                            </li>\n                                        </ul>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"modal-footer\">\n                    <div class=\"m-footer\">\n\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</form>"
+
+/***/ }),
+
+/***/ "./src/plugins/Hardel/Website/component/Component/component.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * Created by hernan on 21/11/2017.
+ */
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var website_interfaces_1 = __webpack_require__("./src/plugins/Hardel/Website/Services/website.interfaces.ts");
+var website_service_1 = __webpack_require__("./src/plugins/Hardel/Website/Services/website.service.ts");
+var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var ComponentComponent = (function () {
+    function ComponentComponent(ecService, router, nav) {
+        var _this = this;
+        this.ecService = ecService;
+        this.router = router;
+        this.nav = nav;
+        this.listElements = [];
+        this.isEdit = false;
+        this.notFound = false;
+        this.filteredList = [];
+        this.query = '';
+        this.component = {
+            id: -2,
+            name: '',
+            check: false,
+            elements: [],
+            appearance: ''
+        };
+        this.sub = this.router.params.subscribe(function (params) {
+            _this.id = +params['id'];
+            _this.component = _this.ecService.getComponentByProperty('id', _this.id);
+            if (_this.component != null) {
+                _this.notFound = true;
+            }
+            else {
+                _this.nav.navigate(['/backend/not-found']);
+            }
+            _this.cloneComponent();
+        });
+    }
+    ComponentComponent.prototype.ngOnInit = function () {
+        this.retriveElements();
+    };
+    ComponentComponent.prototype.ngOnDestroy = function () {
+        this.sub.unsubscribe();
+    };
+    /**
+     * This function pass into edit Mode
+     */
+    ComponentComponent.prototype.editMode = function () {
+        //passa in modalità edit
+        this.isEdit = !this.isEdit;
+    };
+    /**
+     * This function go to save Mode
+     */
+    ComponentComponent.prototype.saveMode = function () {
+        var _this = this;
+        //salva i cambiamenti
+        if (!this.isEqual(this.component, this.copyComponent)) {
+            if (this.component.name.length == 0) {
+                alert('You must write a name of Component, please!');
+                this.cloneCopyComponent();
+                return;
+            }
+            this.ecService.saveComponent(this.component).subscribe(function (component) {
+                _this.component = component;
+                _this.retriveElements();
+                _this.ecService.updateComponentInList(_this.component);
+                _this.editMode();
+            });
+        }
+    };
+    /**
+     * This function is to get Permission from API
+     */
+    ComponentComponent.prototype.retriveElements = function () {
+        var _this = this;
+        this.ecService.getElementsFrom().subscribe(function (elements) {
+            _this.listElements = elements;
+            _this.component.elements.forEach(function (item) {
+                var index = -1;
+                for (var i = 0; i < _this.listElements.length; i++) {
+                    var m = _this.listElements[i];
+                    if (m.id === item.id && m.name === item.name) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index > -1) {
+                    _this.listElements.splice(index, 1);
+                }
+            });
+        });
+        this.cloneComponent();
+    };
+    /**
+     * This function reset the Information of Role
+     */
+    ComponentComponent.prototype.resetMode = function () {
+        if (!this.isEqual(this.component, this.copyComponent)) {
+            if (confirm('Are you sure you don\'t want to save this changement and restore it?')) {
+                this.cloneCopyComponent();
+            }
+        }
+    };
+    ComponentComponent.prototype.isEqual = function (v, v2) {
+        return (v.name == v2.name) && (v.elements.length == v2.elements.length);
+    };
+    /**
+     * This Function add Permission at the moment to role.permissions
+     * @param item
+     */
+    ComponentComponent.prototype.addElement = function (item) {
+        //aggiunge un permesso
+        this.filteredList = [];
+        this.query = item.name;
+        this.component.elements.push(item);
+    };
+    /**
+     * This function delete Permission from role.permissions
+     * @param item
+     */
+    ComponentComponent.prototype.eraseElement = function (item) {
+        // cancella il permesso
+        var index = this.component.elements.indexOf(item);
+        if (index > -1) {
+            this.component.elements.splice(index, 1);
+        }
+    };
+    /**
+     * This function filter permission for research
+     */
+    ComponentComponent.prototype.filter = function () {
+        if (this.query !== "") {
+            this.filteredList = this.listElements.filter(function (el) {
+                return el.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
+            }.bind(this));
+        }
+        else {
+        }
+    };
+    /**
+     * This function clone the Role
+     */
+    ComponentComponent.prototype.cloneComponent = function () {
+        if (this.component != null) {
+            var elements = [];
+            for (var _i = 0, _a = this.component.elements; _i < _a.length; _i++) {
+                var perm = _a[_i];
+                elements.push(perm);
+            }
+            this.copyComponent = Object.assign({}, this.component);
+            this.copyComponent.elements = elements;
+        }
+    };
+    /**
+     * This function clone the CopyRole
+     */
+    ComponentComponent.prototype.cloneCopyComponent = function () {
+        var elements = [];
+        for (var _i = 0, _a = this.copyComponent.elements; _i < _a.length; _i++) {
+            var perm = _a[_i];
+            elements.push(perm);
+        }
+        this.component = Object.assign({}, this.copyComponent);
+        this.component.elements = elements;
+    };
+    return ComponentComponent;
+}());
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", typeof (_a = typeof website_interfaces_1.LortomComponent !== "undefined" && website_interfaces_1.LortomComponent) === "function" && _a || Object)
+], ComponentComponent.prototype, "component", void 0);
+ComponentComponent = __decorate([
+    core_1.Component({
+        selector: 'wb-component',
+        template: __webpack_require__("./src/plugins/Hardel/Website/component/Component/component.component.html"),
+        styles: ['']
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof website_service_1.WebsiteService !== "undefined" && website_service_1.WebsiteService) === "function" && _b || Object, typeof (_c = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _c || Object, typeof (_d = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _d || Object])
+], ComponentComponent);
+exports.ComponentComponent = ComponentComponent;
+var _a, _b, _c, _d;
+//# sourceMappingURL=component.component.js.map
 
 /***/ }),
 
@@ -878,8 +1101,8 @@ var NewComponent = (function () {
                 return;
             }
             this.ncsService.createComponent(this.component).subscribe(function (data) {
-                if (!data.hasOwnProperty('state')) {
-                    data.state = false;
+                if (!data.hasOwnProperty('check')) {
+                    data.check = false;
                 }
                 //push the item into roles
                 _this.ncsService.setComponent(data);
@@ -890,7 +1113,7 @@ var NewComponent = (function () {
         }
     };
     NewComponent.prototype.isEqual = function (v, v2) {
-        return (v.name == v2.name) && (v.state == v2.state) && (v.elements.length == v2.elements.length);
+        return (v.name == v2.name) && (v.elements.length == v2.elements.length);
     };
     /**
      * This function clone the Role
@@ -1400,6 +1623,8 @@ var components_component_1 = __webpack_require__("./src/plugins/Hardel/Website/c
 exports.ComponentsComponent = components_component_1.ComponentsComponent;
 var componentnew_component_1 = __webpack_require__("./src/plugins/Hardel/Website/component/NewComponent/componentnew.component.ts");
 exports.NewComponent = componentnew_component_1.NewComponent;
+var component_component_1 = __webpack_require__("./src/plugins/Hardel/Website/component/Component/component.component.ts");
+exports.ComponentComponent = component_component_1.ComponentComponent;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -1526,12 +1751,24 @@ var routes = [
                     { path: ':id', component: component_1.ElementComponent, data: { breadcrumb: 'Element' } }
                 ] },
             { path: 'components', component: component_1.ComponentsComponent, data: { breadcrumb: 'Components' }, children: [
-                    { path: 'new', component: component_1.NewComponent, data: { breadcrumb: 'New' } }
+                    { path: 'new', component: component_1.NewComponent, data: { breadcrumb: 'New' } },
+                    { path: ':id', component: component_1.ComponentComponent, data: { breadcrumb: 'Component' } }
                 ] }
         ] }
 ];
 exports.routing = router_1.RouterModule.forChild(routes);
-exports.websiteComponent = [component_1.WebsiteComponent, component_1.PagesComponent, component_1.PageNewComponent, component_1.PageComponent, component_1.ElementsComponent, component_1.ElementNewComponent, component_1.ElementComponent, component_1.ComponentsComponent, component_1.NewComponent];
+exports.websiteComponent = [
+    component_1.WebsiteComponent,
+    component_1.PagesComponent,
+    component_1.PageNewComponent,
+    component_1.PageComponent,
+    component_1.ElementsComponent,
+    component_1.ElementNewComponent,
+    component_1.ElementComponent,
+    component_1.ComponentsComponent,
+    component_1.NewComponent,
+    component_1.ComponentComponent
+];
 //console.log(websiteComponent); 
 //# sourceMappingURL=website.routing.js.map
 
