@@ -30,10 +30,14 @@
                         <div class="col-12">
                             <div class="form-group flex-group">
                                 <label for="appearance" class="col-md-2 control-label">Appearance</label>
-                                <div class="col-md-4">
+                                <div class="col-md-10">
                                         <textarea type="text" class="form-control" name="appearance" id="appearance" [(ngModel)] = "component.appearance" *ngIf="isEdit === false; else editAppearance" disabled></textarea>
                                     <ng-template #editAppearance>
-                                        <textarea type="text" class="form-control" name="appearance" id="appearance" [(ngModel)] = "component.appearance" ></textarea>
+                                        <codemirror
+                                                class="form-control" name="appearance" id="appearance"
+                                                    [(ngModel)] = "component.appearance"
+                                                    [config]="{lineNumbers: true}"
+                                        ></codemirror>
                                     </ng-template>
                                 </div>
                             </div>

@@ -7,6 +7,7 @@ import {FormsModule} from "@angular/forms";
 import {WebsiteService} from "./Services/website.service";
 import {EditorModule} from "@Lortom-Backend/Editor/editor";
 import {UIElementModule} from "@Lortom-Backend/UIElement/uielement.module";
+import { CodemirrorModule } from "@ng4/codemirror";
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {UIElementModule} from "@Lortom-Backend/UIElement/uielement.module";
         routing,
         BreadCrumbModule,
         EditorModule,
-        UIElementModule
+        UIElementModule,
+        CodemirrorModule.forRoot(),
     ],
     providers : [WebsiteService],
     declarations: [websiteComponent]
