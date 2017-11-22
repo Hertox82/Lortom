@@ -1737,6 +1737,7 @@ var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5
 var platform_browser_dynamic_1 = __webpack_require__("./node_modules/@angular/platform-browser-dynamic/@angular/platform-browser-dynamic.es5.js");
 var app_module_1 = __webpack_require__("./src/app/app.module.ts");
 var environment_1 = __webpack_require__("./src/environments/environment.ts");
+__webpack_require__("./node_modules/codemirror/lib/codemirror.js");
 if (environment_1.environment.production) {
     core_1.enableProdMode();
 }

@@ -90,6 +90,8 @@ module.exports = {
       "./node_modules/bootstrap/dist/css/bootstrap.css",
       "./node_modules/font-awesome/css/font-awesome.css",
       "./node_modules/ionicons/dist/css/ionicons.css",
+        "./node_modules/codemirror/lib/codemirror.css",
+        "./node_modules/codemirror/theme/dracula.css",
       "./src/styles.css"
     ]
   },
@@ -127,6 +129,8 @@ module.exports = {
           path.join(process.cwd(), "node_modules/bootstrap/dist/css/bootstrap.css"),
           path.join(process.cwd(), "node_modules/font-awesome/css/font-awesome.css"),
           path.join(process.cwd(), "node_modules/ionicons/dist/css/ionicons.css"),
+            path.join(process.cwd(), "node_modules/codemirror/lib/codemirror.css"),
+            path.join(process.cwd(), "node_modules/codemirror/theme/dracula.css"),
           path.join(process.cwd(), "src/styles.css")
         ],
         "test": /\.css$/,
@@ -154,6 +158,8 @@ module.exports = {
           path.join(process.cwd(), "node_modules/bootstrap/dist/css/bootstrap.css"),
           path.join(process.cwd(), "node_modules/font-awesome/css/font-awesome.css"),
           path.join(process.cwd(), "node_modules/ionicons/dist/css/ionicons.css"),
+            path.join(process.cwd(), "node_modules/codemirror/lib/codemirror.css"),
+            path.join(process.cwd(), "node_modules/codemirror/theme/dracula.css"),
           path.join(process.cwd(), "src/styles.css")
         ],
         "test": /\.scss$|\.sass$/,
@@ -189,6 +195,8 @@ module.exports = {
           path.join(process.cwd(), "node_modules/bootstrap/dist/css/bootstrap.css"),
           path.join(process.cwd(), "node_modules/font-awesome/css/font-awesome.css"),
           path.join(process.cwd(), "node_modules/ionicons/dist/css/ionicons.css"),
+            path.join(process.cwd(), "node_modules/codemirror/lib/codemirror.css"),
+            path.join(process.cwd(), "node_modules/codemirror/theme/dracula.css"),
           path.join(process.cwd(), "src/styles.css")
         ],
         "test": /\.less$/,
@@ -222,6 +230,8 @@ module.exports = {
           path.join(process.cwd(), "node_modules/bootstrap/dist/css/bootstrap.css"),
           path.join(process.cwd(), "node_modules/font-awesome/css/font-awesome.css"),
           path.join(process.cwd(), "node_modules/ionicons/dist/css/ionicons.css"),
+            path.join(process.cwd(), "node_modules/codemirror/lib/codemirror.css"),
+            path.join(process.cwd(), "node_modules/codemirror/theme/dracula.css"),
           path.join(process.cwd(), "src/styles.css")
         ],
         "test": /\.styl$/,
@@ -256,6 +266,8 @@ module.exports = {
           path.join(process.cwd(), "node_modules/bootstrap/dist/css/bootstrap.css"),
           path.join(process.cwd(), "node_modules/font-awesome/css/font-awesome.css"),
           path.join(process.cwd(), "node_modules/ionicons/dist/css/ionicons.css"),
+            path.join(process.cwd(), "node_modules/codemirror/lib/codemirror.css"),
+            path.join(process.cwd(), "node_modules/codemirror/theme/dracula.css"),
           path.join(process.cwd(), "src/styles.css")
         ],
         "test": /\.css$/,
@@ -283,6 +295,8 @@ module.exports = {
           path.join(process.cwd(), "node_modules/bootstrap/dist/css/bootstrap.css"),
           path.join(process.cwd(), "node_modules/font-awesome/css/font-awesome.css"),
           path.join(process.cwd(), "node_modules/ionicons/dist/css/ionicons.css"),
+            path.join(process.cwd(), "node_modules/codemirror/lib/codemirror.css"),
+            path.join(process.cwd(), "node_modules/codemirror/theme/dracula.css"),
           path.join(process.cwd(), "src/styles.css")
         ],
         "test": /\.scss$|\.sass$/,
@@ -318,6 +332,8 @@ module.exports = {
           path.join(process.cwd(), "node_modules/bootstrap/dist/css/bootstrap.css"),
           path.join(process.cwd(), "node_modules/font-awesome/css/font-awesome.css"),
           path.join(process.cwd(), "node_modules/ionicons/dist/css/ionicons.css"),
+            path.join(process.cwd(), "node_modules/codemirror/lib/codemirror.css"),
+            path.join(process.cwd(), "node_modules/codemirror/theme/dracula.css"),
           path.join(process.cwd(), "src/styles.css")
         ],
         "test": /\.less$/,
@@ -351,6 +367,8 @@ module.exports = {
           path.join(process.cwd(), "node_modules/bootstrap/dist/css/bootstrap.css"),
           path.join(process.cwd(), "node_modules/font-awesome/css/font-awesome.css"),
           path.join(process.cwd(), "node_modules/ionicons/dist/css/ionicons.css"),
+            path.join(process.cwd(), "node_modules/codemirror/lib/codemirror.css"),
+            path.join(process.cwd(), "node_modules/codemirror/theme/dracula.css"),
           path.join(process.cwd(), "src/styles.css")
         ],
         "test": /\.styl$/,
@@ -401,7 +419,8 @@ module.exports = {
         "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/node_modules/tinymce/themes/modern/theme.js",
         "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/node_modules/tinymce/plugins/link/plugin.js",
         "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/node_modules/tinymce/plugins/paste/plugin.js",
-        "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/node_modules/tinymce/plugins/table/plugin.js"
+        "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/node_modules/tinymce/plugins/table/plugin.js",
+          "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/node_modules/codemirror/lib/codemirror.js",
       ]
     }),
     new InsertConcatAssetsWebpackPlugin([

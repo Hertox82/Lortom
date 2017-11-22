@@ -22,11 +22,19 @@ export class NewComponent implements OnInit
     listElements = [];
     filteredList : LortomElement[];
     query : string;
+    config : any;
 
     constructor(private ncsService : WebsiteService, private router : Router){
         this.isEdit = false;
         this.filteredList = [];
         this.query = '';
+        this.config = {
+            lineNumbers: true,
+            mode : 'htmlmixed',
+            styleActiveLine: true,
+            matchBrackets: true,
+            theme:'dracula'
+        };
 
         this.component = {
             id: -1,

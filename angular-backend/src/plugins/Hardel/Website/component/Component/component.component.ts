@@ -7,7 +7,7 @@ import {Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {LortomComponent, LortomElement} from "@Lortom/plugins/Hardel/Website/Services/website.interfaces";
 import {WebsiteService} from "@Lortom/plugins/Hardel/Website/Services/website.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {isEmbeddedView} from "@angular/core/src/view/util";
+import 'codemirror/mode/htmlmixed/htmlmixed';
 @Component({
     selector : 'wb-component',
     templateUrl : './component.component.html',
@@ -25,12 +25,20 @@ export class ComponentComponent implements OnInit, OnDestroy
     filteredList : LortomElement[];
     query : string;
     notFound : boolean;
+    config : any;
 
     constructor(private ecService : WebsiteService, private router : ActivatedRoute,private nav : Router){
         this.isEdit = false;
         this.notFound = false;
         this.filteredList = [];
         this.query = '';
+        this.config = {
+            lineNumbers: true,
+            mode : 'htmlmixed',
+            styleActiveLine: true,
+            matchBrackets: true,
+            theme:'dracula'
+        };
         this.component = {
             id : -2,
             name : '',
