@@ -53,11 +53,26 @@ class LortomController extends BaseController
         {
             $insert = $function()->subTable($subTables[$t]['lista'],$Obj->id,$subTables[$t]['subTableKey']);
 
+            $this->deleteFromSubTable($t,$subTables[$t]['subTableKey'],$Obj->id);
+
             if(! empty($insert))
                 DB::table($t)->insert($insert);
         }
 
         return [$responseKey => $function()->getItemSerialized($name,$Obj)];
+    }
+
+    protected function deleteFromSubTable($table,$columns,$id)
+    {
+        $cols = array_keys($columns);
+
+        foreach ($cols as $col)
+        {
+            if(!$columns[$col])
+            {
+                DB::table($table)->where($col,$id)->delete();
+            }
+        }
     }
 
     /**
