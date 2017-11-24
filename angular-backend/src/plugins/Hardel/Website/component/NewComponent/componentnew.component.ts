@@ -3,7 +3,10 @@
  */
 
 import {Component, OnInit} from "@angular/core";
-import {LortomComponent, LortomElement} from "@Lortom/plugins/Hardel/Website/Services/website.interfaces";
+import {
+    LortomComponent,
+    LortomElement, LtElementComp
+} from "@Lortom/plugins/Hardel/Website/Services/website.interfaces";
 import {WebsiteService} from "@Lortom/plugins/Hardel/Website/Services/website.service";
 import {Router} from "@angular/router";
 @Component({
@@ -53,22 +56,6 @@ export class NewComponent implements OnInit
         this.ncsService.getElementsFrom().subscribe(
             (elements : LortomElement []) => {
                 this.listElements = elements;
-                this.component.elements.forEach((item : LortomElement)=>{
-                    let index = -1;
-                    for(let i = 0; i<this.listElements.length; i++)
-                    {
-                        let m = this.listElements[i];
-
-                        if(m.id === item.id && m.name === item.name)
-                        {
-                            index = i;
-                            break;
-                        }
-                    }
-                    if(index > -1){
-                        this.listElements.splice(index,1);
-                    }
-                });
             }
         );
         this.cloneComponent();
@@ -108,7 +95,23 @@ export class NewComponent implements OnInit
         //aggiunge un permesso
         this.filteredList = [];
         this.query = item.name;
-        this.component.elements.push(item);
+
+        this.component.elements.push(this.toElementComponent(item));
+    }
+
+    toElementComponent(item : LortomElement) : LtElementComp
+    {
+        let it : LtElementComp = {
+            id : -1,
+            idElement : item.id,
+            name : item.name,
+            Object : item.Object,
+            functions : item.functions,
+            appearance : item.appearance,
+            check : false
+        };
+
+        return it;
     }
 
     /**
@@ -152,7 +155,7 @@ export class NewComponent implements OnInit
      * This function clone the Role
      */
     cloneComponent(){
-        let elements: LortomElement[] = [];
+        let elements: LtElementComp[] = [];
 
         for(let perm of this.component.elements)
         {
@@ -168,7 +171,7 @@ export class NewComponent implements OnInit
      */
     cloneCopyComponent()
     {
-        let elements: LortomElement[] = [];
+        let elements: LtElementComp[] = [];
 
         for(let perm of this.copyComponent.elements)
         {

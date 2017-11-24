@@ -4,10 +4,15 @@
 
 
 import {Component, Input, OnDestroy, OnInit} from "@angular/core";
-import {LortomComponent, LortomElement} from "@Lortom/plugins/Hardel/Website/Services/website.interfaces";
+import {
+    LortomComponent, LortomElement,
+    LtElementComp,convertToLtElementComp, convertToNodeList
+} from "@Lortom/plugins/Hardel/Website/Services/website.interfaces";
 import {WebsiteService} from "@Lortom/plugins/Hardel/Website/Services/website.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import 'codemirror/mode/htmlmixed/htmlmixed';
+import { Node } from 'lt-treeview';
+
 @Component({
     selector : 'wb-component',
     templateUrl : './component.component.html',
@@ -22,16 +27,13 @@ export class ComponentComponent implements OnInit, OnDestroy
     private sub : any;
     isEdit : boolean;
     listElements = [];
-    filteredList : LortomElement[];
-    query : string;
     notFound : boolean;
     config : any;
+    listOfNode : Node[];
 
     constructor(private ecService : WebsiteService, private router : ActivatedRoute,private nav : Router){
         this.isEdit = false;
         this.notFound = false;
-        this.filteredList = [];
-        this.query = '';
         this.config = {
             lineNumbers: true,
             mode : 'htmlmixed',
@@ -111,23 +113,13 @@ export class ComponentComponent implements OnInit, OnDestroy
     {
         this.ecService.getElementsFrom().subscribe(
             (elements : LortomElement []) => {
-                this.listElements = elements;
-                this.component.elements.forEach((item : LortomElement)=>{
-                    let index = -1;
-                    for(let i = 0; i<this.listElements.length; i++)
-                    {
-                        let m = this.listElements[i];
+                elements.forEach(
+                    (item: LortomElement) => {
+                        this.listElements.push(convertToLtElementComp(item));
+                    }
+                );
 
-                        if(m.id === item.id && m.name === item.name)
-                        {
-                            index = i;
-                            break;
-                        }
-                    }
-                    if(index > -1){
-                        this.listElements.splice(index,1);
-                    }
-                });
+                this.listOfNode = convertToNodeList(this.listElements);
             }
         );
         this.cloneComponent();
@@ -150,52 +142,13 @@ export class ComponentComponent implements OnInit, OnDestroy
         return (v.name == v2.name) && (v.elements.length == v2.elements.length)
     }
 
-    /**
-     * This Function add Permission at the moment to role.permissions
-     * @param item
-     */
-    addElement(item : LortomElement) {
-        //aggiunge un permesso
-        this.filteredList = [];
-        this.query = item.name;
-        this.component.elements.push(item);
-    }
-
-    /**
-     * This function delete Permission from role.permissions
-     * @param item
-     */
-    eraseElement(item) {
-        // cancella il permesso
-        let index = this.component.elements.indexOf(item);
-
-        if(index > -1)
-        {
-            this.component.elements.splice(index,1);
-        }
-
-    }
-
-    /**
-     * This function filter permission for research
-     */
-    filter(){
-        if (this.query !== "") {
-            this.filteredList = this.listElements.filter(function(el){
-                return el.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
-            }.bind(this));
-        }
-        else {
-
-        }
-    }
 
     /**
      * This function clone the Role
      */
     cloneComponent(){
         if(this.component != null) {
-            let elements: LortomElement[] = [];
+            let elements: LtElementComp[] = [];
 
             for(let perm of this.component.elements)
             {
@@ -212,7 +165,7 @@ export class ComponentComponent implements OnInit, OnDestroy
      */
     cloneCopyComponent()
     {
-        let elements: LortomElement[] = [];
+        let elements: LtElementComp[] = [];
 
         for(let perm of this.copyComponent.elements)
         {

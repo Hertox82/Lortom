@@ -136,6 +136,7 @@ class WebsiteController extends Controller
         $Class = LortomComponent::class;
         $name = 'Component';
         return response()->json($this->getList(compact('responseKey','Class','name')));
+
     }
 
     /**

@@ -9,6 +9,7 @@ namespace Plugins\Hardel\Website\Model;
 
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class LortomComponent extends Model
 {
@@ -31,4 +32,20 @@ class LortomComponent extends Model
     {
         $this->$key = $array[$key];
     }
+
+    public function getElements()
+    {
+       return  DB::table('lt_component_element')
+                  ->where('lt_component_element.idComponent',$this->id)
+                  ->join('lt_elements','lt_elements.id','=','lt_component_element.idElement')
+                  ->select([
+                      'lt_component_element.id AS id',
+                      'lt_elements.id AS idElement',
+                      'lt_elements.name AS name',
+                      'lt_elements.Object AS Object',
+                      'lt_elements.function AS function',
+                      'lt_elements.appearance AS appearance'
+                  ])->get();
+    }
+
 }

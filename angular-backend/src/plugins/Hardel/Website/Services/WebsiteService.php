@@ -111,6 +111,18 @@ class WebsiteService{
         return $insert;
     }
 
+    protected function getSubElementSerialized(\stdClass $element)
+    {
+        return [
+            'id'            => $element->id,
+            'idElement'     => $element->idElement,
+            'name'          => $element->name,
+            'Object'        => $element->Object,
+            'functions'     => $element->function,
+            'appearance'    => $element->appearance,
+        ];
+    }
+
     /**
      * This function serialize Element Object into Array
      * @param LortomElement $element
@@ -157,7 +169,7 @@ class WebsiteService{
             'id'            => $cmp->id,
             'name'          => $cmp->name,
             'appearance'    => $cmp->appearance,
-            'elements'      =>  $this->getList(LortomElement::class,'Element',$cmp->elements())
+            'elements'      =>  $this->getList(\stdClass::class,'SubElement',$cmp->getElements())
         ];
     }
 }
