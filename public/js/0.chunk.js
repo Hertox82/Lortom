@@ -1,4 +1,4 @@
-webpackJsonp(["website.module"],{
+webpackJsonp([0],{
 
 /***/ "./node_modules/codemirror/mode/css/css.js":
 /***/ (function(module, exports, __webpack_require__) {
@@ -2331,17 +2331,19 @@ var LtTreeviewComponent = (function () {
      * @return {?}
      */
     LtTreeviewComponent.prototype.add = function (item) {
-        if (this.currentNode == undefined) {
-            this.currentNode = item;
-            this.currentNode.adding = true;
-        }
-        else if (this.currentNode === item) {
-            this.currentNode = undefined;
-            item.adding = false;
-        }
-        else if (this.currentNode !== item) {
-            this.currentNode = item;
-            this.currentNode.adding = true;
+        if (this.show === true) {
+            if (this.currentNode == undefined) {
+                this.currentNode = item;
+                this.currentNode.adding = true;
+            }
+            else if (this.currentNode === item) {
+                this.currentNode = undefined;
+                item.adding = false;
+            }
+            else if (this.currentNode !== item) {
+                this.currentNode = item;
+                this.currentNode.adding = true;
+            }
         }
     };
     /**
@@ -2363,10 +2365,12 @@ var LtTreeviewComponent = (function () {
      * @return {?}
      */
     LtTreeviewComponent.prototype.delete = function (item) {
-        if (confirm('Do you really want delete this Node?')) {
-            var /** @type {?} */ index = this.data.indexOf(item);
-            if (index > -1) {
-                this.data.splice(index, 1);
+        if (this.show === true) {
+            if (confirm('Do you really want delete this Node?')) {
+                var /** @type {?} */ index = this.data.indexOf(item);
+                if (index > -1) {
+                    this.data.splice(index, 1);
+                }
             }
         }
     };
@@ -2389,7 +2393,7 @@ var LtTreeviewComponent = (function () {
 LtTreeviewComponent.decorators = [
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
                 selector: 'lt-treeview',
-                template: "\n    <div class=\"container\">\n      <ul class=\"treeview\">\n          <li class=\"parent\" *ngFor=\"let item of data\">\n                <div class=\"list-item\" *ngIf=\"item.adding === true\">\n                    <ul>\n                        <li *ngFor=\"let n of listToAdd\"(click)=\"addNode(n)\"><span>{{n.label}}</span></li>\n                    </ul>\n                </div>\n                <span class=\"coll\" (click)=\"expand(item)\" *ngIf=\"item.expand === false; else expanse\">\n                    <i class=\"fa fa-caret-right\"></i>\n                </span>\n                <ng-template #expanse>\n                        <span class=\"coll\" (click)=\"expand(item)\">\n                            <i class=\"fa fa-caret-down\"></i>\n                        </span>\n                    </ng-template>\n                <div class=\"control\">\n                    <a>\n                        {{item.label}}\n                    </a>\n                    <button class=\"plus\" (click)=\"add(item)\">\n                        <i class=\"fa fa-plus\"></i>\n                    </button>\n                    <button class=\"erase\" (click)=\"delete(item)\">\n                        <i class=\"fa fa-remove\"></i>\n                    </button>\n                </div>\n                <lt-treeview-internal [data]=\"item.children\" [listToAdd]=\"listToAdd\" *ngIf=\"item.expand === true\"></lt-treeview-internal>\n          </li>\n      </ul>\n      <div class=\"box-lt-treeview\">\n          <button (click)=\"addRoot()\"><i class=\"fa fa-plus\"></i> Add Root</button>\n          <div class=\"list-root\" *ngIf=\"addRootb === true\">\n            <ul>\n                <li *ngFor=\"let n of listToAdd\"(click)=\"addRootNode(n)\"><span>{{n.label}}</span></li>\n            </ul>\n        </div>\n      </div>\n    </div>\n  ",
+                template: "\n    <div class=\"container\">\n      <ul class=\"treeview\">\n          <li class=\"parent\" *ngFor=\"let item of data\">\n                <div class=\"list-item\" *ngIf=\"item.adding === true\">\n                    <ul>\n                        <li *ngFor=\"let n of listToAdd\"(click)=\"addNode(n)\"><span>{{n.label}}</span></li>\n                    </ul>\n                </div>\n                <span class=\"coll\" (click)=\"expand(item)\" *ngIf=\"item.expand === false; else expanse\">\n                    <i class=\"fa fa-caret-right\"></i>\n                </span>\n                <ng-template #expanse>\n                        <span class=\"coll\" (click)=\"expand(item)\">\n                            <i class=\"fa fa-caret-down\"></i>\n                        </span>\n                    </ng-template>\n                <div class=\"control\">\n                    <a>\n                        {{item.label}}\n                    </a>\n                    <button class=\"plus\" (click)=\"add(item)\">\n                        <i class=\"fa fa-plus\"></i>\n                    </button>\n                    <button class=\"erase\" (click)=\"delete(item)\">\n                        <i class=\"fa fa-remove\"></i>\n                    </button>\n                </div>\n                <lt-treeview-internal [data]=\"item.children\" [listToAdd]=\"listToAdd\" [show]=\"show\" *ngIf=\"item.expand === true\"></lt-treeview-internal>\n          </li>\n      </ul>\n      <div class=\"box-lt-treeview\" *ngIf=\"show === true\">\n          <button (click)=\"addRoot()\"><i class=\"fa fa-plus\"></i> Add Root</button>\n          <div class=\"list-root\" *ngIf=\"addRootb === true\">\n            <ul>\n                <li *ngFor=\"let n of listToAdd\"(click)=\"addRootNode(n)\"><span>{{n.label}}</span></li>\n            </ul>\n        </div>\n      </div>\n    </div>\n  ",
                 styles: ["\n    .container {\n        margin-top:30px;\n        margin-left: auto;\n        margin-right: auto;\n        min-height: 100px;\n    }\n\n    .box-lt-treeview{\n        position: relative;\n    }\n\n    .box-lt-treeview button{\n        padding:15px;\n        border-radius: unset;\n        background-color: #4ba6c9;\n        border: unset;\n        color: white;\n        cursor: pointer;\n    }\n\n    .box-lt-treeview .list-root {\n        background-color: #9c9c9c;\n        border: 1px solid;\n        width: 250px;\n        z-index: 1000;\n        position: absolute;\n        top: 0px;\n        left: 89px;\n        color: white;\n    }\n\n    .box-lt-treeview .list-root ul{\n        list-style: none;\n        padding: unset;\n        margin: unset;\n    }\n\n    .box-lt-treeview .list-root li:nth-child(odd){\n        background-color: darkgray;\n    }\n\n    .box-lt-treeview .list-root li {\n        text-transform: capitalize;\n        padding: 15px;\n        cursor: pointer;\n    }\n    .box-lt-treeview .list-root li:hover {\n        background-color: #f9cd0e\n    }\n\n    .list-item\n    {\n        background-color: #9c9c9c;\n        border: 1px solid;\n        width: 250px;\n        z-index: 1000;\n        position: absolute;\n        top: 52px;\n        left: 130px;\n        color: white;\n    }\n\n    .list-item ul {\n        list-style: none;\n        padding: unset;\n    }\n\n    .list-item li:nth-child(odd){\n        background-color: darkgray;\n    }\n\n    .list-item li {\n        text-transform: capitalize;\n        cursor: pointer;\n    }\n    .list-item li:hover {\n        background-color: #f9cd0e\n    }\n\n    .treeview {\n        list-style: none;\n    }\n\n    .coll{\n        padding: 10px;\n        cursor: pointer;\n    }\n\n    .list-tree{\n        list-style: none;\n        margin-top : 8px;\n    }\n\n    .treeview li {\n        padding: 15px;\n        position: relative;\n    }\n\n    .plus{\n        padding: 7px 15px;\n        border: unset;\n        background-color: orange;\n        color: white;\n        cursor: pointer;\n        margin-left: 10px;\n    }\n\n    .erase{\n        padding: 7px 15px;\n        border: unset;\n        background-color: #da3522;\n        color: white;\n        cursor: pointer;\n        margin-left: 10px;\n    }\n\n    .treeview a {\n        text-decoration: none;\n        padding: 10px 15px;\n        color: black;\n        text-transform: capitalize;\n    }\n\n    .control{\n        display: inline-block;\n        padding: 5px;\n        background-color: #e9e9e9;\n    }\n  "]
             },] },
 ];
@@ -2400,6 +2404,7 @@ LtTreeviewComponent.ctorParameters = function () { return []; };
 LtTreeviewComponent.propDecorators = {
     'data': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
     'listToAdd': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+    'show': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
 };
 var LtTreeviewInternalComponent = (function () {
     function LtTreeviewInternalComponent() {
@@ -2424,17 +2429,19 @@ var LtTreeviewInternalComponent = (function () {
      * @return {?}
      */
     LtTreeviewInternalComponent.prototype.add = function (item) {
-        if (this.currentNode == undefined) {
-            this.currentNode = item;
-            this.currentNode.adding = true;
-        }
-        else if (this.currentNode === item) {
-            this.currentNode = undefined;
-            item.adding = false;
-        }
-        else if (this.currentNode !== item) {
-            this.currentNode = item;
-            this.currentNode.adding = true;
+        if (this.show === true) {
+            if (this.currentNode == undefined) {
+                this.currentNode = item;
+                this.currentNode.adding = true;
+            }
+            else if (this.currentNode === item) {
+                this.currentNode = undefined;
+                item.adding = false;
+            }
+            else if (this.currentNode !== item) {
+                this.currentNode = item;
+                this.currentNode.adding = true;
+            }
         }
     };
     /**
@@ -2442,10 +2449,12 @@ var LtTreeviewInternalComponent = (function () {
      * @return {?}
      */
     LtTreeviewInternalComponent.prototype.delete = function (item) {
-        if (confirm('Do you really want delete this Node?')) {
-            var /** @type {?} */ index = this.data.indexOf(item);
-            if (index > -1) {
-                this.data.splice(index, 1);
+        if (this.show === true) {
+            if (confirm('Do you really want delete this Node?')) {
+                var /** @type {?} */ index = this.data.indexOf(item);
+                if (index > -1) {
+                    this.data.splice(index, 1);
+                }
             }
         }
     };
@@ -2468,7 +2477,7 @@ var LtTreeviewInternalComponent = (function () {
 LtTreeviewInternalComponent.decorators = [
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
                 selector: 'lt-treeview-internal',
-                template: "\n    <ul class=\"list-tree\">\n      <li *ngFor=\"let item of data\">\n          <div class=\"list-item\" *ngIf=\"item.adding === true\">\n              <ul>\n                  <li *ngFor=\"let n of listToAdd\"(click)=\"addNode(n)\"><span>{{n.label}}</span></li>\n              </ul>\n          </div>\n          <span class=\"coll\" (click)=\"expand(item)\" *ngIf=\"item.expand === false; else expanse\">\n            <i class=\"fa fa-caret-right\"></i>\n          </span>\n          <ng-template #expanse>\n              <span class=\"coll\" (click)=\"expand(item)\">\n                  <i class=\"fa fa-caret-down\"></i>\n              </span>\n          </ng-template>\n          <div class=\"control\">\n              <a>\n                  {{item.label}}\n              </a>\n              <button class=\"plus\" (click)=\"add(item)\">\n                  <i class=\"fa fa-plus\"></i>\n              </button>\n              <button class=\"erase\" (click)=\"delete(item)\">\n                  <i class=\"fa fa-remove\"></i>\n              </button>\n          </div>\n          <lt-treeview-internal [data] = \"item.children\" [listToAdd]=\"listToAdd\" *ngIf=\"item.expand === true\"></lt-treeview-internal>\n        </li>\n    </ul>\n  ",
+                template: "\n    <ul class=\"list-tree\">\n      <li *ngFor=\"let item of data\">\n          <div class=\"list-item\" *ngIf=\"item.adding === true\">\n              <ul>\n                  <li *ngFor=\"let n of listToAdd\"(click)=\"addNode(n)\"><span>{{n.label}}</span></li>\n              </ul>\n          </div>\n          <span class=\"coll\" (click)=\"expand(item)\" *ngIf=\"item.expand === false; else expanse\">\n            <i class=\"fa fa-caret-right\"></i>\n          </span>\n          <ng-template #expanse>\n              <span class=\"coll\" (click)=\"expand(item)\">\n                  <i class=\"fa fa-caret-down\"></i>\n              </span>\n          </ng-template>\n          <div class=\"control\">\n              <a>\n                  {{item.label}}\n              </a>\n              <button class=\"plus\" (click)=\"add(item)\">\n                  <i class=\"fa fa-plus\"></i>\n              </button>\n              <button class=\"erase\" (click)=\"delete(item)\">\n                  <i class=\"fa fa-remove\"></i>\n              </button>\n          </div>\n          <lt-treeview-internal [data] = \"item.children\" [listToAdd]=\"listToAdd\" [show]=\"show\" *ngIf=\"item.expand === true\"></lt-treeview-internal>\n        </li>\n    </ul>\n  ",
                 styles: ["\n\n    .coll{\n        padding: 10px;\n        cursor: pointer;\n    }\n\n    .list-tree{\n        list-style: none;\n        margin-top : 8px;\n    }\n\n\n    .list-tree li {\n        padding: 15px;\n    }\n\n    .plus{\n        padding: 7px 15px;\n        border: unset;\n        background-color: orange;\n        color: white;\n        cursor: pointer;\n        margin-left: 10px;\n    }\n\n    .erase{\n        padding: 7px 15px;\n        border: unset;\n        background-color: #da3522;\n        color: white;\n        cursor: pointer;\n        margin-left: 10px;\n    }\n\n    .list-tree a {\n        text-decoration: none;\n        padding: 10px 15px;\n        color: black;\n        text-transform: capitalize;\n    }\n\n    .control{\n        display: inline-block;\n        padding: 5px;\n        background-color: #e9e9e9;\n    }\n\n    .list-item\n    {\n        background-color: #9c9c9c;\n        border: 1px solid;\n        width: 250px;\n        z-index: 1000;\n        position: absolute;\n        top: 52px;\n        left: 130px;\n        color: white;\n    }\n\n    .list-item ul {\n        list-style: none;\n        padding: unset;\n    }\n\n    .list-item li:nth-child(odd){\n        background-color: darkgray;\n    }\n\n    .list-item li {\n        text-transform: capitalize;\n        cursor: pointer;\n    }\n    .list-item li:hover {\n        background-color: #f9cd0e\n    }\n  "]
             },] },
 ];
@@ -2479,6 +2488,7 @@ LtTreeviewInternalComponent.ctorParameters = function () { return []; };
 LtTreeviewInternalComponent.propDecorators = {
     'data': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
     'listToAdd': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+    'show': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
 };
 var LtTreeviewModule = (function () {
     function LtTreeviewModule() {
@@ -3107,7 +3117,7 @@ var _a;
 /***/ "./src/plugins/Hardel/Website/component/Component/component.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn darkorange\" (click)=\"editMode()\">\n                    <i class=\"fa fa-edit\"></i>\n                    Edit\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [ngModel] = \"component.name\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                    <ng-template #editName>\n                                        <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"component.name\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"appearance\" class=\"col-md-2 control-label\">Appearance</label>\n                                <div class=\"col-md-10\">\n                                        <textarea type=\"text\" class=\"form-control\" name=\"appearance\" id=\"appearance\" [(ngModel)] = \"component.appearance\" *ngIf=\"isEdit === false; else editAppearance\" disabled></textarea>\n                                    <ng-template #editAppearance>\n                                        <codemirror\n                                                class=\"form-control\" name=\"appearance\" id=\"appearance\"\n                                                    [(ngModel)] = \"component.appearance\"\n                                                    [config]=\"config\"\n                                        ></codemirror>\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-list\"></i>\n                <span>Elements Tree</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn cyan\" data-toggle=\"modal\" data-target=\"#addModal\" *ngIf=\"isEdit === true\">\n                    <i class=\"fa fa-plus\"></i>\n                    Add\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <lt-treeview [data]=\"[]\" [listToAdd]=\"listOfNode\"></lt-treeview>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n</form>"
+module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn darkorange\" (click)=\"editMode()\">\n                    <i class=\"fa fa-edit\"></i>\n                    Edit\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [ngModel] = \"component.name\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                    <ng-template #editName>\n                                        <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"component.name\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"appearance\" class=\"col-md-2 control-label\">Appearance</label>\n                                <div class=\"col-md-10\">\n                                        <textarea type=\"text\" class=\"form-control\" name=\"appearance\" id=\"appearance\" [(ngModel)] = \"component.appearance\" *ngIf=\"isEdit === false; else editAppearance\" disabled></textarea>\n                                    <ng-template #editAppearance>\n                                        <codemirror\n                                                class=\"form-control\" name=\"appearance\" id=\"appearance\"\n                                                    [(ngModel)] = \"component.appearance\"\n                                                    [config]=\"config\"\n                                        ></codemirror>\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-list\"></i>\n                <span>Elements Tree</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn cyan\" data-toggle=\"modal\" data-target=\"#addModal\" *ngIf=\"isEdit === true\">\n                    <i class=\"fa fa-plus\"></i>\n                    Add\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <lt-treeview [data]=\"[]\" [listToAdd]=\"listOfNode\" [show]=\"isEdit\" ></lt-treeview>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n</form>"
 
 /***/ }),
 
@@ -4487,4 +4497,4 @@ exports.websiteComponent = [
 /***/ })
 
 });
-//# sourceMappingURL=website.module.chunk.js.map
+//# sourceMappingURL=0.chunk.js.map

@@ -1,7 +1,7 @@
 {
     "name": "hadeluca/lortom",
-    "description": "Lortom is a CMS based on Laravel Framework, The Backend was built with Angular 2",
-    "keywords": ["cms", "laravel","angular4","laravel+angular", "angular 2"],
+    "description": "Lortom is a CMS based on Laravel Framework, The Backend was built with Angular 4",
+    "keywords": ["cms", "laravel","angular4","laravel+angular", "angular 4"],
     "license": "MIT",
     "type": "project",
     "authors": [

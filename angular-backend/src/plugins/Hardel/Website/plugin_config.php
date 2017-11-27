@@ -90,6 +90,7 @@
                             $table->foreign('idComponent')->references('id')->on('lt_components')->onUpdate('cascade')->onDelete('cascade');
                             $table->integer('idElement')->unsigned();
                             $table->foreign('idElement')->references('id')->on('lt_elements')->onUpdate('cascade')->onDelete('cascade');
+                            $table->integer('idPadre')->unsigned();
                         });
                     }
                 },

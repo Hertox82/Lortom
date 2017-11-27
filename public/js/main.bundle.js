@@ -6,20 +6,20 @@ webpackJsonp(["main"],{
 var map = {
 	"../plugins/Hardel/Dashboard/dashboard.module": [
 		"./src/plugins/Hardel/Dashboard/dashboard.module.ts",
-		"dashboard.module"
+		3
 	],
 	"../plugins/Hardel/Plugin/plugin.module": [
 		"./src/plugins/Hardel/Plugin/plugin.module.ts",
-		"plugin.module"
+		2
 	],
 	"../plugins/Hardel/Settings/settings.module": [
 		"./src/plugins/Hardel/Settings/settings.module.ts",
-		"settings.module",
+		1,
 		"common"
 	],
 	"../plugins/Hardel/Website/website.module": [
 		"./src/plugins/Hardel/Website/website.module.ts",
-		"website.module",
+		0,
 		"common"
 	]
 };
