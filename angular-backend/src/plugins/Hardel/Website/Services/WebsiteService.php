@@ -120,6 +120,7 @@ class WebsiteService{
             'Object'        => $element->Object,
             'functions'     => $element->function,
             'appearance'    => $element->appearance,
+            'idPadre'       => $element->idPadre
         ];
     }
 
@@ -169,7 +170,7 @@ class WebsiteService{
             'id'            => $cmp->id,
             'name'          => $cmp->name,
             'appearance'    => $cmp->appearance,
-            'elements'      =>  $this->getList(\stdClass::class,'SubElement',$cmp->getElements())
+            'elements'      =>  $cmp->getElements()
         ];
     }
 }

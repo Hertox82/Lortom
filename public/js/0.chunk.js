@@ -2744,6 +2744,29 @@ function convertToNodeList(items) {
     return listOfNode;
 }
 exports.convertToNodeList = convertToNodeList;
+function convertFromNodeToLtElementComp(items) {
+    var listOfElements = [];
+    if (items != undefined) {
+        for (var i = 0; i < items.length; i++) {
+            var el = items[i];
+            var obj = el.obj;
+            var it = {
+                id: obj.el.id,
+                idElement: obj.el.idElement,
+                name: obj.el.name,
+                Object: obj.el.Object,
+                functions: obj.el.functions,
+                appearance: obj.el.appearance,
+                children: [],
+                check: false
+            };
+            it.children = convertFromNodeToLtElementComp(el.children);
+            listOfElements.push(it);
+        }
+    }
+    return listOfElements;
+}
+exports.convertFromNodeToLtElementComp = convertFromNodeToLtElementComp;
 //# sourceMappingURL=website.interfaces.js.map
 
 /***/ }),
@@ -3099,6 +3122,7 @@ var WebsiteService = (function (_super) {
     WebsiteService.prototype.saveComponent = function (comp) {
         return this.http.put(this.apiManager.getPathByName('saveComponent'), comp, this.getOptions())
             .map(function (response) {
+            console.log(response);
             return response.json().component;
         });
     };
@@ -3117,7 +3141,7 @@ var _a;
 /***/ "./src/plugins/Hardel/Website/component/Component/component.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn darkorange\" (click)=\"editMode()\">\n                    <i class=\"fa fa-edit\"></i>\n                    Edit\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [ngModel] = \"component.name\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                    <ng-template #editName>\n                                        <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"component.name\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"appearance\" class=\"col-md-2 control-label\">Appearance</label>\n                                <div class=\"col-md-10\">\n                                        <textarea type=\"text\" class=\"form-control\" name=\"appearance\" id=\"appearance\" [(ngModel)] = \"component.appearance\" *ngIf=\"isEdit === false; else editAppearance\" disabled></textarea>\n                                    <ng-template #editAppearance>\n                                        <codemirror\n                                                class=\"form-control\" name=\"appearance\" id=\"appearance\"\n                                                    [(ngModel)] = \"component.appearance\"\n                                                    [config]=\"config\"\n                                        ></codemirror>\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-list\"></i>\n                <span>Elements Tree</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn cyan\" data-toggle=\"modal\" data-target=\"#addModal\" *ngIf=\"isEdit === true\">\n                    <i class=\"fa fa-plus\"></i>\n                    Add\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <lt-treeview [data]=\"[]\" [listToAdd]=\"listOfNode\" [show]=\"isEdit\" ></lt-treeview>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n</form>"
+module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn darkorange\" (click)=\"editMode()\">\n                    <i class=\"fa fa-edit\"></i>\n                    Edit\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [ngModel] = \"component.name\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                    <ng-template #editName>\n                                        <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"component.name\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"appearance\" class=\"col-md-2 control-label\">Appearance</label>\n                                <div class=\"col-md-10\">\n                                        <textarea type=\"text\" class=\"form-control\" name=\"appearance\" id=\"appearance\" [(ngModel)] = \"component.appearance\" *ngIf=\"isEdit === false; else editAppearance\" disabled></textarea>\n                                    <ng-template #editAppearance>\n                                        <codemirror\n                                                class=\"form-control\" name=\"appearance\" id=\"appearance\"\n                                                    [(ngModel)] = \"component.appearance\"\n                                                    [config]=\"config\"\n                                        ></codemirror>\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-list\"></i>\n                <span>Elements Tree</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn cyan\" data-toggle=\"modal\" data-target=\"#addModal\" *ngIf=\"isEdit === true\">\n                    <i class=\"fa fa-plus\"></i>\n                    Add\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <lt-treeview [data]=\"listOfDataNode\" [listToAdd]=\"listOfNode\" [show]=\"isEdit\" ></lt-treeview>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n</form>"
 
 /***/ }),
 
@@ -3176,6 +3200,7 @@ var ComponentComponent = (function () {
             else {
                 _this.nav.navigate(['/backend/not-found']);
             }
+            _this.listOfDataNode = website_interfaces_1.convertToNodeArray(_this.component.elements);
             _this.cloneComponent();
         });
     }
@@ -3196,19 +3221,26 @@ var ComponentComponent = (function () {
      * This function go to save Mode
      */
     ComponentComponent.prototype.saveMode = function () {
-        var _this = this;
         //salva i cambiamenti
+        var elements = website_interfaces_1.convertFromNodeToLtElementComp(this.listOfDataNode);
+        this.component.elements = elements;
         if (!this.isEqual(this.component, this.copyComponent)) {
             if (this.component.name.length == 0) {
                 alert('You must write a name of Component, please!');
                 this.cloneCopyComponent();
                 return;
             }
-            this.ecService.saveComponent(this.component).subscribe(function (component) {
-                _this.component = component;
-                _this.retriveElements();
-                _this.ecService.updateComponentInList(_this.component);
-                _this.editMode();
+            /* this.ecService.saveComponent(this.component).subscribe(
+                 (component : LortomComponent) => {
+                     this.component = component;
+                     this.retriveElements();
+                     this.ecService.updateComponentInList(this.component);
+                     this.editMode();
+                 }
+             );
+             */
+            this.ecService.saveComponent(this.component).subscribe(function (data) {
+                console.log(data);
             });
         }
     };

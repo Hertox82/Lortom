@@ -4,12 +4,10 @@
 
 
 import {Injectable} from "@angular/core";
-import {ApiManager} from "../../../../app/urlApi/api.manager";
-import {Headers, Http, RequestOptions, Response} from "@angular/http";
-import {User} from "../../../../app/backend-module/user-module/user-model/user.interface";
+import {Http, Response} from "@angular/http";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
-import {LortomComponent, LortomElement, Page} from "./website.interfaces";
+import {LortomComponent, LortomElement, LtElementComp, Page} from "./website.interfaces";
 import {MasterService} from "@Lortom/services/master.service";
 
 @Injectable()
@@ -41,7 +39,8 @@ export class WebsiteService extends MasterService{
             { namePath : 'getElements', path: 'elements'},
             { namePath : 'saveElement', path : 'element'},
             { namePath : 'getComponents', path : 'components'},
-            { namePath : 'saveComponent', path : 'component'}
+            { namePath : 'saveComponent', path : 'component'},
+            { namePath : 'updateElementComponent', path: 'component/element' }
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -451,8 +450,19 @@ export class WebsiteService extends MasterService{
         return this.http.put(this.apiManager.getPathByName('saveComponent'),comp,this.getOptions())
             .map(
                 (response : Response) => {
+                    console.log(response);
                     return response.json().component;
                 }
             );
+    }
+
+    updateElementComponent(data : {idComponent: number, object: any, parent?: any}): Promise<LtElementComp> {
+
+        return this.http.post(this.apiManager.getPathByName('updateElementComponent'),data,this.getOptions())
+            .toPromise().then(
+                (response : Response) => {
+                    console.log(response);
+                    return response.json().elementComponent as LtElementComp;
+                });
     }
 }

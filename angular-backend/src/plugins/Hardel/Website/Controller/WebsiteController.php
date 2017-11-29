@@ -147,7 +147,9 @@ class WebsiteController extends Controller
     public function storeComponent(Request $request)
     {
         $input = $request->all();
-        $Class = LortomComponent::class;
+
+        pr($input,1);
+        /*$Class = LortomComponent::class;
         $type = ($request->method() == 'POST') ? 'Save' : 'Edit';
         $ToSave = ['name','appearance'];
         $responseKey = 'component';
@@ -164,7 +166,48 @@ class WebsiteController extends Controller
             ],
         ];
 
-        return response()->json($this->storeObj(compact('input','Class','type','ToSave','subTables','responseKey','name')));
+        return response()->json($this->storeObj(compact('input','Class','type','ToSave','subTables','responseKey','name')));*/
+    }
+
+    public function updateComponentElement( Request $request)
+    {
+        $input = $request->all();
+        $idComponent = $input['idComponent'];
+        $idElement = $input['object']['el']['idElement'];
+        $idPadre = 0;
+
+        if(isset($input['parent']))
+        {
+            $idPadre = $input['parent']['el']['id'];
+        }
+
+        $data = [
+            'idComponent' => $idComponent,
+            'idElement'   => $idElement,
+            'idPadre'     => $idPadre
+        ];
+
+        $id = DB::table('lt_component_element')->insertGetId($data);
+
+        $elementStd = $this->getComponentElement($id);
+
+        $Component = LortomComponent::find($idComponent);
+
+        return response()->json(['elementComponent' => $Component->serializeSubElements($elementStd,$Component)]);
+    }
+
+    private function getComponentElement($id) {
+       return  DB::table('lt_component_element')
+            ->where('lt_component_element.id',$id)
+            ->join('lt_elements','lt_elements.id','=','lt_component_element.idElement')
+            ->select([
+                'lt_component_element.id AS id',
+                'lt_elements.id AS idElement',
+                'lt_elements.name AS name',
+                'lt_elements.Object AS Object',
+                'lt_elements.function AS function',
+                'lt_elements.appearance AS appearance',
+            ])->get()[0];
     }
 
     /**

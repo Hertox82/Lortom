@@ -6,12 +6,13 @@
 import {Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {
     LortomComponent, LortomElement,
-    LtElementComp,convertToLtElementComp, convertToNodeList
+    LtElementComp,convertToLtElementComp, convertToNodeList,convertToNodeArray,convertFromNodeToLtElementComp, convLtElementCompToNode
 } from "@Lortom/plugins/Hardel/Website/Services/website.interfaces";
 import {WebsiteService} from "@Lortom/plugins/Hardel/Website/Services/website.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import 'codemirror/mode/htmlmixed/htmlmixed';
 import { Node } from 'lt-treeview';
+import {hasOwnProperty} from "tslint/lib/utils";
 
 @Component({
     selector : 'wb-component',
@@ -30,6 +31,8 @@ export class ComponentComponent implements OnInit, OnDestroy
     notFound : boolean;
     config : any;
     listOfNode : Node[];
+    listOfDataNode : Node[];
+    self = this;
 
     constructor(private ecService : WebsiteService, private router : ActivatedRoute,private nav : Router){
         this.isEdit = false;
@@ -41,6 +44,7 @@ export class ComponentComponent implements OnInit, OnDestroy
             matchBrackets: true,
             theme:'dracula'
         };
+
         this.component = {
             id : -2,
             name : '',
@@ -60,6 +64,7 @@ export class ComponentComponent implements OnInit, OnDestroy
                 {
                     this.nav.navigate(['/backend/not-found']);
                 }
+                this.listOfDataNode = convertToNodeArray(this.component.elements);
                 this.cloneComponent();
             }
         );
@@ -86,6 +91,10 @@ export class ComponentComponent implements OnInit, OnDestroy
      */
     saveMode() {
         //salva i cambiamenti
+
+        let elements = convertFromNodeToLtElementComp(this.listOfDataNode);
+
+        this.component.elements = elements;
         if(!this.isEqual(this.component,this.copyComponent))
         {
             if(this.component.name.length == 0)
@@ -95,7 +104,7 @@ export class ComponentComponent implements OnInit, OnDestroy
                 return;
             }
 
-            this.ecService.saveComponent(this.component).subscribe(
+           /* this.ecService.saveComponent(this.component).subscribe(
                 (component : LortomComponent) => {
                     this.component = component;
                     this.retriveElements();
@@ -103,7 +112,39 @@ export class ComponentComponent implements OnInit, OnDestroy
                     this.editMode();
                 }
             );
+            */
+           this.ecService.saveComponent(this.component).subscribe(
+               (data: any) => {
+
+                   console.log(data);
+               });
         }
+    }
+
+    /**
+     *
+     * @param arrayList
+     * @param data
+     * @returns {Promise<Node>}
+     */
+    updateNode(data: any) : Promise<Node>{
+        console.log(this.component);
+        console.log(data);
+        let obj = {
+            idComponent : this.component.id,
+            object: data.node.obj,
+        };
+
+        if(hasOwnProperty(data,'parent'))
+        {
+            obj['parent'] = data.parent.obj;
+        }
+
+        return this.ecService.updateElementComponent(obj).then(
+            (item : LtElementComp) => {
+                return convLtElementCompToNode(item) as Node;
+            }
+        );
     }
 
     /**

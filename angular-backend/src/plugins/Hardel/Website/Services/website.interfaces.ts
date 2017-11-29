@@ -2,7 +2,7 @@
  * Created by hernan on 14/11/2017.
  */
 
-import { Node } from 'lt-treeview';
+import {Node} from 'lt-treeview';
 
 export interface Page {
     id : number,
@@ -60,6 +60,22 @@ export function convertToLtElementComp(item : LortomElement) : LtElementComp
     } as LtElementComp
 }
 
+export function convLtElementCompToNode(item : LtElementComp) : Node
+{
+
+    let node =  {
+        label: item.name,
+        obj: {item},
+        children: [],
+        adding: false,
+        expand: false
+    } as Node;
+
+    node.children = convertToNodeArray(item.children);
+
+    return node;
+}
+
 export function convertToNodeArray(items : LtElementComp[]) : Node[]
 {
     let listOfNode: Node[] = [];
@@ -101,4 +117,35 @@ export function convertToNodeList(items : LtElementComp[]):Node []{
     );
 
     return listOfNode;
+}
+
+export function convertFromNodeToLtElementComp(items: Node[]) : LtElementComp[]
+{
+    let listOfElements :LtElementComp[] = [];
+
+    if(items != undefined) {
+
+        for(let i=0; i<items.length; i++)
+        {
+            let el = items[i] as Node;
+
+            let obj = el.obj;
+
+            var it = {
+                id: obj.el.id,
+                idElement: obj.el.idElement,
+                name: obj.el.name,
+                Object: obj.el.Object,
+                functions: obj.el.functions,
+                appearance: obj.el.appearance,
+                children: [],
+                check:false
+            } as LtElementComp;
+
+            it.children = convertFromNodeToLtElementComp(el.children);
+            listOfElements.push(it);
+        }
+    }
+
+    return listOfElements;
 }

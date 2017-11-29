@@ -64,3 +64,8 @@ Route::put('/component',[
     'as'     => 'apiUpdateComponent',
     'uses'   => 'WebsiteController@storeComponent'
 ]);
+
+Route::post('/component/element',[
+    'as'     => 'apiUpdateComponentElement',
+    'uses'   => 'WebsiteController@updateComponentElement'
+]);
