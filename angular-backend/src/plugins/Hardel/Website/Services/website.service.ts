@@ -450,7 +450,6 @@ export class WebsiteService extends MasterService{
         return this.http.put(this.apiManager.getPathByName('saveComponent'),comp,this.getOptions())
             .map(
                 (response : Response) => {
-                    console.log(response);
                     return response.json().component;
                 }
             );
@@ -461,8 +460,18 @@ export class WebsiteService extends MasterService{
         return this.http.post(this.apiManager.getPathByName('updateElementComponent'),data,this.getOptions())
             .toPromise().then(
                 (response : Response) => {
-                    console.log(response);
                     return response.json().elementComponent as LtElementComp;
                 });
+    }
+
+    deleteElementComponent(data : {idComponentElement: number}) : Observable<any> {
+        return this.http.put(this.apiManager.getPathByName('updateElementComponent'),data,this.getOptions())
+            .map(
+                (response: Response) => {
+                    console.log(response);
+
+                    return response.json().elements;
+                }
+            );
     }
 }

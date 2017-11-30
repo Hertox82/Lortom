@@ -54,11 +54,8 @@
                 <span>Elements Tree</span>
             </div>
             <div class="actions">
-                <button class="btn cyan" data-toggle="modal" data-target="#addModal" *ngIf="isEdit === true">
-                    <i class="fa fa-plus"></i>
-                    Add
-                </button>
             </div>
+
         </div>
         <div class="portlet-body">
             <div class="box">
@@ -69,7 +66,7 @@
                     <div class="wrapper">
                         <div class="row">
                             <div class="col-sm-12">
-                                <lt-treeview [data]="listOfDataNode" [callBackOnUpdate] = "updateNode" [component] = "self" [listToAdd]="listOfNode" [show]="isEdit" ></lt-treeview>
+                                <lt-treeview [data]="listOfDataNode" [callBackOnUpdate] = "updateNode" [callBackOnDelete]="deleteNode" [component] = "self" [listToAdd]="listOfNode" [show]="isEdit" ></lt-treeview>
                             </div>
                         </div>
                     </div>

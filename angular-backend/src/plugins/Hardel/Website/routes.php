@@ -69,3 +69,8 @@ Route::post('/component/element',[
     'as'     => 'apiUpdateComponentElement',
     'uses'   => 'WebsiteController@updateComponentElement'
 ]);
+
+Route::put('/component/element',[
+    'as'     => 'apiDeleteComponentElement',
+    'uses'   => 'WebsiteController@deleteComponentElement'
+]);

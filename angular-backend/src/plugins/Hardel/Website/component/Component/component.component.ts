@@ -3,16 +3,16 @@
  */
 
 
-import {Component, Input, OnDestroy, OnInit} from "@angular/core";
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {
     LortomComponent, LortomElement,
-    LtElementComp,convertToLtElementComp, convertToNodeList,convertToNodeArray,convertFromNodeToLtElementComp, convLtElementCompToNode
-} from "@Lortom/plugins/Hardel/Website/Services/website.interfaces";
-import {WebsiteService} from "@Lortom/plugins/Hardel/Website/Services/website.service";
-import {ActivatedRoute, Router} from "@angular/router";
+    LtElementComp, convertToLtElementComp, convertToNodeList, convertToNodeArray, convertFromNodeToLtElementComp, convLtElementCompToNode
+} from '@Lortom/plugins/Hardel/Website/Services/website.interfaces';
+import {WebsiteService} from '@Lortom/plugins/Hardel/Website/Services/website.service';
+import {ActivatedRoute, Router} from '@angular/router';
 import 'codemirror/mode/htmlmixed/htmlmixed';
 import { Node } from 'lt-treeview';
-import {hasOwnProperty} from "tslint/lib/utils";
+import {hasOwnProperty} from 'tslint/lib/utils';
 
 @Component({
     selector : 'wb-component',
@@ -20,21 +20,20 @@ import {hasOwnProperty} from "tslint/lib/utils";
     styles : ['']
 })
 
-export class ComponentComponent implements OnInit, OnDestroy
-{
-    @Input() component : LortomComponent;
-    copyComponent : LortomComponent;
-    id : number;
-    private sub : any;
-    isEdit : boolean;
+export class ComponentComponent implements OnInit, OnDestroy {
+    @Input() component: LortomComponent;
+    copyComponent: LortomComponent;
+    id: number;
+    private sub: any;
+    isEdit: boolean;
     listElements = [];
-    notFound : boolean;
-    config : any;
-    listOfNode : Node[];
-    listOfDataNode : Node[];
+    notFound: boolean;
+    config: any;
+    listOfNode: Node[];
+    listOfDataNode: Node[];
     self = this;
 
-    constructor(private ecService : WebsiteService, private router : ActivatedRoute,private nav : Router){
+    constructor(private ecService: WebsiteService, private router: ActivatedRoute, private nav: Router) {
         this.isEdit = false;
         this.notFound = false;
         this.config = {
@@ -42,7 +41,7 @@ export class ComponentComponent implements OnInit, OnDestroy
             mode : 'htmlmixed',
             styleActiveLine: true,
             matchBrackets: true,
-            theme:'dracula'
+            theme: 'dracula'
         };
 
         this.component = {
@@ -55,13 +54,10 @@ export class ComponentComponent implements OnInit, OnDestroy
         this.sub = this.router.params.subscribe(
             (params) => {
                 this.id = +params['id'];
-                this.component = this.ecService.getComponentByProperty('id',this.id);
-                if(this.component != null)
-                {
+                this.component = this.ecService.getComponentByProperty('id', this.id);
+                if (this.component != null) {
                     this.notFound = true;
-                }
-                else
-                {
+                } else {
                     this.nav.navigate(['/backend/not-found']);
                 }
                 this.listOfDataNode = convertToNodeArray(this.component.elements);
@@ -81,8 +77,8 @@ export class ComponentComponent implements OnInit, OnDestroy
     /**
      * This function pass into edit Mode
      */
-    editMode(){
-        //passa in modalità edit
+    editMode() {
+        // passa in modalità edit
         this.isEdit = !this.isEdit;
     }
 
@@ -90,15 +86,13 @@ export class ComponentComponent implements OnInit, OnDestroy
      * This function go to save Mode
      */
     saveMode() {
-        //salva i cambiamenti
+        // salva i cambiamenti
 
-        let elements = convertFromNodeToLtElementComp(this.listOfDataNode);
+        const elements = convertFromNodeToLtElementComp(this.listOfDataNode);
 
         this.component.elements = elements;
-        if(!this.isEqual(this.component,this.copyComponent))
-        {
-            if(this.component.name.length == 0)
-            {
+        if (!this.isEqual(this.component, this.copyComponent)) {
+            if (this.component.name.length == 0) {
                 alert('You must write a name of Component, please!');
                 this.cloneCopyComponent();
                 return;
@@ -127,33 +121,49 @@ export class ComponentComponent implements OnInit, OnDestroy
      * @param data
      * @returns {Promise<Node>}
      */
-    updateNode(data: any) : Promise<Node>{
-        console.log(this.component);
-        console.log(data);
+    updateNode(data: any): Promise<Node> {
         let obj = {
             idComponent : this.component.id,
             object: data.node.obj,
         };
 
-        if(hasOwnProperty(data,'parent'))
-        {
+        if (hasOwnProperty(data, 'parent')) {
             obj['parent'] = data.parent.obj;
         }
 
         return this.ecService.updateElementComponent(obj).then(
-            (item : LtElementComp) => {
+            (item: LtElementComp) => {
                 return convLtElementCompToNode(item) as Node;
             }
         );
     }
 
+    deleteNode(data: any) {
+        console.log(data);
+
+        if (data.node.obj.el.id > -1) {
+            let obj = {
+                idComponentElement: data.node.obj.el.id,
+                idComponent: this.component.id,
+            };
+
+            this.ecService.deleteElementComponent(obj).subscribe(
+                (elements: LtElementComp[]) => {
+                     this.component.elements = elements;
+                     this.ecService.updateComponentInList(this.component);
+                     this.listOfDataNode = convertToNodeArray(this.component.elements);
+                     this.cloneComponent();
+                }
+            );
+        }
+    }
+
     /**
      * This function is to get Permission from API
      */
-    private retriveElements()
-    {
+    private retriveElements() {
         this.ecService.getElementsFrom().subscribe(
-            (elements : LortomElement []) => {
+            (elements: LortomElement []) => {
                 elements.forEach(
                     (item: LortomElement) => {
                         this.listElements.push(convertToLtElementComp(item));
@@ -171,32 +181,31 @@ export class ComponentComponent implements OnInit, OnDestroy
      */
     resetMode() {
 
-        if(!this.isEqual(this.component,this.copyComponent)) {
+        if (!this.isEqual(this.component, this.copyComponent)) {
             if (confirm('Are you sure you don\'t want to save this changement and restore it?')) {
                 this.cloneCopyComponent();
             }
         }
     }
 
-    isEqual(v,v2) : boolean
-    {
-        return (v.name == v2.name) && (v.elements.length == v2.elements.length)
+    isEqual(v, v2): boolean {
+        return (v.name == v2.name) && (v.elements.length == v2.elements.length);
     }
 
 
     /**
      * This function clone the Role
      */
-    cloneComponent(){
-        if(this.component != null) {
-            let elements: LtElementComp[] = [];
+    cloneComponent() {
+        if (this.component != null) {
+            const elements: LtElementComp[] = [];
 
-            for(let perm of this.component.elements)
+            for (const perm of this.component.elements)
             {
                 elements.push(perm);
             }
 
-            this.copyComponent = Object.assign({},this.component);
+            this.copyComponent = Object.assign({}, this.component);
             this.copyComponent.elements = elements;
         }
     }
@@ -204,16 +213,15 @@ export class ComponentComponent implements OnInit, OnDestroy
     /**
      * This function clone the CopyRole
      */
-    cloneCopyComponent()
-    {
-        let elements: LtElementComp[] = [];
+    cloneCopyComponent() {
+        const elements: LtElementComp[] = [];
 
-        for(let perm of this.copyComponent.elements)
+        for (const perm of this.copyComponent.elements)
         {
             elements.push(perm);
         }
 
-        this.component = Object.assign({},this.copyComponent);
+        this.component = Object.assign({}, this.copyComponent);
         this.component.elements = elements;
     }
 }

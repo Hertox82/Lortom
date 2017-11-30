@@ -148,27 +148,22 @@ class WebsiteController extends Controller
     {
         $input = $request->all();
 
-        pr($input,1);
-        /*$Class = LortomComponent::class;
+        //pr($input,1);
+        $Class = LortomComponent::class;
         $type = ($request->method() == 'POST') ? 'Save' : 'Edit';
         $ToSave = ['name','appearance'];
         $responseKey = 'component';
         $name = 'Component';
-        $subTables = [
-            'lt_component_element' => [
+        $subTables = [];
 
-                'lista' => $input['elements'],
-
-                'subTableKey' => [
-                    'idElement'     => true,
-                    'idComponent'   => false
-                ]
-            ],
-        ];
-
-        return response()->json($this->storeObj(compact('input','Class','type','ToSave','subTables','responseKey','name')));*/
+        return response()->json($this->storeObj(compact('input','Class','type','ToSave','subTables','responseKey','name')));
     }
 
+    /**
+     * This function is to store the Subtable of lt_component_element
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateComponentElement( Request $request)
     {
         $input = $request->all();
@@ -178,7 +173,13 @@ class WebsiteController extends Controller
 
         if(isset($input['parent']))
         {
-            $idPadre = $input['parent']['el']['id'];
+            if(isset($input['parent']['el'])) {
+                $idPadre = $input['parent']['el']['id'];
+            }
+            else if(isset($input['parent']['item']))
+            {
+                $idPadre = $input['parent']['item']['id'];
+            }
         }
 
         $data = [
@@ -196,6 +197,65 @@ class WebsiteController extends Controller
         return response()->json(['elementComponent' => $Component->serializeSubElements($elementStd,$Component)]);
     }
 
+    public function deleteComponentElement( Request $request)
+    {
+        $input = $request->all();
+
+        $idComponentElement = $input['idComponentElement'];
+
+        $Component = LortomComponent::find($input['idComponent']);
+
+        $arrayOfIdToDelete = [];
+
+        $listOfChild = $this->getCompElByIdFather($idComponentElement);
+
+        $itself = $this;
+
+
+        $arrayOfIdToDelete = array_reduce(array_filter(
+            array_map_collection(function($child)use($itself){
+
+                $idArray[] = $child->id;
+
+                $listOfIdChild = $itself->loopOverFather($child->id);
+
+                return array_merge($idArray,$listOfIdChild);
+            },$listOfChild)),function($carry,$item){
+            if(!empty($carry))
+                $carry = array_merge($carry,$item);
+            else
+                $carry = $item;
+            return $carry;
+        });
+
+        $arrayOfIdToDelete[] = $idComponentElement;
+
+        foreach ($arrayOfIdToDelete as $id) {
+            DB::table('lt_component_element')->where('id',$id)->delete();
+        }
+
+        // now is time to resend all component elements
+
+        return response()->json(['elements' => $Component->getElements()]);
+    }
+
+    private function loopOverFather($idFather)
+    {
+        $listOfChild = $this->getCompElByIdFather($idFather);
+
+        $listOfId = [];
+
+        foreach ($listOfChild as $child) {
+            $listOfId[] = $child->id;
+
+            $listOfIdChild = $this->loopOverFather($child->id);
+
+            $listOfId = array_merge($listOfId,$listOfIdChild);
+        }
+
+        return $listOfId;
+    }
+
     private function getComponentElement($id) {
        return  DB::table('lt_component_element')
             ->where('lt_component_element.id',$id)
@@ -209,6 +269,17 @@ class WebsiteController extends Controller
                 'lt_elements.appearance AS appearance',
             ])->get()[0];
     }
+
+    private function getCompElByIdFather($idFather) {
+        return DB::table('lt_component_element')
+            ->where('lt_component_element.idPadre',$idFather)
+            ->join('lt_elements','lt_elements.id','=','lt_component_element.idElement')
+            ->select([
+                'lt_component_element.id AS id',
+            ])->get();
+    }
+
+
 
     /**
      * This function delete LortomComponent

@@ -77,6 +77,7 @@ export class MasterService {
        {
          if(iList[i].id === item.id)
          {
+             console.log('change item');
             iList[i] = item;
          }
        }

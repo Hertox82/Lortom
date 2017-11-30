@@ -67,22 +67,6 @@ export class ElementComponent implements OnInit
         this.isEdit = !this.isEdit;
     }
 
-    saveMode() : void
-    {
-        if(!this.isEqual(this.element,this.copyElement))
-        {
-            this.ueService.saveElement(this.element).subscribe(
-                (element : LortomElement) => {
-                    this.element = element;
-                    this.cloneElement();
-                    this.ueService.updateElementInList(this.element);
-                    this.ueService.updateListOfElements();
-                    this.editMode();
-                }
-            );
-        }
-    }
-
     resetMode() : void
     {
         if(confirm("Do you really want reset all fields?"))
@@ -103,6 +87,22 @@ export class ElementComponent implements OnInit
 
     isEqual(v1,v2)
     {
-        return (v1.name == v2.name)
+        return (v1.name == v2.name && v1.appearance == v2.appearance)
+    }
+
+    saveElementMode()
+    {
+        if(!this.isEqual(this.element,this.copyElement))
+        {
+            this.ueService.saveElement(this.element).subscribe(
+                (element : LortomElement) => {
+                    this.element = element;
+                    this.cloneElement();
+                    this.ueService.updateElementInList(this.element);
+                    this.ueService.updateListOfElements();
+                    this.editMode();
+                }
+            );
+        }
     }
 }
