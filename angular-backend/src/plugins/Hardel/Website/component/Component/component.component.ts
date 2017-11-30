@@ -41,7 +41,7 @@ export class ComponentComponent implements OnInit, OnDestroy {
             mode : 'htmlmixed',
             styleActiveLine: true,
             matchBrackets: true,
-            theme: 'dracula'
+            theme: 'dracula',
         };
 
         this.component = {
