@@ -7,7 +7,7 @@ import {FormsModule} from "@angular/forms";
 import {WebsiteService} from "./Services/website.service";
 import {EditorModule} from "@Lortom-Backend/Editor/editor";
 import {UIElementModule} from "@Lortom-Backend/UIElement/uielement.module";
-import { CodemirrorModule } from "ng2-codemirror";
+import { CodemirrorModule } from "lt-codemirror";
 import { LtTreeviewModule } from "lt-treeview";
 
 

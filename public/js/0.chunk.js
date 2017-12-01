@@ -2281,6 +2281,184 @@ if (!CodeMirror.mimeModes.hasOwnProperty("text/html"))
 
 /***/ }),
 
+/***/ "./node_modules/lt-codemirror/lib/codemirror.component.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+// Imports
+var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var forms_1 = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+var CodeMirror = __webpack_require__("./node_modules/codemirror/lib/codemirror.js");
+/**
+ * CodeMirror component
+ * Usage :
+ * <codemirror [(ngModel)]="data" [config]="{...}"></codemirror>
+ */
+var CodemirrorComponent = /** @class */ (function () {
+    /**
+     * Constructor
+     */
+    function CodemirrorComponent() {
+        this.change = new core_1.EventEmitter();
+        this.focus = new core_1.EventEmitter();
+        this.blur = new core_1.EventEmitter();
+        this.cursorActivity = new core_1.EventEmitter();
+        this.instance = null;
+        this._value = '';
+    }
+    Object.defineProperty(CodemirrorComponent.prototype, "value", {
+        get: function () { return this._value; },
+        set: function (v) {
+            if (v !== this._value) {
+                this._value = v;
+                this.onChange(v);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * On component destroy
+     */
+    CodemirrorComponent.prototype.ngOnDestroy = function () {
+    };
+    /**
+     * On component view init
+     */
+    CodemirrorComponent.prototype.ngAfterViewInit = function () {
+        this.config = this.config || {};
+        this.codemirrorInit(this.config, this.size);
+    };
+    /**
+     * Initialize codemirror
+     */
+    CodemirrorComponent.prototype.codemirrorInit = function (config, size) {
+        var _this = this;
+        this.instance = CodeMirror.fromTextArea(this.host.nativeElement, config);
+        this.instance.setValue(this._value);
+        this.instance.on('change', function () {
+            _this.updateValue(_this.instance.getValue());
+        });
+        this.instance.on('focus', function (instance, event) {
+            _this.focus.emit({ instance: instance, event: event });
+        });
+        this.instance.on('cursorActivity', function (instance) {
+            _this.cursorActivity.emit({ instance: instance });
+        });
+        this.instance.on('blur', function (instance, event) {
+            _this.blur.emit({ instance: instance, event: event });
+        });
+        if (this.size != undefined || this.size != {}) {
+            this.instance.setSize(this.size.w, this.size.h);
+        }
+    };
+    /**
+     * Value update process
+     */
+    CodemirrorComponent.prototype.updateValue = function (value) {
+        this.value = value;
+        this.onTouched();
+        this.change.emit(value);
+    };
+    /**
+     * Implements ControlValueAccessor
+     */
+    CodemirrorComponent.prototype.writeValue = function (value) {
+        this._value = value || '';
+        if (this.instance) {
+            this.instance.setValue(this._value);
+        }
+    };
+    CodemirrorComponent.prototype.onChange = function (_) { };
+    CodemirrorComponent.prototype.onTouched = function () { };
+    CodemirrorComponent.prototype.registerOnChange = function (fn) { this.onChange = fn; };
+    CodemirrorComponent.prototype.registerOnTouched = function (fn) { this.onTouched = fn; };
+    CodemirrorComponent.decorators = [
+        { type: core_1.Component, args: [{
+                    selector: 'codemirror',
+                    providers: [
+                        {
+                            provide: forms_1.NG_VALUE_ACCESSOR,
+                            useExisting: core_1.forwardRef(function () { return CodemirrorComponent; }),
+                            multi: true
+                        }
+                    ],
+                    template: "<textarea #host></textarea>",
+                },] },
+    ];
+    /** @nocollapse */
+    CodemirrorComponent.ctorParameters = function () { return []; };
+    CodemirrorComponent.propDecorators = {
+        'config': [{ type: core_1.Input },],
+        'size': [{ type: core_1.Input },],
+        'change': [{ type: core_1.Output },],
+        'focus': [{ type: core_1.Output },],
+        'blur': [{ type: core_1.Output },],
+        'cursorActivity': [{ type: core_1.Output },],
+        'host': [{ type: core_1.ViewChild, args: ['host',] },],
+        'instance': [{ type: core_1.Output },],
+        'value': [{ type: core_1.Input },],
+    };
+    return CodemirrorComponent;
+}());
+exports.CodemirrorComponent = CodemirrorComponent;
+//# sourceMappingURL=codemirror.component.js.map
+
+/***/ }),
+
+/***/ "./node_modules/lt-codemirror/lib/codemirror.module.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var common_1 = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+var codemirror_component_1 = __webpack_require__("./node_modules/lt-codemirror/lib/codemirror.component.js");
+/**
+ * CodemirrorModule
+ */
+var CodemirrorModule = /** @class */ (function () {
+    function CodemirrorModule() {
+    }
+    CodemirrorModule.decorators = [
+        { type: core_1.NgModule, args: [{
+                    imports: [
+                        common_1.CommonModule
+                    ],
+                    declarations: [
+                        codemirror_component_1.CodemirrorComponent,
+                    ],
+                    exports: [
+                        codemirror_component_1.CodemirrorComponent,
+                    ]
+                },] },
+    ];
+    /** @nocollapse */
+    CodemirrorModule.ctorParameters = function () { return []; };
+    return CodemirrorModule;
+}());
+exports.CodemirrorModule = CodemirrorModule;
+//# sourceMappingURL=codemirror.module.js.map
+
+/***/ }),
+
+/***/ "./node_modules/lt-codemirror/lib/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var codemirror_module_1 = __webpack_require__("./node_modules/lt-codemirror/lib/codemirror.module.js");
+exports.CodemirrorModule = codemirror_module_1.CodemirrorModule;
+var codemirror_component_1 = __webpack_require__("./node_modules/lt-codemirror/lib/codemirror.component.js");
+exports.CodemirrorComponent = codemirror_component_1.CodemirrorComponent;
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
 /***/ "./node_modules/lt-treeview/lt-treeview.es5.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2318,6 +2496,7 @@ var LtTreeviewComponent = (function () {
     LtTreeviewComponent.prototype.ngOnInit = function () {
     };
     /**
+     * This function collapse the item in treeview
      * @param {?} item
      * @return {?}
      */
@@ -2327,6 +2506,7 @@ var LtTreeviewComponent = (function () {
         }
     };
     /**
+     * This function call The AddNode function
      * @param {?} item
      * @return {?}
      */
@@ -2357,7 +2537,37 @@ var LtTreeviewComponent = (function () {
      * @return {?}
      */
     LtTreeviewComponent.prototype.addRootNode = function (item) {
-        this.data.push(convertAddedToNode(item));
+        var _this = this;
+        // Converting the NodeAdded into Node
+        var /** @type {?} */ node = convertAddedToNode(item);
+        var /** @type {?} */ emitNode = ({
+            node: node
+        });
+        if (this.callBackOnUpdate != undefined) {
+            if (this.component == undefined) {
+                this.callBackOnUpdate(this.data, emitNode)
+                    .then(function (res) {
+                    _this.data.push(res);
+                });
+            }
+            else {
+                if (this.callBackOnUpdate && typeof this.callBackOnUpdate == 'function') {
+                    var /** @type {?} */ method = this.callBackOnUpdate.bind(this.component);
+                    method(emitNode).then(function (res) {
+                        _this.data.push(res);
+                    });
+                }
+                else {
+                    this.component[this.callBackOnUpdate](emitNode).then(function (res) {
+                        _this.data.push(res);
+                    });
+                }
+            }
+        }
+        else {
+            this.data.push(node);
+        }
+        // pushing node into dataNode
         this.addRootb = !this.addRootb;
     };
     /**
@@ -2370,6 +2580,23 @@ var LtTreeviewComponent = (function () {
                 var /** @type {?} */ index = this.data.indexOf(item);
                 if (index > -1) {
                     this.data.splice(index, 1);
+                    var /** @type {?} */ emitNode = ({
+                        node: item
+                    });
+                    if (this.callBackOnDelete != undefined) {
+                        if (this.component == undefined) {
+                            this.callBackOnDelete(emitNode);
+                        }
+                        else {
+                            if (this.callBackOnDelete && typeof this.callBackOnDelete == 'function') {
+                                var /** @type {?} */ method = this.callBackOnDelete.bind(this.component);
+                                method(emitNode);
+                            }
+                            else {
+                                this.component[this.callBackOnDelete](emitNode);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -2382,7 +2609,38 @@ var LtTreeviewComponent = (function () {
         var _this = this;
         this.data.forEach(function (node) {
             if (node === _this.currentNode) {
-                node.children.push(convertAddedToNode(item));
+                var /** @type {?} */ convertedNode = convertAddedToNode(item);
+                if (_this.callBackOnUpdate == undefined) {
+                    node.children.push(convertedNode);
+                    node.expand = true;
+                }
+                else {
+                    var /** @type {?} */ emitNode = ({
+                        parent: node,
+                        node: convertedNode
+                    });
+                    if (_this.component == undefined) {
+                        _this.callBackOnUpdate(emitNode).then(function (res) {
+                            node.children.push(res);
+                            node.expand = true;
+                        });
+                    }
+                    else {
+                        if (typeof _this.callBackOnUpdate == 'function') {
+                            var /** @type {?} */ method = _this.callBackOnUpdate.bind(_this.component);
+                            method(emitNode).then(function (res) {
+                                node.children.push(res);
+                                node.expand = true;
+                            });
+                        }
+                        else {
+                            _this.component[_this.callBackOnUpdate](node.children, emitNode).then(function (res) {
+                                node.children.push(res);
+                                node.expand = true;
+                            });
+                        }
+                    }
+                }
                 node.adding = false;
             }
         });
@@ -2393,7 +2651,7 @@ var LtTreeviewComponent = (function () {
 LtTreeviewComponent.decorators = [
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
                 selector: 'lt-treeview',
-                template: "\n    <div class=\"container\">\n      <ul class=\"treeview\">\n          <li class=\"parent\" *ngFor=\"let item of data\">\n                <div class=\"list-item\" *ngIf=\"item.adding === true\">\n                    <ul>\n                        <li *ngFor=\"let n of listToAdd\"(click)=\"addNode(n)\"><span>{{n.label}}</span></li>\n                    </ul>\n                </div>\n                <span class=\"coll\" (click)=\"expand(item)\" *ngIf=\"item.expand === false; else expanse\">\n                    <i class=\"fa fa-caret-right\"></i>\n                </span>\n                <ng-template #expanse>\n                        <span class=\"coll\" (click)=\"expand(item)\">\n                            <i class=\"fa fa-caret-down\"></i>\n                        </span>\n                    </ng-template>\n                <div class=\"control\">\n                    <a>\n                        {{item.label}}\n                    </a>\n                    <button class=\"plus\" (click)=\"add(item)\">\n                        <i class=\"fa fa-plus\"></i>\n                    </button>\n                    <button class=\"erase\" (click)=\"delete(item)\">\n                        <i class=\"fa fa-remove\"></i>\n                    </button>\n                </div>\n                <lt-treeview-internal [data]=\"item.children\" [listToAdd]=\"listToAdd\" [show]=\"show\" *ngIf=\"item.expand === true\"></lt-treeview-internal>\n          </li>\n      </ul>\n      <div class=\"box-lt-treeview\" *ngIf=\"show === true\">\n          <button (click)=\"addRoot()\"><i class=\"fa fa-plus\"></i> Add Root</button>\n          <div class=\"list-root\" *ngIf=\"addRootb === true\">\n            <ul>\n                <li *ngFor=\"let n of listToAdd\"(click)=\"addRootNode(n)\"><span>{{n.label}}</span></li>\n            </ul>\n        </div>\n      </div>\n    </div>\n  ",
+                template: "\n    <div class=\"container\">\n      <ul class=\"treeview\">\n          <li class=\"parent\" *ngFor=\"let item of data\">\n                <div class=\"list-item\" *ngIf=\"item.adding === true\">\n                    <ul>\n                        <li *ngFor=\"let n of listToAdd\"(click)=\"addNode(n)\"><span>{{n.label}}</span></li>\n                    </ul>\n                </div>\n                <span class=\"coll\" (click)=\"expand(item)\" *ngIf=\"item.expand === false; else expanse\">\n                    <i class=\"fa fa-caret-right\"></i>\n                </span>\n                <ng-template #expanse>\n                        <span class=\"coll\" (click)=\"expand(item)\">\n                            <i class=\"fa fa-caret-down\"></i>\n                        </span>\n                    </ng-template>\n                <div class=\"control\">\n                    <a>\n                        {{item.label}}\n                    </a>\n                    <button class=\"plus\" (click)=\"add(item)\">\n                        <i class=\"fa fa-plus\"></i>\n                    </button>\n                    <button class=\"erase\" (click)=\"delete(item)\">\n                        <i class=\"fa fa-remove\"></i>\n                    </button>\n                </div>\n                <lt-treeview-internal [data]=\"item.children\" [parent] = \"item\" [listToAdd]=\"listToAdd\" [show]=\"show\" [component]=\"component\" [callBackOnDelete]=\"callBackOnDelete\" [callBackOnUpdate]=\"callBackOnUpdate\" *ngIf=\"item.expand === true\"></lt-treeview-internal>\n          </li>\n      </ul>\n      <div class=\"box-lt-treeview\" *ngIf=\"show === true\">\n          <button (click)=\"addRoot()\"><i class=\"fa fa-plus\"></i> Add Root</button>\n          <div class=\"list-root\" *ngIf=\"addRootb === true\">\n            <ul>\n                <li *ngFor=\"let n of listToAdd\"(click)=\"addRootNode(n)\"><span>{{n.label}}</span></li>\n            </ul>\n        </div>\n      </div>\n    </div>\n  ",
                 styles: ["\n    .container {\n        margin-top:30px;\n        margin-left: auto;\n        margin-right: auto;\n        min-height: 100px;\n    }\n\n    .box-lt-treeview{\n        position: relative;\n    }\n\n    .box-lt-treeview button{\n        padding:15px;\n        border-radius: unset;\n        background-color: #4ba6c9;\n        border: unset;\n        color: white;\n        cursor: pointer;\n    }\n\n    .box-lt-treeview .list-root {\n        background-color: #9c9c9c;\n        border: 1px solid;\n        width: 250px;\n        z-index: 1000;\n        position: absolute;\n        top: 0px;\n        left: 89px;\n        color: white;\n    }\n\n    .box-lt-treeview .list-root ul{\n        list-style: none;\n        padding: unset;\n        margin: unset;\n    }\n\n    .box-lt-treeview .list-root li:nth-child(odd){\n        background-color: darkgray;\n    }\n\n    .box-lt-treeview .list-root li {\n        text-transform: capitalize;\n        padding: 15px;\n        cursor: pointer;\n    }\n    .box-lt-treeview .list-root li:hover {\n        background-color: #f9cd0e\n    }\n\n    .list-item\n    {\n        background-color: #9c9c9c;\n        border: 1px solid;\n        width: 250px;\n        z-index: 1000;\n        position: absolute;\n        top: 52px;\n        left: 130px;\n        color: white;\n    }\n\n    .list-item ul {\n        list-style: none;\n        padding: unset;\n    }\n\n    .list-item li:nth-child(odd){\n        background-color: darkgray;\n    }\n\n    .list-item li {\n        text-transform: capitalize;\n        cursor: pointer;\n    }\n    .list-item li:hover {\n        background-color: #f9cd0e\n    }\n\n    .treeview {\n        list-style: none;\n    }\n\n    .coll{\n        padding: 10px;\n        cursor: pointer;\n    }\n\n    .list-tree{\n        list-style: none;\n        margin-top : 8px;\n    }\n\n    .treeview li {\n        padding: 15px;\n        position: relative;\n    }\n\n    .plus{\n        padding: 7px 15px;\n        border: unset;\n        background-color: orange;\n        color: white;\n        cursor: pointer;\n        margin-left: 10px;\n    }\n\n    .erase{\n        padding: 7px 15px;\n        border: unset;\n        background-color: #da3522;\n        color: white;\n        cursor: pointer;\n        margin-left: 10px;\n    }\n\n    .treeview a {\n        text-decoration: none;\n        padding: 10px 15px;\n        color: black;\n        text-transform: capitalize;\n    }\n\n    .control{\n        display: inline-block;\n        padding: 5px;\n        background-color: #e9e9e9;\n    }\n  "]
             },] },
 ];
@@ -2405,10 +2663,14 @@ LtTreeviewComponent.propDecorators = {
     'data': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
     'listToAdd': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
     'show': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+    'callBackOnUpdate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+    'callBackOnDelete': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+    'component': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
 };
 var LtTreeviewInternalComponent = (function () {
     function LtTreeviewInternalComponent() {
         this.listToAdd = [];
+        this.parent = (null);
     }
     /**
      * @return {?}
@@ -2454,6 +2716,23 @@ var LtTreeviewInternalComponent = (function () {
                 var /** @type {?} */ index = this.data.indexOf(item);
                 if (index > -1) {
                     this.data.splice(index, 1);
+                    var /** @type {?} */ emitNode = ({
+                        node: item
+                    });
+                    if (this.callBackOnDelete != undefined) {
+                        if (this.component == undefined) {
+                            this.callBackOnDelete(emitNode);
+                        }
+                        else {
+                            if (this.callBackOnDelete && typeof this.callBackOnDelete == 'function') {
+                                var /** @type {?} */ method = this.callBackOnDelete.bind(this.component);
+                                method(emitNode);
+                            }
+                            else {
+                                this.component[this.callBackOnDelete](emitNode);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -2466,7 +2745,38 @@ var LtTreeviewInternalComponent = (function () {
         var _this = this;
         this.data.forEach(function (node) {
             if (node === _this.currentNode) {
-                node.children.push(convertAddedToNode(item));
+                var /** @type {?} */ convertedNode = convertAddedToNode(item);
+                if (_this.callBackOnUpdate == undefined) {
+                    node.children.push(convertedNode);
+                    node.expand = true;
+                }
+                else {
+                    var /** @type {?} */ emitNode = ({
+                        parent: node,
+                        node: convertedNode
+                    });
+                    if (_this.component == undefined) {
+                        _this.callBackOnUpdate(emitNode).then(function (res) {
+                            node.children.push(res);
+                            node.expand = true;
+                        });
+                    }
+                    else {
+                        if (typeof _this.callBackOnUpdate == 'function') {
+                            var /** @type {?} */ method = _this.callBackOnUpdate.bind(_this.component);
+                            method(emitNode).then(function (res) {
+                                node.children.push(res);
+                                node.expand = true;
+                            });
+                        }
+                        else {
+                            _this.component[_this.callBackOnUpdate](node.children, emitNode).then(function (res) {
+                                node.children.push(res);
+                                node.expand = true;
+                            });
+                        }
+                    }
+                }
                 node.adding = false;
             }
         });
@@ -2477,7 +2787,7 @@ var LtTreeviewInternalComponent = (function () {
 LtTreeviewInternalComponent.decorators = [
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
                 selector: 'lt-treeview-internal',
-                template: "\n    <ul class=\"list-tree\">\n      <li *ngFor=\"let item of data\">\n          <div class=\"list-item\" *ngIf=\"item.adding === true\">\n              <ul>\n                  <li *ngFor=\"let n of listToAdd\"(click)=\"addNode(n)\"><span>{{n.label}}</span></li>\n              </ul>\n          </div>\n          <span class=\"coll\" (click)=\"expand(item)\" *ngIf=\"item.expand === false; else expanse\">\n            <i class=\"fa fa-caret-right\"></i>\n          </span>\n          <ng-template #expanse>\n              <span class=\"coll\" (click)=\"expand(item)\">\n                  <i class=\"fa fa-caret-down\"></i>\n              </span>\n          </ng-template>\n          <div class=\"control\">\n              <a>\n                  {{item.label}}\n              </a>\n              <button class=\"plus\" (click)=\"add(item)\">\n                  <i class=\"fa fa-plus\"></i>\n              </button>\n              <button class=\"erase\" (click)=\"delete(item)\">\n                  <i class=\"fa fa-remove\"></i>\n              </button>\n          </div>\n          <lt-treeview-internal [data] = \"item.children\" [listToAdd]=\"listToAdd\" [show]=\"show\" *ngIf=\"item.expand === true\"></lt-treeview-internal>\n        </li>\n    </ul>\n  ",
+                template: "\n    <ul class=\"list-tree\">\n      <li *ngFor=\"let item of data\">\n          <div class=\"list-item\" *ngIf=\"item.adding === true\">\n              <ul>\n                  <li *ngFor=\"let n of listToAdd\"(click)=\"addNode(n)\"><span>{{n.label}}</span></li>\n              </ul>\n          </div>\n          <span class=\"coll\" (click)=\"expand(item)\" *ngIf=\"item.expand === false; else expanse\">\n            <i class=\"fa fa-caret-right\"></i>\n          </span>\n          <ng-template #expanse>\n              <span class=\"coll\" (click)=\"expand(item)\">\n                  <i class=\"fa fa-caret-down\"></i>\n              </span>\n          </ng-template>\n          <div class=\"control\">\n              <a>\n                  {{item.label}}\n              </a>\n              <button class=\"plus\" (click)=\"add(item)\">\n                  <i class=\"fa fa-plus\"></i>\n              </button>\n              <button class=\"erase\" (click)=\"delete(item)\">\n                  <i class=\"fa fa-remove\"></i>\n              </button>\n          </div>\n          <lt-treeview-internal [data] = \"item.children\" [parent]=\"item\" [listToAdd]=\"listToAdd\" [show]=\"show\" [component]=\"component\" [callBackOnDelete]=\"callBackOnDelete\" [callBackOnUpdate]=\"callBackOnUpdate\" *ngIf=\"item.expand === true\"></lt-treeview-internal>\n        </li>\n    </ul>\n  ",
                 styles: ["\n\n    .coll{\n        padding: 10px;\n        cursor: pointer;\n    }\n\n    .list-tree{\n        list-style: none;\n        margin-top : 8px;\n    }\n\n\n    .list-tree li {\n        padding: 15px;\n    }\n\n    .plus{\n        padding: 7px 15px;\n        border: unset;\n        background-color: orange;\n        color: white;\n        cursor: pointer;\n        margin-left: 10px;\n    }\n\n    .erase{\n        padding: 7px 15px;\n        border: unset;\n        background-color: #da3522;\n        color: white;\n        cursor: pointer;\n        margin-left: 10px;\n    }\n\n    .list-tree a {\n        text-decoration: none;\n        padding: 10px 15px;\n        color: black;\n        text-transform: capitalize;\n    }\n\n    .control{\n        display: inline-block;\n        padding: 5px;\n        background-color: #e9e9e9;\n    }\n\n    .list-item\n    {\n        background-color: #9c9c9c;\n        border: 1px solid;\n        width: 250px;\n        z-index: 1000;\n        position: absolute;\n        top: 52px;\n        left: 130px;\n        color: white;\n    }\n\n    .list-item ul {\n        list-style: none;\n        padding: unset;\n    }\n\n    .list-item li:nth-child(odd){\n        background-color: darkgray;\n    }\n\n    .list-item li {\n        text-transform: capitalize;\n        cursor: pointer;\n    }\n    .list-item li:hover {\n        background-color: #f9cd0e\n    }\n  "]
             },] },
 ];
@@ -2489,6 +2799,10 @@ LtTreeviewInternalComponent.propDecorators = {
     'data': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
     'listToAdd': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
     'show': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+    'parent': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+    'callBackOnUpdate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+    'callBackOnDelete': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+    'component': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
 };
 var LtTreeviewModule = (function () {
     function LtTreeviewModule() {
@@ -2517,177 +2831,227 @@ LtTreeviewModule.ctorParameters = function () { return []; };
 
 /***/ }),
 
-/***/ "./node_modules/ng2-codemirror/lib/codemirror.component.js":
+/***/ "./node_modules/tslint/lib/utils.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-// Imports
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var forms_1 = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-var CodeMirror = __webpack_require__("./node_modules/codemirror/lib/codemirror.js");
 /**
- * CodeMirror component
- * Usage :
- * <codemirror [(ngModel)]="data" [config]="{...}"></codemirror>
+ * @license
+ * Copyright 2016 Palantir Technologies, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-var CodemirrorComponent = (function () {
-    /**
-     * Constructor
-     */
-    function CodemirrorComponent() {
-        this.change = new core_1.EventEmitter();
-        this.focus = new core_1.EventEmitter();
-        this.blur = new core_1.EventEmitter();
-        this.cursorActivity = new core_1.EventEmitter();
-        this.instance = null;
-        this._value = '';
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Enforces the invariant that the input is an array.
+ */
+function arrayify(arg) {
+    if (Array.isArray(arg)) {
+        return arg;
     }
-    Object.defineProperty(CodemirrorComponent.prototype, "value", {
-        get: function () { return this._value; },
-        set: function (v) {
-            if (v !== this._value) {
-                this._value = v;
-                this.onChange(v);
-            }
-        },
-        enumerable: true,
-        configurable: true
+    else if (arg != null) {
+        return [arg];
+    }
+    else {
+        return [];
+    }
+}
+exports.arrayify = arrayify;
+/**
+ * @deprecated (no longer used)
+ * Enforces the invariant that the input is an object.
+ */
+function objectify(arg) {
+    if (typeof arg === "object" && arg != null) {
+        return arg;
+    }
+    else {
+        return {};
+    }
+}
+exports.objectify = objectify;
+function hasOwnProperty(arg, key) {
+    return Object.prototype.hasOwnProperty.call(arg, key);
+}
+exports.hasOwnProperty = hasOwnProperty;
+/**
+ * Replace hyphens in a rule name by upper-casing the letter after them.
+ * E.g. "foo-bar" -> "fooBar"
+ */
+function camelize(stringWithHyphens) {
+    return stringWithHyphens.replace(/-(.)/g, function (_, nextLetter) { return nextLetter.toUpperCase(); });
+}
+exports.camelize = camelize;
+function isUpperCase(str) {
+    return str === str.toUpperCase();
+}
+exports.isUpperCase = isUpperCase;
+function isLowerCase(str) {
+    return str === str.toLowerCase();
+}
+exports.isLowerCase = isLowerCase;
+/**
+ * Removes leading indents from a template string without removing all leading whitespace
+ */
+function dedent(strings) {
+    var values = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        values[_i - 1] = arguments[_i];
+    }
+    var fullString = strings.reduce(function (accumulator, str, i) {
+        return "" + accumulator + values[i - 1] + str;
     });
-    /**
-     * On component destroy
-     */
-    CodemirrorComponent.prototype.ngOnDestroy = function () {
-    };
-    /**
-     * On component view init
-     */
-    CodemirrorComponent.prototype.ngAfterViewInit = function () {
-        this.config = this.config || {};
-        this.codemirrorInit(this.config);
-    };
-    /**
-     * Initialize codemirror
-     */
-    CodemirrorComponent.prototype.codemirrorInit = function (config) {
-        var _this = this;
-        this.instance = CodeMirror.fromTextArea(this.host.nativeElement, config);
-        this.instance.setValue(this._value);
-        this.instance.on('change', function () {
-            _this.updateValue(_this.instance.getValue());
-        });
-        this.instance.on('focus', function (instance, event) {
-            _this.focus.emit({ instance: instance, event: event });
-        });
-        this.instance.on('cursorActivity', function (instance) {
-            _this.cursorActivity.emit({ instance: instance });
-        });
-        this.instance.on('blur', function (instance, event) {
-            _this.blur.emit({ instance: instance, event: event });
-        });
-    };
-    /**
-     * Value update process
-     */
-    CodemirrorComponent.prototype.updateValue = function (value) {
-        this.value = value;
-        this.onTouched();
-        this.change.emit(value);
-    };
-    /**
-     * Implements ControlValueAccessor
-     */
-    CodemirrorComponent.prototype.writeValue = function (value) {
-        this._value = value || '';
-        if (this.instance) {
-            this.instance.setValue(this._value);
-        }
-    };
-    CodemirrorComponent.prototype.onChange = function (_) { };
-    CodemirrorComponent.prototype.onTouched = function () { };
-    CodemirrorComponent.prototype.registerOnChange = function (fn) { this.onChange = fn; };
-    CodemirrorComponent.prototype.registerOnTouched = function (fn) { this.onTouched = fn; };
-    return CodemirrorComponent;
-}());
-CodemirrorComponent.decorators = [
-    { type: core_1.Component, args: [{
-                selector: 'codemirror',
-                providers: [
-                    {
-                        provide: forms_1.NG_VALUE_ACCESSOR,
-                        useExisting: core_1.forwardRef(function () { return CodemirrorComponent; }),
-                        multi: true
-                    }
-                ],
-                template: "<textarea #host></textarea>",
-            },] },
-];
-/** @nocollapse */
-CodemirrorComponent.ctorParameters = function () { return []; };
-CodemirrorComponent.propDecorators = {
-    'config': [{ type: core_1.Input },],
-    'change': [{ type: core_1.Output },],
-    'focus': [{ type: core_1.Output },],
-    'blur': [{ type: core_1.Output },],
-    'cursorActivity': [{ type: core_1.Output },],
-    'host': [{ type: core_1.ViewChild, args: ['host',] },],
-    'instance': [{ type: core_1.Output },],
-    'value': [{ type: core_1.Input },],
-};
-exports.CodemirrorComponent = CodemirrorComponent;
-//# sourceMappingURL=codemirror.component.js.map
-
-/***/ }),
-
-/***/ "./node_modules/ng2-codemirror/lib/codemirror.module.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var common_1 = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-var codemirror_component_1 = __webpack_require__("./node_modules/ng2-codemirror/lib/codemirror.component.js");
-/**
- * CodemirrorModule
- */
-var CodemirrorModule = (function () {
-    function CodemirrorModule() {
+    // match all leading spaces/tabs at the start of each line
+    var match = fullString.match(/^[ \t]*(?=\S)/gm);
+    if (match === null) {
+        // e.g. if the string is empty or all whitespace.
+        return fullString;
     }
-    return CodemirrorModule;
-}());
-CodemirrorModule.decorators = [
-    { type: core_1.NgModule, args: [{
-                imports: [
-                    common_1.CommonModule
-                ],
-                declarations: [
-                    codemirror_component_1.CodemirrorComponent,
-                ],
-                exports: [
-                    codemirror_component_1.CodemirrorComponent,
-                ]
-            },] },
-];
-/** @nocollapse */
-CodemirrorModule.ctorParameters = function () { return []; };
-exports.CodemirrorModule = CodemirrorModule;
-//# sourceMappingURL=codemirror.module.js.map
+    // find the smallest indent, we don't want to remove all leading whitespace
+    var indent = Math.min.apply(Math, match.map(function (el) { return el.length; }));
+    var regexp = new RegExp("^[ \\t]{" + indent + "}", "gm");
+    fullString = indent > 0 ? fullString.replace(regexp, "") : fullString;
+    return fullString;
+}
+exports.dedent = dedent;
+/**
+ * Strip comments from file content.
+ */
+function stripComments(content) {
+    /**
+     * First capturing group matches double quoted string
+     * Second matches single quotes string
+     * Third matches block comments
+     * Fourth matches line comments
+     */
+    var regexp = /("(?:[^\\\"]*(?:\\.)?)*")|('(?:[^\\\']*(?:\\.)?)*')|(\/\*(?:\r?\n|.)*?\*\/)|(\/{2,}.*?(?:(?:\r?\n)|$))/g;
+    var result = content.replace(regexp, function (match, _m1, _m2, m3, m4) {
+        // Only one of m1, m2, m3, m4 matches
+        if (m3 !== undefined) {
+            // A block comment. Replace with nothing
+            return "";
+        }
+        else if (m4 !== undefined) {
+            // A line comment. If it ends in \r?\n then keep it.
+            var length = m4.length;
+            if (length > 2 && m4[length - 1] === "\n") {
+                return m4[length - 2] === "\r" ? "\r\n" : "\n";
+            }
+            else {
+                return "";
+            }
+        }
+        else {
+            // We match a string
+            return match;
+        }
+    });
+    return result;
+}
+exports.stripComments = stripComments;
+/**
+ * Escapes all special characters in RegExp pattern to avoid broken regular expressions and ensure proper matches
+ */
+function escapeRegExp(re) {
+    return re.replace(/[.+*?|^$[\]{}()\\]/g, "\\$&");
+}
+exports.escapeRegExp = escapeRegExp;
+function arraysAreEqual(a, b, eq) {
+    return a === b || a !== undefined && b !== undefined && a.length === b.length && a.every(function (x, idx) { return eq(x, b[idx]); });
+}
+exports.arraysAreEqual = arraysAreEqual;
+/** Returns the first non-`undefined` result. */
+function find(inputs, getResult) {
+    for (var _i = 0, inputs_1 = inputs; _i < inputs_1.length; _i++) {
+        var element = inputs_1[_i];
+        var result = getResult(element);
+        if (result !== undefined) {
+            return result;
+        }
+    }
+    return undefined;
+}
+exports.find = find;
+/** Returns an array that is the concatenation of all output arrays. */
+function flatMap(inputs, getOutputs) {
+    var out = [];
+    for (var _i = 0, inputs_2 = inputs; _i < inputs_2.length; _i++) {
+        var input = inputs_2[_i];
+        out.push.apply(out, getOutputs(input));
+    }
+    return out;
+}
+exports.flatMap = flatMap;
+/** Returns an array of all outputs that are not `undefined`. */
+function mapDefined(inputs, getOutput) {
+    var out = [];
+    for (var _i = 0, inputs_3 = inputs; _i < inputs_3.length; _i++) {
+        var input = inputs_3[_i];
+        var output = getOutput(input);
+        if (output !== undefined) {
+            out.push(output);
+        }
+    }
+    return out;
+}
+exports.mapDefined = mapDefined;
+function readBufferWithDetectedEncoding(buffer) {
+    switch (detectBufferEncoding(buffer)) {
+        case "utf8":
+            return buffer.toString();
+        case "utf8-bom":
+            return buffer.toString("utf-8", 2);
+        case "utf16le":
+            return buffer.toString("utf16le", 2);
+        case "utf16be":
+            // Round down to nearest multiple of 2.
+            var len = buffer.length & ~1; // tslint:disable-line no-bitwise
+            // Flip all byte pairs, then read as little-endian.
+            for (var i = 0; i < len; i += 2) {
+                var temp = buffer[i];
+                buffer[i] = buffer[i + 1];
+                buffer[i + 1] = temp;
+            }
+            return buffer.toString("utf16le", 2);
+    }
+}
+exports.readBufferWithDetectedEncoding = readBufferWithDetectedEncoding;
+function detectBufferEncoding(buffer, length) {
+    if (length === void 0) { length = buffer.length; }
+    if (length < 2) {
+        return "utf8";
+    }
+    switch (buffer[0]) {
+        case 0xEF:
+            if (buffer[1] === 0xBB && length >= 3 && buffer[2] === 0xBF) {
+                return "utf8-bom";
+            }
+            break;
+        case 0xFE:
+            if (buffer[1] === 0xFF) {
+                return "utf16be";
+            }
+            break;
+        case 0xFF:
+            if (buffer[1] === 0xFE) {
+                return "utf16le";
+            }
+    }
+    return "utf8";
+}
+exports.detectBufferEncoding = detectBufferEncoding;
 
-/***/ }),
-
-/***/ "./node_modules/ng2-codemirror/lib/index.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var codemirror_module_1 = __webpack_require__("./node_modules/ng2-codemirror/lib/codemirror.module.js");
-exports.CodemirrorModule = codemirror_module_1.CodemirrorModule;
-var codemirror_component_1 = __webpack_require__("./node_modules/ng2-codemirror/lib/codemirror.component.js");
-exports.CodemirrorComponent = codemirror_component_1.CodemirrorComponent;
-//# sourceMappingURL=index.js.map
 
 /***/ }),
 
@@ -2712,6 +3076,18 @@ function convertToLtElementComp(item) {
     };
 }
 exports.convertToLtElementComp = convertToLtElementComp;
+function convLtElementCompToNode(item) {
+    var node = {
+        label: item.name,
+        obj: { item: item },
+        children: [],
+        adding: false,
+        expand: false
+    };
+    node.children = convertToNodeArray(item.children);
+    return node;
+}
+exports.convLtElementCompToNode = convLtElementCompToNode;
 function convertToNodeArray(items) {
     var listOfNode = [];
     if (items != undefined) {
@@ -2822,7 +3198,8 @@ var WebsiteService = (function (_super) {
             { namePath: 'getElements', path: 'elements' },
             { namePath: 'saveElement', path: 'element' },
             { namePath: 'getComponents', path: 'components' },
-            { namePath: 'saveComponent', path: 'component' }
+            { namePath: 'saveComponent', path: 'component' },
+            { namePath: 'updateElementComponent', path: 'component/element' }
         ];
         //Add the Api to the ApiManager
         _this.apiManager.addListUrlApi(urls);
@@ -3122,8 +3499,20 @@ var WebsiteService = (function (_super) {
     WebsiteService.prototype.saveComponent = function (comp) {
         return this.http.put(this.apiManager.getPathByName('saveComponent'), comp, this.getOptions())
             .map(function (response) {
-            console.log(response);
             return response.json().component;
+        });
+    };
+    WebsiteService.prototype.updateElementComponent = function (data) {
+        return this.http.post(this.apiManager.getPathByName('updateElementComponent'), data, this.getOptions())
+            .toPromise().then(function (response) {
+            return response.json().elementComponent;
+        });
+    };
+    WebsiteService.prototype.deleteElementComponent = function (data) {
+        return this.http.put(this.apiManager.getPathByName('updateElementComponent'), data, this.getOptions())
+            .map(function (response) {
+            console.log(response);
+            return response.json().elements;
         });
     };
     return WebsiteService;
@@ -3141,7 +3530,7 @@ var _a;
 /***/ "./src/plugins/Hardel/Website/component/Component/component.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn darkorange\" (click)=\"editMode()\">\n                    <i class=\"fa fa-edit\"></i>\n                    Edit\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [ngModel] = \"component.name\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                    <ng-template #editName>\n                                        <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"component.name\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"appearance\" class=\"col-md-2 control-label\">Appearance</label>\n                                <div class=\"col-md-10\">\n                                        <textarea type=\"text\" class=\"form-control\" name=\"appearance\" id=\"appearance\" [(ngModel)] = \"component.appearance\" *ngIf=\"isEdit === false; else editAppearance\" disabled></textarea>\n                                    <ng-template #editAppearance>\n                                        <codemirror\n                                                class=\"form-control\" name=\"appearance\" id=\"appearance\"\n                                                    [(ngModel)] = \"component.appearance\"\n                                                    [config]=\"config\"\n                                        ></codemirror>\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-list\"></i>\n                <span>Elements Tree</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn cyan\" data-toggle=\"modal\" data-target=\"#addModal\" *ngIf=\"isEdit === true\">\n                    <i class=\"fa fa-plus\"></i>\n                    Add\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <lt-treeview [data]=\"listOfDataNode\" [listToAdd]=\"listOfNode\" [show]=\"isEdit\" ></lt-treeview>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n</form>"
+module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn darkorange\" (click)=\"editMode()\">\n                    <i class=\"fa fa-edit\"></i>\n                    Edit\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [ngModel] = \"component.name\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                    <ng-template #editName>\n                                        <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"component.name\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"appearance\" class=\"col-md-2 control-label\">Appearance</label>\n                                <div class=\"col-md-10\">\n                                        <textarea type=\"text\" class=\"form-control\" name=\"appearance\" id=\"appearance\" style=\"height: 477px;\" [(ngModel)] = \"component.appearance\" *ngIf=\"isEdit === false; else editAppearance\" disabled></textarea>\n                                    <ng-template #editAppearance>\n                                        <codemirror\n                                                class=\"form-control\" name=\"appearance\" id=\"appearance\"\n                                                    [(ngModel)] = \"component.appearance\"\n                                                    [config]=\"config\"\n                                                    [size]=\"size\"\n                                        ></codemirror>\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-list\"></i>\n                <span>Elements Tree</span>\n            </div>\n            <div class=\"actions\">\n            </div>\n\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <lt-treeview [data]=\"listOfDataNode\" [callBackOnUpdate] = \"updateNode\" [callBackOnDelete]=\"deleteNode\" [component] = \"self\" [listToAdd]=\"listOfNode\" [show]=\"isEdit\" ></lt-treeview>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n</form>"
 
 /***/ }),
 
@@ -3164,10 +3553,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var website_interfaces_1 = __webpack_require__("./src/plugins/Hardel/Website/Services/website.interfaces.ts");
+/*import {
+    LortomComponent, LortomElement,
+    LtElementComp, convertToLtElementComp, convertToNodeList, convertToNodeArray, convertFromNodeToLtElementComp, convLtElementCompToNode
+}*/
+var WI = __webpack_require__("./src/plugins/Hardel/Website/Services/website.interfaces.ts");
 var website_service_1 = __webpack_require__("./src/plugins/Hardel/Website/Services/website.service.ts");
 var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
 __webpack_require__("./node_modules/codemirror/mode/htmlmixed/htmlmixed.js");
+var utils_1 = __webpack_require__("./node_modules/tslint/lib/utils.js");
 var ComponentComponent = (function () {
     function ComponentComponent(ecService, router, nav) {
         var _this = this;
@@ -3175,6 +3569,7 @@ var ComponentComponent = (function () {
         this.router = router;
         this.nav = nav;
         this.listElements = [];
+        this.self = this;
         this.isEdit = false;
         this.notFound = false;
         this.config = {
@@ -3182,7 +3577,11 @@ var ComponentComponent = (function () {
             mode: 'htmlmixed',
             styleActiveLine: true,
             matchBrackets: true,
-            theme: 'dracula'
+            theme: 'dracula',
+        };
+        this.size = {
+            w: '100%',
+            h: 477
         };
         this.component = {
             id: -2,
@@ -3200,7 +3599,7 @@ var ComponentComponent = (function () {
             else {
                 _this.nav.navigate(['/backend/not-found']);
             }
-            _this.listOfDataNode = website_interfaces_1.convertToNodeArray(_this.component.elements);
+            _this.listOfDataNode = WI.convertToNodeArray(_this.component.elements);
             _this.cloneComponent();
         });
     }
@@ -3214,15 +3613,15 @@ var ComponentComponent = (function () {
      * This function pass into edit Mode
      */
     ComponentComponent.prototype.editMode = function () {
-        //passa in modalità edit
+        // passa in modalità edit
         this.isEdit = !this.isEdit;
     };
     /**
      * This function go to save Mode
      */
     ComponentComponent.prototype.saveMode = function () {
-        //salva i cambiamenti
-        var elements = website_interfaces_1.convertFromNodeToLtElementComp(this.listOfDataNode);
+        // salva i cambiamenti
+        var elements = WI.convertFromNodeToLtElementComp(this.listOfDataNode);
         this.component.elements = elements;
         if (!this.isEqual(this.component, this.copyComponent)) {
             if (this.component.name.length == 0) {
@@ -3245,15 +3644,49 @@ var ComponentComponent = (function () {
         }
     };
     /**
+     *
+     * @param arrayList
+     * @param data
+     * @returns {Promise<Node>}
+     */
+    ComponentComponent.prototype.updateNode = function (data) {
+        var obj = {
+            idComponent: this.component.id,
+            object: data.node.obj,
+        };
+        if (utils_1.hasOwnProperty(data, 'parent')) {
+            obj['parent'] = data.parent.obj;
+        }
+        return this.ecService.updateElementComponent(obj).then(function (item) {
+            return WI.convLtElementCompToNode(item);
+        });
+    };
+    ComponentComponent.prototype.deleteNode = function (data) {
+        var _this = this;
+        console.log(data);
+        if (data.node.obj.el.id > -1) {
+            var obj = {
+                idComponentElement: data.node.obj.el.id,
+                idComponent: this.component.id,
+            };
+            this.ecService.deleteElementComponent(obj).subscribe(function (elements) {
+                _this.component.elements = elements;
+                _this.ecService.updateComponentInList(_this.component);
+                _this.listOfDataNode = WI.convertToNodeArray(_this.component.elements);
+                _this.cloneComponent();
+            });
+        }
+    };
+    /**
      * This function is to get Permission from API
      */
     ComponentComponent.prototype.retriveElements = function () {
         var _this = this;
         this.ecService.getElementsFrom().subscribe(function (elements) {
             elements.forEach(function (item) {
-                _this.listElements.push(website_interfaces_1.convertToLtElementComp(item));
+                _this.listElements.push(WI.convertToLtElementComp(item));
             });
-            _this.listOfNode = website_interfaces_1.convertToNodeList(_this.listElements);
+            _this.listOfNode = WI.convertToNodeList(_this.listElements);
         });
         this.cloneComponent();
     };
@@ -3300,7 +3733,7 @@ var ComponentComponent = (function () {
 }());
 __decorate([
     core_1.Input(),
-    __metadata("design:type", typeof (_a = typeof website_interfaces_1.LortomComponent !== "undefined" && website_interfaces_1.LortomComponent) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = (typeof WI !== "undefined" && WI).LortomComponent) === "function" && _a || Object)
 ], ComponentComponent.prototype, "component", void 0);
 ComponentComponent = __decorate([
     core_1.Component({
@@ -3467,7 +3900,7 @@ var _a, _b;
 /***/ "./src/plugins/Hardel/Website/component/Element/element.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn darkorange\" (click)=\"editMode()\">\n                    <i class=\"fa fa-edit\"></i>\n                    Edit\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"name\" class=\"col-md-2 control-label\">Name</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"name\" placeholder=\"Name\" id=\"name\" [ngModel] = \"element.name\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                    <ng-template #editName>\n                                        <input type=\"text\" class=\"form-control\" name=\"name\" placeholder=\"Name\" id=\"name\" [(ngModel)] = \"element.name\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"object\" class=\"col-md-2 control-label\">Object</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"object\" placeholder=\"Object\" id=\"object\" [ngModel] = \"element.Object\" *ngIf=\"isEdit === false; else editObject\" readonly>\n                                    <ng-template #editObject>\n                                        <input type=\"text\" class=\"form-control\" name=\"object\" placeholder=\"Object\" id=\"object\" [(ngModel)] = \"element.Object\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"function\" class=\"col-md-2 control-label\">Functions</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"function\" placeholder=\"Functions\" id=\"function\" [ngModel] = \"element.functions\" *ngIf=\"isEdit === false; else editFunctions\" readonly>\n                                    <ng-template #editFunctions>\n                                        <input type=\"text\" class=\"form-control\" name=\"function\" placeholder=\"Functions\" id=\"function\" [(ngModel)] = \"element.functions\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"appearance\" class=\"col-md-2 control-label\">Appearance</label>\n                                <div class=\"col-md-10\">\n                                    <textarea type=\"text\" style=\"height: 348px;\" class=\"form-control\" name=\"appearance\" id=\"appearance\" [ngModel] = \"element.appearance\" *ngIf=\"isEdit === false; else editAppearance\" disabled></textarea>\n                                    <ng-template #editAppearance>\n                                        <codemirror class=\"form-control\" name=\"appearance\" id=\"appearance\" [(ngModel)] = \"element.appearance\" [config] = \"config\"></codemirror>\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n</form>"
+module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn darkorange\" (click)=\"editMode()\">\n                    <i class=\"fa fa-edit\"></i>\n                    Edit\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"name\" class=\"col-md-2 control-label\">Name</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"name\" placeholder=\"Name\" id=\"name\" [ngModel] = \"element.name\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                    <ng-template #editName>\n                                        <input type=\"text\" class=\"form-control\" name=\"name\" placeholder=\"Name\" id=\"name\" [(ngModel)] = \"element.name\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"object\" class=\"col-md-2 control-label\">Object</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"object\" placeholder=\"Object\" id=\"object\" [ngModel] = \"element.Object\" *ngIf=\"isEdit === false; else editObject\" readonly>\n                                    <ng-template #editObject>\n                                        <input type=\"text\" class=\"form-control\" name=\"object\" placeholder=\"Object\" id=\"object\" [(ngModel)] = \"element.Object\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"function\" class=\"col-md-2 control-label\">Functions</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"function\" placeholder=\"Functions\" id=\"function\" [ngModel] = \"element.functions\" *ngIf=\"isEdit === false; else editFunctions\" readonly>\n                                    <ng-template #editFunctions>\n                                        <input type=\"text\" class=\"form-control\" name=\"function\" placeholder=\"Functions\" id=\"function\" [(ngModel)] = \"element.functions\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"appearance\" class=\"col-md-2 control-label\">Appearance</label>\n                                <div class=\"col-md-10\">\n                                    <textarea type=\"text\" style=\"height: 348px;\" class=\"form-control\" name=\"appearance\" id=\"appearance\" [ngModel] = \"element.appearance\" *ngIf=\"isEdit === false; else editAppearance\" disabled></textarea>\n                                    <ng-template #editAppearance>\n                                        <codemirror class=\"form-control\" name=\"appearance\" id=\"appearance\" [(ngModel)] = \"element.appearance\" [config] = \"config\"></codemirror>\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveElementMode()\"> Save </button>\n            <button class=\"btn red\" (click)=\"resetMode()\"> Reset </button>\n        </div>\n    </div>\n</form>"
 
 /***/ }),
 
@@ -3533,18 +3966,6 @@ var ElementComponent = (function () {
         //passa in modalità edit
         this.isEdit = !this.isEdit;
     };
-    ElementComponent.prototype.saveMode = function () {
-        var _this = this;
-        if (!this.isEqual(this.element, this.copyElement)) {
-            this.ueService.saveElement(this.element).subscribe(function (element) {
-                _this.element = element;
-                _this.cloneElement();
-                _this.ueService.updateElementInList(_this.element);
-                _this.ueService.updateListOfElements();
-                _this.editMode();
-            });
-        }
-    };
     ElementComponent.prototype.resetMode = function () {
         if (confirm("Do you really want reset all fields?")) {
             this.cloneCopyElement();
@@ -3557,7 +3978,19 @@ var ElementComponent = (function () {
         this.element = Object.assign({}, this.copyElement);
     };
     ElementComponent.prototype.isEqual = function (v1, v2) {
-        return (v1.name == v2.name);
+        return (v1.name == v2.name && v1.appearance == v2.appearance);
+    };
+    ElementComponent.prototype.saveElementMode = function () {
+        var _this = this;
+        if (!this.isEqual(this.element, this.copyElement)) {
+            this.ueService.saveElement(this.element).subscribe(function (element) {
+                _this.element = element;
+                _this.cloneElement();
+                _this.ueService.updateElementInList(_this.element);
+                _this.ueService.updateListOfElements();
+                _this.editMode();
+            });
+        }
     };
     return ElementComponent;
 }());
@@ -3730,7 +4163,7 @@ var _a, _b;
 /***/ "./src/plugins/Hardel/Website/component/NewComponent/componentnew.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"component.name\" >\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"appearance\" class=\"col-md-2 control-label\">Appearance</label>\n                                <div class=\"col-md-4\">\n                                    <codemirror class=\"form-control\" name=\"appearance\" id=\"appearance\" [(ngModel)] = \"component.appearance\" [config] = \"config\"></codemirror>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-list\"></i>\n                <span>Elements</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn cyan\" data-toggle=\"modal\" data-target=\"#addModal\">\n                    <i class=\"fa fa-plus\"></i>\n                    Add\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\" *ngIf=\"component.elements.length > 0\">\n                                    <thead>\n                                    <tr>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let el of component.elements\">\n                                        <td>\n                                            {{el.name}}\n                                        </td>\n                                        <td>\n                                            <a class=\"td_orange\" (click)=\"eraseElement(el)\" *ngIf=\"isEdit == true\"><i class=\"fa fa-window-close-o\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n    <div id=\"addModal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"addModal\"  aria-hidden=\"true\">\n        <div class=\"modal-dialog\">\n            <div class=\"modal-content\">\n                <div class=\"modal-header\">\n                    <div class=\"modal-title\">\n                        Searching For Permission\n                        <button class=\"close\" data-dismiss = \"modal\" aria-label=\"hidden\"><i class=\"fa fa-times\"></i></button>\n                    </div>\n                </div>\n                <div class=\"modal-body\">\n                    <div class=\"row\">\n                        <div class=\"col-md-12\">\n                            <div class=\"form-group flex-group\">\n                                <label class=\"col-md-4\">Name</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control input-sm\" name=\"query\" [(ngModel)]=\"query\" (keyup)=\"filter()\" autocomplete=\"off\">\n                                    <div class=\"suggestions\" *ngIf=\"filteredList.length > 0\">\n                                        <ul>\n                                            <li class=\"suggestion-li\" *ngFor=\"let item of filteredList\">\n                                                <a (click)=\"addElement(item)\">{{item.name}}</a>\n                                            </li>\n                                        </ul>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"modal-footer\">\n                    <div class=\"m-footer\">\n\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</form>"
+module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"component.name\" >\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"appearance\" class=\"col-md-2 control-label\">Appearance</label>\n                                <div class=\"col-md-10\">\n                                    <codemirror class=\"form-control\" name=\"appearance\" id=\"appearance\" [(ngModel)] = \"component.appearance\" [config] = \"config\"></codemirror>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n</form>"
 
 /***/ }),
 
@@ -4457,7 +4890,7 @@ var forms_1 = __webpack_require__("./node_modules/@angular/forms/@angular/forms.
 var website_service_1 = __webpack_require__("./src/plugins/Hardel/Website/Services/website.service.ts");
 var editor_1 = __webpack_require__("./src/app/backend-module/Editor/editor.ts");
 var uielement_module_1 = __webpack_require__("./src/app/backend-module/UIElement/uielement.module.ts");
-var ng2_codemirror_1 = __webpack_require__("./node_modules/ng2-codemirror/lib/index.js");
+var lt_codemirror_1 = __webpack_require__("./node_modules/lt-codemirror/lib/index.js");
 var lt_treeview_1 = __webpack_require__("./node_modules/lt-treeview/lt-treeview.es5.js");
 var WebsiteModule = (function () {
     function WebsiteModule() {
@@ -4474,7 +4907,7 @@ WebsiteModule = __decorate([
             breadcrumbs_module_1.BreadCrumbModule,
             editor_1.EditorModule,
             uielement_module_1.UIElementModule,
-            ng2_codemirror_1.CodemirrorModule,
+            lt_codemirror_1.CodemirrorModule,
             lt_treeview_1.LtTreeviewModule,
         ],
         providers: [website_service_1.WebsiteService],

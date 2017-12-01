@@ -291,6 +291,7 @@ var MasterService = (function () {
     MasterService.prototype.updateItemInList = function (item, iList) {
         for (var i = 0; i < iList.length; i++) {
             if (iList[i].id === item.id) {
+                console.log('change item');
                 iList[i] = item;
             }
         }

@@ -4,10 +4,11 @@
 
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {
+/*import {
     LortomComponent, LortomElement,
     LtElementComp, convertToLtElementComp, convertToNodeList, convertToNodeArray, convertFromNodeToLtElementComp, convLtElementCompToNode
-} from '@Lortom/plugins/Hardel/Website/Services/website.interfaces';
+}*/
+import * as WI from '@Lortom/plugins/Hardel/Website/Services/website.interfaces';
 import {WebsiteService} from '@Lortom/plugins/Hardel/Website/Services/website.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import 'codemirror/mode/htmlmixed/htmlmixed';
@@ -21,8 +22,8 @@ import {hasOwnProperty} from 'tslint/lib/utils';
 })
 
 export class ComponentComponent implements OnInit, OnDestroy {
-    @Input() component: LortomComponent;
-    copyComponent: LortomComponent;
+    @Input() component: WI.LortomComponent;
+    copyComponent: WI.LortomComponent;
     id: number;
     private sub: any;
     isEdit: boolean;
@@ -32,6 +33,7 @@ export class ComponentComponent implements OnInit, OnDestroy {
     listOfNode: Node[];
     listOfDataNode: Node[];
     self = this;
+    size: {w: string|number, h: string|number}
 
     constructor(private ecService: WebsiteService, private router: ActivatedRoute, private nav: Router) {
         this.isEdit = false;
@@ -42,6 +44,11 @@ export class ComponentComponent implements OnInit, OnDestroy {
             styleActiveLine: true,
             matchBrackets: true,
             theme: 'dracula',
+        };
+
+        this.size = {
+            w: '100%',
+            h: 477
         };
 
         this.component = {
@@ -60,7 +67,7 @@ export class ComponentComponent implements OnInit, OnDestroy {
                 } else {
                     this.nav.navigate(['/backend/not-found']);
                 }
-                this.listOfDataNode = convertToNodeArray(this.component.elements);
+                this.listOfDataNode = WI.convertToNodeArray(this.component.elements);
                 this.cloneComponent();
             }
         );
@@ -88,7 +95,7 @@ export class ComponentComponent implements OnInit, OnDestroy {
     saveMode() {
         // salva i cambiamenti
 
-        const elements = convertFromNodeToLtElementComp(this.listOfDataNode);
+        const elements = WI.convertFromNodeToLtElementComp(this.listOfDataNode);
 
         this.component.elements = elements;
         if (!this.isEqual(this.component, this.copyComponent)) {
@@ -132,8 +139,8 @@ export class ComponentComponent implements OnInit, OnDestroy {
         }
 
         return this.ecService.updateElementComponent(obj).then(
-            (item: LtElementComp) => {
-                return convLtElementCompToNode(item) as Node;
+            (item: WI.LtElementComp) => {
+                return WI.convLtElementCompToNode(item) as Node;
             }
         );
     }
@@ -148,10 +155,10 @@ export class ComponentComponent implements OnInit, OnDestroy {
             };
 
             this.ecService.deleteElementComponent(obj).subscribe(
-                (elements: LtElementComp[]) => {
+                (elements: WI.LtElementComp[]) => {
                      this.component.elements = elements;
                      this.ecService.updateComponentInList(this.component);
-                     this.listOfDataNode = convertToNodeArray(this.component.elements);
+                     this.listOfDataNode = WI.convertToNodeArray(this.component.elements);
                      this.cloneComponent();
                 }
             );
@@ -163,14 +170,14 @@ export class ComponentComponent implements OnInit, OnDestroy {
      */
     private retriveElements() {
         this.ecService.getElementsFrom().subscribe(
-            (elements: LortomElement []) => {
+            (elements: WI.LortomElement []) => {
                 elements.forEach(
-                    (item: LortomElement) => {
-                        this.listElements.push(convertToLtElementComp(item));
+                    (item: WI.LortomElement) => {
+                        this.listElements.push(WI.convertToLtElementComp(item));
                     }
                 );
 
-                this.listOfNode = convertToNodeList(this.listElements);
+                this.listOfNode = WI.convertToNodeList(this.listElements);
             }
         );
         this.cloneComponent();
@@ -198,7 +205,7 @@ export class ComponentComponent implements OnInit, OnDestroy {
      */
     cloneComponent() {
         if (this.component != null) {
-            const elements: LtElementComp[] = [];
+            const elements: WI.LtElementComp[] = [];
 
             for (const perm of this.component.elements)
             {
@@ -214,7 +221,7 @@ export class ComponentComponent implements OnInit, OnDestroy {
      * This function clone the CopyRole
      */
     cloneCopyComponent() {
-        const elements: LtElementComp[] = [];
+        const elements: WI.LtElementComp[] = [];
 
         for (const perm of this.copyComponent.elements)
         {
