@@ -1,0 +1,27 @@
+{
+  "name": "hadeluca/lortom-template",
+  "description": "this is a first Lortom Template",
+  "keywords": ["cms", "laravel","angular4","laravel+angular", "angular 4"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name" : "Hernan Ariel De Luca",
+      "email": "hadeluca@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0.0"
+  },
+  "require-dev": {
+  },
+  "autoload": {
+    "psr-4": {
+      "LortomTemplate\\":"frontend/"
+    }
+  },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "optimize-autoloader": true
+  }
+}
