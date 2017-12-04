@@ -2,7 +2,6 @@
  * Created by hernan on 14/11/2017.
  */
 
-import {Node} from 'lt-treeview';
 
 export interface Page {
     id : number,
@@ -16,136 +15,9 @@ export interface Page {
     state : { id? : number , label? : string },
 }
 
-
-export interface LortomElement {
-    id : number,
-    name : string,
-    Object : string,
-    functions : string,
-    appearance : string,
-    check : boolean
-}
-
-
 export interface LortomComponent {
     id : number,
     name : string,
     appearance : string,
-    elements : LtElementComp[],
     check : boolean
-}
-
-export interface LtElementComp {
-    id: number,
-    idElement : number,
-    name : string,
-    Object : string,
-    functions : string,
-    appearance : string,
-    check : boolean
-    children? : LtElementComp[]
-}
-
-
-export function convertToLtElementComp(item : LortomElement) : LtElementComp
-{
-    return {
-        id: -1,
-        idElement : item.id,
-        name : item.name,
-        Object : item.Object,
-        functions : item.functions,
-        appearance : item. appearance,
-        check: false
-    } as LtElementComp
-}
-
-export function convLtElementCompToNode(item : LtElementComp) : Node
-{
-
-    let node =  {
-        label: item.name,
-        obj: {item},
-        children: [],
-        adding: false,
-        expand: false
-    } as Node;
-
-    node.children = convertToNodeArray(item.children);
-
-    return node;
-}
-
-export function convertToNodeArray(items : LtElementComp[]) : Node[]
-{
-    let listOfNode: Node[] = [];
-
-    if(items != undefined) {
-        items.forEach(
-            (el: LtElementComp) => {
-                let node = {
-                    label: el.name,
-                    obj: {el},
-                    children: [],
-                    adding: false,
-                    expand: false
-                } as Node;
-
-                node.children = convertToNodeArray(el.children);
-
-                listOfNode.push(node);
-            }
-        );
-    }
-
-    return listOfNode;
-}
-
-export function convertToNodeList(items : LtElementComp[]):Node []{
-    let listOfNode : Node[] = [];
-
-    items.forEach(
-        (el : LtElementComp) => {
-            listOfNode.push({
-                label: el.name,
-                obj: {el},
-                children: [],
-                adding: false,
-                expand: false
-            });
-        }
-    );
-
-    return listOfNode;
-}
-
-export function convertFromNodeToLtElementComp(items: Node[]) : LtElementComp[]
-{
-    let listOfElements :LtElementComp[] = [];
-
-    if(items != undefined) {
-
-        for(let i=0; i<items.length; i++)
-        {
-            let el = items[i] as Node;
-
-            let obj = el.obj;
-
-            var it = {
-                id: obj.el.id,
-                idElement: obj.el.idElement,
-                name: obj.el.name,
-                Object: obj.el.Object,
-                functions: obj.el.functions,
-                appearance: obj.el.appearance,
-                children: [],
-                check:false
-            } as LtElementComp;
-
-            it.children = convertFromNodeToLtElementComp(el.children);
-            listOfElements.push(it);
-        }
-    }
-
-    return listOfElements;
 }

@@ -29,7 +29,8 @@
         ],
         "psr-4": {
             "App\\": "app/",
-            "Plugins\\":"angular-backend/src/plugins/"
+            "Plugins\\":"angular-backend/src/plugins/",
+            "LortomTemplate\\":"template/LortomTemplate/Fantastic/frontend"
         }
     },
     "autoload-dev": {
