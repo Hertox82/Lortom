@@ -1,0 +1,21 @@
+{
+  "vendor": "LortomTemplate",
+  "name": "Fantastic",
+  "version": "1.0.0",
+  "plugins": {
+    "require": {
+      "Hardel@Dashboard": "stable",
+      "Hardel@Plugin": "stable",
+      "Hardel@Settings": "stable",
+      "Hardel@Website": "stable",
+      "LortomTemplate@NomePlugin": "stable"
+    }
+  },
+  "frontend": {
+    "autoload": {
+      "psr-4": {
+        "LortomTemplate\\": "template/LortomTemplate/Fantastic/frontend"
+      }
+    }
+  }
+}

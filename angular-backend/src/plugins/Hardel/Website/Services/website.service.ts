@@ -7,7 +7,7 @@ import {Injectable} from "@angular/core";
 import {Http, Response} from "@angular/http";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
-import {LortomComponent, LortomElement, LtElementComp, Page} from "./website.interfaces";
+import {LortomComponent, Page} from "./website.interfaces";
 import {MasterService} from "@Lortom/services/master.service";
 
 @Injectable()
@@ -15,7 +15,6 @@ export class WebsiteService extends MasterService{
 
 
     listOfPages : Page[];
-    listOfElements : LortomElement[];
     listOfComponents : LortomComponent[];
 
     private _updatePages = new Subject();
@@ -36,8 +35,6 @@ export class WebsiteService extends MasterService{
             { namePath : 'getPages', path: 'pages'},
             { namePath : 'savePage', path: 'page'},
             { namePath : 'getPageAtt', path: 'pages/attribute/list'},
-            { namePath : 'getElements', path: 'elements'},
-            { namePath : 'saveElement', path : 'element'},
             { namePath : 'getComponents', path : 'components'},
             { namePath : 'saveComponent', path : 'component'},
             { namePath : 'updateElementComponent', path: 'component/element' }
@@ -57,37 +54,11 @@ export class WebsiteService extends MasterService{
         return this.getItemByProperty(name,value,'pages','listOfPages') as Page;
     }
 
-    /**
-     * This function return Element by Property
-     * @param name
-     * @param value
-     * @returns {LortomElement}
-     */
 
-    getElementByProperty(name : string, value : any)
-    {
-       return this.getItemByProperty(name,value,'elements','listOfElements') as LortomElement;
-    }
 
     getComponentByProperty(name : string, value: any)
     {
         return this.getItemByProperty(name,value,'components','listOfComponents') as LortomComponent;
-    }
-
-
-    /**
-     * This function update Element in listOfElements
-     * @param el
-     */
-    updateElementInList(el : LortomElement) : void
-    {
-        if(this.listOfElements == undefined)
-        {
-            this.listOfElements = this.getElements();
-        }
-        let elm = this.updateItemInList(el,this.listOfElements) as LortomElement[];
-
-        this.setElements(elm);
     }
 
 
@@ -128,14 +99,6 @@ export class WebsiteService extends MasterService{
         return this.checkItemExist('pages');
     }
 
-    /**
-     * This function check if Elements exist
-     * @returns {boolean}
-     */
-    checkElementsExist() : boolean
-    {
-        return this.checkItemExist('elements');
-    }
 
     /**
      * This function check if Components exist
@@ -160,20 +123,6 @@ export class WebsiteService extends MasterService{
             );
     }
 
-    /**
-     * This function call API to get Elements
-     * @returns {Observable<R>}
-     */
-    getElementsFrom() : Observable<any>
-    {
-        return this.http.get(this.apiManager.getPathByName('getElements'))
-            .map(
-                (response : Response) => {
-                    return response.json().elements;
-                }
-            );
-    }
-
     getComponentsFrom() : Observable<any>
     {
         return this.http.get(this.apiManager.getPathByName('getComponents'))
@@ -194,16 +143,6 @@ export class WebsiteService extends MasterService{
         this.listOfPages = pages;
     }
 
-    /**
-     * This function set a list Of Elements
-     * @param elements
-     */
-    setElements(elements : LortomElement[]) : void
-    {
-        this.setItem('elements',elements);
-        this.listOfElements = elements;
-    }
-
     setComponents(components : LortomComponent []) : void
     {
         this.setItem('components',components);
@@ -217,15 +156,6 @@ export class WebsiteService extends MasterService{
     getPages() : Page[]
     {
         return this.getItem('pages','listOfPages') as Page[];
-    }
-
-    /**
-     * This function return a list Of Elements
-     * @returns {LortomElement[]}
-     */
-    getElements() : LortomElement []
-    {
-        return this.getItem('elements','listOfElements') as LortomElement[];
     }
 
     getComponents() : LortomComponent []
@@ -244,21 +174,6 @@ export class WebsiteService extends MasterService{
             .map(
                 (response : Response) => {
                     return response.json().pages;
-                }
-            );
-    }
-
-    /**
-     * This function call API in order to Delete an Array of Element
-     * @param el
-     * @returns {Observable<R>}
-     */
-    deleteElements(el : LortomElement []) : Observable <any> {
-
-        return this.http.put(this.apiManager.getPathByName('getElements'),el,this.getOptions())
-            .map(
-                (response : Response) => {
-                    return response.json().elements;
                 }
             );
     }
@@ -288,21 +203,6 @@ export class WebsiteService extends MasterService{
             );
     }
 
-    /**
-     * This function call API in order to Create an Element
-     * @param elem
-     * @returns {Observable<R>}
-     */
-    createElement(elem : LortomElement) : Observable<any> {
-
-        return this.http.post(this.apiManager.getPathByName('saveElement'),elem,this.getOptions())
-            .map(
-                (response : Response) => {
-                    return response.json().element;
-                }
-            );
-    }
-
     createComponent(comp : LortomComponent) : Observable<any>{
 
         return this.http.post(this.apiManager.getPathByName('saveComponent'),comp,this.getOptions())
@@ -311,18 +211,6 @@ export class WebsiteService extends MasterService{
                     return response.json().component;
                 }
             )
-    }
-
-    /**
-     * This function set an Element into the listOfElements
-     * @param elem
-     */
-    setElement(elem : LortomElement) : void {
-
-        let el = this.getElements();
-        el.push(elem);
-        this.deleteElementFromCache();
-        this.setElements(el);
     }
 
     /**
@@ -358,13 +246,6 @@ export class WebsiteService extends MasterService{
     }
 
     /**
-     * This function delete elements from cache
-     */
-    deleteElementFromCache() : void {
-        this.deleteItem('elements','listOfElements');
-    }
-
-    /**
      * This function delete components from cache
      */
     deleteComponentFromCache() :void {
@@ -377,14 +258,6 @@ export class WebsiteService extends MasterService{
     updateListOfPages()
     {
         this._updatePages.next();
-    }
-
-    /**
-     * this function fire event
-     */
-    updateListOfElements()
-    {
-        this._updateElements.next();
     }
 
     updateListOfComponents()
@@ -430,47 +303,12 @@ export class WebsiteService extends MasterService{
             );
     }
 
-    /**
-     * This function call API in order to update an Element
-     * @param element
-     * @returns {Observable<R>}
-     */
-    saveElement(element : LortomElement) : Observable <any> {
-
-        return this.http.put(this.apiManager.getPathByName('saveElement'),element,this.getOptions())
-            .map(
-                (response : Response) => {
-                    return response.json().element;
-                }
-            );
-    }
-
     saveComponent(comp : LortomComponent) : Observable <any> {
 
         return this.http.put(this.apiManager.getPathByName('saveComponent'),comp,this.getOptions())
             .map(
                 (response : Response) => {
                     return response.json().component;
-                }
-            );
-    }
-
-    updateElementComponent(data : {idComponent: number, object: any, parent?: any}): Promise<LtElementComp> {
-
-        return this.http.post(this.apiManager.getPathByName('updateElementComponent'),data,this.getOptions())
-            .toPromise().then(
-                (response : Response) => {
-                    return response.json().elementComponent as LtElementComp;
-                });
-    }
-
-    deleteElementComponent(data : {idComponentElement: number}) : Observable<any> {
-        return this.http.put(this.apiManager.getPathByName('updateElementComponent'),data,this.getOptions())
-            .map(
-                (response: Response) => {
-                    console.log(response);
-
-                    return response.json().elements;
                 }
             );
     }

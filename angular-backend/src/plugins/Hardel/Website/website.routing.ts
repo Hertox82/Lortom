@@ -4,9 +4,6 @@ import {WebsiteComponent,
         PagesComponent,
         PageNewComponent,
         PageComponent,
-        ElementsComponent,
-        ElementNewComponent,
-        ElementComponent,
         ComponentsComponent,
         NewComponent,
         ComponentComponent,
@@ -19,10 +16,6 @@ const routes : Routes = [
         {path: 'pages', component: PagesComponent, data : {breadcrumb : 'Pages'}, children : [
             {path: 'new', component : PageNewComponent, data : {breadcrumb : 'New'}},
             {path: ':id', component : PageComponent, data : {breadcrumb : 'Page'}}
-        ]},
-        {path: 'elements', component: ElementsComponent, data : {breadcrumb : 'Elements'}, children: [
-            {path: 'new', component : ElementNewComponent, data : {breadcrumb : 'New'}},
-            {path : ':id', component : ElementComponent, data : {breadcrumb : 'Element'}}
         ]},
         {path : 'components', component: ComponentsComponent, data : {breadcrumb : 'Components'}, children : [
             {path : 'new', component : NewComponent, data : {breadcrumb : 'New'}},
@@ -38,9 +31,6 @@ export const websiteComponent = [
     PagesComponent,
     PageNewComponent,
     PageComponent,
-    ElementsComponent,
-    ElementNewComponent,
-    ElementComponent,
     ComponentsComponent,
     NewComponent,
     ComponentComponent

@@ -170,7 +170,6 @@ class WebsiteService{
             'id'            => $cmp->id,
             'name'          => $cmp->name,
             'appearance'    => $cmp->appearance,
-            'elements'      =>  $cmp->getElements()
         ];
     }
 }
