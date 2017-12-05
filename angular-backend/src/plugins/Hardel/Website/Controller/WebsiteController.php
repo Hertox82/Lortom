@@ -57,7 +57,20 @@ class WebsiteController extends Controller
         $type = ($request->method() == 'POST') ? 'Save' : 'Edit';
         $responseKey = 'page';
         $name = 'Page';
-        $subTables = [];
+        $components = isset($input['components']) ? $input['components'] : [];
+        $subTables = [
+            'lt_page_component' => [
+
+                'lista' => $components,
+
+                'subTableKey' => [
+                    'idComponent'     => true,
+                    'idPage'   => false,
+                    'functions' => ['alias' => 'function'],
+                    'Object'    => true,
+                ],
+            ],
+        ];
 
         return response()->json($this->storeObj(compact('Class','type','input','ToSave','responseKey','name','subTables')));
     }

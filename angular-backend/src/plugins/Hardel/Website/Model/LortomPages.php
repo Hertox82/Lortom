@@ -4,6 +4,7 @@ namespace Plugins\Hardel\Website\Model;
 
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class LortomPages extends Model
 {
@@ -69,5 +70,24 @@ class LortomPages extends Model
             $this->$key = $array[$key];
         }
 
+    }
+
+    public function getPageComponents()
+    {
+        return json_decode(json_encode($this->getListComponents()),true);
+    }
+
+    protected function getListComponents()
+    {
+        return  DB::table('lt_page_component')
+            ->where('idPage',$this->id)
+            ->join('lt_components','lt_components.id','=','lt_page_component.idComponent')
+            ->select([
+                'lt_page_component.id AS id',
+                'lt_components.id AS idComponent',
+                'lt_components.name AS name',
+                'lt_page_component.Object AS Object',
+                'lt_page_component.function AS functions',
+            ])->get();
     }
 }

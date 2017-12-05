@@ -147,10 +147,16 @@
                                             {{comp.name}}
                                         </td>
                                         <td>
-                                            <input class="form-control" [(ngModel)]="comp.Object" name="object">
+                                            <input type="text" class="form-control" [ngModel] = "comp.Object" name="object" *ngIf="isEdit === false; else editObject" readonly>
+                                            <ng-template #editObject>
+                                                <input type="text" class="form-control" [(ngModel)]="comp.Object" name="object">
+                                            </ng-template>
                                         </td>
                                         <td>
-                                            <input class="form-control" [(ngModel)]="comp.functions" name="functions">
+                                            <input type="text" class="form-control" [ngModel]="comp.functions" name="functions" *ngIf="isEdit === false; else editFunctions" readonly>
+                                            <ng-template #editFunctions>
+                                                <input type="text" class="form-control" [(ngModel)]="comp.functions" name="functions">
+                                            </ng-template>
                                         </td>
                                         <td>
                                             <a class="td_orange" (click)="eraseComponent(comp)" *ngIf="isEdit == true"><i class="fa fa-window-close-o"></i></a>
