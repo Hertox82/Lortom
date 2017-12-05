@@ -2,9 +2,10 @@
 
 
 import {Component, Input, OnInit} from "@angular/core";
-import {Page} from "../../Services/website.interfaces";
+import {LortomComponent, LtPageComponent, Page, createLtPageComponentFrom} from "../../Services/website.interfaces";
 import {WebsiteService} from "../../Services/website.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {hasOwnProperty} from "tslint/lib/utils";
 @Component({
     selector : 'wb-page',
     templateUrl : './page.component.html',
@@ -21,11 +22,14 @@ export class PageComponent implements OnInit
     query : string;
     notFound : boolean;
     listOfState : {id? : number, label? : string}[];
+    listOfComponent =[];
+    filteredList : LortomComponent[];
 
     constructor(private pService : WebsiteService, private router : ActivatedRoute,private nav : Router) {
         this.isEdit = false;
         this.notFound = false;
         this.query = '';
+        this.filteredList = [];
         this.page = {
             id : -2,
             title : '',
@@ -35,13 +39,21 @@ export class PageComponent implements OnInit
             metaTag : '',
             slug : '',
             fileName : '',
-            content : ''
+            content : '',
+            components: []
         };
         this.pService.getPageAtt().subscribe(
             (data : any) => {
                 this.listOfState = data.states;
             }
         );
+
+        this.pService.getComponentsFrom().subscribe(
+            (data: LortomComponent[]) => {
+                this.listOfComponent = data;
+            }
+        );
+
         this.sub = this.router.params.subscribe(
             (params) => {
                 this.id = +params['id'];
@@ -49,6 +61,11 @@ export class PageComponent implements OnInit
                 if(this.page != null)
                 {
                     this.notFound = true;
+                    if(! hasOwnProperty(this.page,'components')) {
+                        this.page['components'] = [];
+                    }
+
+                    console.log(this.page);
                 }
                 else
                 {
@@ -57,6 +74,8 @@ export class PageComponent implements OnInit
                 this.clonePage();
             }
         );
+
+        console.log(this.page);
     }
     ngOnInit() {}
 
@@ -71,6 +90,31 @@ export class PageComponent implements OnInit
     resetMode(){
         if (confirm('Do you want to reset all data?')) {
             this.cloneCopyPage();
+        }
+    }
+
+    eraseComponent(item: LtPageComponent) {
+        const index = this.page.components.indexOf(item);
+
+        if(index > -1) {
+            this.page.components.splice(index,1);
+        }
+    }
+
+    addComponent(item: LortomComponent) {
+        const el = createLtPageComponentFrom(item);
+
+        this.page.components.push(el);
+    }
+
+    /**
+     * This function filter permission for research
+     */
+    filter(){
+        if (this.query !== "") {
+            this.filteredList = this.listOfComponent.filter(function(el){
+                return el.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
+            }.bind(this));
         }
     }
 

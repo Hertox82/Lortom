@@ -89,7 +89,7 @@ class UpdatePlugin extends Command
                     $this->callSilent('lortom-routing:enable');
                 }
 
-                $this->callSilent('lortom-permission:update',['--vendor-name' => $vendor.','.$name]);
+                $this->call('lortom-permission:update',['--vendor-name' => $vendor.','.$name]);
 
                 $this->info("\n");
                 $this->info("Ok! this Plugin : {$name} is updated!");

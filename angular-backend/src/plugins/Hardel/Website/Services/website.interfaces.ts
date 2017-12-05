@@ -13,6 +13,7 @@ export interface Page {
     fileName : string,
     check : boolean,
     state : { id? : number , label? : string },
+    components?: LtPageComponent[]
 }
 
 export interface LortomComponent {
@@ -21,3 +22,23 @@ export interface LortomComponent {
     appearance : string,
     check : boolean
 }
+
+export interface LtPageComponent {
+    id: number,
+    idComponent?: number,
+    name?: string,
+    Object?: string,
+    functions?: string,
+}
+
+
+export function createLtPageComponentFrom(el: LortomComponent): LtPageComponent {
+    const obj = {
+        id: -1,
+        idComponent: el.id,
+        name: el.name,
+    };
+
+    return obj as LtPageComponent;
+}
+

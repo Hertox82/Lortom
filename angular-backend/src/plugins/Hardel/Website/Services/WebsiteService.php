@@ -96,13 +96,17 @@ class WebsiteService{
 
             foreach ($keys as $k)
             {
-                if($ToSave[$k])
-                {
-                    $return[$k] = $item['id'];
+                if(is_bool($ToSave[$k])) {
+
+                    if ($ToSave[$k]) {
+                        $return[$k] = $item[$k];
+                    } else {
+                        $return[$k] = $id;
+                    }
                 }
-                else
+                else if(is_array($ToSave[$k]))
                 {
-                    $return[$k] = $id;
+                    $return[$ToSave[$k]['alias']] = $item[$k];
                 }
             }
             return $return;
@@ -155,7 +159,8 @@ class WebsiteService{
             'metaTag'       => $page->metaTag,
             'metaDesc'      => $page->metaDesc,
             'fileName'      => $page->fileName,
-            'state'         => LortomPages::gValBack($page->state,'state')
+            'state'         => LortomPages::gValBack($page->state,'state'),
+            'components'    => $page->getPageComponents()
         ];
     }
 

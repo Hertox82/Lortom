@@ -81,7 +81,7 @@ class UpdatePermission extends Command
                $this->compiler->setVendorName($vendor,$name)->updatePermission();
 
                 $this->info("\n");
-                $this->info("Ok! this Plugin : {$name} is updated!");
+                $this->info("Ok! the Permission of this Plugin : {$name} is updated!");
             }
             else
             {
