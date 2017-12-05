@@ -163,7 +163,6 @@ return [
                            $table->foreign('idComponent')->references('id')->on('lt_components')->onUpdate('cascade')->onDelete('cascade');
                            $table->string('Object')->nullable();
                            $table->string('function')->nullable();
-                           $table->integer('idPadre')->unsigned();
                         });
                     }
 
@@ -185,7 +184,7 @@ return [
                     //$Schema::dropIfExists('lt_component_element');
                     $Schema::dropIfExists('lt_page_component');
                     //$Schema::dropIfExists('lt_elements');
-                    $Schema::dropIfExists('lt_component');
+                    $Schema::dropIfExists('lt_components');
                     $Schema::dropIfExists('lt_pages');
                 },
                 'permission'        => 'Hardel.Website'
