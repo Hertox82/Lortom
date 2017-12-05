@@ -53,25 +53,27 @@
                         });
                     }
 
-                    if($Schema::hasTable('lt_components') and $Schema::hasTable('lt_pages'))
+                    if( $Schema::hasTable('lt_components') and $Schema::hasTable('lt_pages'))
                     {
-                        $Schema::create('lt_page_component',function(Illuminate\Database\Schema\Blueprint $table){
-                           $table->increments('id');
-                           $table->integer('idPage')->unsigned();
-                           $table->foreign('idPage')->references('id')->on('lt_pages')->onUpdate('cascade')->onDelete('cascade');
-                           $table->integer('idComponent')->unsigned();
-                           $table->foreign('idComponent')->references('id')->on('lt_components')->onUpdate('cascade')->onDelete('cascade');
-                           $table->string('Object')->nullable();
-                           $table->string('function')->nullable();
-                        });
+                        if(! $Schema::hasTable('lt_page_component')) {
+                            $Schema::create('lt_page_component', function (Illuminate\Database\Schema\Blueprint $table) {
+                                $table->increments('id');
+                                $table->integer('idPage')->unsigned();
+                                $table->foreign('idPage')->references('id')->on('lt_pages')->onUpdate('cascade')->onDelete('cascade');
+                                $table->integer('idComponent')->unsigned();
+                                $table->foreign('idComponent')->references('id')->on('lt_components')->onUpdate('cascade')->onDelete('cascade');
+                                $table->string('Object')->nullable();
+                                $table->string('function')->nullable();
+                            });
+                        }
                     }
 
-                    if( $Schema::hasTable('lt_menus') and $Schema::hasTable('lt_pages')) {
+                    if( !$Schema::hasTable('lt_menus') and $Schema::hasTable('lt_pages')) {
 
                         $Schema::create('lt_menus',function(Illuminate\Database\Schema\Blueprint $table){
                             $table->increments('id');
                             $table->string('name');
-                            $table->integer('idPage')->unsigned();
+                            $table->integer('idPage')->unsigned()->nullable();
                             $table->foreign('idPage')->references('id')->on('lt_pages')->onUpdate('cascade')->onDelete('cascade');
                             $table->integer('idParent')->unsigned();
                         });

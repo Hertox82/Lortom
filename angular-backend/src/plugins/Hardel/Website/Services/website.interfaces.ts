@@ -31,6 +31,14 @@ export interface LtPageComponent {
     functions?: string,
 }
 
+export interface LortomMenu {
+    id:number,
+    idPage: number,
+    name: string,
+    children: LortomMenu[],
+    check: boolean
+}
+
 
 export function createLtPageComponentFrom(el: LortomComponent): LtPageComponent {
     const obj = {

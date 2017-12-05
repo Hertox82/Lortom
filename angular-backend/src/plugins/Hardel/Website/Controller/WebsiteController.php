@@ -6,6 +6,7 @@ use App\Http\Controllers\LortomController as Controller;
 use Illuminate\Http\Request;
 use Plugins\Hardel\Website\Model\LortomComponent;
 use Plugins\Hardel\Website\Model\LortomElement;
+use Plugins\Hardel\Website\Model\LortomMenu;
 use Plugins\Hardel\Website\Model\LortomPages;
 use DB;
 
@@ -91,52 +92,18 @@ class WebsiteController extends Controller
         return response()->json($this->deleteObj(compact('input','tableCol','Class','name','responseKey')));
     }
 
-    /**
-     *This function get all list of LortomElement
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getElements(Request $request)
-    {
-        $responseKey = 'elements';
-        $Class = LortomElement::class;
-        $name = 'Element';
-        return response()->json($this->getList(compact('responseKey','Class','name')));
-    }
+   public function getMenus(Request $request)
+   {
+      /* $responseKey = 'menus';
+       $Class = LortomMenu::class;
+       $name = 'Menu';
+       return response()->json($this->getList(compact('responseKey','Class','name')));*/
 
-    /**
-     * This function delete LortomElement
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function deleteElements(Request $request)
-    {
-        $input = $request->all();
-        $tableCol = ['lt_elements' => 'id'];
-        $Class = LortomElement::class;
-        $name = 'Element';
-        $responseKey = 'elements';
+      $list = LortomMenu::gVal('idParent');
 
-        return response()->json($this->deleteObj(compact('input','tableCol','Class','name','responseKey')));
-    }
+      pr($list,1);
 
-    /**
-     * This function Create or Update a LortomElement
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function storeElement(Request $request)
-    {
-        $input = $request->all();
-        $ToSave = ['name', 'Object', 'functions', 'appearance'];
-        $Class = LortomElement::class;
-        $type =  ($request->method() == 'POST') ? 'Save' : 'Edit';
-        $responseKey = 'element';
-        $name = 'Element';
-        $subTables = [];
-
-        return response()->json($this->storeObj(compact('Class','type','input','ToSave','responseKey','name','subTables')));
-    }
+   }
 
     /**
      * This function
