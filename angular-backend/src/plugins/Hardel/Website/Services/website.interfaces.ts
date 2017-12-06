@@ -33,10 +33,11 @@ export interface LtPageComponent {
 
 export interface LortomMenu {
     id:number,
-    idPage: number,
+    idPage: {id: any, label: string},
     name: string,
-    children: LortomMenu[],
-    check: boolean
+    check: boolean,
+    parentList?: {id: number, label: string},
+    idParent: number
 }
 
 

@@ -45,6 +45,12 @@
                                         <th>
                                             <a>Name</a>
                                         </th>
+                                        <th>
+                                            <a>Related Page</a>
+                                        </th>
+                                        <th>
+                                            <a>Parent</a>
+                                        </th>
                                         <th style="width: 50px;"></th>
                                     </tr>
                                     </thead>
@@ -55,6 +61,12 @@
                                         </td>
                                         <td>
                                             {{el.name}}
+                                        </td>
+                                        <td>
+                                            {{el.idPage.label}}
+                                        </td>
+                                        <td>
+                                            {{el.parentList.label}}
                                         </td>
                                         <td>
                                             <a [routerLink] = "['/backend/website/menu',el.id]"><i class="fa fa-edit" style="color:orange; font-size: 16px;"></i></a>

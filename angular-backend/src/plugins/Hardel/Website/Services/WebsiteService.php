@@ -9,6 +9,7 @@ namespace Plugins\Hardel\Website\Services;
 
 use Plugins\Hardel\Website\Model\LortomElement;
 use Plugins\Hardel\Website\Model\LortomComponent;
+use Plugins\Hardel\Website\Model\LortomMenu;
 use Plugins\Hardel\Website\Model\LortomPages;
 
 class WebsiteService{
@@ -175,6 +176,17 @@ class WebsiteService{
             'id'            => $cmp->id,
             'name'          => $cmp->name,
             'appearance'    => $cmp->appearance,
+        ];
+    }
+
+    protected function getMenuSerialized(LortomMenu $menu)
+    {
+        return [
+            'id'            => $menu->id,
+            'name'          => $menu->name,
+            'idPage'        => LortomMenu::getFieldValueById($menu->idPage,'idPage'),
+            'parentList'    => LortomMenu::getFieldValueById($menu->idParent,'parentList'),
+            'idParent'      => $menu->idParent,
         ];
     }
 }

@@ -94,14 +94,46 @@ class WebsiteController extends Controller
 
    public function getMenus(Request $request)
    {
-      /* $responseKey = 'menus';
+       $responseKey = 'menus';
        $Class = LortomMenu::class;
        $name = 'Menu';
-       return response()->json($this->getList(compact('responseKey','Class','name')));*/
+       return response()->json($this->getList(compact('responseKey','Class','name')));
 
-      $list = LortomMenu::gVal('idParent');
+   }
 
-      pr($list,1);
+   public function deleteMenus(Request $request)
+   {
+       $input = $request->all();
+
+       $idToProbablyDelete = [];
+
+       //put inside a variable
+       foreach ($input as $it) {
+           $idToProbablyDelete[] = $it['id'];
+       }
+
+       $listToDelete = [];
+       //filtering deleting ID
+       foreach ($idToProbablyDelete as $id)
+       {
+            $Menu = LortomMenu::find($id);
+
+            if( $Menu ){
+                if(!in_array($id,$listToDelete)){
+                    $listToDelete[] = $id;
+                    $listToDelete = array_merge($listToDelete,$Menu->getMyChildren($Menu->id));
+                }
+            }
+       }
+
+       foreach ($listToDelete as $item) {
+           DB::table('lt_menus')->where('id',$item)->delete();
+       }
+
+       $responseKey = 'menus';
+       $Class = LortomMenu::class;
+       $name = 'Menu';
+       return response()->json($this->getList(compact('responseKey','Class','name')));
 
    }
 
