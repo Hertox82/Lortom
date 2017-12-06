@@ -3128,7 +3128,8 @@ var WebsiteService = (function (_super) {
             { namePath: 'getComponents', path: 'components' },
             { namePath: 'saveComponent', path: 'component' },
             { namePath: 'getMenus', path: 'menus' },
-            { namePath: 'saveMenu', path: 'menu' }
+            { namePath: 'saveMenu', path: 'menu' },
+            { namePath: 'getMenuAtt', path: 'menus/attribute/list' },
         ];
         //Add the Api to the ApiManager
         _this.apiManager.addListUrlApi(urls);
@@ -3395,6 +3396,13 @@ var WebsiteService = (function (_super) {
         return this.http.get(this.apiManager.getPathByName('getPageAtt'))
             .map(function (response) {
             return response.json();
+        });
+    };
+    WebsiteService.prototype.getMenuAtt = function () {
+        return this.http.get(this.apiManager.getPathByName('getMenuAtt'))
+            .map(function (response) {
+            console.log(response);
+            return response.json().data;
         });
     };
     /**
@@ -4009,7 +4017,7 @@ var _a, _b;
 /***/ "./src/plugins/Hardel/Website/component/NewMenu/menunew.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>New Menu</p>"
+module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"title\" class=\"col-md-2 control-label\">Name</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"title\" placeholder=\"Title\" id=\"title\" [(ngModel)] = \"menu.name\" >\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"parent\" class=\"col-md-2 control-label\">Parent</label>\n                                <div class=\"col-md-4\">\n                                    <select class=\"form-control\" name=\"parent\" id=\"parent\" [(ngModel)]=\"menu.parentList\">\n                                        <option *ngFor=\"let p of listOfParent\" [ngValue]=\"p\" [innerHtml] = \"p.label\"> </option>\n                                    </select>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"page\" class=\"col-md-2 control-label\">Related Page</label>\n                                <div class=\"col-md-4\">\n                                    <select class=\"form-control\" name=\"page\" id=\"page\" [(ngModel)]=\"menu.idPage\">\n                                        <option *ngFor=\"let pa of listOfPages\" [ngValue]=\"pa\">{{pa.label}}</option>\n                                    </select>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n</form>"
 
 /***/ }),
 
@@ -4027,10 +4035,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var website_service_1 = __webpack_require__("./src/plugins/Hardel/Website/Services/website.service.ts");
 var MenuNewComponent = (function () {
-    function MenuNewComponent() {
+    function MenuNewComponent(nmService) {
+        var _this = this;
+        this.nmService = nmService;
+        this.menu = {
+            id: -1,
+            name: '',
+            idParent: 0,
+            idPage: { id: null, label: '' },
+            check: false
+        };
+        this.nmService.getMenuAtt().subscribe(function (data) {
+            _this.listOfPages = data.pageList;
+            _this.listOfParent = data.parentList;
+        });
     }
     MenuNewComponent.prototype.ngOnInit = function () { };
     return MenuNewComponent;
@@ -4040,9 +4065,11 @@ MenuNewComponent = __decorate([
         selector: 'wb-new-menu',
         template: __webpack_require__("./src/plugins/Hardel/Website/component/NewMenu/menunew.component.html"),
         styles: ['']
-    })
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof website_service_1.WebsiteService !== "undefined" && website_service_1.WebsiteService) === "function" && _a || Object])
 ], MenuNewComponent);
 exports.MenuNewComponent = MenuNewComponent;
+var _a;
 //# sourceMappingURL=menunew.component.js.map
 
 /***/ }),

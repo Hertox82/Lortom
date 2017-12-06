@@ -40,7 +40,7 @@ class WebsiteController extends Controller
      */
     public function getPageAttributeList(Request $request)
     {
-        return response()->json(['states' => LortomPages::gVal('state')]);
+        return response()->json(['states' => LortomPages::getFieldValue('state')]);
 
     }
 
@@ -92,6 +92,11 @@ class WebsiteController extends Controller
         return response()->json($this->deleteObj(compact('input','tableCol','Class','name','responseKey')));
     }
 
+    /**
+     * API Request to get the List of Menus
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
    public function getMenus(Request $request)
    {
        $responseKey = 'menus';
@@ -101,6 +106,11 @@ class WebsiteController extends Controller
 
    }
 
+    /**
+     * API Request to Delete a List of Menus
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
    public function deleteMenus(Request $request)
    {
        $input = $request->all();
@@ -135,6 +145,16 @@ class WebsiteController extends Controller
        $name = 'Menu';
        return response()->json($this->getList(compact('responseKey','Class','name')));
 
+   }
+
+   public function getMenuAttributeList(Request $request)
+   {
+       return response()->json([
+           'data' => [
+               'parentList' => LortomMenu::getFieldValue('idParent'),
+               'pageList'   => LortomMenu::getFieldValue('idPage')
+           ]
+       ]);
    }
 
     /**

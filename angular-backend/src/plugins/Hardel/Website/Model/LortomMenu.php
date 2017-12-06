@@ -66,7 +66,7 @@ class LortomMenu extends Model
     {
         return json_decode(json_encode(DB::table('lt_pages')->select([
             'id',
-            'title'
+            'title AS label'
         ])->get()),true);
     }
 

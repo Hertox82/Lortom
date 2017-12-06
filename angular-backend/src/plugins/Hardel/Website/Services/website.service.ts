@@ -39,7 +39,8 @@ export class WebsiteService extends MasterService{
             { namePath : 'getComponents', path : 'components'},
             { namePath : 'saveComponent', path : 'component'},
             { namePath : 'getMenus', path: 'menus'},
-            { namePath : 'saveMenu', path: 'menu'}
+            { namePath : 'saveMenu', path: 'menu'},
+            { namePath : 'getMenuAtt', path: 'menus/attribute/list'},
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -378,21 +379,44 @@ export class WebsiteService extends MasterService{
         this._updatePages.next();
     }
 
+    /**
+     * this function fire event
+     */
     updateListOfComponents()
     {
         this._updateComponents.next();
     }
 
+    /**
+     * this function fire event
+     */
     updateListOfMenus() {
         this._updateMenus.next();
     }
 
 
+    /**
+     * This function call API in order to get Attribute List
+     * @returns {Observable<R>}
+     */
     getPageAtt() : Observable<any> {
         return this.http.get(this.apiManager.getPathByName('getPageAtt'))
             .map(
                 (response : Response) => {
                     return response.json();
+                }
+            );
+    }
+
+    /**
+     * This function call API in order to get Attribute List
+     * @returns {Observable<R>}
+     */
+    getMenuAtt() : Observable<any> {
+        return this.http.get(this.apiManager.getPathByName('getMenuAtt'))
+            .map(
+                (response: Response) => {
+                    return response.json().data;
                 }
             );
     }

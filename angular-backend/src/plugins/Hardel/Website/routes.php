@@ -64,3 +64,8 @@ Route::put('/menu',[
     'as'     => 'apiEditMenu',
     'uses'   => 'WebsiteController@storeMenu'
 ]);
+
+Route::get('/menus/attribute/list',[
+    'as'     => 'apiGetMenusAttributeList',
+    'uses'   => 'WebsiteController@getMenuAttributeList'
+]);
