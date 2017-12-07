@@ -311,11 +311,11 @@ export class WebsiteService extends MasterService{
             )
     }
 
-    createMenu(menu: LortomMenu): Observable<any> {
+    createMenu(menu: any): Observable<any> {
         return this.http.post(this.apiManager.getPathByName('saveMenu'),menu,this.getOptions())
             .map(
                 (response: Response) => {
-                    return response.json().menus;
+                    return response.json().menu;
                 }
             );
     }

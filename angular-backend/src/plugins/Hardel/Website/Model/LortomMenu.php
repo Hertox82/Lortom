@@ -15,6 +15,8 @@ class LortomMenu extends Model
 {
     protected $table = 'lt_menus';
 
+    public $timestamps = false;
+
     public static function getFieldValue($field)
     {
         $return = [];
@@ -42,6 +44,18 @@ class LortomMenu extends Model
         }
 
         return $return;
+    }
+
+    public function checkPropertyEdit($key, &$array)
+    {
+        if($this->$key != $array[$key])
+            $this->$key = $array[$key];
+
+    }
+
+    public function checkPropertySave($key, &$array)
+    {
+        $this->$key = $array[$key];
     }
 
 
@@ -77,7 +91,7 @@ class LortomMenu extends Model
         $list = json_decode(json_encode($list),true);
 
         $return = [];
-        $return[] = ['id' => '0', 'label' => '_root'];
+        $return[] = ['id' => 0, 'label' => '_root'];
 
         foreach ($list as $Parent) {
             $item = ['id' => $Parent['id'], 'label' => '&nbsp;&nbsp;&nbsp;&nbsp;'.$Parent['name']];

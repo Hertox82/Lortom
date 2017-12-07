@@ -7,6 +7,7 @@ import {Component, OnInit} from "@angular/core";
 import {LortomMenu} from "@Lortom/plugins/Hardel/Website/Services/website.interfaces";
 import {WebsiteService} from "@Lortom/plugins/Hardel/Website/Services/website.service";
 import {hasOwnProperty} from "tslint/lib/utils";
+import {Router} from "@angular/router";
 @Component({
     selector: 'wb-new-menu',
     templateUrl: './menunew.component.html',
@@ -21,7 +22,7 @@ export class MenuNewComponent implements OnInit {
     listOfParent: {id: number, label: string} [];
     listOfPages: {id: any, label: string} [];
 
-    constructor(private nmService: WebsiteService) {
+    constructor(private nmService: WebsiteService, private route: Router) {
         this.menu = {
             id: -1,
             name: '',
@@ -42,11 +43,24 @@ export class MenuNewComponent implements OnInit {
 
     }
 
-    saveMode(){
+    saveMenu(){
 
         if (!this.isEqual(this.menu,this.copyMenu))  {
             this.menu.idParent = this.menu.parentList.id;
+            const objToSend = {
+                id: -1,
+                name: this.menu.name,
+                idParent: this.menu.parentList.id,
+                idPage: this.menu.idPage.id
+            };
 
+            this.nmService.createMenu(objToSend).subscribe(
+                (menu: LortomMenu) => {
+                    this.nmService.setMenu(menu);
+                    this.nmService.updateListOfMenus();
+                    this.route.navigate(['/backend/website/menu']);
+                }
+            );
         }
     }
 

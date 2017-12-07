@@ -157,6 +157,19 @@ class WebsiteController extends Controller
        ]);
    }
 
+   public function storeMenu(Request $request)
+   {
+       $input = $request->all();
+       $type = ($request->method() == 'POST') ? 'Save' : 'Edit';
+       $ToSave = ['name','idPage','idParent'];
+       $responseKey = 'menu';
+       $name = 'Menu';
+       $Class = LortomMenu::class;
+       $subTables = [];
+
+       return response()->json($this->storeObj(compact('input','Class','type','ToSave','subTables','responseKey','name')));
+   }
+
     /**
      * This function
      * @param Request $request
