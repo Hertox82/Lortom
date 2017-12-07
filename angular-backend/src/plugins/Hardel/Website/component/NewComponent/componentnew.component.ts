@@ -80,6 +80,12 @@ export class NewComponent implements OnInit
         }
     }
 
+    resetMode(){
+        if (confirm('Do you want to reset all data?')) {
+            this.cloneCopyComponent();
+        }
+    }
+
     isEqual(v,v2) : boolean
     {
         return (v.name == v2.name) && (v.appearance == v2.appearance)

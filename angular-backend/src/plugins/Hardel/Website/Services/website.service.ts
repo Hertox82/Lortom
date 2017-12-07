@@ -469,7 +469,7 @@ export class WebsiteService extends MasterService{
      * @param menu
      * @returns {Observable<R>}
      */
-    saveMenu(menu: LortomMenu): Observable<any> {
+    saveMenu(menu: any): Observable<any> {
         return this.http.put(this.apiManager.getPathByName('saveMenu'),menu,this.getOptions())
             .map(
                 (response: Response) => {

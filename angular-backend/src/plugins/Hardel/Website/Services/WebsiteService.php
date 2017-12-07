@@ -160,7 +160,7 @@ class WebsiteService{
             'metaTag'       => $page->metaTag,
             'metaDesc'      => $page->metaDesc,
             'fileName'      => $page->fileName,
-            'state'         => LortomPages::gValBack($page->state,'state'),
+            'state'         => LortomPages::getFieldValueById($page->state,'state'),
             'components'    => $page->getPageComponents()
         ];
     }

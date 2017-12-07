@@ -15,7 +15,8 @@ const routes : Routes = [
             {path : ':id', component : WB.ComponentComponent, data : {breadcrumb : 'Component'}}
         ]},
         {path: 'menu', component: WB.MenusComponent, data: {breadcrumb: 'Menus'}, children: [
-            {path: 'new', component: WB.MenuNewComponent, data: {breadcrumb: 'New'}}
+            {path: 'new', component: WB.MenuNewComponent, data: {breadcrumb: 'New'}},
+            {path: ':id', component: WB.MenuComponent, data: {breadcrumb: 'Menu'}}
         ]}
     ]}
 ];
@@ -31,7 +32,8 @@ export const websiteComponent = [
     WB.NewComponent,
     WB.ComponentComponent,
     WB.MenusComponent,
-    WB.MenuNewComponent
+    WB.MenuNewComponent,
+    WB.MenuComponent,
 ];
 
 //console.log(websiteComponent);

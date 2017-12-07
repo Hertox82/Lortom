@@ -64,6 +64,12 @@ export class MenuNewComponent implements OnInit {
         }
     }
 
+    resetMode(){
+        if (confirm('Do you want to reset all data?')) {
+            this.cloneCopyMenu();
+        }
+    }
+
     cloneMenu(){
         const idPage = Object.assign({},this.menu.idPage);
         this.copyMenu = Object.assign({},this.menu);
