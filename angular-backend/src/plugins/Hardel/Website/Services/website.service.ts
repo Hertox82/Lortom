@@ -7,7 +7,7 @@ import {Injectable} from "@angular/core";
 import {Http, Response} from "@angular/http";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
-import {LortomComponent, Page} from "./website.interfaces";
+import {LortomComponent, Page, LortomMenu} from "./website.interfaces";
 import {MasterService} from "@Lortom/services/master.service";
 
 @Injectable()
@@ -16,12 +16,13 @@ export class WebsiteService extends MasterService{
 
     listOfPages : Page[];
     listOfComponents : LortomComponent[];
+    listOfMenus: LortomMenu[];
 
     private _updatePages = new Subject();
     updatePages$ = this._updatePages.asObservable();
 
-    private _updateElements = new Subject();
-    updateElements$ = this._updateElements.asObservable();
+    private _updateMenus = new Subject();
+    updateMenus$ = this._updateMenus.asObservable();
 
     private _updateComponents = new Subject();
     updateComponents$ = this._updateComponents.asObservable();
@@ -37,7 +38,9 @@ export class WebsiteService extends MasterService{
             { namePath : 'getPageAtt', path: 'pages/attribute/list'},
             { namePath : 'getComponents', path : 'components'},
             { namePath : 'saveComponent', path : 'component'},
-            { namePath : 'updateElementComponent', path: 'component/element' }
+            { namePath : 'getMenus', path: 'menus'},
+            { namePath : 'saveMenu', path: 'menu'},
+            { namePath : 'getMenuAtt', path: 'menus/attribute/list'},
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -55,10 +58,25 @@ export class WebsiteService extends MasterService{
     }
 
 
-
+    /**
+     * This function return LortomComponent by Property
+     * @param name
+     * @param value
+     * @returns {LortomComponent}
+     */
     getComponentByProperty(name : string, value: any)
     {
         return this.getItemByProperty(name,value,'components','listOfComponents') as LortomComponent;
+    }
+
+    /**
+     * This function return LortomMenu by Property
+     * @param name
+     * @param value
+     * @returns {LortomMenu}
+     */
+    getMenuByProperty(name: string, value: any) {
+        return this.getItemByProperty(name, value, 'menus', 'listOfMenus') as LortomMenu;
     }
 
 
@@ -89,6 +107,17 @@ export class WebsiteService extends MasterService{
         this.setComponents(cs);
     }
 
+    updateMenuInList(menu: LortomMenu): void {
+
+        if (this.listOfMenus == undefined) {
+            this.listOfMenus = this.getMenus();
+        }
+
+        const ms = this.updateItemInList(menu, this.listOfMenus) as LortomMenu[];
+
+        this.setMenus(ms);
+    }
+
 
     /**
      * this function return if Pages Exists
@@ -110,6 +139,14 @@ export class WebsiteService extends MasterService{
     }
 
     /**
+     * This function check if Menus exist
+     * @returns {boolean}
+     */
+    checkMenusExist(): boolean {
+        return this.checkItemExist('menus');
+    }
+
+    /**
      * This function Call API to get List Of Pages
      * @returns {Observable<R>}
      */
@@ -123,6 +160,10 @@ export class WebsiteService extends MasterService{
             );
     }
 
+    /**
+     * This function call API to get List of Components
+     * @returns {Observable<R>}
+     */
     getComponentsFrom() : Observable<any>
     {
         return this.http.get(this.apiManager.getPathByName('getComponents'))
@@ -134,7 +175,20 @@ export class WebsiteService extends MasterService{
     }
 
     /**
-     * This function set pages and store into a Session
+     * This function call API to get List of Menus
+     * @returns {Observable<R>}
+     */
+    getMenusFrom() : Observable<any> {
+        return this.http.get(this.apiManager.getPathByName('getMenus'))
+            .map(
+                (response: Response) => {
+                    return response.json().menus;
+                }
+            );
+    }
+
+    /**
+     * This function set pages and store it into a Session
      * @param pages
      */
     setPages(pages : Page[]) : void
@@ -143,10 +197,23 @@ export class WebsiteService extends MasterService{
         this.listOfPages = pages;
     }
 
+    /**
+     * This function set components and store it into a Session
+     * @param components
+     */
     setComponents(components : LortomComponent []) : void
     {
         this.setItem('components',components);
         this.listOfComponents = components;
+    }
+
+    /**
+     * This function set menus and store it into a Session
+     * @param menus
+     */
+    setMenus(menus: LortomMenu[]): void {
+        this.setItem('menus',menus);
+        this.listOfMenus = menus;
     }
 
     /**
@@ -158,9 +225,21 @@ export class WebsiteService extends MasterService{
         return this.getItem('pages','listOfPages') as Page[];
     }
 
+    /**
+     * This function get listOfComponents
+     * @returns {LortomComponent[]}
+     */
     getComponents() : LortomComponent []
     {
         return this.getItem('components','listOfComponents') as LortomComponent[];
+    }
+
+    /**
+     * This function get listOfMenus
+     * @returns {LortomMenu[]}
+     */
+    getMenus(): LortomMenu[] {
+        return this.getItem('menus','listOfMenus') as LortomMenu[];
     }
 
     /**
@@ -178,12 +257,31 @@ export class WebsiteService extends MasterService{
             );
     }
 
+    /**
+     * This function call API in order to Delete a list of Components
+     * @param cmp
+     * @returns {Observable<R>}
+     */
     deleteComponents(cmp : LortomComponent []) : Observable<any>
     {
         return this.http.put(this.apiManager.getPathByName('getComponents'),cmp,this.getOptions())
             .map(
                 (response : Response) => {
                     return response.json().components;
+                }
+            );
+    }
+
+    /**
+     * This function call API in order to Delete a list of Menus
+     * @param menu
+     * @returns {Observable<R>}
+     */
+    deleteMenus(menu: LortomMenu[] ): Observable<any> {
+        return this.http.put(this.apiManager.getPathByName('getMenus'),menu,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().menus;
                 }
             );
     }
@@ -213,6 +311,15 @@ export class WebsiteService extends MasterService{
             )
     }
 
+    createMenu(menu: any): Observable<any> {
+        return this.http.post(this.apiManager.getPathByName('saveMenu'),menu,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().menu;
+                }
+            );
+    }
+
     /**
      * This function set a Page into the listOfPages
      * @param page
@@ -237,6 +344,14 @@ export class WebsiteService extends MasterService{
         this.setComponents(comp);
     }
 
+
+    setMenu(menu: LortomMenu): void {
+        const menuList = this.getMenus();
+        menuList.push(menu);
+        this.deleteMenuFromCache();
+        this.setMenus(menuList);
+    }
+
     /**
      * this function delete pages from cache
      */
@@ -252,6 +367,10 @@ export class WebsiteService extends MasterService{
         this.deleteItem('components','listOfComponents');
     }
 
+    deleteMenuFromCache(): void {
+        this.deleteItem('menus','listOfMenus');
+    }
+
     /**
      * this function fire event
      */
@@ -260,17 +379,44 @@ export class WebsiteService extends MasterService{
         this._updatePages.next();
     }
 
+    /**
+     * this function fire event
+     */
     updateListOfComponents()
     {
         this._updateComponents.next();
     }
 
+    /**
+     * this function fire event
+     */
+    updateListOfMenus() {
+        this._updateMenus.next();
+    }
 
+
+    /**
+     * This function call API in order to get Attribute List
+     * @returns {Observable<R>}
+     */
     getPageAtt() : Observable<any> {
         return this.http.get(this.apiManager.getPathByName('getPageAtt'))
             .map(
                 (response : Response) => {
                     return response.json();
+                }
+            );
+    }
+
+    /**
+     * This function call API in order to get Attribute List
+     * @returns {Observable<R>}
+     */
+    getMenuAtt() : Observable<any> {
+        return this.http.get(this.apiManager.getPathByName('getMenuAtt'))
+            .map(
+                (response: Response) => {
+                    return response.json().data;
                 }
             );
     }
@@ -303,12 +449,31 @@ export class WebsiteService extends MasterService{
             );
     }
 
+    /**
+     * this is HTTP request to API
+     * @param comp
+     * @returns {Observable<R>}
+     */
     saveComponent(comp : LortomComponent) : Observable <any> {
 
         return this.http.put(this.apiManager.getPathByName('saveComponent'),comp,this.getOptions())
             .map(
                 (response : Response) => {
                     return response.json().component;
+                }
+            );
+    }
+
+    /**
+     * This is HTTP request to API
+     * @param menu
+     * @returns {Observable<R>}
+     */
+    saveMenu(menu: any): Observable<any> {
+        return this.http.put(this.apiManager.getPathByName('saveMenu'),menu,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().menu;
                 }
             );
     }

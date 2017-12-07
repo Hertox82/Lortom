@@ -6,6 +6,7 @@ use App\Http\Controllers\LortomController as Controller;
 use Illuminate\Http\Request;
 use Plugins\Hardel\Website\Model\LortomComponent;
 use Plugins\Hardel\Website\Model\LortomElement;
+use Plugins\Hardel\Website\Model\LortomMenu;
 use Plugins\Hardel\Website\Model\LortomPages;
 use DB;
 
@@ -39,7 +40,7 @@ class WebsiteController extends Controller
      */
     public function getPageAttributeList(Request $request)
     {
-        return response()->json(['states' => LortomPages::gVal('state')]);
+        return response()->json(['states' => LortomPages::getFieldValue('state')]);
 
     }
 
@@ -92,51 +93,82 @@ class WebsiteController extends Controller
     }
 
     /**
-     *This function get all list of LortomElement
+     * API Request to get the List of Menus
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getElements(Request $request)
-    {
-        $responseKey = 'elements';
-        $Class = LortomElement::class;
-        $name = 'Element';
-        return response()->json($this->getList(compact('responseKey','Class','name')));
-    }
+   public function getMenus(Request $request)
+   {
+       $responseKey = 'menus';
+       $Class = LortomMenu::class;
+       $name = 'Menu';
+       return response()->json($this->getList(compact('responseKey','Class','name')));
+
+   }
 
     /**
-     * This function delete LortomElement
+     * API Request to Delete a List of Menus
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function deleteElements(Request $request)
-    {
-        $input = $request->all();
-        $tableCol = ['lt_elements' => 'id'];
-        $Class = LortomElement::class;
-        $name = 'Element';
-        $responseKey = 'elements';
+   public function deleteMenus(Request $request)
+   {
+       $input = $request->all();
 
-        return response()->json($this->deleteObj(compact('input','tableCol','Class','name','responseKey')));
-    }
+       $idToProbablyDelete = [];
 
-    /**
-     * This function Create or Update a LortomElement
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function storeElement(Request $request)
-    {
-        $input = $request->all();
-        $ToSave = ['name', 'Object', 'functions', 'appearance'];
-        $Class = LortomElement::class;
-        $type =  ($request->method() == 'POST') ? 'Save' : 'Edit';
-        $responseKey = 'element';
-        $name = 'Element';
-        $subTables = [];
+       //put inside a variable
+       foreach ($input as $it) {
+           $idToProbablyDelete[] = $it['id'];
+       }
 
-        return response()->json($this->storeObj(compact('Class','type','input','ToSave','responseKey','name','subTables')));
-    }
+       $listToDelete = [];
+       //filtering deleting ID
+       foreach ($idToProbablyDelete as $id)
+       {
+            $Menu = LortomMenu::find($id);
+
+            if( $Menu ){
+                if(!in_array($id,$listToDelete)){
+                    $listToDelete[] = $id;
+                    $listToDelete = array_merge($listToDelete,$Menu->getMyChildren($Menu->id));
+                }
+            }
+       }
+
+       foreach ($listToDelete as $item) {
+           DB::table('lt_menus')->where('id',$item)->delete();
+       }
+
+       $responseKey = 'menus';
+       $Class = LortomMenu::class;
+       $name = 'Menu';
+       return response()->json($this->getList(compact('responseKey','Class','name')));
+
+   }
+
+   public function getMenuAttributeList(Request $request)
+   {
+       return response()->json([
+           'data' => [
+               'parentList' => LortomMenu::getFieldValue('idParent'),
+               'pageList'   => LortomMenu::getFieldValue('idPage')
+           ]
+       ]);
+   }
+
+   public function storeMenu(Request $request)
+   {
+       $input = $request->all();
+       $type = ($request->method() == 'POST') ? 'Save' : 'Edit';
+       $ToSave = ['name','idPage','idParent'];
+       $responseKey = 'menu';
+       $name = 'Menu';
+       $Class = LortomMenu::class;
+       $subTables = [];
+
+       return response()->json($this->storeObj(compact('input','Class','type','ToSave','subTables','responseKey','name')));
+   }
 
     /**
      * This function

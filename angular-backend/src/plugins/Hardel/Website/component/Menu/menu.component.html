@@ -1,0 +1,75 @@
+<form class="form">
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-database"></i>
+                <span>General Definitions</span>
+            </div>
+            <div class="actions">
+                <button class="btn darkorange" (click)="editMode()">
+                    <i class="fa fa-edit"></i>
+                    Edit
+                </button>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="portlet-form-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="title" class="col-md-2 control-label">Name</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="title" placeholder="Title" id="title" [ngModel] = "menu.name" *ngIf="isEdit === false; else titleEdit" readonly>
+                                    <ng-template #titleEdit>
+                                        <input type="text" class="form-control" name="title" placeholder="Title" id="title" [(ngModel)] = "menu.name">
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="parent" class="col-md-2 control-label">Parent</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="parent" id="parent" *ngIf="isEdit === false; else editParent" disabled>
+                                        <ng-container>
+                                            <option *ngFor="let p of listOfParent" [ngValue]="p" [attr.selected] = "p.id == menu.idParent ? true : null " [innerHtml] = "p.label"> </option>
+                                        </ng-container>
+                                    </select>
+                                    <ng-template #editParent>
+                                        <select class="form-control" name="parent" [compareWith]="compareParent" [(ngModel)] = "menu.parentList">
+                                            <option *ngFor="let p of listOfParent" [ngValue]="p"  [innerHtml] = "p.label"> </option>
+                                        </select>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group flex-group">
+                                <label for="page" class="col-md-2 control-label">Related Page</label>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="page" id="page" *ngIf="isEdit === false; else editPage" disabled>
+                                        <ng-container>
+                                            <option *ngFor="let pa of listOfPages" [ngValue]="pa" [selected] = "pa.id == menu.idPage.id ? true : null " [innerHtml] = "pa.label"> </option>
+                                        </ng-container>
+                                    </select>
+                                    <ng-template #editPage>
+                                        <select class="form-control" name="page" [compareWith]="comparePage" [(ngModel)] = "menu.idPage">
+                                            <option *ngFor="let pa of listOfPages" [ngValue]="pa" [innerHtml] = "pa.label"> </option>
+                                        </select>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button class="btn orange" (click)="saveMode()">Save</button>
+            <button class="btn red" (click)="resetMode()">Reset</button>
+        </div>
+    </div>
+</form>

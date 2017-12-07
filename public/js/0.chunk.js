@@ -3116,8 +3116,8 @@ var WebsiteService = (function (_super) {
         _this.http = http;
         _this._updatePages = new Subject_1.Subject();
         _this.updatePages$ = _this._updatePages.asObservable();
-        _this._updateElements = new Subject_1.Subject();
-        _this.updateElements$ = _this._updateElements.asObservable();
+        _this._updateMenus = new Subject_1.Subject();
+        _this.updateMenus$ = _this._updateMenus.asObservable();
         _this._updateComponents = new Subject_1.Subject();
         _this.updateComponents$ = _this._updateComponents.asObservable();
         // write the api route for setting
@@ -3127,7 +3127,9 @@ var WebsiteService = (function (_super) {
             { namePath: 'getPageAtt', path: 'pages/attribute/list' },
             { namePath: 'getComponents', path: 'components' },
             { namePath: 'saveComponent', path: 'component' },
-            { namePath: 'updateElementComponent', path: 'component/element' }
+            { namePath: 'getMenus', path: 'menus' },
+            { namePath: 'saveMenu', path: 'menu' },
+            { namePath: 'getMenuAtt', path: 'menus/attribute/list' },
         ];
         //Add the Api to the ApiManager
         _this.apiManager.addListUrlApi(urls);
@@ -3142,8 +3144,23 @@ var WebsiteService = (function (_super) {
     WebsiteService.prototype.getPageByProperty = function (name, value) {
         return this.getItemByProperty(name, value, 'pages', 'listOfPages');
     };
+    /**
+     * This function return LortomComponent by Property
+     * @param name
+     * @param value
+     * @returns {LortomComponent}
+     */
     WebsiteService.prototype.getComponentByProperty = function (name, value) {
         return this.getItemByProperty(name, value, 'components', 'listOfComponents');
+    };
+    /**
+     * This function return LortomMenu by Property
+     * @param name
+     * @param value
+     * @returns {LortomMenu}
+     */
+    WebsiteService.prototype.getMenuByProperty = function (name, value) {
+        return this.getItemByProperty(name, value, 'menus', 'listOfMenus');
     };
     /**
      * This function update Page in listOfPages
@@ -3163,6 +3180,13 @@ var WebsiteService = (function (_super) {
         var cs = this.updateItemInList(cmp, this.listOfComponents);
         this.setComponents(cs);
     };
+    WebsiteService.prototype.updateMenuInList = function (menu) {
+        if (this.listOfMenus == undefined) {
+            this.listOfMenus = this.getMenus();
+        }
+        var ms = this.updateItemInList(menu, this.listOfMenus);
+        this.setMenus(ms);
+    };
     /**
      * this function return if Pages Exists
      * @returns {boolean}
@@ -3178,6 +3202,13 @@ var WebsiteService = (function (_super) {
         return this.checkItemExist('components');
     };
     /**
+     * This function check if Menus exist
+     * @returns {boolean}
+     */
+    WebsiteService.prototype.checkMenusExist = function () {
+        return this.checkItemExist('menus');
+    };
+    /**
      * This function Call API to get List Of Pages
      * @returns {Observable<R>}
      */
@@ -3187,6 +3218,10 @@ var WebsiteService = (function (_super) {
             return response.json().pages;
         });
     };
+    /**
+     * This function call API to get List of Components
+     * @returns {Observable<R>}
+     */
     WebsiteService.prototype.getComponentsFrom = function () {
         return this.http.get(this.apiManager.getPathByName('getComponents'))
             .map(function (response) {
@@ -3194,16 +3229,38 @@ var WebsiteService = (function (_super) {
         });
     };
     /**
-     * This function set pages and store into a Session
+     * This function call API to get List of Menus
+     * @returns {Observable<R>}
+     */
+    WebsiteService.prototype.getMenusFrom = function () {
+        return this.http.get(this.apiManager.getPathByName('getMenus'))
+            .map(function (response) {
+            return response.json().menus;
+        });
+    };
+    /**
+     * This function set pages and store it into a Session
      * @param pages
      */
     WebsiteService.prototype.setPages = function (pages) {
         this.setItem('pages', pages);
         this.listOfPages = pages;
     };
+    /**
+     * This function set components and store it into a Session
+     * @param components
+     */
     WebsiteService.prototype.setComponents = function (components) {
         this.setItem('components', components);
         this.listOfComponents = components;
+    };
+    /**
+     * This function set menus and store it into a Session
+     * @param menus
+     */
+    WebsiteService.prototype.setMenus = function (menus) {
+        this.setItem('menus', menus);
+        this.listOfMenus = menus;
     };
     /**
      * This function get listOfPages
@@ -3212,8 +3269,19 @@ var WebsiteService = (function (_super) {
     WebsiteService.prototype.getPages = function () {
         return this.getItem('pages', 'listOfPages');
     };
+    /**
+     * This function get listOfComponents
+     * @returns {LortomComponent[]}
+     */
     WebsiteService.prototype.getComponents = function () {
         return this.getItem('components', 'listOfComponents');
+    };
+    /**
+     * This function get listOfMenus
+     * @returns {LortomMenu[]}
+     */
+    WebsiteService.prototype.getMenus = function () {
+        return this.getItem('menus', 'listOfMenus');
     };
     /**
      * This Function call API in order to Delete a list of Pages
@@ -3226,10 +3294,26 @@ var WebsiteService = (function (_super) {
             return response.json().pages;
         });
     };
+    /**
+     * This function call API in order to Delete a list of Components
+     * @param cmp
+     * @returns {Observable<R>}
+     */
     WebsiteService.prototype.deleteComponents = function (cmp) {
         return this.http.put(this.apiManager.getPathByName('getComponents'), cmp, this.getOptions())
             .map(function (response) {
             return response.json().components;
+        });
+    };
+    /**
+     * This function call API in order to Delete a list of Menus
+     * @param menu
+     * @returns {Observable<R>}
+     */
+    WebsiteService.prototype.deleteMenus = function (menu) {
+        return this.http.put(this.apiManager.getPathByName('getMenus'), menu, this.getOptions())
+            .map(function (response) {
+            return response.json().menus;
         });
     };
     /**
@@ -3247,6 +3331,12 @@ var WebsiteService = (function (_super) {
         return this.http.post(this.apiManager.getPathByName('saveComponent'), comp, this.getOptions())
             .map(function (response) {
             return response.json().component;
+        });
+    };
+    WebsiteService.prototype.createMenu = function (menu) {
+        return this.http.post(this.apiManager.getPathByName('saveMenu'), menu, this.getOptions())
+            .map(function (response) {
+            return response.json().menu;
         });
     };
     /**
@@ -3269,6 +3359,12 @@ var WebsiteService = (function (_super) {
         this.deleteComponentFromCache();
         this.setComponents(comp);
     };
+    WebsiteService.prototype.setMenu = function (menu) {
+        var menuList = this.getMenus();
+        menuList.push(menu);
+        this.deleteMenuFromCache();
+        this.setMenus(menuList);
+    };
     /**
      * this function delete pages from cache
      */
@@ -3281,19 +3377,45 @@ var WebsiteService = (function (_super) {
     WebsiteService.prototype.deleteComponentFromCache = function () {
         this.deleteItem('components', 'listOfComponents');
     };
+    WebsiteService.prototype.deleteMenuFromCache = function () {
+        this.deleteItem('menus', 'listOfMenus');
+    };
     /**
      * this function fire event
      */
     WebsiteService.prototype.updateListOfPages = function () {
         this._updatePages.next();
     };
+    /**
+     * this function fire event
+     */
     WebsiteService.prototype.updateListOfComponents = function () {
         this._updateComponents.next();
     };
+    /**
+     * this function fire event
+     */
+    WebsiteService.prototype.updateListOfMenus = function () {
+        this._updateMenus.next();
+    };
+    /**
+     * This function call API in order to get Attribute List
+     * @returns {Observable<R>}
+     */
     WebsiteService.prototype.getPageAtt = function () {
         return this.http.get(this.apiManager.getPathByName('getPageAtt'))
             .map(function (response) {
             return response.json();
+        });
+    };
+    /**
+     * This function call API in order to get Attribute List
+     * @returns {Observable<R>}
+     */
+    WebsiteService.prototype.getMenuAtt = function () {
+        return this.http.get(this.apiManager.getPathByName('getMenuAtt'))
+            .map(function (response) {
+            return response.json().data;
         });
     };
     /**
@@ -3317,10 +3439,26 @@ var WebsiteService = (function (_super) {
             return response.json().page;
         });
     };
+    /**
+     * this is HTTP request to API
+     * @param comp
+     * @returns {Observable<R>}
+     */
     WebsiteService.prototype.saveComponent = function (comp) {
         return this.http.put(this.apiManager.getPathByName('saveComponent'), comp, this.getOptions())
             .map(function (response) {
             return response.json().component;
+        });
+    };
+    /**
+     * This is HTTP request to API
+     * @param menu
+     * @returns {Observable<R>}
+     */
+    WebsiteService.prototype.saveMenu = function (menu) {
+        return this.http.put(this.apiManager.getPathByName('saveMenu'), menu, this.getOptions())
+            .map(function (response) {
+            return response.json().menu;
         });
     };
     return WebsiteService;
@@ -3361,7 +3499,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var WI = __webpack_require__("./src/plugins/Hardel/Website/Services/website.interfaces.ts");
+var website_interfaces_1 = __webpack_require__("./src/plugins/Hardel/Website/Services/website.interfaces.ts");
 var website_service_1 = __webpack_require__("./src/plugins/Hardel/Website/Services/website.service.ts");
 var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
 __webpack_require__("./node_modules/codemirror/mode/htmlmixed/htmlmixed.js");
@@ -3432,9 +3570,6 @@ var ComponentComponent = (function () {
                 _this.ecService.updateComponentInList(_this.component);
                 _this.editMode();
             });
-            this.ecService.saveComponent(this.component).subscribe(function (data) {
-                console.log(data);
-            });
         }
     };
     /**
@@ -3468,7 +3603,7 @@ var ComponentComponent = (function () {
 }());
 __decorate([
     core_1.Input(),
-    __metadata("design:type", typeof (_a = (typeof WI !== "undefined" && WI).LortomComponent) === "function" && _a || Object)
+    __metadata("design:type", typeof (_a = typeof website_interfaces_1.LortomComponent !== "undefined" && website_interfaces_1.LortomComponent) === "function" && _a || Object)
 ], ComponentComponent.prototype, "component", void 0);
 ComponentComponent = __decorate([
     core_1.Component({
@@ -3632,6 +3767,284 @@ var _a, _b;
 
 /***/ }),
 
+/***/ "./src/plugins/Hardel/Website/component/Menu/menu.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn darkorange\" (click)=\"editMode()\">\n                    <i class=\"fa fa-edit\"></i>\n                    Edit\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"title\" class=\"col-md-2 control-label\">Name</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"title\" placeholder=\"Title\" id=\"title\" [ngModel] = \"menu.name\" *ngIf=\"isEdit === false; else titleEdit\" readonly>\n                                    <ng-template #titleEdit>\n                                        <input type=\"text\" class=\"form-control\" name=\"title\" placeholder=\"Title\" id=\"title\" [(ngModel)] = \"menu.name\">\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"parent\" class=\"col-md-2 control-label\">Parent</label>\n                                <div class=\"col-md-4\">\n                                    <select class=\"form-control\" name=\"parent\" id=\"parent\" *ngIf=\"isEdit === false; else editParent\" disabled>\n                                        <ng-container>\n                                            <option *ngFor=\"let p of listOfParent\" [ngValue]=\"p\" [attr.selected] = \"p.id == menu.idParent ? true : null \" [innerHtml] = \"p.label\"> </option>\n                                        </ng-container>\n                                    </select>\n                                    <ng-template #editParent>\n                                        <select class=\"form-control\" name=\"parent\" [compareWith]=\"compareParent\" [(ngModel)] = \"menu.parentList\">\n                                            <option *ngFor=\"let p of listOfParent\" [ngValue]=\"p\"  [innerHtml] = \"p.label\"> </option>\n                                        </select>\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"page\" class=\"col-md-2 control-label\">Related Page</label>\n                                <div class=\"col-md-4\">\n                                    <select class=\"form-control\" name=\"page\" id=\"page\" *ngIf=\"isEdit === false; else editPage\" disabled>\n                                        <ng-container>\n                                            <option *ngFor=\"let pa of listOfPages\" [ngValue]=\"pa\" [selected] = \"pa.id == menu.idPage.id ? true : null \" [innerHtml] = \"pa.label\"> </option>\n                                        </ng-container>\n                                    </select>\n                                    <ng-template #editPage>\n                                        <select class=\"form-control\" name=\"page\" [compareWith]=\"comparePage\" [(ngModel)] = \"menu.idPage\">\n                                            <option *ngFor=\"let pa of listOfPages\" [ngValue]=\"pa\" [innerHtml] = \"pa.label\"> </option>\n                                        </select>\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n</form>"
+
+/***/ }),
+
+/***/ "./src/plugins/Hardel/Website/component/Menu/menu.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * Created by hernan on 07/12/2017.
+ */
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var website_service_1 = __webpack_require__("./src/plugins/Hardel/Website/Services/website.service.ts");
+var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var website_interfaces_1 = __webpack_require__("./src/plugins/Hardel/Website/Services/website.interfaces.ts");
+var utils_1 = __webpack_require__("./node_modules/tslint/lib/utils.js");
+var MenuComponent = (function () {
+    function MenuComponent(nnService, router, nav) {
+        var _this = this;
+        this.nnService = nnService;
+        this.router = router;
+        this.nav = nav;
+        this.isEdit = false;
+        this.sub = this.router.params.subscribe(function (params) {
+            _this.id = +params['id'];
+            _this.menu = _this.nnService.getMenuByProperty('id', _this.id);
+            if (_this.menu != null) {
+                _this.notFound = true;
+            }
+            else {
+                _this.nav.navigate(['/backend/not-found']);
+            }
+            _this.cloneMenu();
+        });
+        this.nnService.getMenuAtt().subscribe(function (data) {
+            _this.listOfPages = data.pageList;
+            _this.listOfParent = data.parentList;
+        });
+    }
+    MenuComponent.prototype.ngOnInit = function () { };
+    MenuComponent.prototype.ngOnDestroy = function () {
+        this.sub.unsubscribe();
+    };
+    MenuComponent.prototype.comparePage = function (c1, c2) {
+        return c1 && c2 ? c1.id == c2.id : c1 == c2;
+    };
+    MenuComponent.prototype.compareParent = function (c1, c2) {
+        return c1 && c2 ? c1.id == c2.id : c1 == c2;
+    };
+    MenuComponent.prototype.cloneMenu = function () {
+        var idPage = Object.assign({}, this.menu.idPage);
+        this.copyMenu = Object.assign({}, this.menu);
+        this.copyMenu.idPage = idPage;
+        if (utils_1.hasOwnProperty(this.menu, 'parentList')) {
+            var parentList = Object.assign({}, this.menu.parentList);
+            this.copyMenu.parentList = parentList;
+        }
+    };
+    MenuComponent.prototype.editMode = function () {
+        this.isEdit = !this.isEdit;
+    };
+    MenuComponent.prototype.saveMode = function () {
+        var _this = this;
+        if (!this.isEqual(this.menu, this.copyMenu) && this.isEdit == true) {
+            var objToSend = {
+                id: this.menu.id,
+                name: this.menu.name,
+                idParent: this.menu.parentList.id,
+                idPage: this.menu.idPage.id
+            };
+            this.nnService.saveMenu(objToSend).subscribe(function (menu) {
+                _this.menu = menu;
+                _this.cloneMenu();
+                _this.nnService.updateMenuInList(_this.menu);
+                _this.nnService.updateListOfMenus();
+                _this.editMode();
+            });
+        }
+    };
+    MenuComponent.prototype.resetMode = function () {
+        if (confirm('Do you want to reset all data?')) {
+            this.cloneCopyMenu();
+        }
+    };
+    MenuComponent.prototype.isEqual = function (v1, v2) {
+        return ((v1.name == v2.name) && (v1.parentList == v2.parentList) && (v1.idPage == v2.idPage));
+    };
+    MenuComponent.prototype.cloneCopyMenu = function () {
+        var idPage = Object.assign({}, this.copyMenu.idPage);
+        this.menu = Object.assign({}, this.copyMenu);
+        this.menu.idPage = idPage;
+        if (utils_1.hasOwnProperty(this.copyMenu, 'parentList')) {
+            var parentList = Object.assign({}, this.copyMenu.parentList);
+            this.menu.parentList = parentList;
+        }
+    };
+    return MenuComponent;
+}());
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", typeof (_a = typeof website_interfaces_1.LortomMenu !== "undefined" && website_interfaces_1.LortomMenu) === "function" && _a || Object)
+], MenuComponent.prototype, "menu", void 0);
+MenuComponent = __decorate([
+    core_1.Component({
+        selector: 'wb-menu-edit',
+        template: __webpack_require__("./src/plugins/Hardel/Website/component/Menu/menu.component.html"),
+        styles: ['']
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof website_service_1.WebsiteService !== "undefined" && website_service_1.WebsiteService) === "function" && _b || Object, typeof (_c = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _c || Object, typeof (_d = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _d || Object])
+], MenuComponent);
+exports.MenuComponent = MenuComponent;
+var _a, _b, _c, _d;
+//# sourceMappingURL=menu.component.js.map
+
+/***/ }),
+
+/***/ "./src/plugins/Hardel/Website/component/Menus/menus.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li>\n            <a [routerLink]=\"['/backend/website/pages']\" data-toggle=\"tab\"> Pages</a>\n        </li>\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> Menu</a>\n        </li>\n        <li>\n            <a  [routerLink]=\"['/backend/website/components']\" data-toggle=\"tab\"> Component</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <lt-entry-pagination\n                                        [entry]=\"'50-5'\"\n                                        (onEntry)=\"onPerPage($event)\">\n                                </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/website/menu/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deleteMenus()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Name</a>\n                                        </th>\n                                        <th>\n                                            <a>Related Page</a>\n                                        </th>\n                                        <th>\n                                            <a>Parent</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let el of listShowMenus\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,el)\" [(ngModel)] = \"el.check\">\n                                        </td>\n                                        <td>\n                                            {{el.name}}\n                                        </td>\n                                        <td>\n                                            {{el.idPage.label}}\n                                        </td>\n                                        <td>\n                                            {{el.parentList.label}}\n                                        </td>\n                                        <td>\n                                            <a [routerLink] = \"['/backend/website/menu',el.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                                [pagesToShow]=\"3\"\n                                [perPage]=\"perPage\"\n                                [count]=\"listOfMenus.length\"\n                                [loading]=\"false\"\n                                [page]=\"actualPage\"\n                                (goNext)=\"onNext($event)\"\n                                (goPage)=\"onPage($event)\"\n                                (goPrev)=\"onPrev()\">\n                        </lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n<router-outlet></router-outlet>"
+
+/***/ }),
+
+/***/ "./src/plugins/Hardel/Website/component/Menus/menus.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * Created by hernan on 05/12/2017.
+ */
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var pagination_service_1 = __webpack_require__("./src/services/pagination.service.ts");
+var website_service_1 = __webpack_require__("./src/plugins/Hardel/Website/Services/website.service.ts");
+var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var MenusComponent = (function () {
+    function MenusComponent(mcService, router) {
+        var _this = this;
+        this.mcService = mcService;
+        this.router = router;
+        this.listOfMenus = [];
+        this.myRoot = '/backend/website/menu';
+        this.isRoot = false;
+        if (!this.mcService.hasPermissions("Hardel.Website.Menu")) {
+            this.router.navigate(['/backend/dashboard']);
+        }
+        this.listaMenusDelete = [];
+        this.listOfMenus = [];
+        //This is to manage the Pagination
+        this.pagServ = new pagination_service_1.PaginationService();
+        this.actualPage = 1;
+        this.perPage = 3;
+        this.router.events.subscribe(function (val) {
+            if (val instanceof router_1.NavigationEnd) {
+                if (_this.myRoot === val.url) {
+                    _this.isRoot = true;
+                }
+                else {
+                    _this.isRoot = false;
+                }
+            }
+        });
+        this.retrieveListOfMenus();
+        this.mcService.updateMenus$.subscribe(function () {
+            _this.retrieveListOfMenus();
+        });
+    }
+    MenusComponent.prototype.ngOnInit = function () { };
+    MenusComponent.prototype.retrieveListOfMenus = function () {
+        var _this = this;
+        if (!this.mcService.checkMenusExist()) {
+            this.mcService.getMenusFrom().subscribe(function (menus) {
+                _this.listOfMenus = menus;
+                _this.listOfMenus.forEach(function (el) {
+                    el.check = false;
+                });
+                _this.mcService.setMenus(_this.listOfMenus);
+                _this.updateListaShow();
+            });
+        }
+        else {
+            this.listOfMenus = this.mcService.getMenus();
+            this.listOfMenus.forEach(function (item) {
+                if (!item.hasOwnProperty('check')) {
+                    item.check = false;
+                }
+            });
+            this.updateListaShow();
+        }
+    };
+    MenusComponent.prototype.onPerPage = function (n) {
+        this.perPage = n;
+        this.updateListaShow();
+    };
+    MenusComponent.prototype.updateListaShow = function () {
+        this.listShowMenus = this.pagServ.getShowList({
+            entry: this.perPage,
+            list: this.listOfMenus,
+            pageToShow: this.actualPage
+        });
+    };
+    MenusComponent.prototype.onPrev = function () {
+        this.actualPage--;
+        this.updateListaShow();
+    };
+    MenusComponent.prototype.onNext = function (ev) {
+        this.actualPage++;
+        this.updateListaShow();
+    };
+    MenusComponent.prototype.onPage = function (page) {
+        this.actualPage = page;
+        this.updateListaShow();
+    };
+    MenusComponent.prototype.eventChange = function (ev, data) {
+        if (ev.target.checked) {
+            this.listaMenusDelete.push(data);
+        }
+        else {
+            var index = this.listaMenusDelete.indexOf(data);
+            if (index > -1) {
+                this.listaMenusDelete.splice(index, 1);
+            }
+        }
+    };
+    MenusComponent.prototype.deleteMenus = function () {
+        var _this = this;
+        if (this.listaMenusDelete.length > 0) {
+            if (confirm('Do you really want delete this Roles?')) {
+                console.log(this.listaMenusDelete);
+                this.mcService.deleteMenus(this.listaMenusDelete).subscribe(function (data) {
+                    _this.listaMenusDelete = [];
+                    _this.listOfMenus = data;
+                    _this.mcService.setMenus(_this.listOfMenus);
+                    _this.updateListaShow();
+                });
+            }
+        }
+    };
+    return MenusComponent;
+}());
+MenusComponent = __decorate([
+    core_1.Component({
+        selector: 'wb-menus',
+        template: __webpack_require__("./src/plugins/Hardel/Website/component/Menus/menus.component.html"),
+        styles: ['']
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof website_service_1.WebsiteService !== "undefined" && website_service_1.WebsiteService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
+], MenusComponent);
+exports.MenusComponent = MenusComponent;
+var _a, _b;
+//# sourceMappingURL=menus.component.js.map
+
+/***/ }),
+
 /***/ "./src/plugins/Hardel/Website/component/NewComponent/componentnew.component.html":
 /***/ (function(module, exports) {
 
@@ -3710,6 +4123,11 @@ var NewComponent = (function () {
             });
         }
     };
+    NewComponent.prototype.resetMode = function () {
+        if (confirm('Do you want to reset all data?')) {
+            this.cloneCopyComponent();
+        }
+    };
     NewComponent.prototype.isEqual = function (v, v2) {
         return (v.name == v2.name) && (v.appearance == v2.appearance);
     };
@@ -3738,6 +4156,114 @@ NewComponent = __decorate([
 exports.NewComponent = NewComponent;
 var _a, _b;
 //# sourceMappingURL=componentnew.component.js.map
+
+/***/ }),
+
+/***/ "./src/plugins/Hardel/Website/component/NewMenu/menunew.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"title\" class=\"col-md-2 control-label\">Name</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"title\" placeholder=\"Title\" id=\"title\" [(ngModel)] = \"menu.name\" >\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"parent\" class=\"col-md-2 control-label\">Parent</label>\n                                <div class=\"col-md-4\">\n                                    <select class=\"form-control\" name=\"parent\" id=\"parent\" [(ngModel)]=\"menu.parentList\">\n                                        <option *ngFor=\"let p of listOfParent\" [ngValue]=\"p\" [innerHtml] = \"p.label\"> </option>\n                                    </select>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"page\" class=\"col-md-2 control-label\">Related Page</label>\n                                <div class=\"col-md-4\">\n                                    <select class=\"form-control\" name=\"page\" id=\"page\" [(ngModel)]=\"menu.idPage\">\n                                        <option *ngFor=\"let pa of listOfPages\" [ngValue]=\"pa\">{{pa.label}}</option>\n                                    </select>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMenu()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n</form>"
+
+/***/ }),
+
+/***/ "./src/plugins/Hardel/Website/component/NewMenu/menunew.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * Created by hernan on 05/12/2017.
+ */
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var website_service_1 = __webpack_require__("./src/plugins/Hardel/Website/Services/website.service.ts");
+var utils_1 = __webpack_require__("./node_modules/tslint/lib/utils.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var MenuNewComponent = (function () {
+    function MenuNewComponent(nmService, route) {
+        var _this = this;
+        this.nmService = nmService;
+        this.route = route;
+        this.menu = {
+            id: -1,
+            name: '',
+            idParent: 0,
+            idPage: { id: null, label: '' },
+            check: false
+        };
+        this.nmService.getMenuAtt().subscribe(function (data) {
+            _this.listOfPages = data.pageList;
+            _this.listOfParent = data.parentList;
+        });
+        this.cloneMenu();
+    }
+    MenuNewComponent.prototype.ngOnInit = function () {
+    };
+    MenuNewComponent.prototype.saveMenu = function () {
+        var _this = this;
+        if (!this.isEqual(this.menu, this.copyMenu)) {
+            this.menu.idParent = this.menu.parentList.id;
+            var objToSend = {
+                id: -1,
+                name: this.menu.name,
+                idParent: this.menu.parentList.id,
+                idPage: this.menu.idPage.id
+            };
+            this.nmService.createMenu(objToSend).subscribe(function (menu) {
+                _this.nmService.setMenu(menu);
+                _this.nmService.updateListOfMenus();
+                _this.route.navigate(['/backend/website/menu']);
+            });
+        }
+    };
+    MenuNewComponent.prototype.resetMode = function () {
+        if (confirm('Do you want to reset all data?')) {
+            this.cloneCopyMenu();
+        }
+    };
+    MenuNewComponent.prototype.cloneMenu = function () {
+        var idPage = Object.assign({}, this.menu.idPage);
+        this.copyMenu = Object.assign({}, this.menu);
+        this.copyMenu.idPage = idPage;
+        if (utils_1.hasOwnProperty(this.menu, 'parentList')) {
+            var parentList = Object.assign({}, this.menu.parentList);
+            this.copyMenu.parentList = parentList;
+        }
+    };
+    MenuNewComponent.prototype.isEqual = function (v1, v2) {
+        return ((v1.name == v2.name) && (v1.parentList == v2.parentList) && (v1.idPage == v2.idPage));
+    };
+    MenuNewComponent.prototype.cloneCopyMenu = function () {
+        var idPage = Object.assign({}, this.copyMenu.idPage);
+        this.menu = Object.assign({}, this.copyMenu);
+        this.menu.idPage = idPage;
+        if (utils_1.hasOwnProperty(this.copyMenu, 'parentList')) {
+            var parentList = Object.assign({}, this.copyMenu.parentList);
+            this.menu.parentList = parentList;
+        }
+    };
+    return MenuNewComponent;
+}());
+MenuNewComponent = __decorate([
+    core_1.Component({
+        selector: 'wb-new-menu',
+        template: __webpack_require__("./src/plugins/Hardel/Website/component/NewMenu/menunew.component.html"),
+        styles: ['']
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof website_service_1.WebsiteService !== "undefined" && website_service_1.WebsiteService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
+], MenuNewComponent);
+exports.MenuNewComponent = MenuNewComponent;
+var _a, _b;
+//# sourceMappingURL=menunew.component.js.map
 
 /***/ }),
 
@@ -4154,6 +4680,12 @@ var componentnew_component_1 = __webpack_require__("./src/plugins/Hardel/Website
 exports.NewComponent = componentnew_component_1.NewComponent;
 var component_component_1 = __webpack_require__("./src/plugins/Hardel/Website/component/Component/component.component.ts");
 exports.ComponentComponent = component_component_1.ComponentComponent;
+var menus_component_1 = __webpack_require__("./src/plugins/Hardel/Website/component/Menus/menus.component.ts");
+exports.MenusComponent = menus_component_1.MenusComponent;
+var menunew_component_1 = __webpack_require__("./src/plugins/Hardel/Website/component/NewMenu/menunew.component.ts");
+exports.MenuNewComponent = menunew_component_1.MenuNewComponent;
+var menu_component_1 = __webpack_require__("./src/plugins/Hardel/Website/component/Menu/menu.component.ts");
+exports.MenuComponent = menu_component_1.MenuComponent;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -4272,28 +4804,35 @@ exports.WebsiteModule = WebsiteModule;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-var component_1 = __webpack_require__("./src/plugins/Hardel/Website/component/index.ts");
+var WB = __webpack_require__("./src/plugins/Hardel/Website/component/index.ts");
 var routes = [
-    { path: '', component: component_1.WebsiteComponent, data: { breadcrumb: 'Website' }, children: [
-            { path: 'pages', component: component_1.PagesComponent, data: { breadcrumb: 'Pages' }, children: [
-                    { path: 'new', component: component_1.PageNewComponent, data: { breadcrumb: 'New' } },
-                    { path: ':id', component: component_1.PageComponent, data: { breadcrumb: 'Page' } }
+    { path: '', component: WB.WebsiteComponent, data: { breadcrumb: 'Website' }, children: [
+            { path: 'pages', component: WB.PagesComponent, data: { breadcrumb: 'Pages' }, children: [
+                    { path: 'new', component: WB.PageNewComponent, data: { breadcrumb: 'New' } },
+                    { path: ':id', component: WB.PageComponent, data: { breadcrumb: 'Page' } }
                 ] },
-            { path: 'components', component: component_1.ComponentsComponent, data: { breadcrumb: 'Components' }, children: [
-                    { path: 'new', component: component_1.NewComponent, data: { breadcrumb: 'New' } },
-                    { path: ':id', component: component_1.ComponentComponent, data: { breadcrumb: 'Component' } }
+            { path: 'components', component: WB.ComponentsComponent, data: { breadcrumb: 'Components' }, children: [
+                    { path: 'new', component: WB.NewComponent, data: { breadcrumb: 'New' } },
+                    { path: ':id', component: WB.ComponentComponent, data: { breadcrumb: 'Component' } }
+                ] },
+            { path: 'menu', component: WB.MenusComponent, data: { breadcrumb: 'Menus' }, children: [
+                    { path: 'new', component: WB.MenuNewComponent, data: { breadcrumb: 'New' } },
+                    { path: ':id', component: WB.MenuComponent, data: { breadcrumb: 'Menu' } }
                 ] }
         ] }
 ];
 exports.routing = router_1.RouterModule.forChild(routes);
 exports.websiteComponent = [
-    component_1.WebsiteComponent,
-    component_1.PagesComponent,
-    component_1.PageNewComponent,
-    component_1.PageComponent,
-    component_1.ComponentsComponent,
-    component_1.NewComponent,
-    component_1.ComponentComponent
+    WB.WebsiteComponent,
+    WB.PagesComponent,
+    WB.PageNewComponent,
+    WB.PageComponent,
+    WB.ComponentsComponent,
+    WB.NewComponent,
+    WB.ComponentComponent,
+    WB.MenusComponent,
+    WB.MenuNewComponent,
+    WB.MenuComponent,
 ];
 //console.log(websiteComponent); 
 //# sourceMappingURL=website.routing.js.map

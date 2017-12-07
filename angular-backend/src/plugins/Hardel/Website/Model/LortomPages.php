@@ -11,7 +11,7 @@ class LortomPages extends Model
     protected $table = 'lt_pages';
 
 
-    public static function gVal($field)
+    public static function getFieldValue($field)
     {
         $return = [];
 
@@ -25,10 +25,10 @@ class LortomPages extends Model
     }
 
 
-    public static function gValBack($id,$field)
+    public static function getFieldValueById($id,$field)
     {
 
-        $list = self::gVal($field);
+        $list = self::getFieldValue($field);
 
         foreach ($list as $val)
         {

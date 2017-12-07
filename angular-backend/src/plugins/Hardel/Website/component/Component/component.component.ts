@@ -4,7 +4,7 @@
 
 
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import * as WI from '@Lortom/plugins/Hardel/Website/Services/website.interfaces';
+import {LortomComponent}  from '@Lortom/plugins/Hardel/Website/Services/website.interfaces';
 import {WebsiteService} from '@Lortom/plugins/Hardel/Website/Services/website.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import 'codemirror/mode/htmlmixed/htmlmixed';
@@ -16,8 +16,8 @@ import 'codemirror/mode/htmlmixed/htmlmixed';
 })
 
 export class ComponentComponent implements OnInit, OnDestroy {
-    @Input() component: WI.LortomComponent;
-    copyComponent: WI.LortomComponent;
+    @Input() component: LortomComponent;
+    copyComponent: LortomComponent;
     id: number;
     private sub: any;
     isEdit: boolean;
@@ -91,18 +91,12 @@ export class ComponentComponent implements OnInit, OnDestroy {
             }
 
            this.ecService.saveComponent(this.component).subscribe(
-                (component : WI.LortomComponent) => {
+                (component : LortomComponent) => {
                     this.component = component;
                     this.ecService.updateComponentInList(this.component);
                     this.editMode();
                 }
             );
-
-           this.ecService.saveComponent(this.component).subscribe(
-               (data: any) => {
-
-                   console.log(data);
-               });
         }
     }
 

@@ -25,26 +25,6 @@ Route::get('/pages/attribute/list',[
     'uses'   => 'WebsiteController@getPageAttributeList'
 ]);
 
-Route::get('/elements',[
-    'as'     => 'apiGetElements',
-    'uses'   => 'WebsiteController@getElements'
-]);
-
-Route::put('/elements',[
-    'as'     => 'apiDeleteElement',
-    'uses'   => 'WebsiteController@deleteElements'
-])->middleware('lortom.auth');
-
-Route::post('/element',[
-    'as'     => 'apiSaveElement',
-    'uses'   => 'WebsiteController@storeElement'
-])->middleware('lortom.auth');
-
-Route::put('/element',[
-    'as'     => 'apiUpdateElement',
-    'uses'   => 'WebsiteController@storeElement'
-])->middleware('lortom.auth');
-
 Route::get('/components',[
     'as'     => 'apiGetComponents',
     'uses'   => 'WebsiteController@getComponents'
@@ -65,12 +45,27 @@ Route::put('/component',[
     'uses'   => 'WebsiteController@storeComponent'
 ]);
 
-Route::post('/component/element',[
-    'as'     => 'apiUpdateComponentElement',
-    'uses'   => 'WebsiteController@updateComponentElement'
+Route::get('/menus',[
+    'as'     => 'apiGetMenus',
+    'uses'   => 'WebsiteController@getMenus'
 ]);
 
-Route::put('/component/element',[
-    'as'     => 'apiDeleteComponentElement',
-    'uses'   => 'WebsiteController@deleteComponentElement'
+Route::put('/menus',[
+    'as'     => 'apiDeleteMenus',
+    'uses'   => 'WebsiteController@deleteMenus'
+]);
+
+Route::post('/menu',[
+    'as'     => 'apiSaveMenu',
+    'uses'   => 'WebsiteController@storeMenu'
+]);
+
+Route::put('/menu',[
+    'as'     => 'apiEditMenu',
+    'uses'   => 'WebsiteController@storeMenu'
+]);
+
+Route::get('/menus/attribute/list',[
+    'as'     => 'apiGetMenusAttributeList',
+    'uses'   => 'WebsiteController@getMenuAttributeList'
 ]);
