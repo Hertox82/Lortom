@@ -102,6 +102,8 @@ class WebsiteService{
                     if ($ToSave[$k]) {
                         if(isset($item[$k]))
                             $return[$k] = $item[$k];
+                        else
+                            $return[$k] = null;
                     } else {
                         $return[$k] = $id;
                     }
@@ -111,6 +113,8 @@ class WebsiteService{
                     if(isset($item[$k])) {
                         $return[$ToSave[$k]['alias']] = $item[$k];
                     }
+                    else
+                        $return[$ToSave[$k]['alias']] = null;
                 }
             }
             return $return;

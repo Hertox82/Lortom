@@ -78,4 +78,32 @@ class LortomComponent extends Model
             ])->get();
     }
 
+    public function getVariableFromAppearance()
+    {
+        $slug = $this->appearance;
+
+        $reduced = [];
+        if(preg_match_all('/\{{(.*?)\??\}}/',$slug,$secondMatches))
+        {
+            array_shift($secondMatches);
+
+            $reduced = array_reduce($secondMatches,function($carry,$item){
+                if(count($carry) == 0)
+                    $carry =[];
+
+                return array_merge($carry,$item);
+            });
+
+            $reduced = array_map(function($item){
+                $item = str_replace('$','',$item);
+
+                return $item;
+            },$reduced);
+
+
+        }
+
+        return $reduced;
+    }
+
 }

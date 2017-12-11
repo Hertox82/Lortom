@@ -113,7 +113,7 @@ export class ComponentComponent implements OnInit, OnDestroy {
     }
 
     isEqual(v, v2): boolean {
-        return (v.name == v2.name) && (v.elements.length == v2.elements.length);
+        return (v.name == v2.name) && (v.appearance.length == v2.appearance.length);
     }
 
 

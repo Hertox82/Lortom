@@ -142,20 +142,20 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr *ngFor="let comp of page.components">
+                                    <tr *ngFor="let comp of page.components; let i = index">
                                         <td>
                                             {{comp.name}}
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" [ngModel] = "comp.Object" name="object" *ngIf="isEdit === false; else editObject" readonly>
+                                            <input type="text" class="form-control" [ngModel]="comp.Object" name="objecto-{{i}}" *ngIf="isEdit === false; else editObject" readonly>
                                             <ng-template #editObject>
-                                                <input type="text" class="form-control" [(ngModel)]="comp.Object" name="object">
+                                                <input type="text" class="form-control" [(ngModel)]="comp.Object" name="objecto-{{i}}">
                                             </ng-template>
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" [ngModel]="comp.functions" name="functions" *ngIf="isEdit === false; else editFunctions" readonly>
+                                            <input type="text" class="form-control" [ngModel]="comp.functions" name="functions-{{i}}" *ngIf="isEdit === false; else editFunctions" readonly>
                                             <ng-template #editFunctions>
-                                                <input type="text" class="form-control" [(ngModel)]="comp.functions" name="functions">
+                                                <input type="text" class="form-control" [(ngModel)]="comp.functions" name="functions-{{i}}">
                                             </ng-template>
                                         </td>
                                         <td>

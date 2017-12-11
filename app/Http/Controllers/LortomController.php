@@ -8,8 +8,10 @@
 namespace App\Http\Controllers;
 
 
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use DB;
+use Plugins\Hardel\Website\Model\LortomPages;
 
 class LortomController extends BaseController
 {
@@ -101,5 +103,57 @@ class LortomController extends BaseController
         }
 
         return [$responseKey => $function()->sanitizeItem($Class,$name)];
+    }
+
+
+    public function catchAll(Request $request) {
+
+        //Catch all Routes and try to get Request URI
+        $url = $request->getRequestUri();
+
+        //try to sanitize the URI removing the querystring
+        $urlSanitize = explode('?',$url);
+
+        $urlSanitize = $urlSanitize[0];
+
+        //Call DB in order to get all Pages set into CMS
+        $Pages = LortomPages::all();
+
+        $PageFound = null;
+
+        $variable = [];
+
+        //Iterate over List in order to Match the request
+        foreach($Pages as  $page) {
+            // convert urls like '/users/{uid}/posts/{:pid}' to regular expression
+            $slug = str_replace('/','\/',$page->slug);
+            $pattern = "@^" . preg_replace('/\{(.*?)\??\}/', '([^\/\.]+)', $slug) . "$@D";
+            $matches = Array();
+            // check if the current request matches the expression
+            if(preg_match($pattern, $urlSanitize, $matches)) {
+                // remove the first match
+                array_shift($matches);
+                $variable = $matches;
+                // call the callback with the matched positions as params
+               if(preg_match_all('/\{(.*?)\??\}/',$slug,$secondMatches))
+               {
+                   array_shift($secondMatches);
+
+               }
+                $PageFound = $page;
+            }
+        }
+
+        //If there isn't the route throw 404 Page Not Found
+        if(is_null($PageFound))
+        {
+            abort(404);
+        }
+        else {
+            //Create Data for Page
+            list($view,$data) = $PageFound->renderData($variable);
+
+            return view($view,$data);
+        }
     }
 }

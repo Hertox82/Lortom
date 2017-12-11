@@ -5,6 +5,8 @@ namespace Plugins\Hardel\Website\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use File;
+use LortomTemplate\Model\HomePage;
 
 class LortomPages extends Model
 {
@@ -89,5 +91,60 @@ class LortomPages extends Model
                 'lt_page_component.Object AS Object',
                 'lt_page_component.function AS functions',
             ])->get();
+    }
+
+
+    public function renderData($variable) {
+
+        $view = $this->fileName;
+        $data = [];
+
+        $fileName = resource_path().'/views/'.$view.'.blade.php';
+
+        if(!File::exists($fileName))
+        {
+            $source  = "@extends('welcome') \n";
+            $source.= "@section('title', '$this->title')\n";
+            $source.= "@section('content')\n";
+            $source = $this->compileComponent($source);
+            $source.= " \n @endsection \n";
+
+            File::put($fileName,$source);
+
+        }
+
+        $data = $this->getDataFromComponent($variable);
+
+        return [$view,$data];
+    }
+
+    protected function compileComponent($source) {
+        $components = $this->components();
+
+        foreach ($components as $comp)
+        {
+            $source.= $comp->appearance;
+        }
+        return $source;
+    }
+
+    protected function getDataFromComponent($data)
+    {
+        $components = $this->getListComponents();
+
+        $response = [];
+        foreach ($components as $cmp)
+        {
+            if(property_exists($cmp,'Object'))
+            {
+
+                $class = "\\".$cmp->Object;
+                $function = $cmp->functions;
+                $otherData =  ($class != null && $function != null) ? call_user_func_array(array($class,$function),array($data,$cmp->idComponent)) : [];
+                $response = array_merge($response,$otherData);
+            }
+        }
+
+        return $response;
     }
 }

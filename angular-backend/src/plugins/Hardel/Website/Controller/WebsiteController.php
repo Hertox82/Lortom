@@ -346,4 +346,18 @@ class WebsiteController extends Controller
         return response()->json($this->deleteObj(compact('input','tableCol','Class','name','responseKey')));
 
     }
+
+
+    public function getVariable(Request $request, $id)
+    {
+        $LComponent = LortomComponent::find($id);
+
+        $reduced = [];
+        if($LComponent)
+        {
+           $reduced = $LComponent->getVariableFromAppearance();
+        }
+
+        return response()->json(['variable' => $reduced]);
+    }
 }

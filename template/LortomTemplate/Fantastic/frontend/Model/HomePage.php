@@ -2,6 +2,8 @@
 
 namespace LortomTemplate\Model;
 
+use Plugins\Hardel\Website\Model\LortomComponent;
+
 /**
  * Created by PhpStorm.
  * User: hernan
@@ -11,5 +13,24 @@ namespace LortomTemplate\Model;
 
 class HomePage
 {
+    public static function topBanner($data,$idComponent)
+    {
+        $LComponent = LortomComponent::find($idComponent);
 
+        $variable = $LComponent->getVariableFromAppearance();
+
+        $lista = [];
+        foreach ($variable as $v)
+        {
+            if($v == 'topLogo') {
+                $lista[$v] = './images/logo.png';
+            }
+            else if($v == 'topImg') {
+                $lista[$v] = './images/foglia-pasticche.png';
+            }
+        }
+
+        return $lista;
+
+    }
 }

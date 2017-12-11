@@ -69,3 +69,9 @@ Route::get('/menus/attribute/list',[
     'as'     => 'apiGetMenusAttributeList',
     'uses'   => 'WebsiteController@getMenuAttributeList'
 ]);
+
+
+Route::get('component/{id}/variable',[
+    'as'     => 'apiGetVariableFromComponent',
+    'uses'   => 'WebsiteController@getVariable'
+]);
