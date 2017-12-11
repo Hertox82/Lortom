@@ -131,6 +131,7 @@ class LortomPages extends Model
     protected function getDataFromComponent($data)
     {
         $components = $this->getListComponents();
+        $data['id'] = $this->id;
 
         $response = [];
         foreach ($components as $cmp)

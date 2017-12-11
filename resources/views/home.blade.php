@@ -18,30 +18,11 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="./index.html">HOME <span class="sr-only">(current)</span></a>
+          @foreach($menuList as $menu)
+            <li class="nav-item @if($menu['selected'] == true) active @endif">
+                <a class="nav-link" href="{{$menu['href']}}">{{$menu['label']}}</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="./listaprodotti.html">PRODOTTI</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="./rivenditori.html">RIVENDITORI</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="./specialisti.html">SPECIALISTI</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">CHI SIAMO</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="./contatti.html">CONTATTACI</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="./news.html">NEWS</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">DOWNLOAD</a>
-            </li>
+          @endforeach
         </ul>
     </div>
 </nav><div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">

@@ -3,6 +3,8 @@
 namespace LortomTemplate\Model;
 
 use Plugins\Hardel\Website\Model\LortomComponent;
+use Plugins\Hardel\Website\Model\LortomMenu;
+use Plugins\Hardel\Website\Model\LortomPages;
 
 /**
  * Created by PhpStorm.
@@ -32,5 +34,23 @@ class HomePage
 
         return $lista;
 
+    }
+
+    public static function navBar($data,$idComponent)
+    {
+        $LMenu = LortomMenu::where([['idParent','_root'],['idPage','!=',null]])->get();
+
+        $lista = [];
+        foreach ($LMenu as $m){
+
+            $label = $m->name;
+            $Page = LortomPages::find($m->idPage);
+            $select = ($Page->id === $data['id']) ? :false;
+            $href = $Page->slug;
+
+            $lista [] = ['href'=> $href, 'label' => $label, 'selected' => $select];
+        }
+
+        return ['menuList' => $lista];
     }
 }
