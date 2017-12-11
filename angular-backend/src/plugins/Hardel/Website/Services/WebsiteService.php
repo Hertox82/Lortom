@@ -100,14 +100,17 @@ class WebsiteService{
                 if(is_bool($ToSave[$k])) {
 
                     if ($ToSave[$k]) {
-                        $return[$k] = $item[$k];
+                        if(isset($item[$k]))
+                            $return[$k] = $item[$k];
                     } else {
                         $return[$k] = $id;
                     }
                 }
                 else if(is_array($ToSave[$k]))
                 {
-                    $return[$ToSave[$k]['alias']] = $item[$k];
+                    if(isset($item[$k])) {
+                        $return[$ToSave[$k]['alias']] = $item[$k];
+                    }
                 }
             }
             return $return;
