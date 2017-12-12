@@ -17,6 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/',[
+    'as'    => 'listApi',
+    'uses'  => 'LortomController@listApi'
+]);
+
 Route::get('/populate-slidebar',[
     'as'    => 'populateSlidebar',
     'uses'  => 'Backend\BackendController@populate'

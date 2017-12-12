@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use DB;
 use Plugins\Hardel\Website\Model\LortomPages;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Routing\Route as mRoute;
 
 class LortomController extends BaseController
 {
@@ -155,5 +157,45 @@ class LortomController extends BaseController
 
             return view($view,$data);
         }
+    }
+
+    public function listApi(Request $request)
+    {
+        $routes = array_values(array_filter(collect(Route::getRoutes())->map(function ($route) {
+                $item = $this->getRouteInformation($route);
+                if(substr($item['uri'],0,strlen('api/')) == 'api/')
+                {
+                    $item['uri'] = str_replace('api','',$item['uri']);
+
+                    if($item['action'] != 'Closure')
+                    {
+                        $Info = explode('@', $item['action'], 2);
+                        $class = $Info[0];
+                        $function = $Info[1];
+                        $reflector = new \ReflectionClass($class);
+
+                        $doc = $reflector->getMethod($function)->getDocComment();
+                        if (preg_match('/@Api\(([^\/\.]+)\)/', $doc, $matches)) {
+                            array_shift($matches);
+                            $object = str_replace('*', '', $matches[0]);
+                            $item['object'] = json_decode($object, true);
+                        }
+                    }
+                    unset($item['action']);
+                    return $item;
+                }
+        })->all()));
+
+        return view('api-doc',['routes'=> $routes]);
+
+    }
+
+    protected function getRouteInformation(mRoute $route)
+    {
+        return [
+            'method' => implode(' | ', $route->methods()),
+            'uri'    => $route->uri(),
+            'action' => $route->getActionName(),
+        ];
     }
 }

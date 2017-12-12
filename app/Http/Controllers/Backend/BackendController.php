@@ -24,6 +24,13 @@ class BackendController extends Controller
         $this->auth = $auth;
     }
 
+    /**
+     * @Api({
+        "description": "this is a fantastic API"
+     *     })
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function populate(Request $request)
     {
         $User = $request->get('User');
