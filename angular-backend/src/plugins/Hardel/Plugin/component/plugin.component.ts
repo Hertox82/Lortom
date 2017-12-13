@@ -3,6 +3,7 @@
  */
 
 import {Component, OnInit} from "@angular/core";
+import {NavigationEnd, Router} from "@angular/router";
 @Component({
     selector: 'app-plugin',
     templateUrl: './plugin.component.html'
@@ -11,7 +12,27 @@ import {Component, OnInit} from "@angular/core";
 
 export class PluginComponent implements OnInit
 {
-    constructor() {}
+    isRoot : boolean;
+    myRoot = '/backend/plugin';
+    constructor(private pr: Router) {
+        this.isRoot = true;
+
+        this.pr.events.subscribe(
+            (val) => {
+                if(val instanceof NavigationEnd)
+                {
+                    if(this.myRoot === val.url)
+                    {
+                        this.isRoot = true;
+                    }
+                    else
+                    {
+                        this.isRoot = false;
+                    }
+                }
+            }
+        );
+    }
 
     ngOnInit(){
 

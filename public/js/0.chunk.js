@@ -4832,7 +4832,6 @@ exports.websiteComponent = [
     WB.MenuNewComponent,
     WB.MenuComponent,
 ];
-//console.log(websiteComponent); 
 //# sourceMappingURL=website.routing.js.map
 
 /***/ })

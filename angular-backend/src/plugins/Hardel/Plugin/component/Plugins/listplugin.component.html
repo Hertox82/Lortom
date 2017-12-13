@@ -1,0 +1,88 @@
+<div class="tabbable-custom" *ngIf="isRoot === true">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#tab_1" data-toggle="tab"> List Plugin</a>
+        </li>
+        <li>
+            <a [routerLink]="['/backend/website/menu']" data-toggle="tab"> Template</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_1">
+            <div class="box">
+                <div class="box-header">
+
+                </div>
+                <div class="box-body">
+                    <div class="wrapper">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <lt-entry-pagination
+                                        [entry]="'50-5'"
+                                        (onEntry)="onPerPage($event)"
+                                >
+                                </lt-entry-pagination>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="dataTables_filter">
+                                    <label>
+                                        Search:
+                                        <input type="search" class="form-control input-sm">
+                                    </label>
+                                    <a class="btn btn-primary" [routerLink] = "['/backend/website/pages/new']"><i class="fa fa-file"></i> New</a>
+                                    <a class="btn btn-danger" (click)="deletePages()"><i class="fa fa-times"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 30px;"></th>
+                                        <th>
+                                            <a>Title</a>
+                                        </th>
+                                        <th>
+                                            Slug
+                                        </th>
+                                        <th style="width: 50px;"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let page of listaPages">
+                                        <td>
+                                            <input type="checkbox" (change)="eventChange($event,page)" [(ngModel)] = "page.check">
+                                        </td>
+                                        <td>
+                                            {{page.title}}
+                                        </td>
+                                        <td>
+                                            {{page.slug}}
+                                        </td>
+                                        <td>
+                                            <a [routerLink] = "['/backend/website/pages',page.id]"><i class="fa fa-edit" style="color:orange; font-size: 16px;"></i></a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <lt-pagination
+                                [pagesToShow]="3"
+                                [perPage]="perPage"
+                                [count]="listaPages.length"
+                                [loading]="false"
+                                [page]="actualPage"
+                                (goNext)="onNext($event)"
+                                (goPage)="onPage($event)"
+                                (goPrev)="onPrev()"
+                        ></lt-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<router-outlet></router-outlet>

@@ -35,5 +35,3 @@ export const websiteComponent = [
     WB.MenuNewComponent,
     WB.MenuComponent,
 ];
-
-//console.log(websiteComponent);
