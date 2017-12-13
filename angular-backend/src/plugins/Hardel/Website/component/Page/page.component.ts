@@ -64,8 +64,6 @@ export class PageComponent implements OnInit
                     if(! hasOwnProperty(this.page,'components')) {
                         this.page['components'] = [];
                     }
-
-                    console.log(this.page);
                 }
                 else
                 {
@@ -74,8 +72,6 @@ export class PageComponent implements OnInit
                 this.clonePage();
             }
         );
-
-        console.log(this.page);
     }
     ngOnInit() {}
 

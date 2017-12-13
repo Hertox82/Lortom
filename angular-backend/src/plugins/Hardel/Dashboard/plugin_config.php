@@ -3,6 +3,7 @@
             [
                 'vendor'            => 'Hardel',
                 'PluginName'        => 'Dashboard',
+                'version'           => '1.0.0',
                 'position'          => 1,
                 'moduleName'        => 'dashboard.module',
                 'routingPath'       => '/dashboard',

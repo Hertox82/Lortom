@@ -2,6 +2,7 @@
             [
                 'vendor'            => 'Hardel',
                 'PluginName'        => 'Website',
+                'version'           => '1.0.0',
                 'position'          => 4,
                 'moduleName'        => 'website.module',
                 'routingPath'       => '/website',

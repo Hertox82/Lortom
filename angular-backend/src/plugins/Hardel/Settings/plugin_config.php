@@ -2,6 +2,7 @@
         [
             'vendor'            => 'Hardel',
             'PluginName'        => 'Settings',
+            'version'           => '1.0.0',
             'position'          => 2,
             'moduleName'        => 'settings.module',
             'routingPath'       => '/settings',

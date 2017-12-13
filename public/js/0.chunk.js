@@ -4421,14 +4421,12 @@ var PageComponent = (function () {
                 if (!utils_1.hasOwnProperty(_this.page, 'components')) {
                     _this.page['components'] = [];
                 }
-                console.log(_this.page);
             }
             else {
                 _this.nav.navigate(['/backend/not-found']);
             }
             _this.clonePage();
         });
-        console.log(this.page);
     }
     PageComponent.prototype.ngOnInit = function () { };
     /**

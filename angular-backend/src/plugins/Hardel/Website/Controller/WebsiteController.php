@@ -5,7 +5,6 @@ namespace Plugins\Hardel\Website\Controller;
 use App\Http\Controllers\LortomController as Controller;
 use Illuminate\Http\Request;
 use Plugins\Hardel\Website\Model\LortomComponent;
-use Plugins\Hardel\Website\Model\LortomElement;
 use Plugins\Hardel\Website\Model\LortomMenu;
 use Plugins\Hardel\Website\Model\LortomPages;
 use DB;

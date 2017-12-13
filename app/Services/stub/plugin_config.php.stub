@@ -2,6 +2,7 @@
             [
                 'vendor'            => '#Vendor#',
                 'PluginName'        => '#Name#',
+                'version'           => '0.0.0.',
                 'position'          => #index#,
                 'moduleName'        => '#pluginname#.module',
                 'routingPath'       => '/#pluginname#',
