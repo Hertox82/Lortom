@@ -16,13 +16,9 @@ import {ListComponent} from "@Lortom/model/list.component";
 export class ListPluginComponent extends ListComponent implements OnInit
 {
     listOfPlugins : LtPlugin[];
-    listPluginsShow : LtPlugin[];
     listOfPluginsToDelete: LtPlugin[];
-    actualPage : number;
-    perPage : number;
     myRoot: string = '/backend/plugin/plugins';
     isRoot = false;
-    pagServ : PaginationService;
 
     constructor(private plsSer: PluginService, private router: Router) {
 
@@ -115,7 +111,7 @@ export class ListPluginComponent extends ListComponent implements OnInit
         }
     }
 
-    deletePages()
+    deletePlugins()
     {
         if(this.listOfPluginsToDelete.length > 0)
         {

@@ -43,5 +43,10 @@ export class ListComponent {
         this.updateListaShow();
     }
 
+    onPerPage(n : number)
+    {
+        this.perPage = n;
+        this.updateListaShow();
+    }
 
 }

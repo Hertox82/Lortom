@@ -8,6 +8,8 @@ import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {HttpModule} from "@angular/http";
 import {BreadCrumbModule} from "@Lortom-Backend/breadcrumbs";
+import {UIElementModule} from "@Lortom/app/backend-module/UIElement/uielement.module";
+import {PluginService} from "@Lortom/plugins/Hardel/Plugin/Service/plugin.service";
 
 @NgModule({
     imports: [
@@ -16,8 +18,10 @@ import {BreadCrumbModule} from "@Lortom-Backend/breadcrumbs";
         HttpModule,
         routing,
         BreadCrumbModule,
+        UIElementModule
 
     ],
+    providers: [PluginService],
     declarations:[pluginComponent]
 })
 

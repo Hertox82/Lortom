@@ -10,7 +10,7 @@ var map = {
 	],
 	"../plugins/Hardel/Plugin/plugin.module": [
 		"./src/plugins/Hardel/Plugin/plugin.module.ts",
-		4,
+		2,
 		"common"
 	],
 	"../plugins/Hardel/Settings/settings.module": [
