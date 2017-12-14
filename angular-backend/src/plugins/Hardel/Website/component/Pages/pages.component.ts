@@ -5,38 +5,29 @@ import {Component, OnInit} from "@angular/core";
 import {Page} from "../../Services/website.interfaces";
 import {WebsiteService} from "../../Services/website.service";
 import {NavigationEnd, Router} from "@angular/router";
-import {PaginationService} from "../../../../../services/pagination.service";
+import {ListComponent} from "@Lortom/model/list.component";
 @Component({
     selector : 'wb-pages',
     templateUrl : './pages.component.html',
     styles : ['']
 })
 
-export class PagesComponent implements OnInit
+export class PagesComponent extends ListComponent implements OnInit
 {
     listaPages : Page[] = [];
-    listaShowPages : Page[];
     myRoot = '/backend/website/pages';
     isRoot = false;
-    actualPage : number;
-    perPage : number;
-
     listaPageDelete : Page[];
 
-    pagServ : PaginationService;
-
     constructor(private wb_Service : WebsiteService, private router :Router) {
+
+        super();
 
         if(!this.wb_Service.hasPermissions("Hardel.Website.Pages"))
         {
             this.router.navigate(['/backend/dashboard']);
         }
         this.listaPageDelete = [];
-
-        //This is to manage the Pagination
-        this.pagServ = new PaginationService();
-        this.actualPage = 1;
-        this.perPage = 3;
 
         this.router.events.subscribe(
             (val) => {
@@ -72,6 +63,7 @@ export class PagesComponent implements OnInit
                 (pages: Page[]) => {
 
                     this.listaPages = pages;
+                    this.listOfData = this.listaPages;
                     this.listaPages.forEach((page : Page) => {
                         page.check = false;
                     });
@@ -82,6 +74,7 @@ export class PagesComponent implements OnInit
         }
         else {
             this.listaPages = this.wb_Service.getPages();
+            this.listOfData = this.listaPages;
             this.listaPages.forEach((item : any) => {
                 if(!item.hasOwnProperty('check'))
                 {
@@ -92,37 +85,6 @@ export class PagesComponent implements OnInit
         }
     }
 
-    onPerPage(n : number)
-    {
-        this.perPage = n;
-    }
-
-    private updateListaShow()
-    {
-        this.listaShowPages = this.pagServ.getShowList({
-            entry : this.perPage,
-            list : this.listaPages,
-            pageToShow : this.actualPage
-        });
-    }
-
-    onPrev()
-    {
-        this.actualPage--;
-        this.updateListaShow();
-    }
-
-    onNext(ev)
-    {
-        this.actualPage++;
-        this.updateListaShow();
-    }
-
-    onPage(page)
-    {
-        this.actualPage = page;
-        this.updateListaShow();
-    }
 
     /**
      * function to push or splice item into Deleted List of Roles
@@ -156,6 +118,7 @@ export class PagesComponent implements OnInit
                     (data : any) => {
                         this.listaPageDelete = [];
                         this.listaPages = data;
+                        this.listOfData = this.listaPages;
                         this.wb_Service.setPages(this.listaPages);
                         this.updateListaShow();
                     }

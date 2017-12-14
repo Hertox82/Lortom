@@ -53,7 +53,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr *ngFor="let page of listaPages">
+                                    <tr *ngFor="let page of listToShow">
                                         <td>
                                             <input type="checkbox" (change)="eventChange($event,page)" [(ngModel)] = "page.check">
                                         </td>

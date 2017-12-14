@@ -55,7 +55,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr *ngFor="let el of listShowMenus">
+                                    <tr *ngFor="let el of listToShow">
                                         <td>
                                             <input type="checkbox" (change)="eventChange($event,el)" [(ngModel)] = "el.check">
                                         </td>

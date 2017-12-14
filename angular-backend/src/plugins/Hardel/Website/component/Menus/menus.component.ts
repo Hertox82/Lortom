@@ -6,27 +6,25 @@
 
 import {Component, OnInit} from "@angular/core";
 import {LortomMenu} from "@Lortom/plugins/Hardel/Website/Services/website.interfaces";
-import {PaginationService} from "@Lortom/services/pagination.service";
 import {WebsiteService} from "@Lortom/plugins/Hardel/Website/Services/website.service";
 import {NavigationEnd, Router} from "@angular/router";
+import {ListComponent} from "@Lortom/model/list.component";
 @Component({
     selector: 'wb-menus',
     templateUrl: './menus.component.html',
     styles: ['']
 })
 
-export class MenusComponent implements OnInit {
+export class MenusComponent extends ListComponent implements OnInit {
     listOfMenus : LortomMenu [] = [];
-    listShowMenus : LortomMenu [];
     myRoot = '/backend/website/menu';
     isRoot = false;
-    actualPage : number;
-    perPage : number;
-    pagServ : PaginationService;
 
     listaMenusDelete : LortomMenu[];
 
     constructor(private mcService : WebsiteService, private router : Router) {
+
+        super();
 
         if(!this.mcService.hasPermissions("Hardel.Website.Menu"))
         {
@@ -36,10 +34,6 @@ export class MenusComponent implements OnInit {
         this.listaMenusDelete = [];
         this.listOfMenus = [];
 
-        //This is to manage the Pagination
-        this.pagServ = new PaginationService();
-        this.actualPage = 1;
-        this.perPage = 3;
 
         this.router.events.subscribe(
             (val) => {
@@ -74,6 +68,7 @@ export class MenusComponent implements OnInit {
                 (menus: LortomMenu[]) => {
 
                     this.listOfMenus = menus;
+                    this.listOfData = this.listOfMenus;
                     this.listOfMenus.forEach((el : LortomMenu) => {
                         el.check = false;
                     });
@@ -84,7 +79,7 @@ export class MenusComponent implements OnInit {
         }
         else {
             this.listOfMenus = this.mcService.getMenus();
-
+            this.listOfData = this.listOfMenus;
             this.listOfMenus.forEach((item : any) => {
                 if(!item.hasOwnProperty('check'))
                 {
@@ -93,39 +88,6 @@ export class MenusComponent implements OnInit {
             });
             this.updateListaShow();
         }
-    }
-
-    onPerPage(n : number)
-    {
-        this.perPage = n;
-        this.updateListaShow();
-    }
-
-    private updateListaShow()
-    {
-        this.listShowMenus = this.pagServ.getShowList({
-            entry : this.perPage,
-            list : this.listOfMenus,
-            pageToShow : this.actualPage
-        });
-    }
-
-    onPrev()
-    {
-        this.actualPage--;
-        this.updateListaShow();
-    }
-
-    onNext(ev)
-    {
-        this.actualPage++;
-        this.updateListaShow();
-    }
-
-    onPage(page)
-    {
-        this.actualPage = page;
-        this.updateListaShow();
     }
 
     eventChange(ev,data : LortomMenu) : void
@@ -151,11 +113,11 @@ export class MenusComponent implements OnInit {
         {
             if(confirm('Do you really want delete this Roles?'))
             {
-                console.log(this.listaMenusDelete);
                 this.mcService.deleteMenus(this.listaMenusDelete).subscribe(
                     (data : any) => {
                         this.listaMenusDelete = [];
                         this.listOfMenus = data;
+                        this.listOfData = this.listOfMenus;
                         this.mcService.setMenus(this.listOfMenus);
                         this.updateListaShow();
                     }

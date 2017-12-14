@@ -6,9 +6,9 @@
 
 import {Component, OnInit} from "@angular/core";
 import {LortomComponent} from "@Lortom/plugins/Hardel/Website/Services/website.interfaces";
-import {PaginationService} from "@Lortom/services/pagination.service";
 import {WebsiteService} from "@Lortom/plugins/Hardel/Website/Services/website.service";
 import {NavigationEnd, Router} from "@angular/router";
+import {ListComponent} from "@Lortom/model/list.component";
 @Component({
     selector : 'wb-components',
     templateUrl : './components.component.html',
@@ -16,20 +16,16 @@ import {NavigationEnd, Router} from "@angular/router";
 })
 
 
-export class ComponentsComponent implements OnInit
+export class ComponentsComponent extends ListComponent implements OnInit
 {
     listOfComponents : LortomComponent [] = [];
-    listShowComponents : LortomComponent [];
     myRoot = '/backend/website/components';
     isRoot = false;
-    actualPage : number;
-    perPage : number;
-    pagServ : PaginationService;
-
     listaComponentsDelete : LortomComponent[];
 
     constructor(private ccService : WebsiteService, private router : Router) {
 
+        super();
         if(!this.ccService.hasPermissions("Hardel.Website.Component"))
         {
             this.router.navigate(['/backend/dashboard']);
@@ -37,11 +33,6 @@ export class ComponentsComponent implements OnInit
 
         this.listaComponentsDelete = [];
         this.listOfComponents = [];
-
-        //This is to manage the Pagination
-        this.pagServ = new PaginationService();
-        this.actualPage = 1;
-        this.perPage = 3;
 
         this.router.events.subscribe(
             (val) => {
@@ -76,6 +67,7 @@ export class ComponentsComponent implements OnInit
                 (components: LortomComponent[]) => {
 
                     this.listOfComponents = components;
+                    this.listOfData = this.listOfComponents;
                     this.listOfComponents.forEach((el : LortomComponent) => {
                         el.check = false;
                     });
@@ -86,7 +78,7 @@ export class ComponentsComponent implements OnInit
         }
         else {
             this.listOfComponents = this.ccService.getComponents();
-
+            this.listOfData = this.listOfComponents;
             this.listOfComponents.forEach((item : any) => {
                 if(!item.hasOwnProperty('check'))
                 {
@@ -95,39 +87,6 @@ export class ComponentsComponent implements OnInit
             });
             this.updateListaShow();
         }
-    }
-
-    onPerPage(n : number)
-    {
-        this.perPage = n;
-        this.updateListaShow();
-    }
-
-    private updateListaShow()
-    {
-        this.listShowComponents = this.pagServ.getShowList({
-            entry : this.perPage,
-            list : this.listOfComponents,
-            pageToShow : this.actualPage
-        });
-    }
-
-    onPrev()
-    {
-        this.actualPage--;
-        this.updateListaShow();
-    }
-
-    onNext(ev)
-    {
-        this.actualPage++;
-        this.updateListaShow();
-    }
-
-    onPage(page)
-    {
-        this.actualPage = page;
-        this.updateListaShow();
     }
 
     eventChange(ev,data : LortomComponent) : void
@@ -153,11 +112,11 @@ export class ComponentsComponent implements OnInit
         {
             if(confirm('Do you really want delete this Roles?'))
             {
-                console.log(this.listaComponentsDelete);
                 this.ccService.deleteComponents(this.listaComponentsDelete).subscribe(
                     (data : any) => {
                         this.listaComponentsDelete = [];
                         this.listOfComponents = data;
+                        this.listOfData = this.listOfComponents;
                         this.ccService.setComponents(this.listOfComponents);
                         this.updateListaShow();
                     }
