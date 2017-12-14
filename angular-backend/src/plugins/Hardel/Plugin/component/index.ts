@@ -5,3 +5,4 @@
 
 export {PluginComponent} from './plugin.component';
 export {ListPluginComponent} from './Plugins/listplugin.component';
+export {InstallPluginComponent} from './InstallPlugin/install-plugin.component';
