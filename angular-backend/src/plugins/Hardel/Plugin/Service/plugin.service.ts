@@ -94,10 +94,11 @@ export class PluginService extends MasterService
      * This function set plugins and store it into a Session
      * @param plugins
      */
-    setPlugins(plugins: LtPlugin[]) : void
+    setPlugins(plugins: any) : void
     {
-        this.setItem('plugins',plugins);
-        this.listOfPlugins = plugins;
+        let data = plugins as LtPlugin[];
+        this.setItem('plugins',data);
+        this.listOfPlugins = data;
     }
 
     /**

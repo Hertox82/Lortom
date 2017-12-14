@@ -10,7 +10,7 @@ export interface Role {
     id : number,
     name: string,
     permissions : Permission [],
-    state : boolean
+    check : boolean
 }
 
 
@@ -19,6 +19,6 @@ export interface User {
     name : string,
     email : string,
     role? : Role,
-    state : boolean
+    check : boolean
     password? : string
 }

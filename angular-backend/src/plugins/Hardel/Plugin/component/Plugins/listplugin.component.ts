@@ -3,8 +3,7 @@
 import {Component, OnInit} from "@angular/core";
 import {LtPlugin} from "@Lortom/plugins/Hardel/Plugin/Service/plugin.interface";
 import {PluginService} from "@Lortom/plugins/Hardel/Plugin/Service/plugin.service";
-import {NavigationEnd, Router} from "@angular/router";
-import {PaginationService} from "@Lortom/services/pagination.service";
+import {Router} from "@angular/router";
 import {ListComponent} from "@Lortom/model/list.component";
 
 
@@ -16,44 +15,20 @@ import {ListComponent} from "@Lortom/model/list.component";
 export class ListPluginComponent extends ListComponent implements OnInit
 {
     listOfPlugins : LtPlugin[];
-    listOfPluginsToDelete: LtPlugin[];
     myRoot: string = '/backend/plugin/plugins';
     isRoot = false;
 
-    constructor(private plsSer: PluginService, private router: Router) {
+    constructor(public plsSer: PluginService, public router: Router) {
 
         super();
 
-        if(!this.plsSer.hasPermissions("Hardel.Plugin.Plugins"))
-        {
-            this.router.navigate(['/backend/dashboard']);
-        }
         this.listOfPlugins = [];
-        this.listOfPluginsToDelete = [];
 
-
-        this.router.events.subscribe(
-            (val) => {
-                if(val instanceof NavigationEnd)
-                {
-                    if(this.myRoot === val.url)
-                    {
-                        this.isRoot = true;
-                    }
-                    else
-                    {
-                        this.isRoot = false;
-                    }
-                }
-            }
-        );
-
-        this.retrieveListOfPlugins();
-        this.plsSer.updatePlugins$.subscribe(
-            () => {
-                this.retrieveListOfPlugins();
-            }
-        );
+        this.onComponentInit({
+            name: 'plsSer',
+            permission: 'Hardel.Plugin.Plugins',
+            upd: 'updatePlugins$'
+        },'router','retrieveListOfPlugins');
     }
     ngOnInit() {}
 
@@ -61,32 +36,13 @@ export class ListPluginComponent extends ListComponent implements OnInit
      * This function call the Service in order to get the list Of Plugins
      */
     retrieveListOfPlugins() : void {
-        if(!this.plsSer.checkPluginsExist())
-        {
-            this.plsSer.getPluginsFrom().subscribe(
-                (plugins: LtPlugin[]) => {
-
-                    this.listOfPlugins = plugins;
-                    this.listOfData = this.listOfPlugins;
-                    this.listOfPlugins.forEach((plugin : LtPlugin) => {
-                        plugin.check = false;
-                    });
-                    this.plsSer.setPlugins(this.listOfPlugins);
-                    this.updateListaShow();
-                }
-            );
-        }
-        else {
-            this.listOfPlugins = this.plsSer.getPlugins();
-            this.listOfData = this.listOfPlugins;
-            this.listOfPlugins.forEach((item : any) => {
-                if(!item.hasOwnProperty('check'))
-                {
-                    item.check = false;
-                }
-            });
-            this.updateListaShow();
-        }
+        this.retrieveListOfData({
+            name:'plsSer',
+            getData: 'getPlugins',
+            setData: 'setPlugins',
+            callApi: 'getPluginsFrom',
+            check: 'checkPluginsExist'
+        },'listOfPlugins');
     }
 
     /**
@@ -96,37 +52,18 @@ export class ListPluginComponent extends ListComponent implements OnInit
      */
     eventChange(ev,data : LtPlugin) : void
     {
-        if(ev.target.checked)
-        {
-            this.listOfPluginsToDelete.push(data);
-        }
-        else
-        {
-            let index = this.listOfPluginsToDelete.indexOf(data);
-
-            if(index > -1)
-            {
-                this.listOfPluginsToDelete.splice(index,1);
-            }
-        }
+       this.eventChangeData(ev,data);
     }
 
+    /**
+     * This function is to delete Plugins selected
+     */
     deletePlugins()
     {
-        if(this.listOfPluginsToDelete.length > 0)
-        {
-            if(confirm('Do you really want delete this Roles?'))
-            {
-                this.plsSer.deletePlugins(this.listOfPluginsToDelete).subscribe(
-                    (data : any) => {
-                        this.listOfPluginsToDelete = [];
-                        this.listOfPlugins = data;
-                        this.listOfData = this.listOfPlugins;
-                        this.plsSer.setPlugins(this.listOfPlugins);
-                        this.updateListaShow();
-                    }
-                );
-            }
-        }
+        this.deleteData({
+            name: 'plsSer',
+            setData: 'setPlugins',
+            delFn: 'deletePlugins'
+        },'listOfPlugins',"Do you really want delete this Plugins?");
     }
 }

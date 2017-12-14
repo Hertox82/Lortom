@@ -34,7 +34,7 @@ export class UserComponent implements OnInit,OnDestroy
             id : -2,
             name : '',
             email : '',
-            state : false,
+            check : false,
             role : null
         };
         this.sub = this.router.params.subscribe(

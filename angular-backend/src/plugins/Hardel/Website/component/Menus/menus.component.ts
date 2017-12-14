@@ -7,7 +7,7 @@
 import {Component, OnInit} from "@angular/core";
 import {LortomMenu} from "@Lortom/plugins/Hardel/Website/Services/website.interfaces";
 import {WebsiteService} from "@Lortom/plugins/Hardel/Website/Services/website.service";
-import {NavigationEnd, Router} from "@angular/router";
+import {Router} from "@angular/router";
 import {ListComponent} from "@Lortom/model/list.component";
 @Component({
     selector: 'wb-menus',
@@ -20,109 +20,40 @@ export class MenusComponent extends ListComponent implements OnInit {
     myRoot = '/backend/website/menu';
     isRoot = false;
 
-    listaMenusDelete : LortomMenu[];
-
     constructor(private mcService : WebsiteService, private router : Router) {
 
         super();
-
-        if(!this.mcService.hasPermissions("Hardel.Website.Menu"))
-        {
-            this.router.navigate(['/backend/dashboard']);
-        }
-
-        this.listaMenusDelete = [];
         this.listOfMenus = [];
-
-
-        this.router.events.subscribe(
-            (val) => {
-                if(val instanceof NavigationEnd)
-                {
-                    if(this.myRoot === val.url)
-                    {
-                        this.isRoot = true;
-                    }
-                    else
-                    {
-                        this.isRoot = false;
-                    }
-                }
-            }
-        );
-
-        this.retrieveListOfMenus();
-        this.mcService.updateMenus$.subscribe(
-            () => {
-                this.retrieveListOfMenus();
-            }
-        );
+        this.onComponentInit({
+            name: 'mcService',
+            permission: 'Hardel.Website.Menu',
+            upd: 'updateMenus$'
+        },'router','retrieveListOfMenus');
     }
     ngOnInit(){}
 
     retrieveListOfMenus()
     {
-        if(!this.mcService.checkMenusExist())
-        {
-            this.mcService.getMenusFrom().subscribe(
-                (menus: LortomMenu[]) => {
-
-                    this.listOfMenus = menus;
-                    this.listOfData = this.listOfMenus;
-                    this.listOfMenus.forEach((el : LortomMenu) => {
-                        el.check = false;
-                    });
-                    this.mcService.setMenus(this.listOfMenus);
-                    this.updateListaShow();
-                }
-            );
-        }
-        else {
-            this.listOfMenus = this.mcService.getMenus();
-            this.listOfData = this.listOfMenus;
-            this.listOfMenus.forEach((item : any) => {
-                if(!item.hasOwnProperty('check'))
-                {
-                    item.check = false;
-                }
-            });
-            this.updateListaShow();
-        }
+        this.retrieveListOfData({
+            name:'mcService',
+            getData: 'getMenus',
+            setData: 'setMenus',
+            callApi: 'getMenusFrom',
+            check: 'checkMenusExist'
+        },'listOfMenus');
     }
 
     eventChange(ev,data : LortomMenu) : void
     {
-        if(ev.target.checked)
-        {
-            this.listaMenusDelete.push(data);
-        }
-        else
-        {
-            let index = this.listaMenusDelete.indexOf(data);
-
-            if(index > -1)
-            {
-                this.listaMenusDelete.splice(index,1);
-            }
-        }
+        this.eventChangeData(ev,data);
     }
 
     deleteMenus()
     {
-        if(this.listaMenusDelete.length > 0)
-        {
-            if(confirm('Do you really want delete this Roles?'))
-            {
-                this.mcService.deleteMenus(this.listaMenusDelete).subscribe(
-                    (data : any) => {
-                        this.listaMenusDelete = [];
-                        this.listOfMenus = data;
-                        this.listOfData = this.listOfMenus;
-                        this.mcService.setMenus(this.listOfMenus);
-                        this.updateListaShow();
-                    }
-                );
-            }
-        }
+        this.deleteData({
+            name: 'mcService',
+            setData: 'setMenus',
+            delFn: 'deleteMenus'
+        },'listOfMenus',"Do you really want delete this Menus?");
     }
 }

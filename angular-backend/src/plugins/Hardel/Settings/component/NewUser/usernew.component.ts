@@ -30,7 +30,7 @@ export class UserNewComponent implements OnInit
         this.user = {
             id: -1,
             name : '',
-            state : false,
+            check : false,
             email : ''
         }
     }

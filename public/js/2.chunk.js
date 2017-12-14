@@ -1,49 +1,5 @@
 webpackJsonp([2],{
 
-/***/ "./src/model/list.component.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var pagination_service_1 = __webpack_require__("./src/services/pagination.service.ts");
-var ListComponent = (function () {
-    function ListComponent() {
-        //This is to manage the Pagination
-        this.pagServ = new pagination_service_1.PaginationService();
-        this.actualPage = 1;
-        this.perPage = 3;
-    }
-    ListComponent.prototype.updateListaShow = function () {
-        this.listToShow = this.pagServ.getShowList({
-            entry: this.perPage,
-            list: this.listOfData,
-            pageToShow: this.actualPage
-        });
-    };
-    ListComponent.prototype.onPrev = function () {
-        this.actualPage--;
-        this.updateListaShow();
-    };
-    ListComponent.prototype.onNext = function (ev) {
-        this.actualPage++;
-        this.updateListaShow();
-    };
-    ListComponent.prototype.onPage = function (act) {
-        this.actualPage = act;
-        this.updateListaShow();
-    };
-    ListComponent.prototype.onPerPage = function (n) {
-        this.perPage = n;
-        this.updateListaShow();
-    };
-    return ListComponent;
-}());
-exports.ListComponent = ListComponent;
-//# sourceMappingURL=list.component.js.map
-
-/***/ }),
-
 /***/ "./src/plugins/Hardel/Plugin/Service/plugin.service.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -142,14 +98,16 @@ var PluginService = (function (_super) {
      * @param plugins
      */
     PluginService.prototype.setPlugins = function (plugins) {
-        this.setItem('plugins', plugins);
-        this.listOfPlugins = plugins;
+        var data = plugins;
+        this.setItem('plugins', data);
+        this.listOfPlugins = data;
     };
     /**
      * This function get listOfPlugins
      * @returns {any}
      */
     PluginService.prototype.getPlugins = function () {
+        console.log('roma merda');
         return this.getItem('plugins', 'listOfPlugins');
     };
     /**
@@ -163,6 +121,7 @@ var PluginService = (function (_super) {
      * @returns {boolean}
      */
     PluginService.prototype.checkPluginsExist = function () {
+        console.log('checkPluginsExist');
         return this.checkItemExist('plugins');
     };
     /* Fire Event*/
@@ -254,28 +213,39 @@ var ListPluginComponent = (function (_super) {
      * This function call the Service in order to get the list Of Plugins
      */
     ListPluginComponent.prototype.retrieveListOfPlugins = function () {
-        var _this = this;
-        if (!this.plsSer.checkPluginsExist()) {
-            this.plsSer.getPluginsFrom().subscribe(function (plugins) {
-                _this.listOfPlugins = plugins;
-                _this.listOfData = _this.listOfPlugins;
-                _this.listOfPlugins.forEach(function (plugin) {
-                    plugin.check = false;
-                });
-                _this.plsSer.setPlugins(_this.listOfPlugins);
-                _this.updateListaShow();
-            });
+        /*if(!this.plsSer.checkPluginsExist())
+        {
+            this.plsSer.getPluginsFrom().subscribe(
+                (plugins: LtPlugin[]) => {
+
+                    this.listOfPlugins = plugins;
+                    this.listOfData = this.listOfPlugins;
+                    this.listOfPlugins.forEach((plugin : LtPlugin) => {
+                        plugin.check = false;
+                    });
+                    this.plsSer.setPlugins(this.listOfPlugins);
+                    this.updateListaShow();
+                }
+            );
         }
         else {
             this.listOfPlugins = this.plsSer.getPlugins();
             this.listOfData = this.listOfPlugins;
-            this.listOfPlugins.forEach(function (item) {
-                if (!item.hasOwnProperty('check')) {
+            this.listOfPlugins.forEach((item : any) => {
+                if(!item.hasOwnProperty('check'))
+                {
                     item.check = false;
                 }
             });
             this.updateListaShow();
-        }
+        }*/
+        this.retrieveListOfData({
+            name: 'plsSer',
+            getData: 'getPlugins',
+            setData: 'setPlugins',
+            callApi: 'getPluginsFrom',
+            check: 'checkPluginsExist'
+        }, 'listOfPlugins');
     };
     /**
      * function to push or splice item into Deleted List of Roles
