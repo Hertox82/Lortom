@@ -1,4 +1,4 @@
-webpackJsonp([2],{
+webpackJsonp([4],{
 
 /***/ "./src/plugins/Hardel/Plugin/Service/plugin.service.ts":
 /***/ (function(module, exports, __webpack_require__) {
@@ -43,8 +43,6 @@ var PluginService = (function (_super) {
         var urls = [
             { namePath: 'getPlugins', path: 'plugins' },
             { namePath: 'installPlugin', path: 'plugin' },
-            { namePath: 'packPlugin', path: 'plugin/pack' },
-            { namePath: 'delPack', path: 'plugin/delete' }
         ];
         //Add the Api to the ApiManager
         _this.apiManager.addListUrlApi(urls);
@@ -66,14 +64,8 @@ var PluginService = (function (_super) {
      * @param plugins
      * @returns {Observable<R>}
      */
-    PluginService.prototype.uninstallPlugins = function (plugins) {
+    PluginService.prototype.deletePlugins = function (plugins) {
         return this.http.put(this.apiManager.getPathByName('getPlugins'), plugins, this.getOptions())
-            .map(function (response) {
-            return response.json().plugins;
-        });
-    };
-    PluginService.prototype.deletePackPlugin = function (plugin) {
-        return this.http.post(this.apiManager.getPathByName('delPack'), plugin, this.getOptions())
             .map(function (response) {
             return response.json().plugins;
         });
@@ -98,12 +90,6 @@ var PluginService = (function (_super) {
         return this.http.put(this.apiManager.getPathByName('installPlugin'), plugin, this.getOptions())
             .map(function (response) {
             return response.json().plugin;
-        });
-    };
-    PluginService.prototype.packPlugin = function (plugin) {
-        return this.http.post(this.apiManager.getPathByName('packPlugin'), plugin, this.getOptions())
-            .map(function (response) {
-            return response.json().plugins;
         });
     };
     /* End Section call to API*/
@@ -155,51 +141,10 @@ var _a;
 
 /***/ }),
 
-/***/ "./src/plugins/Hardel/Plugin/component/InstallPlugin/install-plugin.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<p>Install Plugin</p>"
-
-/***/ }),
-
-/***/ "./src/plugins/Hardel/Plugin/component/InstallPlugin/install-plugin.component.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Created by hernan on 14/12/2017.
- */
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var InstallPluginComponent = (function () {
-    function InstallPluginComponent() {
-    }
-    InstallPluginComponent.prototype.ngOnInit = function () { };
-    return InstallPluginComponent;
-}());
-InstallPluginComponent = __decorate([
-    core_1.Component({
-        selector: 'pl-install',
-        template: __webpack_require__("./src/plugins/Hardel/Plugin/component/InstallPlugin/install-plugin.component.html"),
-        styles: ['']
-    })
-], InstallPluginComponent);
-exports.InstallPluginComponent = InstallPluginComponent;
-//# sourceMappingURL=install-plugin.component.js.map
-
-/***/ }),
-
 /***/ "./src/plugins/Hardel/Plugin/component/Plugins/listplugin.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> List Plugin</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/menu']\" data-toggle=\"tab\"> Template</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <lt-entry-pagination\n                                        [entry]=\"'50-5'\"\n                                        (onEntry)=\"onPerPage($event)\"\n                                >\n                                </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/plugin/plugins/install']\"><i class=\"fa fa-download\"></i> Install</a>\n                                    <a class=\"btn btn-warning\" (click)=\"uninstallPlugins()\"><i class=\"fa fa-trash-o\"></i> Uninstall</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Vendor</a>\n                                        </th>\n                                        <th>\n                                            <a>Name</a>\n                                        </th>\n                                        <th>\n                                            <a>Version</a>\n                                        </th>\n                                        <th style=\"width: 50px;\" colspan=\"3\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let plugin of listToShow\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,plugin)\" [(ngModel)] = \"plugin.check\">\n                                        </td>\n                                        <td>\n                                            {{plugin.vendor}}\n                                        </td>\n                                        <td>\n                                            {{plugin.name}}\n                                        </td>\n                                        <td>\n                                            {{plugin.version}}\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a (click)=\"updatePlugin(plugin)\" title=\"Update\"><i class=\"fa fa-refresh\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i></a>\n                                        </td>\n                                        <td width=\"38px\">\n                                           <a *ngIf=\"plugin.packed === false\" (click)=\"packPlugin(plugin)\" title=\"Packing\"><i class=\"fa fa-cube\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i> </a>\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a *ngIf=\"plugin.packed === true\" (click)=\"deletePlugin(plugin)\"  title=\"Delete Packing\"><i class=\"fa fa-times\" style=\"color:orange; font-size: 16px; cursor: pointer;\"></i> </a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                                [pagesToShow]=\"3\"\n                                [perPage]=\"perPage\"\n                                [count]=\"listOfPlugins.length\"\n                                [loading]=\"false\"\n                                [page]=\"actualPage\"\n                                (goNext)=\"onNext($event)\"\n                                (goPage)=\"onPage($event)\"\n                                (goPrev)=\"onPrev()\"\n                        ></lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
+module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> List Plugin</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/menu']\" data-toggle=\"tab\"> Template</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <lt-entry-pagination\n                                        [entry]=\"'50-5'\"\n                                        (onEntry)=\"onPerPage($event)\"\n                                >\n                                </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/plugin/plugins/install']\"><i class=\"fa fa-download\"></i> Install</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deletePlugins()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Vendor</a>\n                                        </th>\n                                        <th>\n                                            <a>Name</a>\n                                        </th>\n                                        <th>\n                                            <a>Version</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let plugin of listToShow\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,plugin)\" [(ngModel)] = \"plugin.check\">\n                                        </td>\n                                        <td>\n                                            {{plugin.vendor}}\n                                        </td>\n                                        <td>\n                                            {{plugin.name}}\n                                        </td>\n                                        <td>\n                                            {{plugin.version}}\n                                        </td>\n                                        <td>\n                                            <a [routerLink] = \"['/backend/plugin/plugins/update',plugin.vendor]\" title=\"Update\"><i class=\"fa fa-refresh\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                                [pagesToShow]=\"3\"\n                                [perPage]=\"perPage\"\n                                [count]=\"listOfPlugins.length\"\n                                [loading]=\"false\"\n                                [page]=\"actualPage\"\n                                (goNext)=\"onNext($event)\"\n                                (goPage)=\"onPage($event)\"\n                                (goPrev)=\"onPrev()\"\n                        ></lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -272,44 +217,11 @@ var ListPluginComponent = (function (_super) {
     /**
      * This function is to delete Plugins selected
      */
-    ListPluginComponent.prototype.deletePlugin = function (plugin) {
-        var _this = this;
-        this.plsSer.deletePackPlugin(plugin).subscribe(function (data) {
-            _this.listOfPlugins = data;
-            _this.listOfData = _this.listOfPlugins;
-            _this.plsSer.setPlugins(_this.listOfPlugins);
-            _this.retrieveListOfData({
-                name: 'plsSer',
-                getData: 'getPlugins',
-                setData: 'setPlugins',
-                callApi: 'getPluginsFrom',
-                check: 'checkPluginsExist'
-            }, 'listOfPlugins');
-        });
-    };
-    ListPluginComponent.prototype.updatePlugin = function (plugin) {
-        console.log('update this plugin');
-    };
-    ListPluginComponent.prototype.packPlugin = function (plugin) {
-        var _this = this;
-        this.plsSer.packPlugin(plugin).subscribe(function (data) {
-            _this.listOfPlugins = data;
-            _this.listOfData = _this.listOfPlugins;
-            _this.plsSer.setPlugins(_this.listOfPlugins);
-            _this.retrieveListOfData({
-                name: 'plsSer',
-                getData: 'getPlugins',
-                setData: 'setPlugins',
-                callApi: 'getPluginsFrom',
-                check: 'checkPluginsExist'
-            }, 'listOfPlugins');
-        });
-    };
-    ListPluginComponent.prototype.uninstallPlugins = function () {
+    ListPluginComponent.prototype.deletePlugins = function () {
         this.deleteData({
             name: 'plsSer',
             setData: 'setPlugins',
-            delFn: 'uninstallPlugins'
+            delFn: 'deletePlugins'
         }, 'listOfPlugins', "Do you really want delete this Plugins?");
     };
     return ListPluginComponent;
@@ -341,8 +253,6 @@ var plugin_component_1 = __webpack_require__("./src/plugins/Hardel/Plugin/compon
 exports.PluginComponent = plugin_component_1.PluginComponent;
 var listplugin_component_1 = __webpack_require__("./src/plugins/Hardel/Plugin/component/Plugins/listplugin.component.ts");
 exports.ListPluginComponent = listplugin_component_1.ListPluginComponent;
-var install_plugin_component_1 = __webpack_require__("./src/plugins/Hardel/Plugin/component/InstallPlugin/install-plugin.component.ts");
-exports.InstallPluginComponent = install_plugin_component_1.InstallPluginComponent;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -468,20 +378,17 @@ var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/rout
 var PL = __webpack_require__("./src/plugins/Hardel/Plugin/component/index.ts");
 var routes = [
     { path: '', component: PL.PluginComponent, data: { breadcrumb: 'Plugins' }, children: [
-            { path: 'plugins', component: PL.ListPluginComponent, data: { breadcrumb: 'List' }, children: [
-                    { path: 'install', component: PL.InstallPluginComponent, data: { breadcrumb: 'Install' } }
-                ] },
+            { path: 'plugins', component: PL.ListPluginComponent, data: { breadcrumb: 'List' } }
         ] }
 ];
 exports.routing = router_1.RouterModule.forChild(routes);
 exports.pluginComponent = [
     PL.PluginComponent,
-    PL.ListPluginComponent,
-    PL.InstallPluginComponent
+    PL.ListPluginComponent
 ];
 //# sourceMappingURL=plugin.routing.js.map
 
 /***/ })
 
 });
-//# sourceMappingURL=2.chunk.js.map
+//# sourceMappingURL=4.chunk.js.map

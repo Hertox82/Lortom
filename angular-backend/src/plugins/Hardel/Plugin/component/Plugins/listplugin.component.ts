@@ -60,7 +60,20 @@ export class ListPluginComponent extends ListComponent implements OnInit
      */
     deletePlugin(plugin: LtPlugin)
     {
-        console.log('delete this plugin');
+        this.plsSer.deletePackPlugin(plugin).subscribe(
+            (data: LtPlugin[]) => {
+                this.listOfPlugins = data;
+                this.listOfData = this.listOfPlugins;
+                this.plsSer.setPlugins(this.listOfPlugins);
+                this.retrieveListOfData({
+                    name:'plsSer',
+                    getData: 'getPlugins',
+                    setData: 'setPlugins',
+                    callApi: 'getPluginsFrom',
+                    check: 'checkPluginsExist'
+                },'listOfPlugins');
+            }
+        );
     }
 
     updatePlugin(plugin: LtPlugin) {
@@ -68,7 +81,6 @@ export class ListPluginComponent extends ListComponent implements OnInit
     }
 
     packPlugin(plugin: LtPlugin) {
-        console.log('pack this plugin');
         this.plsSer.packPlugin(plugin).subscribe(
             (data: LtPlugin[]) => {
                 this.listOfPlugins = data;
@@ -89,7 +101,7 @@ export class ListPluginComponent extends ListComponent implements OnInit
         this.deleteData({
             name: 'plsSer',
             setData: 'setPlugins',
-            delFn: 'deletePlugins'
+            delFn: 'uninstallPlugins'
         },'listOfPlugins',"Do you really want delete this Plugins?");
     }
 }

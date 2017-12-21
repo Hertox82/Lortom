@@ -16,6 +16,11 @@ Route::post('/plugin/pack',[
     'uses'  => 'PluginController@packPlugin'
 ]);
 
+Route::post('/plugin/delete',[
+    'as'    => 'apiDeletePlugin',
+    'uses'  => 'PluginController@deletePlugin'
+]);
+
 Route::get('/test',[
     'as'    => 'apiGetTest',
     'uses'  => 'PluginController@getTest'

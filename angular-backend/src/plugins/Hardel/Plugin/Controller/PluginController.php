@@ -71,6 +71,28 @@ class PluginController extends Controller
 
     }
 
+    public function deletePlugin(Request $request) {
+        $input = $request->all();
+
+        $vendor = $input['vendor'];
+        $name = $input['name'];
+        $version = $input['version'];
+
+        $fileName = "{$vendor}-{$name}-{$version}.tgz";
+
+        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js delpack {$fileName}";
+        $command1= "cd ../angular-backend && ";
+        $command = $command1.$command2;
+
+        exec($command,$mario);
+
+        $lista = $this->getListInstalledPlugin();
+
+        $this->checkIfPluginArePacked($lista);
+
+        return response()->json(['plugins' => $lista]);
+    }
+
     protected function getListInstalledPlugin() {
         $listaPlugin = config('plugins');
 

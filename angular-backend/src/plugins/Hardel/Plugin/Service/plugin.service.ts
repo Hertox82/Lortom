@@ -25,7 +25,8 @@ export class PluginService extends MasterService
         const urls = [
             { namePath: 'getPlugins', path: 'plugins'},
             { namePath: 'installPlugin', path: 'plugin'},
-            { namePath: 'packPlugin', path: 'plugin/pack'}
+            { namePath: 'packPlugin', path: 'plugin/pack'},
+            { namePath: 'delPack', path: 'plugin/delete'}
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -51,11 +52,20 @@ export class PluginService extends MasterService
      * @param plugins
      * @returns {Observable<R>}
      */
-    deletePlugins(plugins : LtPlugin []) : Observable<any> {
+    uninstallPlugins(plugins : LtPlugin []) : Observable<any> {
 
         return this.http.put(this.apiManager.getPathByName('getPlugins'),plugins,this.getOptions())
             .map(
                 (response : Response) => {
+                    return response.json().plugins;
+                }
+            );
+    }
+
+    deletePackPlugin(plugin: LtPlugin): Observable<any> {
+        return this.http.post(this.apiManager.getPathByName('delPack'),plugin,this.getOptions())
+            .map(
+                (response: Response) => {
                     return response.json().plugins;
                 }
             );
@@ -93,7 +103,6 @@ export class PluginService extends MasterService
         return this.http.post(this.apiManager.getPathByName('packPlugin'),plugin,this.getOptions())
             .map(
                 (response: Response) => {
-                    console.log(response);
                     return response.json().plugins;
                 }
             );
