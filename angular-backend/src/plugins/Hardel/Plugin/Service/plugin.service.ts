@@ -25,6 +25,7 @@ export class PluginService extends MasterService
         const urls = [
             { namePath: 'getPlugins', path: 'plugins'},
             { namePath: 'installPlugin', path: 'plugin'},
+            { namePath: 'packPlugin', path: 'plugin/pack'}
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -84,6 +85,16 @@ export class PluginService extends MasterService
             .map(
                 (response: Response) => {
                     return response.json().plugin;
+                }
+            );
+    }
+
+    packPlugin(plugin: LtPlugin): Observable<any> {
+        return this.http.post(this.apiManager.getPathByName('packPlugin'),plugin,this.getOptions())
+            .map(
+                (response: Response) => {
+                    console.log(response);
+                    return response.json().plugins;
                 }
             );
     }

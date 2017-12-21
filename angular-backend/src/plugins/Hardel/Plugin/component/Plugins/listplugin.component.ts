@@ -69,6 +69,20 @@ export class ListPluginComponent extends ListComponent implements OnInit
 
     packPlugin(plugin: LtPlugin) {
         console.log('pack this plugin');
+        this.plsSer.packPlugin(plugin).subscribe(
+            (data: LtPlugin[]) => {
+                this.listOfPlugins = data;
+                this.listOfData = this.listOfPlugins;
+                this.plsSer.setPlugins(this.listOfPlugins);
+                this.retrieveListOfData({
+                    name:'plsSer',
+                    getData: 'getPlugins',
+                    setData: 'setPlugins',
+                    callApi: 'getPluginsFrom',
+                    check: 'checkPluginsExist'
+                },'listOfPlugins');
+            }
+        );
     }
 
     uninstallPlugins() {

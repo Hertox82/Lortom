@@ -22,21 +22,75 @@ class PluginController extends Controller
      */
     public function getPlugins(Request $request)
     {
+        $lista = $this->getListInstalledPlugin();
+
+        $this->checkIfPluginArePacked($lista);
+
+        return response()->json(['plugins' => $lista]);
+    }
+
+    static function sort($a,$b)
+    {
+        $a = $a['position'];
+        $b = $b['position'];
+
+        if ($a == $b) return 0;
+        return ($a < $b) ? -1 : 1;
+    }
+
+    public function getTest(Request $request) {
+
+        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js test";
+        $command1= "cd ../angular-backend && ";
+        $command = $command1.$command2;
+        exec($command,$mario);
+
+        pr($mario);
+    }
+
+    public function packPlugin(Request $request) {
+        $input = $request->all();
+
+        $vendor = $input['vendor'];
+        $name = $input['name'];
+        $version = $input['version'];
+
+        $fileName = "{$vendor}-{$name}-{$version}.tgz";
+
+        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js package {$fileName}";
+        $command1= "cd ../angular-backend && ";
+        $command = $command1.$command2;
+
+        exec($command,$mario);
+
+        $lista = $this->getListInstalledPlugin();
+
+        $this->checkIfPluginArePacked($lista);
+
+        return response()->json(['plugins' => $lista]);
+
+    }
+
+    protected function getListInstalledPlugin() {
         $listaPlugin = config('plugins');
 
         usort($listaPlugin['plugins'],["Plugins\\Hardel\\Plugin\\Controller\\PluginController","sort"]);
 
         $lista =  array_map(function($plug){
-           return [
-               'vendor'     => $plug['vendor'],
-               'name'       => $plug['PluginName'],
-               'version'    => isset($plug['version']) ? $plug['version'] : 'no version',
-               'short_desc' => 'short desc',
-               'long_desc'  => 'long desc',
-               'packed'     => false,
-           ];
+            return [
+                'vendor'     => $plug['vendor'],
+                'name'       => $plug['PluginName'],
+                'version'    => isset($plug['version']) ? $plug['version'] : 'no version',
+                'short_desc' => 'short desc',
+                'long_desc'  => 'long desc',
+                'packed'     => false,
+            ];
         },$listaPlugin['plugins']);
 
+        return $lista;
+    }
+
+    protected function checkIfPluginArePacked(&$lista) {
         $path = app_path().'/../angular-backend/src/compressed';
         if(File::isDirectory($path)) {
             $listOfFiles = File::files($path);
@@ -65,26 +119,5 @@ class PluginController extends Controller
                 }
             }
         }
-
-        return response()->json(['plugins' => $lista]);
-    }
-
-    static function sort($a,$b)
-    {
-        $a = $a['position'];
-        $b = $b['position'];
-
-        if ($a == $b) return 0;
-        return ($a < $b) ? -1 : 1;
-    }
-
-    public function getTest(Request $request) {
-
-        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js test";
-        $command1= "cd ../angular-backend && ";
-        $command = $command1.$command2;
-        exec($command,$mario);
-
-        pr($mario);
     }
 }

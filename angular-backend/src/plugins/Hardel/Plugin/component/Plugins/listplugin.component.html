@@ -63,10 +63,10 @@
                                             {{plugin.version}}
                                         </td>
                                         <td width="38px">
-                                            <a (click)="updatePlugin(plugin)" title="Update"><i class="fa fa-refresh" style="color:orange; font-size: 16px;"></i></a>
+                                            <a (click)="updatePlugin(plugin)" title="Update"><i class="fa fa-refresh" style="color:orange; font-size: 16px; cursor:pointer;"></i></a>
                                         </td>
                                         <td width="38px">
-                                           <a *ngIf="plugin.packed === false" (click)="packPlugin(plugin)" title="Packing"><i class="fa fa-cube" style="color:orange; font-size: 16px;"></i> </a>
+                                           <a *ngIf="plugin.packed === false" (click)="packPlugin(plugin)" title="Packing"><i class="fa fa-cube" style="color:orange; font-size: 16px; cursor:pointer;"></i> </a>
                                         </td>
                                         <td width="38px">
                                             <a *ngIf="plugin.packed === true" (click)="deletePlugin(plugin)"  title="Delete Packing"><i class="fa fa-times" style="color:orange; font-size: 16px; cursor: pointer;"></i> </a>
