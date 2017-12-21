@@ -10,3 +10,8 @@ Route::get('/plugins',[
     'as'    => 'apiGetPlugins',
     'uses'  => 'PluginController@getPlugins'
 ]);
+
+Route::get('/test',[
+    'as'    => 'apiGetTest',
+    'uses'  => 'PluginController@getTest'
+]);

@@ -58,8 +58,20 @@ export class ListPluginComponent extends ListComponent implements OnInit
     /**
      * This function is to delete Plugins selected
      */
-    deletePlugins()
+    deletePlugin(plugin: LtPlugin)
     {
+        console.log('delete this plugin');
+    }
+
+    updatePlugin(plugin: LtPlugin) {
+        console.log('update this plugin');
+    }
+
+    packPlugin(plugin: LtPlugin) {
+        console.log('pack this plugin');
+    }
+
+    uninstallPlugins() {
         this.deleteData({
             name: 'plsSer',
             setData: 'setPlugins',

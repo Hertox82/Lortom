@@ -10,5 +10,6 @@ export interface LtPlugin
     version: string,
     short_desc: string,
     long_desc: string,
-    check: boolean
+    check: boolean,
+    packed?:boolean,
 }
