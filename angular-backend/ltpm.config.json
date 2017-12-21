@@ -1,0 +1,5 @@
+{
+  "cwd": "src/plugins",
+  "repo": "src/compressed",
+  "depl": "src/plugins"
+}
