@@ -58,7 +58,7 @@ class PluginController extends Controller
         $fileName = "{$vendor}-{$name}-{$version}.tgz";
 
         $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js package {$fileName}";
-        $command1= "cd ../angular-backend && ";
+        $command1= "cd ../ && ";
         $command = $command1.$command2;
 
         exec($command,$mario);
@@ -81,7 +81,7 @@ class PluginController extends Controller
         $fileName = "{$vendor}-{$name}-{$version}.tgz";
 
         $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js delpack {$fileName}";
-        $command1= "cd ../angular-backend && ";
+        $command1= "cd ../ && ";
         $command = $command1.$command2;
 
         exec($command,$mario);
@@ -113,30 +113,37 @@ class PluginController extends Controller
     }
 
     protected function checkIfPluginArePacked(&$lista) {
-        $path = app_path().'/../angular-backend/src/compressed';
-        if(File::isDirectory($path)) {
-            $listOfFiles = File::files($path);
+        $path = app_path().'/../ltpm.config.json';
 
-            $listPluginPacked = array_map(function($file)use($path){
-                $fileString = str_replace($path.'/','',$file);
-                $rawPlugin = explode('-',$fileString,3);
+        if(File::exists($path)) {
+            $conf = json_decode(File::get($path),true);
+            if(isset($conf['repo'])) {
+                $path = app_path().'/../'.$conf['repo'];
+                if(File::isDirectory($path)) {
+                    $listOfFiles = File::files($path);
 
-                return [
-                    'vendor'  => $rawPlugin[0],
-                    'name'    => $rawPlugin[1],
-                    'version' => str_replace('.tgz','',$rawPlugin[2])
-                ];
-            },$listOfFiles);
+                    $listPluginPacked = array_map(function($file)use($path){
+                        $fileString = str_replace($path.'/','',$file);
+                        $rawPlugin = explode('-',$fileString,3);
 
-            for($i=0; $i<count($lista); $i++) {
-                $pl = $lista[$i];
+                        return [
+                            'vendor'  => $rawPlugin[0],
+                            'name'    => $rawPlugin[1],
+                            'version' => str_replace('.tgz','',$rawPlugin[2])
+                        ];
+                    },$listOfFiles);
 
-                for($j=0;$j<count($listPluginPacked); $j++) {
-                    $plp = $listPluginPacked[$j];
+                    for($i=0; $i<count($lista); $i++) {
+                        $pl = $lista[$i];
 
-                    if($pl['version'] === $plp['version'] and $pl['name'] === $plp['name'] and $pl['vendor'] === $plp['vendor']) {
-                        $lista[$i]['packed'] = true;
-                        break;
+                        for($j=0;$j<count($listPluginPacked); $j++) {
+                            $plp = $listPluginPacked[$j];
+
+                            if($pl['version'] === $plp['version'] and $pl['name'] === $plp['name'] and $pl['vendor'] === $plp['vendor']) {
+                                $lista[$i]['packed'] = true;
+                                break;
+                            }
+                        }
                     }
                 }
             }
