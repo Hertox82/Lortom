@@ -11,6 +11,11 @@ Route::get('/plugins',[
     'uses'  => 'PluginController@getPlugins'
 ]);
 
+Route::get('/plugins/latest',[
+    'as'    => 'apiGetPluginsLatest',
+    'uses'  => 'PluginController@getLatestPlugin'
+]);
+
 Route::post('/plugin/pack',[
     'as'    => 'apiPackPlugin',
     'uses'  => 'PluginController@packPlugin'

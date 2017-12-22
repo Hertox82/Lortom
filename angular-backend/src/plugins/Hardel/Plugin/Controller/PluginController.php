@@ -24,7 +24,7 @@ class PluginController extends Controller
     {
         $lista = $this->getListInstalledPlugin();
 
-        $this->checkIfPluginArePacked($lista);
+        $this->checkIfPluginsArePacked($lista);
 
         return response()->json(['plugins' => $lista]);
     }
@@ -48,6 +48,13 @@ class PluginController extends Controller
         pr($mario);
     }
 
+    /**
+     * @Api({
+            "description": "bundles a specific plugin"
+     *     })
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function packPlugin(Request $request) {
         $input = $request->all();
 
@@ -65,12 +72,19 @@ class PluginController extends Controller
 
         $lista = $this->getListInstalledPlugin();
 
-        $this->checkIfPluginArePacked($lista);
+        $this->checkIfPluginsArePacked($lista);
 
         return response()->json(['plugins' => $lista]);
 
     }
 
+    /**
+     * @Api({
+            "description": "delete a specific plugin packed into the Repo"
+     *     })
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function deletePlugin(Request $request) {
         $input = $request->all();
 
@@ -88,9 +102,22 @@ class PluginController extends Controller
 
         $lista = $this->getListInstalledPlugin();
 
-        $this->checkIfPluginArePacked($lista);
+        $this->checkIfPluginsArePacked($lista);
 
         return response()->json(['plugins' => $lista]);
+    }
+
+    public function getLatestPlugin(Request $request) {
+
+        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js latest";
+        $command1= "cd ../ && ";
+        $command = $command1.$command2;
+
+        exec($command,$stdout);
+
+        $listOfPlugin = json_decode($stdout[0],true);
+
+       return response()->json(['plugins' => $listOfPlugin]);
     }
 
     protected function getListInstalledPlugin() {
@@ -112,7 +139,11 @@ class PluginController extends Controller
         return $lista;
     }
 
-    protected function checkIfPluginArePacked(&$lista) {
+    /**
+     * This function check if Plugins are packed
+     * @param $lista
+     */
+    protected function checkIfPluginsArePacked(&$lista) {
         $path = app_path().'/../ltpm.config.json';
 
         if(File::exists($path)) {
