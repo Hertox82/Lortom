@@ -50,6 +50,13 @@ class PluginController extends Controller
         pr($mario);
     }
 
+    /**
+     * @Api({
+            "description": "this function provide to install a Plugin"
+     *     })
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function installPlugin(Request $request) {
         $input = $request->all();
         $vendor = $input['vendor'];
@@ -66,14 +73,28 @@ class PluginController extends Controller
 
         Artisan::callSilent('lortom-plugin:update',['--vendor-name'=> $vendor.','.$name, '--silent' => true]);
 
-        $lista = $this->getListInstalledPlugin();
+        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js latest";
+        $command1= "cd ../ && ";
+        $command = $command1.$command2;
 
-        $this->checkIfPluginsArePacked($lista);
+        exec($command,$stdout);
 
-        return response()->json(['plugins' => $lista]);
+        $listOfPlugin = json_decode($stdout[0],true);
+
+        $this->checkIfPluginsAreInstalled($listOfPlugin);
+
+        return response()->json(['plugins' => $listOfPlugin]);
+
     }
 
-    public function uninstallPlugin(Request $request) {
+    /**
+     * @Api({
+            "description":"this function provide to uninstall the plugins"
+     *     })
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uninstallPlugins(Request $request) {
         $input = $request->all();
 
         foreach ($input as $plugin) {

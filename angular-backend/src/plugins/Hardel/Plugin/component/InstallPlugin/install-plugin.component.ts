@@ -39,7 +39,11 @@ export class InstallPluginComponent extends ListComponent implements OnInit {
     }
 
     downloadPlugin(plugin: LtPlugin) {
-        //this is to install plugin
+       this.inPl.installPlugin(plugin).subscribe(
+           (lista: LtPlugin[]) => {
+
+           }
+       );
     }
 
     updatePlugin(plugin: LtPlugin) {
