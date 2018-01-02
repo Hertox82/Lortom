@@ -1,35 +1,22 @@
 
-<div class="container">
+<div class="container deck">
     <div class="row">
-        <div class="card-group">
-            <div class="card" style="width: 20rem;">
-                <div class="card-body">
-                    <h4 class="card-title">Card title</h4>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-            <div class="card" style="width: 20rem;">
-                <div class="card-body">
-                    <h4 class="card-title">Card title</h4>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
-            <div class="card" style="width: 20rem;">
-                <div class="card-body">
-                    <h4 class="card-title">Card title</h4>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
+        <div class="col-md-6">
+            <lt-entry-pagination
+                    [entry]="'50-5'"
+                    (onEntry)="onPerPage($event)"
+            >
+            </lt-entry-pagination>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="card-lt">
+                <h4>Nome Plugin</h4>
+                <p>qualche tipo di descrizione</p>
+                <a class="btn btn-primary btn-lt"><i class="fa fa-download"></i> Installa Plugin</a>
             </div>
         </div>
-        <div class="card-columns">
-
-        </div>
-
     </div>
 </div>
-
-
 <lt-pagination></lt-pagination>

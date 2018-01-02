@@ -148,3 +148,11 @@ a.page-link.disabled { display: none;  }
 .error-page>.error-content>p {padding:10px; font-size: 14px;}
 .error-page>.error-content>p>a {color:orange; cursor: pointer;}
 .error-page>.error-content>p>a:hover {color:darkorange;}
+
+/* Card-Lt*/
+
+.card-lt {padding: 5px; background-color: white; min-height: 150px; position: relative;}
+.btn-lt {position: absolute; bottom: 10px; right: 10px; color: white !important;}
+.card-lt h4 {padding: 4px; width: 205px;}
+.card-lt p {    margin-bottom: 40px; width: 204px; padding: 0px 4px 18px 4px; font-size: 14px; font-style: italic; }
+.container.deck {background-color: #8080801a; padding-top: 10px; padding-bottom: 10px;}
