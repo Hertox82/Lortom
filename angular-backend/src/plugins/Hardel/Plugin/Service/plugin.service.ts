@@ -26,7 +26,8 @@ export class PluginService extends MasterService
             { namePath: 'getPlugins', path: 'plugins'},
             { namePath: 'installPlugin', path: 'plugin'},
             { namePath: 'packPlugin', path: 'plugin/pack'},
-            { namePath: 'delPack', path: 'plugin/delete'}
+            { namePath: 'delPack', path: 'plugin/delete'},
+            { namePath: 'getLatestPlugin', path: 'plugins/latest'}
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -42,6 +43,15 @@ export class PluginService extends MasterService
         return this.http.get(this.apiManager.getPathByName('getPlugins'))
             .map(
                 (response : Response) => {
+                    return response.json().plugins;
+                }
+            );
+    }
+
+    getLatestPlugin(): Observable<any> {
+        return this.http.get(this.apiManager.getPathByName('getLatestPlugin'))
+            .map(
+                (response: Response) => {
                     return response.json().plugins;
                 }
             );

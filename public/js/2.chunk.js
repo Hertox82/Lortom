@@ -44,7 +44,8 @@ var PluginService = (function (_super) {
             { namePath: 'getPlugins', path: 'plugins' },
             { namePath: 'installPlugin', path: 'plugin' },
             { namePath: 'packPlugin', path: 'plugin/pack' },
-            { namePath: 'delPack', path: 'plugin/delete' }
+            { namePath: 'delPack', path: 'plugin/delete' },
+            { namePath: 'getLatestPlugin', path: 'plugins/latest' }
         ];
         //Add the Api to the ApiManager
         _this.apiManager.addListUrlApi(urls);
@@ -57,6 +58,12 @@ var PluginService = (function (_super) {
      */
     PluginService.prototype.getPluginsFrom = function () {
         return this.http.get(this.apiManager.getPathByName('getPlugins'))
+            .map(function (response) {
+            return response.json().plugins;
+        });
+    };
+    PluginService.prototype.getLatestPlugin = function () {
+        return this.http.get(this.apiManager.getPathByName('getLatestPlugin'))
             .map(function (response) {
             return response.json().plugins;
         });
@@ -158,7 +165,7 @@ var _a;
 /***/ "./src/plugins/Hardel/Plugin/component/InstallPlugin/install-plugin.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>Install Plugin</p>"
+module.exports = "\n<div class=\"container deck\">\n    <div class=\"row\">\n        <div class=\"col-md-6\">\n            <lt-entry-pagination\n                    [entry]=\"'50-5'\"\n                    (onEntry)=\"onPerPage($event)\"\n            >\n            </lt-entry-pagination>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div *ngFor=\"let pl of listToShow\" class=\"col-lg-3\">\n            <div class=\"card-lt\">\n                <h4>{{pl.vendor}} - {{pl.name}}</h4>\n                <p>version: {{pl.version}}</p>\n                <a *ngIf=\"pl?.toUpdate === true; else otherTmp\" class=\"btn btn-success btn-lt\" style=\"cursor:pointer;\" (click)=\"updatePlugin(pl)\"><i class=\"fa fa-refresh\"></i> Update Plugin</a>\n                <ng-template #otherTmp>\n                    <a class=\"btn btn-primary btn-lt\" style=\"cursor:pointer;\" (click)=\"downloadPlugin(pl)\"><i class=\"fa fa-download\"></i> Installa Plugin</a>\n                </ng-template>\n            </div>\n        </div>\n    </div>\n</div>\n<lt-pagination\n        [pagesToShow]=\"3\"\n        [perPage]=\"perPage\"\n        [count]=\"listOfLatestPlugin.length\"\n        [loading]=\"false\"\n        [page]=\"actualPage\"\n        (goNext)=\"onNext($event)\"\n        (goPage)=\"onPage($event)\"\n        (goPrev)=\"onPrev()\"\n>\n</lt-pagination>"
 
 /***/ }),
 
@@ -170,28 +177,67 @@ module.exports = "<p>Install Plugin</p>"
 /**
  * Created by hernan on 14/12/2017.
  */
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var InstallPluginComponent = (function () {
-    function InstallPluginComponent() {
+var plugin_service_1 = __webpack_require__("./src/plugins/Hardel/Plugin/Service/plugin.service.ts");
+var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var list_component_1 = __webpack_require__("./src/model/list.component.ts");
+var InstallPluginComponent = (function (_super) {
+    __extends(InstallPluginComponent, _super);
+    function InstallPluginComponent(inPl, router) {
+        var _this = _super.call(this) || this;
+        _this.inPl = inPl;
+        _this.router = router;
+        _this.listOfLatestPlugin = [];
+        _this.retrieveListOfLatestPlugin();
+        return _this;
     }
     InstallPluginComponent.prototype.ngOnInit = function () { };
+    InstallPluginComponent.prototype.retrieveListOfLatestPlugin = function () {
+        var _this = this;
+        this.inPl.getLatestPlugin().subscribe(function (data) {
+            _this.listOfLatestPlugin = data;
+            _this.listOfData = _this.listOfLatestPlugin;
+            _this.updateListaShow();
+        });
+    };
+    InstallPluginComponent.prototype.downloadPlugin = function (plugin) {
+        //this is to install plugin
+    };
+    InstallPluginComponent.prototype.updatePlugin = function (plugin) {
+        //this is to update plugin
+    };
     return InstallPluginComponent;
-}());
+}(list_component_1.ListComponent));
 InstallPluginComponent = __decorate([
     core_1.Component({
         selector: 'pl-install',
         template: __webpack_require__("./src/plugins/Hardel/Plugin/component/InstallPlugin/install-plugin.component.html"),
         styles: ['']
-    })
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof plugin_service_1.PluginService !== "undefined" && plugin_service_1.PluginService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
 ], InstallPluginComponent);
 exports.InstallPluginComponent = InstallPluginComponent;
+var _a, _b;
 //# sourceMappingURL=install-plugin.component.js.map
 
 /***/ }),

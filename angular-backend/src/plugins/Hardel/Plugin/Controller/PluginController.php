@@ -10,6 +10,8 @@ namespace Plugins\Hardel\Plugin\Controller;
 use App\Http\Controllers\LortomController as Controller;
 use Illuminate\Http\Request;
 use File;
+use Illuminate\Support\Facades\Artisan;
+
 class PluginController extends Controller
 {
 
@@ -46,6 +48,58 @@ class PluginController extends Controller
         exec($command,$mario);
 
         pr($mario);
+    }
+
+    public function installPlugin(Request $request) {
+        $input = $request->all();
+        $vendor = $input['vendor'];
+        $name = $input['name'];
+        $version = $input['version'];
+
+        $fileName = "{$vendor}-{$name}-{$version}.tgz";
+
+        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js install {$fileName}";
+        $command1= "cd ../ && ";
+        $command = $command1.$command2;
+
+        exec($command,$mario);
+
+        Artisan::callSilent('lortom-plugin:update',['--vendor-name'=> $vendor.','.$name, '--silent' => true]);
+
+        $lista = $this->getListInstalledPlugin();
+
+        $this->checkIfPluginsArePacked($lista);
+
+        return response()->json(['plugins' => $lista]);
+    }
+
+    public function uninstallPlugin(Request $request) {
+        $input = $request->all();
+
+        foreach ($input as $plugin) {
+
+            $vendor = $plugin['vendor'];
+            $name = $plugin['name'];
+            $version = $plugin['version'];
+
+            $fileName = "{$vendor}-{$name}-{$version}.tgz";
+
+            $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js install {$fileName}";
+            $command1= "cd ../ && ";
+            $command = $command1.$command2;
+
+            exec($command,$mario);
+
+            Artisan::callSilent('lortom-plugin:delete',['--vendor-name'=> $vendor.','.$name, '--silent' => true]);
+
+        }
+
+        $lista = $this->getListInstalledPlugin();
+
+        $this->checkIfPluginsArePacked($lista);
+
+        return response()->json(['plugins' => $lista]);
+
     }
 
     /**
@@ -107,6 +161,13 @@ class PluginController extends Controller
         return response()->json(['plugins' => $lista]);
     }
 
+    /**
+     * @Api({
+            "description": "this Api return all latest plugins"
+     *     })
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getLatestPlugin(Request $request) {
 
         $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js latest";
@@ -116,6 +177,8 @@ class PluginController extends Controller
         exec($command,$stdout);
 
         $listOfPlugin = json_decode($stdout[0],true);
+
+        $this->checkIfPluginsAreInstalled($listOfPlugin);
 
        return response()->json(['plugins' => $listOfPlugin]);
     }
@@ -179,5 +242,33 @@ class PluginController extends Controller
                 }
             }
         }
+    }
+
+    protected function checkIfPluginsAreInstalled(&$lista) {
+        $listOfInstalled = $this->getListInstalledPlugin();
+        $length = count($lista);
+        for($i=0;$i<$length; $i++) {
+            $pl = $lista[$i];
+            foreach ($listOfInstalled as $it) {
+                if( $pl['vendor'] == $it['vendor'] and
+                    $pl['name'] == $it['name'] and
+                    $pl['version'] == $it['version']
+                ) {
+                    unset($lista[$i]);
+                    break;
+                }
+                else if(
+                    $pl['vendor'] == $it['vendor'] and
+                    $pl['name'] == $it['name'] and
+                    $pl['version'] != $it['version']
+                ) {
+                    $lista[$i]['installed'] = true;
+                    $lista[$i]['toUpdate'] = true;
+                    break;
+                }
+            }
+        }
+
+        $lista = array_values(array_filter($lista));
     }
 }

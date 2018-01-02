@@ -12,4 +12,6 @@ export interface LtPlugin
     long_desc: string,
     check: boolean,
     packed?:boolean,
+    installed?:boolean,
+    toUpdate?:boolean
 }

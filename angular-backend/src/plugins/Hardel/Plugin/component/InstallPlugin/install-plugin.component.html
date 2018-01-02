@@ -10,13 +10,26 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-3">
+        <div *ngFor="let pl of listToShow" class="col-lg-3">
             <div class="card-lt">
-                <h4>Nome Plugin</h4>
-                <p>qualche tipo di descrizione</p>
-                <a class="btn btn-primary btn-lt"><i class="fa fa-download"></i> Installa Plugin</a>
+                <h4>{{pl.vendor}} - {{pl.name}}</h4>
+                <p>version: {{pl.version}}</p>
+                <a *ngIf="pl?.toUpdate === true; else otherTmp" class="btn btn-success btn-lt" style="cursor:pointer;" (click)="updatePlugin(pl)"><i class="fa fa-refresh"></i> Update Plugin</a>
+                <ng-template #otherTmp>
+                    <a class="btn btn-primary btn-lt" style="cursor:pointer;" (click)="downloadPlugin(pl)"><i class="fa fa-download"></i> Installa Plugin</a>
+                </ng-template>
             </div>
         </div>
     </div>
 </div>
-<lt-pagination></lt-pagination>
+<lt-pagination
+        [pagesToShow]="3"
+        [perPage]="perPage"
+        [count]="listOfLatestPlugin.length"
+        [loading]="false"
+        [page]="actualPage"
+        (goNext)="onNext($event)"
+        (goPage)="onPage($event)"
+        (goPrev)="onPrev()"
+>
+</lt-pagination>

@@ -15,7 +15,7 @@ use File;
 
 class UpdatePlugin extends Command
 {
-    protected $signature = "lortom-plugin:update {--vendor-name=} {--no-routing}";
+    protected $signature = "lortom-plugin:update {--vendor-name=} {--no-routing} {--silent}";
 
     protected $description= "This command update the plugin selected";
 
@@ -35,12 +35,13 @@ class UpdatePlugin extends Command
     {
         $VendorName = $this->option('vendor-name');
         $routing = $this->option('no-routing');
+        $silent = $this->option('silent');
 
 
         $vendor = '';
         $name = '';
 
-        if(is_null($VendorName))
+        if(is_null($VendorName) and !$silent)
         {
             $vendor = $this->ask('Vendor Name?');
             $name   = $this->ask('Name of Plugin?');
@@ -61,44 +62,54 @@ class UpdatePlugin extends Command
             }
         }
 
-        if($this->confirm("This is the Vendor = {$vendor}, the Name= {$name} of plugin that you choice to UPDATE, Do you wish to continue?"))
+        if(!$silent)
         {
-
-            $name = str_replace('-',' ',$name);
-            $name = ucwords($name);
-            $name = str_replace(' ','',$name);
-
-            $pathPlugin = __DIR__.'/../../../angular-backend/src/plugins/';
-
-            if(File::exists($pathPlugin.$vendor))
-            {
-                $pathVendor = $pathPlugin.$vendor.'/';
-
-                if(!File::exists($pathVendor.$name))
-                {
-                    $this->info("This Plugin: {$name} in this Vendor: {$vendor} note exist! Please select other Name for your plugin");
-                    return;
-                }
-
-               //update references on Plugin and App config
-                $this->compiler->setVendorName($vendor,$name)->update();
-
-                if(!$routing)
-                {
-                    //after all update the routing into the angular-backend/src/app/app.routing.ts
-                    $this->callSilent('lortom-routing:enable');
-                }
-
-                $this->call('lortom-permission:update',['--vendor-name' => $vendor.','.$name]);
-
-                $this->info("\n");
-                $this->info("Ok! this Plugin : {$name} is updated!");
+            if ($this->confirm("This is the Vendor = {$vendor}, the Name= {$name} of plugin that you choice to UPDATE, Do you wish to continue?")) {
+                    $this->DoSomething($vendor,$name,$routing,$silent);
             }
-            else
-            {
-                $this->info("this Vendor: {$vendor} not exist! Please select other Vendor for your plugin");
+        }
+        else {
+            $this->DoSomething($vendor,$name,$routing,$silent);
+        }
+    }
+
+    protected function DoSomething($vendor,$name,$routing,$silent) {
+        $name = str_replace('-', ' ', $name);
+        $name = ucwords($name);
+        $name = str_replace(' ', '', $name);
+
+        $pathPlugin = __DIR__ . '/../../../angular-backend/src/plugins/';
+
+        if (File::exists($pathPlugin . $vendor)) {
+            $pathVendor = $pathPlugin . $vendor . '/';
+
+            if (!File::exists($pathVendor . $name)) {
+                $this->info("This Plugin: {$name} in this Vendor: {$vendor} note exist! Please select other Name for your plugin");
+                return;
             }
 
+            //update references on Plugin and App config
+            $this->compiler->setVendorName($vendor, $name)->update();
+
+            if (!$routing) {
+                //after all update the routing into the angular-backend/src/app/app.routing.ts
+                $this->callSilent('lortom-routing:enable');
+
+            }
+
+
+
+            if(!$silent) {
+                $this->call('lortom-permission:update', ['--vendor-name' => $vendor . ',' . $name]);
+            }
+            else {
+                $this->callSilent('lortom-permission:update', ['--vendor-name' => $vendor . ',' . $name,'--silent' => true]);
+            }
+
+            $this->info("\n");
+            $this->info("Ok! this Plugin : {$name} is updated!");
+        } else {
+            $this->info("this Vendor: {$vendor} not exist! Please select other Vendor for your plugin");
         }
     }
 }

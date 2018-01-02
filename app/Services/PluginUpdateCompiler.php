@@ -36,6 +36,9 @@ class PluginUpdateCompiler extends AbstractPlugin
         {
             $this->ServiceProvider = $this->getNameServiceProvider();
         }
+        else {
+            $this->ServiceProvider = $ServiceProvider;
+        }
 
 
         $appConfig = require config_path('app.php');

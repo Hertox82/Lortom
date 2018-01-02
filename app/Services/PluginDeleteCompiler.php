@@ -28,6 +28,11 @@ class PluginDeleteCompiler extends AbstractPlugin
 
         $this->ServiceProvider = @$this->getArrayDataPlugins()['plugins'][$i]['serviceProvider'];
 
+        if(strlen($this->ServiceProvider) == 0)
+        {
+            $this->ServiceProvider = $this->getNameServiceProvider();
+        }
+
         //Delete from config/plugins.php
         $this->deleteFromPlugins($i);
 
