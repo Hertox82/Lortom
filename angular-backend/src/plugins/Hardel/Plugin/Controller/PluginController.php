@@ -71,19 +71,16 @@ class PluginController extends Controller
 
         exec($command,$mario);
 
-        Artisan::callSilent('lortom-plugin:update',['--vendor-name'=> $vendor.','.$name, '--silent' => true]);
+        Artisan::call('lortom-plugin:update',['--vendor-name'=> $vendor.','.$name, '--silent' => true]);
 
-        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js latest";
-        $command1= "cd ../ && ";
-        $command = $command1.$command2;
+        $command2  = "/usr/local/bin/node /usr/local/lib/node_modules/npm/bin/npm-cli.js run build";
+        $command = "cd angular-backend && ".$command2;
 
-        exec($command,$stdout);
+        exec($command,$out);
 
-        $listOfPlugin = json_decode($stdout[0],true);
+        sleep(5);
 
-        $this->checkIfPluginsAreInstalled($listOfPlugin);
-
-        return response()->json(['plugins' => $listOfPlugin]);
+        return response()->json(['message' => true]);
 
     }
 
@@ -103,23 +100,25 @@ class PluginController extends Controller
             $name = $plugin['name'];
             $version = $plugin['version'];
 
+            Artisan::call('lortom-plugin:delete',['--vendor-name'=> $vendor.','.$name, '--silent' => true]);
+
             $fileName = "{$vendor}-{$name}-{$version}.tgz";
 
-            $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js install {$fileName}";
+            $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js uninstall {$fileName}";
             $command1= "cd ../ && ";
             $command = $command1.$command2;
 
             exec($command,$mario);
-
-            Artisan::callSilent('lortom-plugin:delete',['--vendor-name'=> $vendor.','.$name, '--silent' => true]);
-
         }
 
-        $lista = $this->getListInstalledPlugin();
+        $command2  = "/usr/local/bin/node /usr/local/lib/node_modules/npm/bin/npm-cli.js run build";
+        $command = "cd angular-backend && ".$command2;
 
-        $this->checkIfPluginsArePacked($lista);
+        exec($command,$out);
 
-        return response()->json(['plugins' => $lista]);
+        sleep(5);
+
+        return response()->json(['message' => true]);
 
     }
 

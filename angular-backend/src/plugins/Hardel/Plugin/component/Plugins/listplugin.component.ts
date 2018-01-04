@@ -98,10 +98,27 @@ export class ListPluginComponent extends ListComponent implements OnInit
     }
 
     uninstallPlugins() {
-        this.deleteData({
-            name: 'plsSer',
-            setData: 'setPlugins',
-            delFn: 'uninstallPlugins'
-        },'listOfPlugins',"Do you really want delete this Plugins?");
+        if(confirm('Do you really uninstall this plugins?')) {
+            this.plsSer.uninstallPlugins(this.listOfDataToDelete).subscribe(
+                (message: boolean) => {
+                    if (message) {
+                        this.plsSer.getPluginsFrom().subscribe(
+                            (listPl: LtPlugin[]) => {
+                                this.listOfPlugins = listPl;
+                                this.listOfData = this.listOfPlugins;
+                                this.plsSer.setPlugins(this.listOfPlugins);
+                                this.retrieveListOfData({
+                                    name: 'plsSer',
+                                    getData: 'getPlugins',
+                                    setData: 'setPlugins',
+                                    callApi: 'getPluginsFrom',
+                                    check: 'checkPluginsExist'
+                                }, 'listOfPlugins');
+                            }
+                        );
+                    }
+                }
+            );
+        }
     }
 }

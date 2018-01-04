@@ -10,6 +10,7 @@ import {HttpModule} from "@angular/http";
 import {BreadCrumbModule} from "@Lortom-Backend/breadcrumbs";
 import {UIElementModule} from "@Lortom/app/backend-module/UIElement/uielement.module";
 import {PluginService} from "@Lortom/plugins/Hardel/Plugin/Service/plugin.service";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
     imports: [
@@ -18,7 +19,8 @@ import {PluginService} from "@Lortom/plugins/Hardel/Plugin/Service/plugin.servic
         HttpModule,
         routing,
         BreadCrumbModule,
-        UIElementModule
+        UIElementModule,
+        NgbModule.forRoot()
 
     ],
     providers: [PluginService],

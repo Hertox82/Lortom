@@ -8,6 +8,7 @@ import {LtPlugin} from "@Lortom/plugins/Hardel/Plugin/Service/plugin.interface";
 import {PluginService} from "@Lortom/plugins/Hardel/Plugin/Service/plugin.service";
 import {Router} from "@angular/router";
 import {ListComponent} from "@Lortom/model/list.component";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
     selector: 'pl-install',
@@ -17,8 +18,9 @@ import {ListComponent} from "@Lortom/model/list.component";
 export class InstallPluginComponent extends ListComponent implements OnInit {
 
     listOfLatestPlugin: LtPlugin [];
+    widthStyle: any;
 
-    constructor(public inPl: PluginService, private router : Router) {
+    constructor(public inPl: PluginService, private router : Router, private serviceModal: NgbModal) {
         super();
 
         this.listOfLatestPlugin = [];
@@ -38,9 +40,24 @@ export class InstallPluginComponent extends ListComponent implements OnInit {
         );
     }
 
-    downloadPlugin(plugin: LtPlugin) {
-       this.inPl.installPlugin(plugin).subscribe(
-           (lista: LtPlugin[]) => {
+    downloadPlugin(plugin: LtPlugin,modal) {
+        const mod = this.serviceModal.open(modal);
+        this.widthStyle = '20%';
+        this.inPl.installPlugin(plugin).subscribe(
+           (message: boolean) => {
+               if(message) {
+                   this.widthStyle = '40%';
+                   this.retrieveListOfLatestPlugin();
+                   this.widthStyle = '80%';
+                   this.inPl.getPluginsFrom()
+                       .subscribe(
+                       (data: LtPlugin[]) => {
+                           this.widthStyle = '99%';
+                           this.inPl.setPlugins(data);
+                           mod.close();
+                       }
+                   );
+               }
 
            }
        );

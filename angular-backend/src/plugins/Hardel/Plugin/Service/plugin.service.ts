@@ -67,7 +67,7 @@ export class PluginService extends MasterService
         return this.http.put(this.apiManager.getPathByName('getPlugins'),plugins,this.getOptions())
             .map(
                 (response : Response) => {
-                    return response.json().plugins;
+                    return response.json().message;
                 }
             );
     }
@@ -90,7 +90,7 @@ export class PluginService extends MasterService
         return this.http.post(this.apiManager.getPathByName('installPlugin'),plugin,this.getOptions())
             .map(
                 (response: Response) => {
-                    return response.json().plugin;
+                    return response.json().message;
                 }
             );
     }

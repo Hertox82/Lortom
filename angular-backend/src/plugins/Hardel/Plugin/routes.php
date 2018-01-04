@@ -16,7 +16,7 @@ Route::get('/plugins/latest',[
     'uses'  => 'PluginController@getLatestPlugin'
 ]);
 
-Route::post('/plugins',[
+Route::put('/plugins',[
     'as'    => 'apiUninstallPlugins',
     'uses'  => 'PluginController@uninstallPlugins'
 ]);
