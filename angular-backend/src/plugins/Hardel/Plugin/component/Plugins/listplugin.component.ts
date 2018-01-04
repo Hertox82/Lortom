@@ -36,13 +36,14 @@ export class ListPluginComponent extends ListComponent implements OnInit
      * This function call the Service in order to get the list Of Plugins
      */
     retrieveListOfPlugins() : void {
-        this.retrieveListOfData({
-            name:'plsSer',
-            getData: 'getPlugins',
-            setData: 'setPlugins',
-            callApi: 'getPluginsFrom',
-            check: 'checkPluginsExist'
-        },'listOfPlugins');
+        this.plsSer.getPluginsFrom().subscribe(
+            (listPl: LtPlugin[]) => {
+                this.listOfPlugins = listPl;
+                this.listOfData = this.listOfPlugins;
+                this.plsSer.setPlugins(this.listOfPlugins);
+                this.updateListaShow();
+            }
+        );
     }
 
     /**
@@ -107,13 +108,7 @@ export class ListPluginComponent extends ListComponent implements OnInit
                                 this.listOfPlugins = listPl;
                                 this.listOfData = this.listOfPlugins;
                                 this.plsSer.setPlugins(this.listOfPlugins);
-                                this.retrieveListOfData({
-                                    name: 'plsSer',
-                                    getData: 'getPlugins',
-                                    setData: 'setPlugins',
-                                    callApi: 'getPluginsFrom',
-                                    check: 'checkPluginsExist'
-                                }, 'listOfPlugins');
+                                this.updateListaShow();
                             }
                         );
                     }
