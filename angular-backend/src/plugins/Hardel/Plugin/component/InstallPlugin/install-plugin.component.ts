@@ -55,6 +55,7 @@ export class InstallPluginComponent extends ListComponent implements OnInit {
                            this.widthStyle = '99%';
                            this.inPl.setPlugins(data);
                            mod.close();
+                           this.widthStyle= '10%';
                        }
                    );
                }
@@ -63,7 +64,27 @@ export class InstallPluginComponent extends ListComponent implements OnInit {
        );
     }
 
-    updatePlugin(plugin: LtPlugin) {
+    updatePlugin(plugin: LtPlugin,modal) {
         //this is to update plugin
+        const mod = this.serviceModal.open(modal);
+        this.widthStyle='20%';
+        this.inPl.updatePlugin(plugin).subscribe(
+            (message: boolean) => {
+                if(message) {
+                    this.widthStyle = '40%';
+                    this.retrieveListOfLatestPlugin();
+                    this.widthStyle = '80%';
+                    this.inPl.getPluginsFrom()
+                        .subscribe(
+                            (data: LtPlugin[]) => {
+                                this.widthStyle = '99%';
+                                this.inPl.setPlugins(data);
+                                mod.close();
+                                this.widthStyle= '10%';
+                            }
+                        );
+                }
+            }
+        );
     }
 }

@@ -59,26 +59,10 @@ class PluginController extends Controller
      */
     public function installPlugin(Request $request) {
         $input = $request->all();
-        $vendor = $input['vendor'];
-        $name = $input['name'];
-        $version = $input['version'];
 
-        $fileName = "{$vendor}-{$name}-{$version}.tgz";
+        $this->opInstall($input['vendor'],$input['name'],$input['version']);
 
-        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js install {$fileName}";
-        $command1= "cd ../ && ";
-        $command = $command1.$command2;
-
-        exec($command,$mario);
-
-        Artisan::call('lortom-plugin:update',['--vendor-name'=> $vendor.','.$name, '--silent' => true]);
-
-        $command2  = "/usr/local/bin/node /usr/local/lib/node_modules/npm/bin/npm-cli.js run build";
-        $command = "cd angular-backend && ".$command2;
-
-        exec($command,$out);
-
-        sleep(5);
+        $this->opRebuild();
 
         return response()->json(['message' => true]);
 
@@ -96,30 +80,49 @@ class PluginController extends Controller
 
         foreach ($input as $plugin) {
 
-            $vendor = $plugin['vendor'];
-            $name = $plugin['name'];
-            $version = $plugin['version'];
+            $this->opUninstall($plugin['vendor'],$plugin['name'],$plugin['version']);
 
-            Artisan::call('lortom-plugin:delete',['--vendor-name'=> $vendor.','.$name, '--silent' => true]);
-
-            $fileName = "{$vendor}-{$name}-{$version}.tgz";
-
-            $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js uninstall {$fileName}";
-            $command1= "cd ../ && ";
-            $command = $command1.$command2;
-
-            exec($command,$mario);
         }
 
-        $command2  = "/usr/local/bin/node /usr/local/lib/node_modules/npm/bin/npm-cli.js run build";
-        $command = "cd angular-backend && ".$command2;
-
-        exec($command,$out);
-
-        sleep(5);
+       $this->opRebuild();
 
         return response()->json(['message' => true]);
+    }
 
+    /**
+     * @Api({
+            "description": "this function update the Plugin"
+     *     })
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updatePlugin(Request $request) {
+        $input = $request->all();
+
+        $vendor  = $input['vendor'];
+        $name    = $input['name'];
+        $version = $input['version'];
+
+        $lista = $this->getListInstalledPlugin();
+
+        $oldversion = '';
+
+        foreach ($lista as $pl) {
+            if($pl['name'] == $name and $pl['vendor'] == $vendor) {
+                $oldversion = $pl['version'];
+                break;
+            }
+        }
+
+        $this->opUninstall($vendor,$name,$oldversion);
+
+        $this->opRebuild();
+
+        $this->opInstall($vendor,$name,$version);
+
+        $this->opRebuild();
+
+        return response()->json(['message' => true]);
     }
 
     /**
@@ -290,5 +293,46 @@ class PluginController extends Controller
         }
 
         $lista = array_values(array_filter($lista));
+    }
+
+
+    protected function opUninstall($vendor,$name,$version){
+
+        Artisan::call('lortom-plugin:delete',['--vendor-name'=> $vendor.','.$name, '--silent' => true]);
+
+        $fileName = $this->getFileName($vendor,$name,$version);
+
+        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js uninstall {$fileName}";
+        $command1= "cd ../ && ";
+        $command = $command1.$command2;
+
+        exec($command,$mario);
+
+    }
+
+    protected function opInstall($vendor,$name,$version) {
+
+        $fileName = $this->getFileName($vendor,$name,$version);
+
+        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js install {$fileName}";
+        $command1= "cd ../ && ";
+        $command = $command1.$command2;
+
+        exec($command,$mario);
+
+        Artisan::call('lortom-plugin:update',['--vendor-name'=> $vendor.','.$name, '--silent' => true]);
+    }
+
+    protected function opRebuild() {
+        $command2  = "/usr/local/bin/node /usr/local/lib/node_modules/npm/bin/npm-cli.js run build";
+        $command = "cd angular-backend && ".$command2;
+
+        exec($command,$out);
+
+        sleep(5);
+    }
+
+    protected function getFileName($vendor,$name,$version) {
+         return  "{$vendor}-{$name}-{$version}.tgz";
     }
 }

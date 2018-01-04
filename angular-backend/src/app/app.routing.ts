@@ -10,10 +10,10 @@ const routes: Routes = [
               {path: 'backend/logout', component: LogoutComponent}, 
               {path: 'backend/profile/edit', component : UserModelComponent }, 
               {path: 'backend/not-found', component: NotFoundComponent}, 
-       {path: 'backend/dashboard' , loadChildren:'../plugins/Hardel/Dashboard/dashboard.module#DashboardModule'},
        {path: 'backend/settings' , loadChildren:'../plugins/Hardel/Settings/settings.module#SettingsModule'},
        {path: 'backend/website' , loadChildren:'../plugins/Hardel/Website/website.module#WebsiteModule'},
        {path: 'backend/plugin' , loadChildren:'../plugins/Hardel/Plugin/plugin.module#PluginModule'},
-       {path: 'backend/prova' , loadChildren:'../plugins/Hardel/Prova/prova.module#ProvaModule'}
+       {path: 'backend/prova' , loadChildren:'../plugins/Hardel/Prova/prova.module#ProvaModule'},
+       {path: 'backend/dashboard' , loadChildren:'../plugins/Hardel/Dashboard/dashboard.module#DashboardModule'}
 ]; 
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes);

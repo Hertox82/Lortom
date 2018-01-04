@@ -104,7 +104,7 @@ export class PluginService extends MasterService
         return this.http.put(this.apiManager.getPathByName('installPlugin'),plugin,this.getOptions())
             .map(
                 (response: Response) => {
-                    return response.json().plugin;
+                    return response.json().messsage;
                 }
             );
     }

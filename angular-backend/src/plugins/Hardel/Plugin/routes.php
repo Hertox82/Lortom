@@ -26,6 +26,11 @@ Route::post('/plugin',[
     'uses'  => 'PluginController@installPlugin'
 ]);
 
+Route::put('/plugin',[
+    'as'    => 'apiUpdatePlugin',
+    'uses'  => 'PluginController@updatePlugin'
+]);
+
 Route::post('/plugin/pack',[
     'as'    => 'apiPackPlugin',
     'uses'  => 'PluginController@packPlugin'

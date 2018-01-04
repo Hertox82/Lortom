@@ -6190,7 +6190,7 @@ var PluginService = (function (_super) {
     PluginService.prototype.updatePlugin = function (plugin) {
         return this.http.put(this.apiManager.getPathByName('installPlugin'), plugin, this.getOptions())
             .map(function (response) {
-            return response.json().plugin;
+            return response.json().messsage;
         });
     };
     PluginService.prototype.packPlugin = function (plugin) {
@@ -6322,12 +6322,30 @@ var InstallPluginComponent = (function (_super) {
                     _this.widthStyle = '99%';
                     _this.inPl.setPlugins(data);
                     mod.close();
+                    _this.widthStyle = '10%';
                 });
             }
         });
     };
-    InstallPluginComponent.prototype.updatePlugin = function (plugin) {
+    InstallPluginComponent.prototype.updatePlugin = function (plugin, modal) {
+        var _this = this;
         //this is to update plugin
+        var mod = this.serviceModal.open(modal);
+        this.widthStyle = '20%';
+        this.inPl.updatePlugin(plugin).subscribe(function (message) {
+            if (message) {
+                _this.widthStyle = '40%';
+                _this.retrieveListOfLatestPlugin();
+                _this.widthStyle = '80%';
+                _this.inPl.getPluginsFrom()
+                    .subscribe(function (data) {
+                    _this.widthStyle = '99%';
+                    _this.inPl.setPlugins(data);
+                    mod.close();
+                    _this.widthStyle = '10%';
+                });
+            }
+        });
     };
     return InstallPluginComponent;
 }(list_component_1.ListComponent));
