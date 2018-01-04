@@ -1,20 +1,23 @@
 {
-  "cwd": "angular-backend/src/plugins",
-  "repo": "compressed",
-  "depl": "angular-backend/src/plugins",
-  "template": {
-    "vendor": "",
-    "name": "",
-    "version": "",
-    "require": [
-
+    "cwd": "angular-backend/src/plugins",
+    "repo": "compressed",
+    "depl": "angular-backend/src/plugins",
+    "template": {
+        "vendor": "",
+        "name": "",
+        "version": "",
+        "require": []
+    },
+    "plugins": [
+        {
+            "vendor": "Hardel",
+            "name": "Dashboard",
+            "version": "1.0.0"
+        },
+        {
+            "vendor": "Hardel",
+            "name": "Prova",
+            "version": "1.0.0"
+        }
     ]
-  },
-  "plugins": [
-    {
-      "vendor":"Hardel",
-      "name": "Dashboard",
-      "version": "1.0.0"
-    }
-  ]
 }

@@ -1,20 +1,17 @@
 webpackJsonp([3],{
 
-/***/ "./src/plugins/Hardel/Dashboard/component/dashboard.component.html":
+/***/ "./src/plugins/Hardel/Prova/component/prova.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\">\n        <h1>Dashboard</h1>\n        <ol class=\"breadcrumb\">\n            <li><a>Backend</a></li>\n            <li class=\"active\"><a>Dashboard</a></li>\n        </ol>\n    </div>\n    <div class=\"content\">\n        Qui viene messo tutto il contenuto\n    </div>\n</div>"
+module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\">\n        <h1>Title</h1>\n        <ol class=\"breadcrumb\">\n            <li><a>Level 1</a></li>\n            <li class=\"active\"><a>Level 2 active</a></li>\n        </ol>\n    </div>\n    <div class=\"content\">\n        Here, the Content!\n    </div>\n</div>"
 
 /***/ }),
 
-/***/ "./src/plugins/Hardel/Dashboard/component/dashboard.component.ts":
+/***/ "./src/plugins/Hardel/Prova/component/prova.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-/**
- * Created by hernan on 17/10/2017.
- */
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -26,32 +23,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var DashBoardComponent = (function () {
-    function DashBoardComponent() {
+var ProvaComponent = (function () {
+    function ProvaComponent() {
     }
-    DashBoardComponent.prototype.ngOnInit = function () { };
-    return DashBoardComponent;
+    ProvaComponent.prototype.ngOnInit = function () { };
+    return ProvaComponent;
 }());
-DashBoardComponent = __decorate([
+ProvaComponent = __decorate([
     core_1.Component({
-        selector: 'app-dashboard',
-        template: __webpack_require__("./src/plugins/Hardel/Dashboard/component/dashboard.component.html"),
+        selector: 'app-prova',
+        template: __webpack_require__("./src/plugins/Hardel/Prova/component/prova.component.html"),
     }),
     __metadata("design:paramtypes", [])
-], DashBoardComponent);
-exports.DashBoardComponent = DashBoardComponent;
-//# sourceMappingURL=dashboard.component.js.map
+], ProvaComponent);
+exports.ProvaComponent = ProvaComponent;
+//# sourceMappingURL=prova.component.js.map
 
 /***/ }),
 
-/***/ "./src/plugins/Hardel/Dashboard/dashboard.module.ts":
+/***/ "./src/plugins/Hardel/Prova/prova.module.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-/**
- * Created by hernan on 17/10/2017.
- */
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -60,42 +54,39 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var dashboard_component_1 = __webpack_require__("./src/plugins/Hardel/Dashboard/component/dashboard.component.ts");
-var dashboard_routing_1 = __webpack_require__("./src/plugins/Hardel/Dashboard/dashboard.routing.ts");
-var DashboardModule = (function () {
-    function DashboardModule() {
+var prova_component_1 = __webpack_require__("./src/plugins/Hardel/Prova/component/prova.component.ts");
+var prova_routing_1 = __webpack_require__("./src/plugins/Hardel/Prova/prova.routing.ts");
+var ProvaModule = (function () {
+    function ProvaModule() {
     }
-    return DashboardModule;
+    return ProvaModule;
 }());
-DashboardModule = __decorate([
+ProvaModule = __decorate([
     core_1.NgModule({
-        imports: [dashboard_routing_1.routing],
+        imports: [prova_routing_1.routing],
         declarations: [
-            dashboard_component_1.DashBoardComponent
+            prova_component_1.ProvaComponent
         ],
     })
-], DashboardModule);
-exports.DashboardModule = DashboardModule;
-//# sourceMappingURL=dashboard.module.js.map
+], ProvaModule);
+exports.ProvaModule = ProvaModule;
+//# sourceMappingURL=prova.module.js.map
 
 /***/ }),
 
-/***/ "./src/plugins/Hardel/Dashboard/dashboard.routing.ts":
+/***/ "./src/plugins/Hardel/Prova/prova.routing.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-/**
- * Created by hernan on 17/10/2017.
- */
 Object.defineProperty(exports, "__esModule", { value: true });
 var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-var dashboard_component_1 = __webpack_require__("./src/plugins/Hardel/Dashboard/component/dashboard.component.ts");
+var prova_component_1 = __webpack_require__("./src/plugins/Hardel/Prova/component/prova.component.ts");
 var routes = [
-    { path: '', component: dashboard_component_1.DashBoardComponent, data: { breadcrumb: 'Dashboard' } }
+    { path: '', component: prova_component_1.ProvaComponent }
 ];
 exports.routing = router_1.RouterModule.forChild(routes);
-//# sourceMappingURL=dashboard.routing.js.map
+//# sourceMappingURL=prova.routing.js.map
 
 /***/ })
 

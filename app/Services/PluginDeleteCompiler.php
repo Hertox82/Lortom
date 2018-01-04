@@ -22,7 +22,9 @@ class PluginDeleteCompiler extends AbstractPlugin
         //Delete Folder of Name plugin
 
         $this->basePluginPath = $this->basePath.$this->vendor.'/'.$this->name;
-        File::deleteDirectory($this->basePluginPath);
+        if(is_dir($this->basePluginPath)) {
+            File::deleteDirectory($this->basePluginPath);
+        }
 
         $i= $this->getIndexFromPlugins();
 
