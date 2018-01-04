@@ -206,6 +206,10 @@ class PluginController extends Controller
        return response()->json(['plugins' => $listOfPlugin]);
     }
 
+    /**
+     * This function return a List of Installed Plugin
+     * @return array
+     */
     protected function getListInstalledPlugin() {
         $listaPlugin = config('plugins');
 
@@ -267,6 +271,10 @@ class PluginController extends Controller
         }
     }
 
+    /**
+     * This function chek if Plugins are installed
+     * @param $lista
+     */
     protected function checkIfPluginsAreInstalled(&$lista) {
         $listOfInstalled = $this->getListInstalledPlugin();
         $length = count($lista);
@@ -295,7 +303,12 @@ class PluginController extends Controller
         $lista = array_values(array_filter($lista));
     }
 
-
+    /**
+     * This function remove Plugin on Folder
+     * @param $vendor
+     * @param $name
+     * @param $version
+     */
     protected function opUninstall($vendor,$name,$version){
 
         Artisan::call('lortom-plugin:delete',['--vendor-name'=> $vendor.','.$name, '--silent' => true]);
@@ -310,6 +323,12 @@ class PluginController extends Controller
 
     }
 
+    /**
+     * This function install Plugin on Folder
+     * @param $vendor
+     * @param $name
+     * @param $version
+     */
     protected function opInstall($vendor,$name,$version) {
 
         $fileName = $this->getFileName($vendor,$name,$version);
@@ -323,6 +342,9 @@ class PluginController extends Controller
         Artisan::call('lortom-plugin:update',['--vendor-name'=> $vendor.','.$name, '--silent' => true]);
     }
 
+    /**
+     * This function rebuild for angular
+     */
     protected function opRebuild() {
         $command2  = "/usr/local/bin/node /usr/local/lib/node_modules/npm/bin/npm-cli.js run build";
         $command = "cd angular-backend && ".$command2;
@@ -332,6 +354,13 @@ class PluginController extends Controller
         sleep(5);
     }
 
+    /**
+     * This function compose the Filename of compressed plugin
+     * @param $vendor
+     * @param $name
+     * @param $version
+     * @return string
+     */
     protected function getFileName($vendor,$name,$version) {
          return  "{$vendor}-{$name}-{$version}.tgz";
     }
