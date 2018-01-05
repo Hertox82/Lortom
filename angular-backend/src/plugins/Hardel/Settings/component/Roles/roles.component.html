@@ -47,9 +47,9 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <tr *ngFor="let role of listaRole">
+                                        <tr *ngFor="let role of listToShow">
                                             <td>
-                                                <input type="checkbox" (change)="eventChange($event,role)" [(ngModel)] = "role.state">
+                                                <input type="checkbox" (change)="eventChange($event,role)" [(ngModel)] = "role.check">
                                             </td>
                                             <td>
                                                 {{role.name}}

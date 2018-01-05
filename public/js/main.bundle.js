@@ -6,20 +6,25 @@ webpackJsonp(["main"],{
 var map = {
 	"../plugins/Hardel/Dashboard/dashboard.module": [
 		"./src/plugins/Hardel/Dashboard/dashboard.module.ts",
-		3
+		4
 	],
 	"../plugins/Hardel/Plugin/plugin.module": [
 		"./src/plugins/Hardel/Plugin/plugin.module.ts",
-		2
+		0,
+		"common"
+	],
+	"../plugins/Hardel/Prova/prova.module": [
+		"./src/plugins/Hardel/Prova/prova.module.ts",
+		3
 	],
 	"../plugins/Hardel/Settings/settings.module": [
 		"./src/plugins/Hardel/Settings/settings.module.ts",
-		1,
+		2,
 		"common"
 	],
 	"../plugins/Hardel/Website/website.module": [
 		"./src/plugins/Hardel/Website/website.module.ts",
-		0,
+		1,
 		"common"
 	]
 };
@@ -209,9 +214,10 @@ var routes = [
     { path: 'backend/profile/edit', component: user_module_1.UserModelComponent },
     { path: 'backend/not-found', component: notfoundpage_1.NotFoundComponent },
     { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' },
-    { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' },
     { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' },
-    { path: 'backend/website', loadChildren: '../plugins/Hardel/Website/website.module#WebsiteModule' }
+    { path: 'backend/website', loadChildren: '../plugins/Hardel/Website/website.module#WebsiteModule' },
+    { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' },
+    { path: 'backend/prova', loadChildren: '../plugins/Hardel/Prova/prova.module#ProvaModule' }
 ];
 exports.routing = router_1.RouterModule.forRoot(routes);
 //# sourceMappingURL=app.routing.js.map

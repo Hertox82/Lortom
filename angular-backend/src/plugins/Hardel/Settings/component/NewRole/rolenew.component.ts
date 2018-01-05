@@ -29,7 +29,7 @@ export class RoleNewComponent implements OnInit
         this.role = {
             id: -1,
             name : '',
-            state : false,
+            check : false,
             permissions : []
         }
     }

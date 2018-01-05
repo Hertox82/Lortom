@@ -1,0 +1,96 @@
+<div class="tabbable-custom" *ngIf="isRoot === true">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#tab_1" data-toggle="tab"> List Plugin</a>
+        </li>
+        <li>
+            <a [routerLink]="['/backend/website/menu']" data-toggle="tab"> Template</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_1">
+            <div class="box">
+                <div class="box-header">
+
+                </div>
+                <div class="box-body">
+                    <div class="wrapper">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <lt-entry-pagination
+                                        [entry]="'50-5'"
+                                        (onEntry)="onPerPage($event)"
+                                >
+                                </lt-entry-pagination>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="dataTables_filter">
+                                    <a class="btn btn-primary" [routerLink] = "['/backend/plugin/plugins/install']"><i class="fa fa-download"></i> Install</a>
+                                    <a class="btn btn-warning" (click)="uninstallPlugins()"><i class="fa fa-trash-o"></i> Uninstall</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 30px;"></th>
+                                        <th>
+                                            <a>Vendor</a>
+                                        </th>
+                                        <th>
+                                            <a>Name</a>
+                                        </th>
+                                        <th>
+                                            <a>Version</a>
+                                        </th>
+                                        <th style="width: 50px;" colspan="3"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngFor="let plugin of listToShow">
+                                        <td>
+                                            <input type="checkbox" (change)="eventChange($event,plugin)" [(ngModel)] = "plugin.check">
+                                        </td>
+                                        <td>
+                                            {{plugin.vendor}}
+                                        </td>
+                                        <td>
+                                            {{plugin.name}}
+                                        </td>
+                                        <td>
+                                            {{plugin.version}}
+                                        </td>
+                                        <td width="38px">
+                                            <a (click)="updatePlugin(plugin)" title="Update"><i class="fa fa-refresh" style="color:orange; font-size: 16px; cursor:pointer;"></i></a>
+                                        </td>
+                                        <td width="38px">
+                                           <a *ngIf="plugin.packed === false" (click)="packPlugin(plugin)" title="Packing"><i class="fa fa-cube" style="color:orange; font-size: 16px; cursor:pointer;"></i> </a>
+                                        </td>
+                                        <td width="38px">
+                                            <a *ngIf="plugin.packed === true" (click)="deletePlugin(plugin)"  title="Delete Packing"><i class="fa fa-times" style="color:orange; font-size: 16px; cursor: pointer;"></i> </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <lt-pagination
+                                [pagesToShow]="3"
+                                [perPage]="perPage"
+                                [count]="listOfPlugins.length"
+                                [loading]="false"
+                                [page]="actualPage"
+                                (goNext)="onNext($event)"
+                                (goPage)="onPage($event)"
+                                (goPrev)="onPrev()"
+                        ></lt-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<router-outlet></router-outlet>

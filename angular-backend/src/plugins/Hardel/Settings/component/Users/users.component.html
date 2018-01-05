@@ -50,9 +50,9 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr *ngFor="let user of listaShowUser">
+                                    <tr *ngFor="let user of listToShow">
                                         <td>
-                                            <input type="checkbox" (change)="eventChange($event,user)" [(ngModel)] = "user.state">
+                                            <input type="checkbox" (change)="eventChange($event,user)" [(ngModel)] = "user.check">
                                         </td>
                                         <td>
                                             {{user.name}}

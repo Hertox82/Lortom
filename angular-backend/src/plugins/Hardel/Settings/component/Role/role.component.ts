@@ -32,7 +32,7 @@ export class RoleComponent implements OnInit,OnDestroy
         this.role = {
             id : -2,
             name : '',
-            state : false,
+            check : false,
             permissions : []
         };
         this.sub = this.router.params.subscribe(
