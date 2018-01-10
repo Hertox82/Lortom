@@ -206,6 +206,11 @@ class PluginController extends Controller
        return response()->json(['plugins' => $listOfPlugin]);
     }
 
+
+    public function getTemplates(Request $request) {
+        //TODO
+    }
+
     /**
      * This function return a List of Installed Plugin
      * @return array
