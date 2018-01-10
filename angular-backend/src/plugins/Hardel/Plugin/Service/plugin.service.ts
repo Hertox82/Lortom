@@ -6,7 +6,7 @@
 import {Injectable} from "@angular/core";
 import {MasterService} from "@Lortom/services/master.service";
 import {Http, Response} from "@angular/http";
-import {LtPlugin} from "@Lortom/plugins/Hardel/Plugin/Service/plugin.interface";
+import {LtPlugin, LtTemplate} from "@Lortom/plugins/Hardel/Plugin/Service/plugin.interface";
 import {Observable} from "rxjs/Observable";
 import {Subject} from "rxjs/Subject";
 
@@ -14,9 +14,12 @@ import {Subject} from "rxjs/Subject";
 export class PluginService extends MasterService
 {
     listOfPlugins : LtPlugin[];
+    listOfTemplate: LtTemplate[];
 
     private _updatePlugins = new Subject();
+    private _updateTemplate = new Subject();
     updatePlugins$ = this._updatePlugins.asObservable();
+    updateTemplate$ = this._updateTemplate.asObservable();
 
     constructor(private http: Http) {
         super();
@@ -27,7 +30,8 @@ export class PluginService extends MasterService
             { namePath: 'installPlugin', path: 'plugin'},
             { namePath: 'packPlugin', path: 'plugin/pack'},
             { namePath: 'delPack', path: 'plugin/delete'},
-            { namePath: 'getLatestPlugin', path: 'plugins/latest'}
+            { namePath: 'getLatestPlugin', path: 'plugins/latest'},
+            { namePath: 'getTemplate', path: 'templates'}
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -44,6 +48,15 @@ export class PluginService extends MasterService
             .map(
                 (response : Response) => {
                     return response.json().plugins;
+                }
+            );
+    }
+
+    getTemplateFrom(): Observable<any> {
+        return this.http.get(this.apiManager.getPathByName('getTemplate'))
+            .map(
+                (response: Response) => {
+                    return response.json();
                 }
             );
     }
@@ -131,6 +144,13 @@ export class PluginService extends MasterService
         this.listOfPlugins = data;
     }
 
+    setTemplate(template: any): void {
+
+        let data = template as LtTemplate[];
+        this.setItem('template',data);
+        this.listOfTemplate = data;
+    }
+
     /**
      * This function get listOfPlugins
      * @returns {any}
@@ -165,6 +185,10 @@ export class PluginService extends MasterService
     updateListOfPlugins()
     {
         this._updatePlugins.next();
+    }
+
+    updateListOfTemplate() {
+        this._updateTemplate.next();
     }
 
 }

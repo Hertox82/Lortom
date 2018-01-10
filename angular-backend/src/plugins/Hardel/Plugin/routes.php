@@ -41,7 +41,7 @@ Route::post('/plugin/delete',[
     'uses'  => 'PluginController@deletePlugin'
 ]);
 
-Route::get('/template',[
+Route::get('/templates',[
     'as'    => 'apiGetTemplates',
     'uses'  => 'PluginController@getTemplates'
 ]);

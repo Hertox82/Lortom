@@ -208,7 +208,86 @@ class PluginController extends Controller
 
 
     public function getTemplates(Request $request) {
-        //TODO
+
+        //leggo il file ltpm.config.json in modo da vedere se ci sono dei Template installati
+       $listInstalledTemplate = $this->getListTemplateInstalled();
+
+       $listLastRepo = [];
+
+       $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js latest-template";
+       $command1= "cd ../ && ";
+       $command = $command1.$command2;
+
+       exec($command,$stdout);
+
+       $listLastRepo = json_decode($stdout[0],true);
+
+       $isnull = is_null($listLastRepo);
+       if($isnull) {
+           $listLastRepo = [];
+       }
+
+       $this->checkIfTemplateInstalled($listLastRepo,$listInstalledTemplate);
+
+       return response()->json(['template' => $listInstalledTemplate, 'templates' => $listLastRepo]);
+    }
+
+    /**
+     * this function read from ltpm.config.json
+     * @return mixed|null
+     */
+    protected function loadLtpmConfig() {
+        $path = app_path().'/../ltpm.config.json';
+
+        if(File::exists($path)) {
+            $conf = json_decode(File::get($path),true);
+
+            return $conf;
+        }
+
+        return null;
+    }
+
+    /**
+     * This function return list of installed template
+     * @return array
+     */
+    protected function getListTemplateInstalled() {
+        $config = $this->loadLtpmConfig();
+
+        $listInstalled = [];
+        if(! is_null($config)) {
+            if(isset($config['template'])) {
+
+                $listInstalled[] = $config['template'];
+            }
+        }
+
+        $listInstalled[0]['packed'] = false;
+        $listInstalled[0]['installed'] = true;
+        $listInstalled[0]['toUpdate'] = false;
+
+        return $listInstalled;
+    }
+
+    protected function checkIfTemplateInstalled(&$listOfLatest,$listOfInstalled) {
+        $length = count($listOfLatest);
+        for ($j=0; $j<count($listOfInstalled); $j++) {
+            $installed = $listOfInstalled[$j];
+            for($i=0; $i<$length; $i++) {
+                $template1 = $listOfLatest[$i];
+
+                if($template1['vendor'] == $installed['vendor'] and $template1['name'] == $installed['name']) {
+                    if($template1['version'] == $installed['version']) {
+                        $listOfInstalled[$j]['packed'] = true;
+                        unset($listOfLatest[$i]);
+                        break;
+                    }
+                }
+            }
+        }
+
+        $listOfLatest = array_values(array_filter($listOfLatest));
     }
 
     /**

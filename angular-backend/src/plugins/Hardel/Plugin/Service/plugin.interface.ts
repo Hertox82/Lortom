@@ -3,8 +3,7 @@
  */
 
 
-export interface LtPlugin
-{
+export interface LtPlugin {
     vendor: string,
     name: string,
     version: string,
@@ -14,4 +13,14 @@ export interface LtPlugin
     packed?:boolean,
     installed?:boolean,
     toUpdate?:boolean
+}
+
+export interface LtTemplate {
+    vendor: string,
+    name: string,
+    version: string,
+    check: boolean,
+    packed?: boolean,
+    installed?: boolean,
+    toUpdate?: boolean
 }

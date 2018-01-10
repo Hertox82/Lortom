@@ -213,11 +213,11 @@ var routes = [
     { path: 'backend/logout', component: login_1.LogoutComponent },
     { path: 'backend/profile/edit', component: user_module_1.UserModelComponent },
     { path: 'backend/not-found', component: notfoundpage_1.NotFoundComponent },
-    { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' },
     { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' },
     { path: 'backend/website', loadChildren: '../plugins/Hardel/Website/website.module#WebsiteModule' },
     { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' },
-    { path: 'backend/prova', loadChildren: '../plugins/Hardel/Prova/prova.module#ProvaModule' }
+    { path: 'backend/prova', loadChildren: '../plugins/Hardel/Prova/prova.module#ProvaModule' },
+    { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' }
 ];
 exports.routing = router_1.RouterModule.forRoot(routes);
 //# sourceMappingURL=app.routing.js.map

@@ -6124,14 +6124,17 @@ var PluginService = (function (_super) {
         var _this = _super.call(this) || this;
         _this.http = http;
         _this._updatePlugins = new Subject_1.Subject();
+        _this._updateTemplate = new Subject_1.Subject();
         _this.updatePlugins$ = _this._updatePlugins.asObservable();
+        _this.updateTemplate$ = _this._updateTemplate.asObservable();
         // write the api route for setting
         var urls = [
             { namePath: 'getPlugins', path: 'plugins' },
             { namePath: 'installPlugin', path: 'plugin' },
             { namePath: 'packPlugin', path: 'plugin/pack' },
             { namePath: 'delPack', path: 'plugin/delete' },
-            { namePath: 'getLatestPlugin', path: 'plugins/latest' }
+            { namePath: 'getLatestPlugin', path: 'plugins/latest' },
+            { namePath: 'getTemplate', path: 'templates' }
         ];
         //Add the Api to the ApiManager
         _this.apiManager.addListUrlApi(urls);
@@ -6146,6 +6149,12 @@ var PluginService = (function (_super) {
         return this.http.get(this.apiManager.getPathByName('getPlugins'))
             .map(function (response) {
             return response.json().plugins;
+        });
+    };
+    PluginService.prototype.getTemplateFrom = function () {
+        return this.http.get(this.apiManager.getPathByName('getTemplate'))
+            .map(function (response) {
+            return response.json();
         });
     };
     PluginService.prototype.getLatestPlugin = function () {
@@ -6209,6 +6218,11 @@ var PluginService = (function (_super) {
         this.setItem('plugins', data);
         this.listOfPlugins = data;
     };
+    PluginService.prototype.setTemplate = function (template) {
+        var data = template;
+        this.setItem('template', data);
+        this.listOfTemplate = data;
+    };
     /**
      * This function get listOfPlugins
      * @returns {any}
@@ -6235,6 +6249,9 @@ var PluginService = (function (_super) {
      */
     PluginService.prototype.updateListOfPlugins = function () {
         this._updatePlugins.next();
+    };
+    PluginService.prototype.updateListOfTemplate = function () {
+        this._updateTemplate.next();
     };
     return PluginService;
 }(master_service_1.MasterService));
@@ -6366,7 +6383,7 @@ var _a, _b, _c;
 /***/ "./src/plugins/Hardel/Plugin/component/Plugins/listplugin.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> List Plugin</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/website/menu']\" data-toggle=\"tab\"> Template</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <lt-entry-pagination\n                                        [entry]=\"'50-5'\"\n                                        (onEntry)=\"onPerPage($event)\"\n                                >\n                                </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/plugin/plugins/install']\"><i class=\"fa fa-download\"></i> Install</a>\n                                    <a class=\"btn btn-warning\" (click)=\"uninstallPlugins()\"><i class=\"fa fa-trash-o\"></i> Uninstall</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Vendor</a>\n                                        </th>\n                                        <th>\n                                            <a>Name</a>\n                                        </th>\n                                        <th>\n                                            <a>Version</a>\n                                        </th>\n                                        <th style=\"width: 50px;\" colspan=\"3\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let plugin of listToShow\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,plugin)\" [(ngModel)] = \"plugin.check\">\n                                        </td>\n                                        <td>\n                                            {{plugin.vendor}}\n                                        </td>\n                                        <td>\n                                            {{plugin.name}}\n                                        </td>\n                                        <td>\n                                            {{plugin.version}}\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a (click)=\"updatePlugin(plugin)\" title=\"Update\"><i class=\"fa fa-refresh\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i></a>\n                                        </td>\n                                        <td width=\"38px\">\n                                           <a *ngIf=\"plugin.packed === false\" (click)=\"packPlugin(plugin)\" title=\"Packing\"><i class=\"fa fa-cube\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i> </a>\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a *ngIf=\"plugin.packed === true\" (click)=\"deletePlugin(plugin)\"  title=\"Delete Packing\"><i class=\"fa fa-times\" style=\"color:orange; font-size: 16px; cursor: pointer;\"></i> </a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                                [pagesToShow]=\"3\"\n                                [perPage]=\"perPage\"\n                                [count]=\"listOfPlugins.length\"\n                                [loading]=\"false\"\n                                [page]=\"actualPage\"\n                                (goNext)=\"onNext($event)\"\n                                (goPage)=\"onPage($event)\"\n                                (goPrev)=\"onPrev()\"\n                        ></lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
+module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> List Plugin</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/plugin/template']\" data-toggle=\"tab\"> Template</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <lt-entry-pagination\n                                        [entry]=\"'50-5'\"\n                                        (onEntry)=\"onPerPage($event)\"\n                                >\n                                </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/plugin/plugins/install']\"><i class=\"fa fa-download\"></i> Install</a>\n                                    <a class=\"btn btn-warning\" (click)=\"uninstallPlugins()\"><i class=\"fa fa-trash-o\"></i> Uninstall</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Vendor</a>\n                                        </th>\n                                        <th>\n                                            <a>Name</a>\n                                        </th>\n                                        <th>\n                                            <a>Version</a>\n                                        </th>\n                                        <th style=\"width: 50px;\" colspan=\"3\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let plugin of listToShow\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,plugin)\" [(ngModel)] = \"plugin.check\">\n                                        </td>\n                                        <td>\n                                            {{plugin.vendor}}\n                                        </td>\n                                        <td>\n                                            {{plugin.name}}\n                                        </td>\n                                        <td>\n                                            {{plugin.version}}\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a (click)=\"updatePlugin(plugin)\" title=\"Update\"><i class=\"fa fa-refresh\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i></a>\n                                        </td>\n                                        <td width=\"38px\">\n                                           <a *ngIf=\"plugin.packed === false\" (click)=\"packPlugin(plugin)\" title=\"Packing\"><i class=\"fa fa-cube\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i> </a>\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a *ngIf=\"plugin.packed === true\" (click)=\"deletePlugin(plugin)\"  title=\"Delete Packing\"><i class=\"fa fa-times\" style=\"color:orange; font-size: 16px; cursor: pointer;\"></i> </a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                                [pagesToShow]=\"3\"\n                                [perPage]=\"perPage\"\n                                [count]=\"listOfPlugins.length\"\n                                [loading]=\"false\"\n                                [page]=\"actualPage\"\n                                (goNext)=\"onNext($event)\"\n                                (goPage)=\"onPage($event)\"\n                                (goPrev)=\"onPrev()\"\n                        ></lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -6503,6 +6520,98 @@ var _a, _b;
 
 /***/ }),
 
+/***/ "./src/plugins/Hardel/Plugin/component/Template/listtemplate.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li>\n            <a [routerLink]=\"['/backend/plugin/plugins']\"  data-toggle=\"tab\"> List Plugin</a>\n        </li>\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> Template</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <lt-entry-pagination\n                                        [entry]=\"'50-5'\"\n                                        (onEntry)=\"onPerPage($event)\"\n                                >\n                                </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/plugin/plugins/install']\"><i class=\"fa fa-download\"></i> Install</a>\n                                    <a class=\"btn btn-warning\" (click)=\"uninstallPlugins()\"><i class=\"fa fa-trash-o\"></i> Uninstall</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Vendor</a>\n                                        </th>\n                                        <th>\n                                            <a>Name</a>\n                                        </th>\n                                        <th>\n                                            <a>Version</a>\n                                        </th>\n                                        <th style=\"width: 50px;\" colspan=\"3\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let temp of listToShow\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,temp)\" [(ngModel)] = \"temp.check\">\n                                        </td>\n                                        <td>\n                                            {{temp.vendor}}\n                                        </td>\n                                        <td>\n                                            {{temp.name}}\n                                        </td>\n                                        <td>\n                                            {{temp.version}}\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a (click)=\"updatePlugin(temp)\" title=\"Update\"><i class=\"fa fa-refresh\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i></a>\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a *ngIf=\"temp.packed === false\" (click)=\"packPlugin(temp)\" title=\"Packing\"><i class=\"fa fa-cube\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i> </a>\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a *ngIf=\"temp.packed === true\" (click)=\"deletePlugin(temp)\"  title=\"Delete Packing\"><i class=\"fa fa-times\" style=\"color:orange; font-size: 16px; cursor: pointer;\"></i> </a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                                [pagesToShow]=\"3\"\n                                [perPage]=\"perPage\"\n                                [count]=\"listOfLastTemplate.length\"\n                                [loading]=\"false\"\n                                [page]=\"actualPage\"\n                                (goNext)=\"onNext($event)\"\n                                (goPage)=\"onPage($event)\"\n                                (goPrev)=\"onPrev()\"\n                        ></lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
+
+/***/ }),
+
+/***/ "./src/plugins/Hardel/Plugin/component/Template/listtemplate.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var list_component_1 = __webpack_require__("./src/model/list.component.ts");
+var plugin_service_1 = __webpack_require__("./src/plugins/Hardel/Plugin/Service/plugin.service.ts");
+var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var ListTemplateComponent = (function (_super) {
+    __extends(ListTemplateComponent, _super);
+    function ListTemplateComponent(tpSer, router) {
+        var _this = _super.call(this) || this;
+        _this.tpSer = tpSer;
+        _this.router = router;
+        _this.myRoot = '/backend/plugin/template';
+        _this.isRoot = false;
+        _this.listOfTemplate = [];
+        _this.listOfLastTemplate = [];
+        _this.onComponentInit({
+            name: 'tpSer',
+            permission: 'Hardel.Plugin.Template',
+            upd: 'updatePlugins$'
+        }, 'router', 'retrieveListOfTemplate');
+        return _this;
+    }
+    ListTemplateComponent.prototype.ngOnInit = function () { };
+    ListTemplateComponent.prototype.retrieveListOfTemplate = function () {
+        var _this = this;
+        this.tpSer.getTemplateFrom().subscribe(function (data) {
+            _this.listOfLastTemplate = data.templates;
+            _this.listOfTemplate = data.template;
+            _this.listOfData = _this.listOfLastTemplate;
+            _this.tpSer.setTemplate(_this.listOfTemplate);
+            _this.updateListaShow();
+        });
+    };
+    ListTemplateComponent.prototype.packTemplate = function () {
+        //todo
+    };
+    ListTemplateComponent.prototype.unpackTemplate = function () {
+        //todo
+    };
+    ListTemplateComponent.prototype.installTemplate = function () {
+        //todo
+    };
+    ListTemplateComponent.prototype.uninstallTemplate = function () {
+        //todo
+    };
+    return ListTemplateComponent;
+}(list_component_1.ListComponent));
+ListTemplateComponent = __decorate([
+    core_1.Component({
+        selector: 'tp-list',
+        template: __webpack_require__("./src/plugins/Hardel/Plugin/component/Template/listtemplate.component.html"),
+        styles: ['']
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof plugin_service_1.PluginService !== "undefined" && plugin_service_1.PluginService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
+], ListTemplateComponent);
+exports.ListTemplateComponent = ListTemplateComponent;
+var _a, _b;
+//# sourceMappingURL=listtemplate.component.js.map
+
+/***/ }),
+
 /***/ "./src/plugins/Hardel/Plugin/component/index.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6518,6 +6627,8 @@ var listplugin_component_1 = __webpack_require__("./src/plugins/Hardel/Plugin/co
 exports.ListPluginComponent = listplugin_component_1.ListPluginComponent;
 var install_plugin_component_1 = __webpack_require__("./src/plugins/Hardel/Plugin/component/InstallPlugin/install-plugin.component.ts");
 exports.InstallPluginComponent = install_plugin_component_1.InstallPluginComponent;
+var listtemplate_component_1 = __webpack_require__("./src/plugins/Hardel/Plugin/component/Template/listtemplate.component.ts");
+exports.ListTemplateComponent = listtemplate_component_1.ListTemplateComponent;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
@@ -6648,13 +6759,15 @@ var routes = [
             { path: 'plugins', component: PL.ListPluginComponent, data: { breadcrumb: 'List' }, children: [
                     { path: 'install', component: PL.InstallPluginComponent, data: { breadcrumb: 'Install' } }
                 ] },
+            { path: 'template', component: PL.ListTemplateComponent, data: { breadcrumb: 'Template List' } }
         ] }
 ];
 exports.routing = router_1.RouterModule.forChild(routes);
 exports.pluginComponent = [
     PL.PluginComponent,
     PL.ListPluginComponent,
-    PL.InstallPluginComponent
+    PL.InstallPluginComponent,
+    PL.ListTemplateComponent
 ];
 //# sourceMappingURL=plugin.routing.js.map
 

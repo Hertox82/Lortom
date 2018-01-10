@@ -4,9 +4,9 @@
     "depl": "angular-backend/src/plugins",
     "deplt": "template",
     "template": {
-        "vendor": "",
-        "name": "",
-        "version": ""
+        "vendor": "LortomTemplate",
+        "name": "Fantastic",
+        "version": "0.1.0"
     },
     "plugins": [
         {
