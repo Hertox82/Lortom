@@ -46,6 +46,11 @@ Route::get('/templates',[
     'uses'  => 'PluginController@getTemplates'
 ]);
 
+Route::post('/template/pack',[
+    'as'    => 'apiPackTemplate',
+    'uses'  => 'PluginController@packTemplate'
+]);
+
 Route::get('/test',[
     'as'    => 'apiGetTest',
     'uses'  => 'PluginController@getTest'

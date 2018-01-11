@@ -42,15 +42,17 @@ export class ListTemplateComponent extends ListComponent implements OnInit {
         );
     }
 
-    packTemplate() {
+    packTemplate(temp: LtTemplate) {
+        //todo
+        console.log(temp);
+
+    }
+
+    unpackTemplate(temp: LtTemplate) {
         //todo
     }
 
-    unpackTemplate() {
-        //todo
-    }
-
-    installTemplate() {
+    installTemplate(temp: LtTemplate) {
         //todo
     }
 

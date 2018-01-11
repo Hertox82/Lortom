@@ -145,7 +145,7 @@ class PluginController extends Controller
         $command1= "cd ../ && ";
         $command = $command1.$command2;
 
-        exec($command,$mario);
+        exec($command,$stdout);
 
         $lista = $this->getListInstalledPlugin();
 
@@ -153,6 +153,26 @@ class PluginController extends Controller
 
         return response()->json(['plugins' => $lista]);
 
+    }
+
+    public function packTemplate(Request $request) {
+        $input = $request->all();
+
+        $vendor = $input['vendor'];
+        $name = $input['name'];
+        $version = $input['version'];
+
+        $fileName = "{$vendor}-{$name}-{$version}_t.tgz";
+
+        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js package-t {$fileName}";
+        $command1= "cd ../ && ";
+        $command = $command1.$command2;
+
+        exec($command,$stdout);
+
+        //mi faccio dare la lista dei template installati, controllando se è packed
+
+        return response()->json(['message' => 'ok']);
     }
 
     /**
@@ -267,9 +287,41 @@ class PluginController extends Controller
         $listInstalled[0]['installed'] = true;
         $listInstalled[0]['toUpdate'] = false;
 
+        //check if exist some template packed
+        $this->checkIfTemplateArePacked($listInstalled,$config);
+
         return $listInstalled;
     }
 
+    protected function checkIfTemplateArePacked(&$listInstalled,$config) {
+        if(isset($config['repo'])) {
+            $repoPath = app_path() . '/../' . $config['repo'];
+            if(File::isDirectory($repoPath)) {
+                $listOfFile = File::files($repoPath);
+
+                for($i=0; $i<count($listInstalled); $i++) {
+                    $temp = $listInstalled[$i];
+
+                    $fileName = $this->getFileName($temp['vendor'],$temp['name'],$temp['version'],false);
+                    $path = $repoPath.'/'.$fileName;
+
+                    if(in_array($path,$listOfFile)) {
+                        $listInstalled[$i]['packed'] = true;
+                    }
+                }
+            }
+        }
+    }
+
+    protected function getFileName($vendor,$name,$version,$isPlugin = true) {
+
+        return ($isPlugin) ?  "{$vendor}-{$name}-{$version}.tgz" : "{$vendor}-{$name}-{$version}_t.tgz";
+    }
+
+    /**
+     * @param $listOfLatest
+     * @param $listOfInstalled
+     */
     protected function checkIfTemplateInstalled(&$listOfLatest,$listOfInstalled) {
         $length = count($listOfLatest);
         for ($j=0; $j<count($listOfInstalled); $j++) {
@@ -438,14 +490,4 @@ class PluginController extends Controller
         sleep(5);
     }
 
-    /**
-     * This function compose the Filename of compressed plugin
-     * @param $vendor
-     * @param $name
-     * @param $version
-     * @return string
-     */
-    protected function getFileName($vendor,$name,$version) {
-         return  "{$vendor}-{$name}-{$version}.tgz";
-    }
 }
