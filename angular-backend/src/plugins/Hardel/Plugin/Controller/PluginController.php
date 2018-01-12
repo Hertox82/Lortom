@@ -68,6 +68,12 @@ class PluginController extends Controller
 
     }
 
+    public function installTemplate(Request $request) {
+        //TODO
+
+        $input = $request->all();
+    }
+
     /**
      * @Api({
             "description":"this function provide to uninstall the plugins"
@@ -87,6 +93,20 @@ class PluginController extends Controller
        $this->opRebuild();
 
         return response()->json(['message' => true]);
+    }
+
+    public function uninstallTemplate(Request $request) {
+        $input = $request->all();
+
+        $fileName = $this->getFileName($input['vendor'],$input['name'],$input['version'],false);
+
+        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js uninstall-t {$fileName}";
+        $command1= "cd ../ && ";
+        $command = $command1.$command2;
+
+        exec($command,$stdout);
+
+        return response()->json(['message' => 'ok']);
     }
 
     /**
@@ -155,6 +175,13 @@ class PluginController extends Controller
 
     }
 
+    /**
+     * @Api({
+            "description": "bundles a specific template"
+     *     })
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function packTemplate(Request $request) {
         $input = $request->all();
 
@@ -163,6 +190,8 @@ class PluginController extends Controller
         $version = $input['version'];
 
         //controllare dentro il file config.json all'interno del template per vedere se fare un nuovo pack
+
+        list($vendor,$name,$version) = $this->checkIfChangeVersion($input['vendor'],$input['name'],$input['version']);
 
         $fileName = $this->getFileName($vendor,$name,$version,false);
 
@@ -206,6 +235,13 @@ class PluginController extends Controller
         return response()->json(['plugins' => $lista]);
     }
 
+    /**
+     * @Api({
+            "description": "delete a specific template packed into the Repo"
+     *     })
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delPackTemplate(Request $request) {
         $input = $request->all();
 
@@ -247,6 +283,13 @@ class PluginController extends Controller
     }
 
 
+    /**
+     * @Api({
+            "description": "This Api return all Latest Template and Installed Template"
+     *     })
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getTemplates(Request $request) {
 
         //leggo il file ltpm.config.json in modo da vedere se ci sono dei Template installati
@@ -270,6 +313,23 @@ class PluginController extends Controller
        $this->checkIfTemplateInstalled($listLastRepo,$listInstalledTemplate);
 
        return response()->json(['template' => $listInstalledTemplate, 'templates' => $listLastRepo]);
+    }
+
+    protected function checkIfChangeVersion($vendor,$name,$version) {
+
+        $config = $this->loadLtpmConfig();
+
+        $listaReturn = [$vendor,$name,$version];
+
+        if(isset($config['deplt'])) {
+            $fileName = app_path().'/../'.$config['deplt']."/{$vendor}/{$name}/config.json";
+            if(File::exists($fileName)) {
+                $temp = json_decode(File::get($fileName),true);
+                $listaReturn= [$temp['vendor'],$temp['name'],$temp['version']];
+            }
+        }
+
+        return $listaReturn;
     }
 
     /**

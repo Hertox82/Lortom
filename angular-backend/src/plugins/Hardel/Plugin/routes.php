@@ -46,9 +46,19 @@ Route::get('/templates',[
     'uses'  => 'PluginController@getTemplates'
 ]);
 
+Route::put('/templates',[
+    'as'    => 'apiUninstallTemplate',
+    'uses'  => 'PluginController@uninstallTemplate'
+]);
+
 Route::post('/template/pack',[
     'as'    => 'apiPackTemplate',
     'uses'  => 'PluginController@packTemplate'
+]);
+
+Route::post('/template',[
+    'as'    => 'apiInstallTemplate',
+    'uses'  => 'PluginController@installTemplate'
 ]);
 
 Route::post('/template/delpack',[
