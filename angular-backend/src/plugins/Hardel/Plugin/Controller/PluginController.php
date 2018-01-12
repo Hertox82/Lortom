@@ -197,13 +197,31 @@ class PluginController extends Controller
         $command1= "cd ../ && ";
         $command = $command1.$command2;
 
-        exec($command,$mario);
+        exec($command,$stdout);
 
         $lista = $this->getListInstalledPlugin();
 
         $this->checkIfPluginsArePacked($lista);
 
         return response()->json(['plugins' => $lista]);
+    }
+
+    public function delPackTemplate(Request $request) {
+        $input = $request->all();
+
+        $vendor= $input['vendor'];
+        $name = $input['name'];
+        $version = $input['version'];
+
+        $fileName = $this->getFileName($vendor,$name,$version,false);
+
+        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js deltemp {$fileName}";
+        $command1= "cd ../ && ";
+        $command = $command1.$command2;
+
+        exec($command,$stdout);
+
+        return response()->json(['message' => 'ok']);
     }
 
     /**

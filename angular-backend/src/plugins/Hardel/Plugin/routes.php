@@ -51,6 +51,11 @@ Route::post('/template/pack',[
     'uses'  => 'PluginController@packTemplate'
 ]);
 
+Route::post('/template/delpack',[
+    'as'    => 'apiUnPackTemplate',
+    'uses'  => 'PluginController@delPackTemplate'
+]);
+
 Route::get('/test',[
     'as'    => 'apiGetTest',
     'uses'  => 'PluginController@getTest'

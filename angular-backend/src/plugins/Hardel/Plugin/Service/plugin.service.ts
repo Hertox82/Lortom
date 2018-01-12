@@ -32,7 +32,8 @@ export class PluginService extends MasterService
             { namePath: 'delPack', path: 'plugin/delete'},
             { namePath: 'getLatestPlugin', path: 'plugins/latest'},
             { namePath: 'getTemplate', path: 'templates'},
-            { namePath: 'packTemplate', path: 'template/pack'}
+            { namePath: 'packTemplate', path: 'template/pack'},
+            { namePath: 'unPackTemp', path: 'template/delpack'}
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);

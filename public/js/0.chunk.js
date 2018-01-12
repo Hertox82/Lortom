@@ -6135,7 +6135,8 @@ var PluginService = (function (_super) {
             { namePath: 'delPack', path: 'plugin/delete' },
             { namePath: 'getLatestPlugin', path: 'plugins/latest' },
             { namePath: 'getTemplate', path: 'templates' },
-            { namePath: 'packTemplate', path: 'template/pack' }
+            { namePath: 'packTemplate', path: 'template/pack' },
+            { namePath: 'unPackTemp', path: 'template/delpack' }
         ];
         //Add the Api to the ApiManager
         _this.apiManager.addListUrlApi(urls);
@@ -6179,6 +6180,12 @@ var PluginService = (function (_super) {
         return this.http.post(this.apiManager.getPathByName('delPack'), plugin, this.getOptions())
             .map(function (response) {
             return response.json().plugins;
+        });
+    };
+    PluginService.prototype.deletePackTemplate = function (template) {
+        return this.http.post(this.apiManager.getPathByName('unPackTemp'), template, this.getOptions())
+            .map(function (response) {
+            return response.json().message;
         });
     };
     /**
@@ -6594,13 +6601,15 @@ var ListTemplateComponent = (function (_super) {
     };
     ListTemplateComponent.prototype.packTemplate = function (temp) {
         var _this = this;
-        console.log('dentro il Component');
         this.tpSer.packTemplate(temp).subscribe(function (data) {
             _this.retrieveListOfTemplate();
         });
     };
     ListTemplateComponent.prototype.unpackTemplate = function (temp) {
-        //todo
+        var _this = this;
+        this.tpSer.deletePackTemplate(temp).subscribe(function (data) {
+            _this.retrieveListOfTemplate();
+        });
     };
     ListTemplateComponent.prototype.installTemplate = function (temp) {
         //todo
