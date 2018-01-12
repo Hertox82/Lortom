@@ -6134,7 +6134,8 @@ var PluginService = (function (_super) {
             { namePath: 'packPlugin', path: 'plugin/pack' },
             { namePath: 'delPack', path: 'plugin/delete' },
             { namePath: 'getLatestPlugin', path: 'plugins/latest' },
-            { namePath: 'getTemplate', path: 'templates' }
+            { namePath: 'getTemplate', path: 'templates' },
+            { namePath: 'packTemplate', path: 'template/pack' }
         ];
         //Add the Api to the ApiManager
         _this.apiManager.addListUrlApi(urls);
@@ -6206,6 +6207,13 @@ var PluginService = (function (_super) {
         return this.http.post(this.apiManager.getPathByName('packPlugin'), plugin, this.getOptions())
             .map(function (response) {
             return response.json().plugins;
+        });
+    };
+    PluginService.prototype.packTemplate = function (template) {
+        console.log('dentro il service');
+        return this.http.post(this.apiManager.getPathByName('packTemplate'), template, this.getOptions())
+            .map(function (response) {
+            return response.json().message;
         });
     };
     /* End Section call to API*/
@@ -6585,8 +6593,11 @@ var ListTemplateComponent = (function (_super) {
         });
     };
     ListTemplateComponent.prototype.packTemplate = function (temp) {
-        //todo
-        console.log(temp);
+        var _this = this;
+        console.log('dentro il Component');
+        this.tpSer.packTemplate(temp).subscribe(function (data) {
+            _this.retrieveListOfTemplate();
+        });
     };
     ListTemplateComponent.prototype.unpackTemplate = function (temp) {
         //todo

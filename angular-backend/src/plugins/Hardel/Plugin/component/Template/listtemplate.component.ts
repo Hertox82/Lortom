@@ -43,13 +43,20 @@ export class ListTemplateComponent extends ListComponent implements OnInit {
     }
 
     packTemplate(temp: LtTemplate) {
-        //todo
-        console.log(temp);
-
+        this.tpSer.packTemplate(temp).subscribe(
+            (data: any) => {
+                this.retrieveListOfTemplate();
+            }
+        );
     }
 
     unpackTemplate(temp: LtTemplate) {
-        //todo
+        this.tpSer.deletePackTemplate(temp).subscribe(
+            (data: any) => {
+                this.retrieveListOfTemplate();
+            }
+        );
+
     }
 
     installTemplate(temp: LtTemplate) {

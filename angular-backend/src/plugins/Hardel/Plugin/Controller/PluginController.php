@@ -162,7 +162,9 @@ class PluginController extends Controller
         $name = $input['name'];
         $version = $input['version'];
 
-        $fileName = "{$vendor}-{$name}-{$version}_t.tgz";
+        //controllare dentro il file config.json all'interno del template per vedere se fare un nuovo pack
+
+        $fileName = $this->getFileName($vendor,$name,$version,false);
 
         $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js package-t {$fileName}";
         $command1= "cd ../ && ";

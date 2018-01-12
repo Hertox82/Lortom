@@ -31,7 +31,8 @@ export class PluginService extends MasterService
             { namePath: 'packPlugin', path: 'plugin/pack'},
             { namePath: 'delPack', path: 'plugin/delete'},
             { namePath: 'getLatestPlugin', path: 'plugins/latest'},
-            { namePath: 'getTemplate', path: 'templates'}
+            { namePath: 'getTemplate', path: 'templates'},
+            { namePath: 'packTemplate', path: 'template/pack'}
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -94,6 +95,15 @@ export class PluginService extends MasterService
             );
     }
 
+    deletePackTemplate(template: LtTemplate): Observable<any> {
+        return this.http.post(this.apiManager.getPathByName('unPackTemp'),template,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().message;
+                }
+            );
+    }
+
     /**
      * This function call API in order to Install the Plugin
      * @param plugin
@@ -127,6 +137,16 @@ export class PluginService extends MasterService
             .map(
                 (response: Response) => {
                     return response.json().plugins;
+                }
+            );
+    }
+
+    packTemplate(template: LtTemplate): Observable<any> {
+        console.log('dentro il service');
+        return this.http.post(this.apiManager.getPathByName('packTemplate'),template,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().message;
                 }
             );
     }

@@ -3,6 +3,7 @@
     "repo": "compressed",
     "depl": "angular-backend/src/plugins",
     "deplt": "template",
+    "cwdT": "template",
     "template": {
         "vendor": "LortomTemplate",
         "name": "Fantastic",
