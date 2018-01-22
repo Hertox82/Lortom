@@ -63,7 +63,11 @@ export class ListTemplateComponent extends ListComponent implements OnInit {
         //todo
     }
 
-    uninstallTemplate() {
-        //todo
+    uninstallTemplate(temp: LtTemplate) {
+        this.tpSer.uninstallTemplate(temp).subscribe(
+            (data: any) => {
+                this.retrieveListOfTemplate();
+            }
+        );
     }
 }

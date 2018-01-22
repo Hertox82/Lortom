@@ -33,7 +33,8 @@ export class PluginService extends MasterService
             { namePath: 'getLatestPlugin', path: 'plugins/latest'},
             { namePath: 'getTemplate', path: 'templates'},
             { namePath: 'packTemplate', path: 'template/pack'},
-            { namePath: 'unPackTemp', path: 'template/delpack'}
+            { namePath: 'unPackTemp', path: 'template/delpack'},
+            { namePath: 'instTemp', path: 'template'}
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -82,6 +83,15 @@ export class PluginService extends MasterService
         return this.http.put(this.apiManager.getPathByName('getPlugins'),plugins,this.getOptions())
             .map(
                 (response : Response) => {
+                    return response.json().message;
+                }
+            );
+    }
+
+    uninstallTemplate(template: LtTemplate): Observable<any> {
+        return this.http.put(this.apiManager.getPathByName('instTemp'),template,this.getOptions())
+            .map(
+                (response: Response) => {
                     return response.json().message;
                 }
             );

@@ -69,9 +69,39 @@ class PluginController extends Controller
     }
 
     public function installTemplate(Request $request) {
-        //TODO
 
         $input = $request->all();
+
+        $fileName = $this->getFileName($input['vendor'],$input['name'],$input['version'],false);
+
+        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js install-t {$fileName}";
+        $command1= "cd ../ && ";
+        $command = $command1.$command2;
+
+        exec($command,$stdout);
+
+        $configTemp = $this->loadTemplConfig($input['vendor'],$input['name']);
+
+        //prima di tutto compilo il composer.json con il giusto autoload
+
+
+
+        if(isset($configTemp['plugins']['require'])) {
+            $plugins = $configTemp['plugins']['require'];
+            $rebuild = false;
+            foreach ($plugins as $vendorName => $version) {
+                list($vendor,$name) = explode('@',$vendorName,2);
+                if($vendor != 'Hardel') {
+                    if(!in_array($name,['Dashboard','Settings','Plugin','Website'])) {
+                        $this->opInstall($vendor,$name,$version);
+                    }
+                }
+            }
+
+            if($rebuild) {
+                $this->opRebuild();
+            }
+        }
     }
 
     /**
@@ -95,10 +125,46 @@ class PluginController extends Controller
         return response()->json(['message' => true]);
     }
 
+    /**
+     * @Api({
+            "description": "this function provide to uninstall template"
+     *     })
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function uninstallTemplate(Request $request) {
         $input = $request->all();
 
         $fileName = $this->getFileName($input['vendor'],$input['name'],$input['version'],false);
+
+        $ConfTemplate = $this->loadTemplConfig($input['vendor'],$input['name']);
+
+        $composerJson = $this->loadComposerJson();
+
+        if($composerJson) {
+            if(isset($composerJson['autoload'])) {
+                if(isset($ConfTemplate['frontend']['autoload'])) {
+                    $chiavi = array_keys($ConfTemplate['frontend']['autoload']);
+
+                    foreach ($chiavi as $key) {
+                        if(isset($composerJson['autoload'][$key])) {
+                            $NamespaceComposer = array_keys($composerJson['autoload'][$key]);
+                            $NamespaceTemplate = array_keys($ConfTemplate['frontend']['autoload'][$key]);
+                            foreach ($NamespaceTemplate as $chiaveName) {
+                                if(in_array($chiaveName,$NamespaceComposer)) {
+                                    unset($composerJson['autoload'][$key][$chiaveName]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $this->writeComposerJson($composerJson);
+
+        $commandDump = '/Applications/XAMPP/xamppfiles/bin/php /usr/local/bin/composer.phar dump-autoload';
+        system($commandDump);
 
         $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js uninstall-t {$fileName}";
         $command1= "cd ../ && ";
@@ -315,21 +381,38 @@ class PluginController extends Controller
        return response()->json(['template' => $listInstalledTemplate, 'templates' => $listLastRepo]);
     }
 
+    /**
+     * This function check if template version has changed
+     * @param $vendor
+     * @param $name
+     * @param $version
+     * @return array
+     */
     protected function checkIfChangeVersion($vendor,$name,$version) {
 
-        $config = $this->loadLtpmConfig();
-
         $listaReturn = [$vendor,$name,$version];
+
+        $temp = $this->loadTemplConfig($vendor,$name);
+
+        if($temp) {
+            $listaReturn= [$temp['vendor'],$temp['name'],$temp['version']];
+        }
+
+        return $listaReturn;
+    }
+
+    protected function loadTemplConfig($vendor,$name) {
+
+        $config = $this->loadLtpmConfig();
 
         if(isset($config['deplt'])) {
             $fileName = app_path().'/../'.$config['deplt']."/{$vendor}/{$name}/config.json";
             if(File::exists($fileName)) {
-                $temp = json_decode(File::get($fileName),true);
-                $listaReturn= [$temp['vendor'],$temp['name'],$temp['version']];
+                return json_decode(File::get($fileName),true);
             }
         }
 
-        return $listaReturn;
+        return null;
     }
 
     /**
@@ -391,6 +474,22 @@ class PluginController extends Controller
                 }
             }
         }
+    }
+
+    protected function loadComposerJson() {
+        $composerFile = app_path().'/../composer.json';
+
+        if(File::exists($composerFile)) {
+            return json_decode(File::get($composerFile),true);
+        }
+
+        return null;
+    }
+
+    protected function writeComposerJson($data) {
+        $string = json_encode($data);
+        $composerFile = app_path().'/../composer.json';
+        File::put($composerFile,$string);
     }
 
     protected function getFileName($vendor,$name,$version,$isPlugin = true) {
