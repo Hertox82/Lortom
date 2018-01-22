@@ -129,6 +129,15 @@ export class PluginService extends MasterService
             );
     }
 
+    installTemplate(template: LtTemplate): Observable<any> {
+        return this.http.post(this.apiManager.getPathByName('instTemp'),template,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().message;
+                }
+            );
+    }
+
     /**
      * This function call API in order to Update the Plugin
      * @param plugin

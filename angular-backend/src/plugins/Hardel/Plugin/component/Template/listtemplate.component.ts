@@ -60,7 +60,11 @@ export class ListTemplateComponent extends ListComponent implements OnInit {
     }
 
     installTemplate(temp: LtTemplate) {
-        //todo
+        this.tpSer.installTemplate(temp).subscribe(
+            (data: any) => {
+                this.retrieveListOfTemplate();
+            }
+        );
     }
 
     uninstallTemplate(temp: LtTemplate) {
