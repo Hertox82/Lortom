@@ -1,12 +1,18 @@
 {
     "name": "hadeluca/lortom",
     "description": "Lortom is a CMS based on Laravel Framework, The Backend was built with Angular 4",
-    "keywords": ["cms", "laravel","angular4","laravel+angular", "angular 4"],
+    "keywords": [
+        "cms",
+        "laravel",
+        "angular4",
+        "laravel+angular",
+        "angular 4"
+    ],
     "license": "MIT",
     "type": "project",
     "authors": [
         {
-            "name" : "Hernan Ariel De Luca",
+            "name": "Hernan Ariel De Luca",
             "email": "hadeluca@gmail.com"
         }
     ],
@@ -29,8 +35,8 @@
         ],
         "psr-4": {
             "App\\": "app/",
-            "Plugins\\":"angular-backend/src/plugins/",
-            "LortomTemplate\\":"template/LortomTemplate/Fantastic/frontend"
+            "Plugins\\": "angular-backend/src/plugins/",
+            "LortomTemplate\\": "template/LortomTemplate/Fantastic/frontend"
         }
     },
     "autoload-dev": {
@@ -40,8 +46,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": [
-            ]
+            "dont-discover": []
         }
     },
     "scripts": {

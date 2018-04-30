@@ -20,6 +20,8 @@ class Kernel extends ConsoleKernel
         Commands\UpdatePermission::class,
         Commands\UpdateMigrationUp::class,
         Commands\UpdateMigrationDown::class,
+        Commands\CreateTemplate::class,
+        Commands\DeleteTemplate::class,
     ];
 
     /**

@@ -94,6 +94,11 @@ class LortomPages extends Model
     }
 
 
+    /**
+     * This function rendering the view of the Page
+     * @param $variable
+     * @return array
+     */
     public function renderData($variable) {
 
         $view = $this->fileName;
@@ -118,6 +123,11 @@ class LortomPages extends Model
         return [$view,$data];
     }
 
+    /**
+     * This function compile into a variable $source the appearance of a List of Components
+     * @param $source
+     * @return string
+     */
     protected function compileComponent($source) {
         $components = $this->components();
 
@@ -128,6 +138,11 @@ class LortomPages extends Model
         return $source;
     }
 
+    /**
+     * This function take all Component of this Page and call the singular function
+     * @param $data
+     * @return array
+     */
     protected function getDataFromComponent($data)
     {
         $components = $this->getListComponents();

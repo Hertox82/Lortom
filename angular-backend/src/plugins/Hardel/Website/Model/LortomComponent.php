@@ -78,6 +78,10 @@ class LortomComponent extends Model
             ])->get();
     }
 
+    /**
+     * This function evaluate the content of appearance and search {{ $variable }} type
+     * @return array|mixed
+     */
     public function getVariableFromAppearance()
     {
         $slug = $this->appearance;

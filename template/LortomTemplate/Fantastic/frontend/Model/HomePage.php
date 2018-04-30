@@ -1,17 +1,16 @@
 <?php
 
+/**
+ * User: hernan
+ * Date: 01/12/2017
+ * Time: 14:47
+ */
+
 namespace LortomTemplate\Model;
 
 use Plugins\Hardel\Website\Model\LortomComponent;
 use Plugins\Hardel\Website\Model\LortomMenu;
 use Plugins\Hardel\Website\Model\LortomPages;
-
-/**
- * Created by PhpStorm.
- * User: hernan
- * Date: 01/12/2017
- * Time: 14:47
- */
 
 class HomePage
 {
