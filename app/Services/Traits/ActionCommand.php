@@ -33,9 +33,18 @@ trait ActionCommand {
      * @param $path
      */
     protected function deleteDir($path) {
-        if(is_dir($path)) {
+        if(File::exists($path)) {
             File::deleteDirectory($path);
         }
+    }
+
+    /**
+     * Check if Folder is empty
+     * @param $path
+     * @return bool
+     */
+    protected function isEmptyFolder($path) {
+        return (count(File::directories($path))>0) ? false : true;
     }
 
 
