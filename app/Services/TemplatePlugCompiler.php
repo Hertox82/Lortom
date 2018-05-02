@@ -10,7 +10,7 @@ namespace App\Services;
 
 use App\Exceptions\VNException;
 
-class TemplateAddPlugCompiler extends AbstractTemplateCompiler {
+class TemplatePlugCompiler extends AbstractTemplateCompiler {
 
     /**
      * @var \App\Services\PluginsConfigCompiler
@@ -43,6 +43,21 @@ class TemplateAddPlugCompiler extends AbstractTemplateCompiler {
                 $this->configJson->setPlugin($vendorP,$nameP,$version);
             }
         }
+        $this->configJson->save();
+
+        return $this;
+    }
+
+
+    public function deletingPluginInConfig($vendorP,$nameP) {
+
+        if($this->configJson->hasPlugin($vendorP,$nameP)) {
+            $this->configJson->unsetPlugin($vendorP,$nameP);
+        }
+        else {
+            throw new VNException("Plugin not present into the Template");
+        }
+
         $this->configJson->save();
 
         return $this;

@@ -8,10 +8,10 @@
     },
     "plugins": {
         "require": {
-            "Hardel@Dashboard": "1.0.1",
             "Hardel@Plugin": "1.0.0",
             "Hardel@Settings": "1.0.0",
-            "Hardel@Website": "1.0.0"
+            "Hardel@Website": "1.0.0",
+            "Hardel@Dashboard": "1.0.1"
         }
     },
     "frontend": {
