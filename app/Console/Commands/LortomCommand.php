@@ -14,11 +14,8 @@ use File;
 abstract class LortomCommand extends Command
 {
 
-    protected function getVendorName()
-    {
-        //get value from input
-        $VendorName = $this->option('vendor-name');
-        $silent = $this->option('silent');
+
+    protected function extrapolateVendorName($VendorName,$silent,$type= "Template") {
 
         $vendorName = [];
 
@@ -28,7 +25,7 @@ abstract class LortomCommand extends Command
             // if silent is not called
             if(!$silent) {
                 $vendorName[0] = $this->ask('Name of Vendor?');
-                $vendorName[1] = $this->ask('Name of Template?');
+                $vendorName[1] = $this->ask("Name of {$type}?");
             }
             else {
                 //throw an Exception
@@ -44,7 +41,7 @@ abstract class LortomCommand extends Command
             {
                 if(!$silent) {
                     $vendorName[0] = $this->ask('Name of Vendor?');
-                    $vendorName[1] = $this->ask('Name of Template?');
+                    $vendorName[1] = $this->ask("Name of {$type}?");
                 }
                 else {
                     throw new VNException('{"error":100, "message": "vendorName format erorr and call silent"}');
@@ -75,6 +72,10 @@ abstract class LortomCommand extends Command
      */
     protected function getPathTemplate() {
         return app_path().'/../template/';
+    }
+
+    protected function getPathPlugin() {
+        return app_path().'/../angular-backend/src/plugins/';
     }
 
 

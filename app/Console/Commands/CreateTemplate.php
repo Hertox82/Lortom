@@ -37,15 +37,16 @@ class CreateTemplate extends Command
     public function handle()
     {
         //check the Vendor-Name format
+        $silent = $this->option('silent');
         try {
             //get vendor and name
-            list($vendor, $name) = $this->getVendorName();
+            list($vendor, $name) = $this->extrapolateVendorName($this->option('vendor-name'),$silent);
 
         }catch (VNException $e) {
             $this->error($e->getMessage());
             return;
         }
-        $silent = $this->option('silent');
+
 
         if(!$silent) {
             if($this->confirm("This is the Vendor = {$vendor}, the Name= {$name} of template that you choice, Do you wish to continue?")) {

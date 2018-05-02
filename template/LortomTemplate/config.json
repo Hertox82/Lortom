@@ -1,24 +1,24 @@
 {
-  "vendor": "LortomTemplate",
-  "name": "Fantastic",
-  "version": "0.1.0",
-  "author": {
-    "name": "Hernan Ariel De Luca",
-    "email": "hadeluca@gmail.com"
-  },
-  "plugins": {
-    "require": {
-      "Hardel@Dashboard": "1.0.0",
-      "Hardel@Plugin": "1.0.0",
-      "Hardel@Settings": "1.0.0",
-      "Hardel@Website": "1.0.0"
+    "vendor": "LortomTemplate",
+    "name": "Fantastic",
+    "version": "0.1.0",
+    "author": {
+        "name": "Hernan Ariel De Luca",
+        "email": "hadeluca@gmail.com"
+    },
+    "plugins": {
+        "require": {
+            "Hardel@Dashboard": "1.0.1",
+            "Hardel@Plugin": "1.0.0",
+            "Hardel@Settings": "1.0.0",
+            "Hardel@Website": "1.0.0"
+        }
+    },
+    "frontend": {
+        "autoload": {
+            "psr-4": {
+                "LortomTemplate\\": "template/LortomTemplate/Fantastic/frontend"
+            }
+        }
     }
-  },
-  "frontend": {
-    "autoload": {
-      "psr-4": {
-        "LortomTemplate\\": "template/LortomTemplate/Fantastic/frontend"
-      }
-    }
-  }
 }

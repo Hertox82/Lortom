@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
         Commands\UpdateMigrationDown::class,
         Commands\CreateTemplate::class,
         Commands\DeleteTemplate::class,
+        Commands\AddTempPlugin::class,
     ];
 
     /**
