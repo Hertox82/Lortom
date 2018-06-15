@@ -84,8 +84,6 @@ class PluginController extends Controller
 
         //prima di tutto compilo il composer.json con il giusto autoload
 
-
-
         if(isset($configTemp['plugins']['require'])) {
             $plugins = $configTemp['plugins']['require'];
             $rebuild = false;
@@ -358,9 +356,8 @@ class PluginController extends Controller
     public function getTemplates(Request $request) {
 
         //leggo il file ltpm.config.json in modo da vedere se ci sono dei Template installati
-       $listInstalledTemplate = $this->getListTemplateInstalled();
+        list($listActive,$listNotActive) = $this->getListTemplateInstalled();
 
-       $listLastRepo = [];
 
        /*$command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js latest-template";
        $command1= "cd ../ && ";
@@ -370,19 +367,28 @@ class PluginController extends Controller
 
        $listLastRepo = json_decode($stdout[0],true); */
 
-       $isnull = is_null($listLastRepo);
-       if($isnull) {
-           $listLastRepo = [];
-       }
-
-       $this->checkIfTemplateInstalled($listLastRepo,$listInstalledTemplate);
-
-
-       return response()->json(['template' => $listInstalledTemplate, 'templates' => $listLastRepo]);
+       return response()->json(['template' => $listActive, 'templates' => $listNotActive]);
     }
 
     public function getLatestTemplate(Request $request) {
-        pr(['message' => 'todo']);
+        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js latest-template";
+        $command1= "cd ../ && ";
+        $command = $command1.$command2;
+
+        exec($command,$stdout);
+
+        $listLastRepo = json_decode($stdout[0],true);
+
+        $listLastTemplate = [];
+
+        foreach ($listLastRepo as $Template) {
+            if(!isset($Template['installed'])) {
+               $listLastTemplate[] = $Template;
+            }
+        }
+
+        return response()->json(['template' => $listLastTemplate]);
+
     }
 
     /**
@@ -442,6 +448,8 @@ class PluginController extends Controller
     protected function getListTemplateInstalled() {
         $config = $this->loadLtpmConfig();
 
+        $listActive = [];
+        $listNotActive =[];
         $listInstalled = [];
 
         if(! is_null($config)) {
@@ -452,15 +460,22 @@ class PluginController extends Controller
         }
 
         for($i=0; $i<count($listInstalled); $i++) {
-            $listInstalled[$i]['packed'] = false;
-            $listInstalled[$i]['installed'] = true;
-            $listInstalled[$i]['toUpdate'] = false;
+
+            $template = $listInstalled[$i];
+            if($template['active'] == true) {
+
+                $listActive[] =  array_merge($template,['packed' => false, 'installed' => true, 'toUpdate' => false]);
+            }
+            else{
+                $listNotActive[] = array_merge($template,['packed' => false, 'installed' => true, 'toUpdate' => false]);
+            }
         }
 
         //check if exist some template packed
-        $this->checkIfTemplateArePacked($listInstalled,$config);
+        $this->checkIfTemplateArePacked($listNotActive,$config);
+        $this->checkIfTemplateArePacked($listActive,$config);
 
-        return $listInstalled;
+        return [$listActive,$listNotActive];
     }
 
     protected function checkIfTemplateArePacked(&$listInstalled,$config) {

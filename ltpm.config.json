@@ -10,12 +10,6 @@
             "name": "Fantastic",
             "version": "0.1.0",
             "active": true
-        },
-        {
-            "vendor": "Hardel",
-            "name": "TemplateTest",
-            "version": "0.1.0",
-            "active": false
         }
     ],
     "plugins": [
