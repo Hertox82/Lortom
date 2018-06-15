@@ -12,14 +12,14 @@ import {Router} from "@angular/router";
 })
 export class ListTemplateComponent extends ListComponent implements OnInit {
     listOfTemplate:  LtTemplate[];
-    listOfLastTemplate: LtTemplate[];
+    listOfNotActiveTemplate: LtTemplate[];
     myRoot = '/backend/plugin/template';
     isRoot = false;
     constructor(public tpSer: PluginService, public router: Router) {
         super();
 
         this.listOfTemplate = [];
-        this.listOfLastTemplate = [];
+        this.listOfNotActiveTemplate = [];
 
         this.onComponentInit({
             name: 'tpSer',
@@ -33,9 +33,9 @@ export class ListTemplateComponent extends ListComponent implements OnInit {
     retrieveListOfTemplate() {
         this.tpSer.getTemplateFrom().subscribe(
             (data: any) => {
-                this.listOfLastTemplate = data.templates as LtTemplate[];
+                this.listOfNotActiveTemplate = data.templates as LtTemplate[];
                 this.listOfTemplate = data.template as LtTemplate[];
-                this.listOfData = this.listOfLastTemplate;
+                this.listOfData = this.listOfNotActiveTemplate;
                 this.tpSer.setTemplate(this.listOfTemplate);
                 this.updateListaShow();
             }
