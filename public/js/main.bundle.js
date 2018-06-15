@@ -6,16 +6,12 @@ webpackJsonp(["main"],{
 var map = {
 	"../plugins/Hardel/Dashboard/dashboard.module": [
 		"./src/plugins/Hardel/Dashboard/dashboard.module.ts",
-		4
+		3
 	],
 	"../plugins/Hardel/Plugin/plugin.module": [
 		"./src/plugins/Hardel/Plugin/plugin.module.ts",
 		0,
 		"common"
-	],
-	"../plugins/Hardel/Prova/prova.module": [
-		"./src/plugins/Hardel/Prova/prova.module.ts",
-		3
 	],
 	"../plugins/Hardel/Settings/settings.module": [
 		"./src/plugins/Hardel/Settings/settings.module.ts",
@@ -216,7 +212,6 @@ var routes = [
     { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' },
     { path: 'backend/website', loadChildren: '../plugins/Hardel/Website/website.module#WebsiteModule' },
     { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' },
-    { path: 'backend/prova', loadChildren: '../plugins/Hardel/Prova/prova.module#ProvaModule' },
     { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' }
 ];
 exports.routing = router_1.RouterModule.forRoot(routes);

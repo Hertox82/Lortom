@@ -4,21 +4,25 @@
     "depl": "angular-backend/src/plugins",
     "deplt": "template",
     "cwdT": "template",
-    "template": {
-        "vendor": "LortomTemplate",
-        "name": "Fantastic",
-        "version": "0.1.0"
-    },
+    "template": [
+        {
+            "vendor": "LortomTemplate",
+            "name": "Fantastic",
+            "version": "0.1.0",
+            "active": true
+        },
+        {
+            "vendor": "Hardel",
+            "name": "TemplateTest",
+            "version": "0.1.0",
+            "active": false
+        }
+    ],
     "plugins": [
         {
             "vendor": "Hardel",
             "name": "Dashboard",
             "version": "1.0.1"
-        },
-        {
-            "vendor": "Hardel",
-            "name": "Prova",
-            "version": "1.0.0"
         }
     ]
 }

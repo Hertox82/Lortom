@@ -46,6 +46,11 @@ Route::get('/templates',[
     'uses'  => 'PluginController@getTemplates'
 ]);
 
+Route::get('/templates/latest',[
+    'as'    => 'apiGetLatestTemplates',
+    'uses'  => 'PluginController@getLatestTemplate'
+]);
+
 Route::put('/templates',[
     'as'    => 'apiUninstallTemplate',
     'uses'  => 'PluginController@uninstallTemplate'
@@ -55,6 +60,8 @@ Route::post('/template/pack',[
     'as'    => 'apiPackTemplate',
     'uses'  => 'PluginController@packTemplate'
 ]);
+
+
 
 Route::post('/template',[
     'as'    => 'apiInstallTemplate',

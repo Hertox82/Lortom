@@ -36,7 +36,8 @@
         "psr-4": {
             "App\\": "app/",
             "Plugins\\": "angular-backend/src/plugins/",
-            "LortomTemplate\\": "template/LortomTemplate/Fantastic/frontend"
+            "LortomTemplate\\": "template/LortomTemplate/Fantastic/frontend",
+            "Hardel\\": "template/Hardel/TemplateTest/frontend"
         }
     },
     "autoload-dev": {

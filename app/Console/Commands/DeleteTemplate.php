@@ -11,6 +11,7 @@ use App\Console\Commands\LortomCommand as Command;
 use App\Services\TemplateDeleteCompiler;
 use App\Services\Traits\ActionCommand;
 use App\Exceptions\VNException;
+use File;
 
 class DeleteTemplate extends Command{
 
@@ -63,11 +64,35 @@ class DeleteTemplate extends Command{
         // check if folder really exist
         $this->checkIfPathNotExists($vendor,$name,"Template");
 
-        $this->compiler->setVendorName($vendor,$name)
+        $compiler = $this->compiler->setVendorName($vendor,$name)
             ->deleteAutoloadFromComposer()
             ->deleteBaseDirectory();
 
+        //remove info from ltpm.config.json
+        $this->removeTemplateFromLtpm($vendor,$name,$compiler->getVersion());
+
+
         // final info
         $this->info('Please, be sure to make the composer dump-autoload!');
+    }
+
+    protected function removeTemplateFromLtpm($vendor,$name,$version) {
+        $ltpm = base_path().'/ltpm.config.json';
+        if(File::exists($ltpm)) {
+            $ltpmJSON =  json_decode(File::get($ltpm),true);
+
+            for($i=0;$i<count($ltpmJSON['template']);$i++) {
+                $template = $ltpmJSON['template'][$i];
+
+                if($template['name'] === $name and $template['vendor'] === $vendor and $template['version'] === $version) {
+                    break;
+                }
+            }
+
+            unset($ltpmJSON['template'][$i]);
+
+            $encoded = json_encode($ltpmJSON,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+            File::put($ltpm,$encoded);
+        }
     }
 }

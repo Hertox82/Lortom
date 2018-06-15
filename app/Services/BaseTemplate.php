@@ -65,11 +65,11 @@ abstract class BaseTemplate {
      * This function setting the path base of template
      * @return $this
      */
-    public function setBasePath(){
+    public function  setBasePath(){
 
         $this->baseTemplatePath = $this->basePath.$this->vendor.'/'.$this->name;
 
-        $this->configJson = new TemplateConfigJson($this->basePath.$this->vendor);
+        $this->configJson = new TemplateConfigJson($this->baseTemplatePath);
 
         return $this;
     }
@@ -96,5 +96,13 @@ abstract class BaseTemplate {
      */
     public function getVendor() {
         return $this->vendor;
+    }
+
+    public function getVersion() {
+        return $this->configJson->version;
+    }
+
+    public function getConfigJSON() {
+        $this->configJson->printJSON();
     }
 }

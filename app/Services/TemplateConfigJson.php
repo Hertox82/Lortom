@@ -113,4 +113,8 @@ class TemplateConfigJson  {
         File::put($this->pathConfigJson,$encoded);
     }
 
+    public function printJSON() {
+        pr($this->data);
+    }
+
 }

@@ -335,12 +335,11 @@ class PluginController extends Controller
      */
     public function getLatestPlugin(Request $request) {
 
-        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js latest";
+        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js latest-plugin";
         $command1= "cd ../ && ";
         $command = $command1.$command2;
 
         exec($command,$stdout);
-
         $listOfPlugin = json_decode($stdout[0],true);
 
         $this->checkIfPluginsAreInstalled($listOfPlugin);
@@ -363,13 +362,13 @@ class PluginController extends Controller
 
        $listLastRepo = [];
 
-       $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js latest-template";
+       /*$command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js latest-template";
        $command1= "cd ../ && ";
        $command = $command1.$command2;
 
        exec($command,$stdout);
 
-       $listLastRepo = json_decode($stdout[0],true);
+       $listLastRepo = json_decode($stdout[0],true); */
 
        $isnull = is_null($listLastRepo);
        if($isnull) {
@@ -378,7 +377,12 @@ class PluginController extends Controller
 
        $this->checkIfTemplateInstalled($listLastRepo,$listInstalledTemplate);
 
+
        return response()->json(['template' => $listInstalledTemplate, 'templates' => $listLastRepo]);
+    }
+
+    public function getLatestTemplate(Request $request) {
+        pr(['message' => 'todo']);
     }
 
     /**
@@ -439,16 +443,19 @@ class PluginController extends Controller
         $config = $this->loadLtpmConfig();
 
         $listInstalled = [];
+
         if(! is_null($config)) {
             if(isset($config['template'])) {
 
-                $listInstalled[] = $config['template'];
+                $listInstalled = $config['template'];
             }
         }
 
-        $listInstalled[0]['packed'] = false;
-        $listInstalled[0]['installed'] = true;
-        $listInstalled[0]['toUpdate'] = false;
+        for($i=0; $i<count($listInstalled); $i++) {
+            $listInstalled[$i]['packed'] = false;
+            $listInstalled[$i]['installed'] = true;
+            $listInstalled[$i]['toUpdate'] = false;
+        }
 
         //check if exist some template packed
         $this->checkIfTemplateArePacked($listInstalled,$config);
@@ -587,7 +594,7 @@ class PluginController extends Controller
     }
 
     /**
-     * This function chek if Plugins are installed
+     * This function check if Plugins are installed
      * @param $lista
      */
     protected function checkIfPluginsAreInstalled(&$lista) {

@@ -13,7 +13,9 @@ const routes: Routes = [
         {path: 'plugins', component: PL.ListPluginComponent, data: { breadcrumb: 'List'}, children: [
             {path: 'install', component: PL.InstallPluginComponent, data: {breadcrumb: 'Install'}}
         ]},
-        {path: 'template', component: PL.ListTemplateComponent, data: {breadcrumb: 'Template List'}}
+        {path: 'template', component: PL.ListTemplateComponent, data: {breadcrumb: 'Template List'}, children:[
+            {path: 'install', component: PL.InstallTemplateComponent, data: {breadcrumb: 'Template Install'}}
+        ]}
     ]}
 ];
 
@@ -23,5 +25,6 @@ export const pluginComponent = [
     PL.PluginComponent,
     PL.ListPluginComponent,
     PL.InstallPluginComponent,
-    PL.ListTemplateComponent
+    PL.ListTemplateComponent,
+    PL.InstallTemplateComponent
 ];
