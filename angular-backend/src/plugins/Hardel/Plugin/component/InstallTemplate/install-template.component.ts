@@ -53,11 +53,11 @@ export class InstallTemplateComponent extends ListComponent implements OnInit {
                     this.widthStyle = '40%';
                     this.retrieveListOfLatestTemplate();
                     this.widthStyle = '80%';
-                    this.inTmp.getPluginsFrom()
+                    this.inTmp.getTemplateFrom()
                         .subscribe(
                             (data: LtTemplate[]) => {
                                 this.widthStyle = '99%';
-                                this.inTmp.setPlugins(data);
+                                this.inTmp.setTemplate(data);
                                 mod.close();
                                 this.widthStyle= '10%';
                             }

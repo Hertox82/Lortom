@@ -235,6 +235,11 @@ class PluginController extends Controller
         return response()->json(['message' => 'ok']);
     }
 
+    /**
+     * This function sanitize input coming from Request
+     * @param $input
+     * @return array
+     */
     protected function sanitizeTemplateUninstall($input) {
 
         if(!isset($input[0])) {

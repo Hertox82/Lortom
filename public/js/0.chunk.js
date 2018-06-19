@@ -6187,14 +6187,13 @@ var PluginService = (function (_super) {
     PluginService.prototype.uninstallTemplates = function (templates) {
         return this.http.put(this.apiManager.getPathByName('instTemp'), templates, this.getOptions())
             .map(function (response) {
-            return response;
+            return response.json().message;
         });
     };
     PluginService.prototype.uninstallTemplate = function (template) {
         return this.http.put(this.apiManager.getPathByName('instTemp'), template, this.getOptions())
             .map(function (response) {
-            //return response.json().message;
-            return response;
+            return response.json().message;
         });
     };
     PluginService.prototype.deletePackPlugin = function (plugin) {
@@ -6508,10 +6507,10 @@ var InstallTemplateComponent = (function (_super) {
                 _this.widthStyle = '40%';
                 _this.retrieveListOfLatestTemplate();
                 _this.widthStyle = '80%';
-                _this.inTmp.getPluginsFrom()
+                _this.inTmp.getTemplateFrom()
                     .subscribe(function (data) {
                     _this.widthStyle = '99%';
-                    _this.inTmp.setPlugins(data);
+                    _this.inTmp.setTemplate(data);
                     mod.close();
                     _this.widthStyle = '10%';
                 });
@@ -6747,7 +6746,9 @@ var ListTemplateComponent = (function (_super) {
         }, 'router', 'retrieveListOfTemplate');
         return _this;
     }
-    ListTemplateComponent.prototype.ngOnInit = function () { };
+    ListTemplateComponent.prototype.ngOnInit = function () {
+        console.log('roma merda');
+    };
     /**
      * function to push or splice item into Deleted List of Roles
      * @param ev

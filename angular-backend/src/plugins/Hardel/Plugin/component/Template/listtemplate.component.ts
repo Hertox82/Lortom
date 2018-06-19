@@ -27,7 +27,9 @@ export class ListTemplateComponent extends ListComponent implements OnInit {
             upd: 'updateTemplate$'
         }, 'router', 'retrieveListOfTemplate');
     }
-    ngOnInit() {}
+    ngOnInit() {
+        console.log('roma merda');
+    }
 
     /**
      * function to push or splice item into Deleted List of Roles

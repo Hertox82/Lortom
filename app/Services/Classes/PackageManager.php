@@ -71,7 +71,7 @@ class PackageManager {
      * @param $data
      */
     public function writeComposerJson($data) {
-        $string = json_encode($data);
+        $string = json_encode($data,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         $composerFile = base_path().'/composer.json';
         File::put($composerFile,$string);
     }

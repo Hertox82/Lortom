@@ -102,7 +102,7 @@ export class PluginService extends MasterService
         return this.http.put(this.apiManager.getPathByName('instTemp'),templates,this.getOptions())
             .map(
                 (response: Response) => {
-                    return response;
+                    return response.json().message;
                 }
             );
     }
@@ -111,8 +111,7 @@ export class PluginService extends MasterService
         return this.http.put(this.apiManager.getPathByName('instTemp'),template,this.getOptions())
             .map(
                 (response: Response) => {
-                    //return response.json().message;
-                    return response;
+                    return response.json().message;
                 }
             );
     }
