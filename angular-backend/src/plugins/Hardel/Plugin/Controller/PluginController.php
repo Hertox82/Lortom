@@ -68,6 +68,13 @@ class PluginController extends Controller
 
     }
 
+    /**
+     * @Api({
+            "description": "this function provide to install a Template"
+     *     })
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function installTemplate(Request $request) {
 
         $input = $request->all();
@@ -80,27 +87,100 @@ class PluginController extends Controller
 
         exec($command,$stdout);
 
-        $configTemp = $this->loadTemplConfig($input['vendor'],$input['name']);
 
-        //prima di tutto compilo il composer.json con il giusto autoload
 
-        if(isset($configTemp['plugins']['require'])) {
-            $plugins = $configTemp['plugins']['require'];
-            $rebuild = false;
-            foreach ($plugins as $vendorName => $version) {
-                list($vendor,$name) = explode('@',$vendorName,2);
-                if($vendor != 'Hardel') {
-                    if(!in_array($name,['Dashboard','Settings','Plugin','Website'])) {
-                        $this->opInstall($vendor,$name,$version);
-                    }
+        //prima di tutto compilo il composer.json con l'autoload
+
+        ltpm()->addAutoloadInComposer($input['vendor'],$input['name']);
+
+        return response()->json(['message' => true]);
+
+    }
+
+    /**
+     * @Api({
+            "description": "this function provide to activate the Template installing all Plugins"
+     *     })
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function activateTemplate(Request $request) {
+
+        // Get alla input from the request
+        $input = $request->all();
+
+        //Find the template that is now active and deactivate it
+
+        list($listActive,$listNotActive) = $this->getListTemplateInstalled();
+
+        // Iterate over the template active
+        foreach ($listActive as $tempActive) {
+            $this->packageAction($tempActive['vendor'],$tempActive['name'],$tempActive['version'],"deactivate-t");
+            $this->actionTemplate($tempActive['vendor'],$tempActive['name'],"Uninstall");
+        }
+
+        $this->packageAction($input['vendor'],$input['name'],$input['version']);
+        $this->actionTemplate($input['vendor'],$input['name']);
+
+        return response()->json(['message' => true]);
+    }
+
+
+    /**
+     * @Api({
+            "description": "this function provide to deactivate the Template uninstalling all Plugins"
+     *     })
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function deactivateTemplate(Request $request) {
+
+        $input = $request->all();
+
+        $this->actionTemplate($input['vendor'],$input['name'],"Uninstall");
+        $this->packageAction($input['vendor'],$input['name'],$input['version'],"deactivate-t");
+
+        return response()->json(['message' => true]);
+    }
+
+
+    /**
+     * This function activate and deactivate Plugins into Template
+     * @param $vendor
+     * @param $name
+     * @param string $type
+     */
+    protected function actionTemplate($vendor,$name,$type="Install") {
+
+        $listOfPlugins = ltpm()->getListOfPluginsInTemplate($vendor,$name);
+
+        $function = "op{$type}";
+
+        foreach ($listOfPlugins as $plugin) {
+            if($plugin['vendor'] == 'Hardel') {
+                if(!in_array($plugin['name'],['Dashboard','Settings','Plugin','Website'])) {
+                    $this->$function($plugin['vendor'],$plugin['name'],$plugin['version']);
                 }
             }
-
-            if($rebuild) {
-                $this->opRebuild();
+            else {
+                $this->$function($plugin['vendor'],$plugin['name'],$plugin['version']);
             }
         }
+
+        $this->opRebuild();
     }
+
+    protected function packageAction($vendor,$name,$version, $action="activate-t") {
+
+        $fileName = ltpm()->getFileName($vendor,$name,$version,false);
+
+        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js {$action} {$fileName}";
+        $command1= "cd ../ && ";
+        $command = $command1.$command2;
+
+        exec($command,$stdout);
+    }
+
 
     /**
      * @Api({
@@ -133,33 +213,13 @@ class PluginController extends Controller
     public function uninstallTemplate(Request $request) {
         $input = $request->all();
 
-        $fileName = $this->getFileName($input['vendor'],$input['name'],$input['version'],false);
+        $fileName = ltpm()->getFileName($input['vendor'],$input['name'],$input['version'],false);
 
-        $ConfTemplate = $this->loadTemplConfig($input['vendor'],$input['name']);
+        //deactivate the plugin
+        $this->actionTemplate($input['vendor'],$input['name'],"Uninstall");
 
-        $composerJson = $this->loadComposerJson();
+        ltpm()->removeAutoloadFromComposer($input['vendor'],$input['name']);
 
-        if($composerJson) {
-            if(isset($composerJson['autoload'])) {
-                if(isset($ConfTemplate['frontend']['autoload'])) {
-                    $chiavi = array_keys($ConfTemplate['frontend']['autoload']);
-
-                    foreach ($chiavi as $key) {
-                        if(isset($composerJson['autoload'][$key])) {
-                            $NamespaceComposer = array_keys($composerJson['autoload'][$key]);
-                            $NamespaceTemplate = array_keys($ConfTemplate['frontend']['autoload'][$key]);
-                            foreach ($NamespaceTemplate as $chiaveName) {
-                                if(in_array($chiaveName,$NamespaceComposer)) {
-                                    unset($composerJson['autoload'][$key][$chiaveName]);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        $this->writeComposerJson($composerJson);
 
         $commandDump = '/Applications/XAMPP/xamppfiles/bin/php /usr/local/bin/composer.phar dump-autoload';
         system($commandDump);
@@ -249,9 +309,9 @@ class PluginController extends Controller
     public function packTemplate(Request $request) {
         $input = $request->all();
 
-        $vendor = $input['vendor'];
-        $name = $input['name'];
-        $version = $input['version'];
+        //$vendor = $input['vendor'];
+        //$name = $input['name'];
+        //$version = $input['version'];
 
         //controllare dentro il file config.json all'interno del template per vedere se fare un nuovo pack
 
@@ -357,15 +417,6 @@ class PluginController extends Controller
 
         //leggo il file ltpm.config.json in modo da vedere se ci sono dei Template installati
         list($listActive,$listNotActive) = $this->getListTemplateInstalled();
-
-
-       /*$command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js latest-template";
-       $command1= "cd ../ && ";
-       $command = $command1.$command2;
-
-       exec($command,$stdout);
-
-       $listLastRepo = json_decode($stdout[0],true); */
 
        return response()->json(['template' => $listActive, 'templates' => $listNotActive]);
     }

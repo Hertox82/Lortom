@@ -148,6 +148,25 @@ export class PluginService extends MasterService
             );
     }
 
+    activateTemplate(template: LtTemplate): Observable<any> {
+        return this.http.post(this.apiManager.getPathByName('actiTemp'),template,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().message;
+                }
+            );
+    }
+
+    deactivateTemplate(template: LtTemplate): Observable<any> {
+        return this.http.post(this.apiManager.getPathByName('deactiTemp'),template,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().message;
+                }
+            );
+
+    }
+
     /**
      * This function call API in order to Update the Plugin
      * @param plugin
@@ -181,7 +200,6 @@ export class PluginService extends MasterService
     }
 
     packTemplate(template: LtTemplate): Observable<any> {
-        console.log('dentro il service');
         return this.http.post(this.apiManager.getPathByName('packTemplate'),template,this.getOptions())
             .map(
                 (response: Response) => {

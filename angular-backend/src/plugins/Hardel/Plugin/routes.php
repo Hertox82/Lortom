@@ -61,7 +61,15 @@ Route::post('/template/pack',[
     'uses'  => 'PluginController@packTemplate'
 ]);
 
+Route::post('/template/activate',[
+    'as'    => 'apiTemplateActivate',
+    'uses'  => 'PluginController@activateTemplate'
+]);
 
+Route::post('/template/deactivate',[
+    'as'    => 'apiTemplateDeactivate',
+    'uses'  => 'PluginController@deactivateTemplate'
+]);
 
 Route::post('/template',[
     'as'    => 'apiInstallTemplate',

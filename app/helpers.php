@@ -34,3 +34,29 @@ if(! function_exists('array_map_collection')) {
         return $return;
     }
 }
+
+if(! function_exists('ltpm_config')) {
+
+    function ltpm_config() {
+
+        return app('ltpm')->config();
+    }
+}
+
+if(! function_exists('ltpm')) {
+
+    function ltpm() {
+        return app('ltpm');
+    }
+}
+
+if(! function_exists('template_path')) {
+
+    function template_path($path='') {
+
+        $config = ltpm_config();
+
+        return (isset($config['deplt'])) ? base_path()."/{$config['deplt']}".$path : base_path().'/template'.$path;
+
+    }
+}

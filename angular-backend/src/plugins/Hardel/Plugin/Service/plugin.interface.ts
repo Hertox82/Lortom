@@ -22,5 +22,6 @@ export interface LtTemplate {
     check: boolean,
     packed?: boolean,
     installed?: boolean,
-    toUpdate?: boolean
+    toUpdate?: boolean,
+    active?: boolean
 }

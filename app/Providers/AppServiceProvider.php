@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\Classes\LortomAuth;
 use App\Services\Classes\LortomUserProvider;
+use App\Services\PackageManager;
 use App\Services\PluginCreateCompiler;
 use App\Services\PluginDeleteCompiler;
 use App\Services\PluginRoutingCompiler;
@@ -59,6 +60,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton('ltAuth', function($app){
             return new LortomAuth($this->app['lt.user.provider']);
+        });
+
+        $this->app->singleton('ltpm', function($app) {
+           return new PackageManager();
         });
     }
 

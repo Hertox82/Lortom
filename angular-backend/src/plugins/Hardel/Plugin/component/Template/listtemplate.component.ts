@@ -59,6 +59,22 @@ export class ListTemplateComponent extends ListComponent implements OnInit {
 
     }
 
+    activateTemplate(temp: LtTemplate) {
+        this.tpSer.activateTemplate(temp).subscribe(
+            (data: any) => {
+                this.retrieveListOfTemplate();
+            }
+        );
+    }
+
+    deactivateTemplate(temp: LtTemplate) {
+        this.tpSer.deactivateTemplate(temp).subscribe(
+            (data: any) => {
+                this.retrieveListOfTemplate();
+            }
+        );
+    }
+
     installTemplate(temp: LtTemplate) {
         this.tpSer.installTemplate(temp).subscribe(
             (data: any) => {
