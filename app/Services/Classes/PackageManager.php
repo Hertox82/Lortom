@@ -5,7 +5,7 @@
  * Time: 09:51
  */
 
-namespace App\Services;
+namespace App\Services\Classes;
 
 use File;
 
@@ -105,7 +105,7 @@ class PackageManager {
         $return = [];
 
         foreach ($listPls as $vendorName => $version) {
-            list($vendor,$name) = explode($vendorName,'@',2);
+            list($vendor,$name) = explode("@",$vendorName,2);
 
             $return[] = ['vendor' => $vendor, 'name' => $name, 'version' => $version];
         }

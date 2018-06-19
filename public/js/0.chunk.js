@@ -6184,10 +6184,17 @@ var PluginService = (function (_super) {
             return response.json().message;
         });
     };
+    PluginService.prototype.uninstallTemplates = function (templates) {
+        return this.http.put(this.apiManager.getPathByName('instTemp'), templates, this.getOptions())
+            .map(function (response) {
+            return response;
+        });
+    };
     PluginService.prototype.uninstallTemplate = function (template) {
         return this.http.put(this.apiManager.getPathByName('instTemp'), template, this.getOptions())
             .map(function (response) {
-            return response.json().message;
+            //return response.json().message;
+            return response;
         });
     };
     PluginService.prototype.deletePackPlugin = function (plugin) {
@@ -6219,6 +6226,18 @@ var PluginService = (function (_super) {
             return response.json().message;
         });
     };
+    PluginService.prototype.activateTemplate = function (template) {
+        return this.http.post(this.apiManager.getPathByName('actiTemp'), template, this.getOptions())
+            .map(function (response) {
+            return response.json().message;
+        });
+    };
+    PluginService.prototype.deactivateTemplate = function (template) {
+        return this.http.post(this.apiManager.getPathByName('deactiTemp'), template, this.getOptions())
+            .map(function (response) {
+            return response.json().message;
+        });
+    };
     /**
      * This function call API in order to Update the Plugin
      * @param plugin
@@ -6243,7 +6262,6 @@ var PluginService = (function (_super) {
         });
     };
     PluginService.prototype.packTemplate = function (template) {
-        console.log('dentro il service');
         return this.http.post(this.apiManager.getPathByName('packTemplate'), template, this.getOptions())
             .map(function (response) {
             return response.json().message;
@@ -6679,7 +6697,7 @@ var _a, _b;
 /***/ "./src/plugins/Hardel/Plugin/component/Template/listtemplate.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li>\n            <a [routerLink]=\"['/backend/plugin/plugins']\"  data-toggle=\"tab\"> List Plugin</a>\n        </li>\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> Template</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n       <div class=\"box\">\n           <div class=\"box-header\">\n               <div class=\"caption\">\n                   <i class=\"fa fa-database\"></i>\n                   <span>Template Active</span>\n               </div>\n           </div>\n           <div class=\"box-body\">\n                <div class=\"wrapper\">\n                    <div class=\"row\">\n                        <div class=\"col-sm-12\">\n                            <table class=\"table table-bordered table-striped\">\n                                <thead>\n                                <tr>\n                                    <th>Vendor</th>\n                                    <th>Name</th>\n                                    <th>Version</th>\n                                    <th colspan=\"4\"></th>\n                                </tr>\n                                </thead>\n                                <tbody>\n                                <tr *ngFor=\"let temp of listOfTemplate\">\n                                    <td>{{temp.vendor}}</td>\n                                    <td>{{temp.name}}</td>\n                                    <td>{{temp.version}}</td>\n                                    <td width=\"38px\">\n                                        <a href=\"javascript:void(0)\" title=\"Active\"><i class=\"fa fa-power-off\" style=\"color:green\"></i></a>\n                                    </td>\n                                    <td width=\"38px\">\n                                        <a *ngIf=\"temp.installed === true\" (click)=\"uninstallTemplate(temp)\" title=\"Uninstall\"><i class=\"fa fa-trash-o\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i> </a>\n                                    </td>\n                                    <td width=\"38px\">\n                                        <a *ngIf=\"temp.packed === false\" (click)=\"packTemplate(temp)\" title=\"Packing\"><i class=\"fa fa-cube\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i> </a>\n                                    </td>\n                                    <td width=\"38px\">\n                                        <a *ngIf=\"temp.packed === true\" (click)=\"unpackTemplate(temp)\"  title=\"Delete Packing\"><i class=\"fa fa-times\" style=\"color:orange; font-size: 16px; cursor: pointer;\"></i> </a>\n                                    </td>\n                                </tr>\n                                </tbody>\n                            </table>\n                        </div>\n                    </div>\n                </div>\n           </div>\n       </div>\n    </div>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <lt-entry-pagination\n                                        [entry]=\"'50-5'\"\n                                        (onEntry)=\"onPerPage($event)\"\n                                >\n                                </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/plugin/template/install']\"><i class=\"fa fa-download\"></i> Install</a>\n                                    <a class=\"btn btn-warning\" (click)=\"uninstallTemplate()\"><i class=\"fa fa-trash-o\"></i> Uninstall</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Vendor</a>\n                                        </th>\n                                        <th>\n                                            <a>Name</a>\n                                        </th>\n                                        <th>\n                                            <a>Version</a>\n                                        </th>\n                                        <th style=\"width: 50px;\" colspan=\"4\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let temp of listToShow\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,temp)\" [(ngModel)] = \"temp.check\">\n                                        </td>\n                                        <td>\n                                            {{temp.vendor}}\n                                        </td>\n                                        <td>\n                                            {{temp.name}}\n                                        </td>\n                                        <td>\n                                            {{temp.version}}\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a href=\"javascript:void(0)\" title=\"Active\"><i class=\"fa fa-power-off\" style=\"color:red\"></i></a>\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a *ngIf=\"temp.installed === true && temp.toUpdate === true\" (click)=\"updatePlugin(temp)\" title=\"Update\"><i class=\"fa fa-refresh\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i></a>\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a *ngIf=\"temp.installed === false\" (click)=\"installTemplate(temp)\" title=\"Install\"><i class=\"fa fa-download\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i> </a>\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a *ngIf=\"temp.packed === true\" (click)=\"unpackTemplate(temp)\"  title=\"Delete Packing\"><i class=\"fa fa-times\" style=\"color:orange; font-size: 16px; cursor: pointer;\"></i> </a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                                [pagesToShow]=\"3\"\n                                [perPage]=\"perPage\"\n                                [count]=\"listOfNotActiveTemplate.length\"\n                                [loading]=\"false\"\n                                [page]=\"actualPage\"\n                                (goNext)=\"onNext($event)\"\n                                (goPage)=\"onPage($event)\"\n                                (goPrev)=\"onPrev()\"\n                        ></lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
+module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li>\n            <a [routerLink]=\"['/backend/plugin/plugins']\"  data-toggle=\"tab\"> List Plugin</a>\n        </li>\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> Template</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n       <div class=\"box\">\n           <div class=\"box-header\">\n               <div class=\"caption\">\n                   <i class=\"fa fa-database\"></i>\n                   <span>Template Active</span>\n               </div>\n           </div>\n           <div class=\"box-body\">\n                <div class=\"wrapper\">\n                    <div class=\"row\">\n                        <div class=\"col-sm-12\">\n                            <table class=\"table table-bordered table-striped\">\n                                <thead>\n                                <tr>\n                                    <th>Vendor</th>\n                                    <th>Name</th>\n                                    <th>Version</th>\n                                    <th colspan=\"4\"></th>\n                                </tr>\n                                </thead>\n                                <tbody>\n                                <tr *ngFor=\"let temp of listOfTemplate\">\n                                    <td>{{temp.vendor}}</td>\n                                    <td>{{temp.name}}</td>\n                                    <td>{{temp.version}}</td>\n                                    <td width=\"38px\">\n                                        <a (click)=\"deactivateTemplate(temp)\" title=\"Active\"><i class=\"fa fa-power-off\" style=\"color:green\"></i></a>\n                                    </td>\n                                    <td width=\"38px\">\n                                        <a *ngIf=\"temp.installed === true\" (click)=\"uninstallTemplate(temp)\" title=\"Uninstall\"><i class=\"fa fa-trash-o\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i> </a>\n                                    </td>\n                                    <td width=\"38px\">\n                                        <a *ngIf=\"temp.packed === false\" (click)=\"packTemplate(temp)\" title=\"Packing\"><i class=\"fa fa-cube\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i> </a>\n                                    </td>\n                                    <td width=\"38px\">\n                                        <a *ngIf=\"temp.packed === true\" (click)=\"unpackTemplate(temp)\"  title=\"Delete Packing\"><i class=\"fa fa-times\" style=\"color:orange; font-size: 16px; cursor: pointer;\"></i> </a>\n                                    </td>\n                                </tr>\n                                </tbody>\n                            </table>\n                        </div>\n                    </div>\n                </div>\n           </div>\n       </div>\n    </div>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <lt-entry-pagination\n                                        [entry]=\"'50-5'\"\n                                        (onEntry)=\"onPerPage($event)\"\n                                >\n                                </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/plugin/template/install']\"><i class=\"fa fa-download\"></i> MarketPlace</a>\n                                    <a class=\"btn btn-warning\" (click)=\"uninstallTemplates()\"><i class=\"fa fa-trash-o\"></i> Uninstall</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Vendor</a>\n                                        </th>\n                                        <th>\n                                            <a>Name</a>\n                                        </th>\n                                        <th>\n                                            <a>Version</a>\n                                        </th>\n                                        <th style=\"width: 50px;\" colspan=\"4\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let temp of listToShow\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,temp)\" [(ngModel)] = \"temp.check\">\n                                        </td>\n                                        <td>\n                                            {{temp.vendor}}\n                                        </td>\n                                        <td>\n                                            {{temp.name}}\n                                        </td>\n                                        <td>\n                                            {{temp.version}}\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a (click)=\"activateTemplate(temp)\" title=\"Active\"><i class=\"fa fa-power-off\" style=\"color:red\"></i></a>\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a *ngIf=\"temp.installed === true && temp.toUpdate === true\" (click)=\"updateTemplate(temp)\" title=\"Update\"><i class=\"fa fa-refresh\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i></a>\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a *ngIf=\"temp.installed === false\" (click)=\"installTemplate(temp)\" title=\"Install\"><i class=\"fa fa-download\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i> </a>\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a *ngIf=\"temp.packed === true\" (click)=\"unpackTemplate(temp)\"  title=\"Delete Packing\"><i class=\"fa fa-times\" style=\"color:orange; font-size: 16px; cursor: pointer;\"></i> </a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                                [pagesToShow]=\"3\"\n                                [perPage]=\"perPage\"\n                                [count]=\"listOfNotActiveTemplate.length\"\n                                [loading]=\"false\"\n                                [page]=\"actualPage\"\n                                (goNext)=\"onNext($event)\"\n                                (goPage)=\"onPage($event)\"\n                                (goPrev)=\"onPrev()\"\n                        ></lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -6725,11 +6743,19 @@ var ListTemplateComponent = (function (_super) {
         _this.onComponentInit({
             name: 'tpSer',
             permission: 'Hardel.Plugin.Template',
-            upd: 'updatePlugins$'
+            upd: 'updateTemplate$'
         }, 'router', 'retrieveListOfTemplate');
         return _this;
     }
     ListTemplateComponent.prototype.ngOnInit = function () { };
+    /**
+     * function to push or splice item into Deleted List of Roles
+     * @param ev
+     * @param data
+     */
+    ListTemplateComponent.prototype.eventChange = function (ev, data) {
+        this.eventChangeData(ev, data);
+    };
     ListTemplateComponent.prototype.retrieveListOfTemplate = function () {
         var _this = this;
         this.tpSer.getTemplateFrom().subscribe(function (data) {
@@ -6752,6 +6778,18 @@ var ListTemplateComponent = (function (_super) {
             _this.retrieveListOfTemplate();
         });
     };
+    ListTemplateComponent.prototype.activateTemplate = function (temp) {
+        var _this = this;
+        this.tpSer.activateTemplate(temp).subscribe(function (data) {
+            _this.retrieveListOfTemplate();
+        });
+    };
+    ListTemplateComponent.prototype.deactivateTemplate = function (temp) {
+        var _this = this;
+        this.tpSer.deactivateTemplate(temp).subscribe(function (data) {
+            _this.retrieveListOfTemplate();
+        });
+    };
     ListTemplateComponent.prototype.installTemplate = function (temp) {
         var _this = this;
         this.tpSer.installTemplate(temp).subscribe(function (data) {
@@ -6763,6 +6801,16 @@ var ListTemplateComponent = (function (_super) {
         this.tpSer.uninstallTemplate(temp).subscribe(function (data) {
             _this.retrieveListOfTemplate();
         });
+    };
+    ListTemplateComponent.prototype.uninstallTemplates = function () {
+        var _this = this;
+        if (confirm('Do you really uninstall this plugins?')) {
+            this.tpSer.uninstallTemplates(this.listOfDataToDelete).subscribe(function (message) {
+                if (message) {
+                    _this.retrieveListOfTemplate();
+                }
+            });
+        }
     };
     return ListTemplateComponent;
 }(list_component_1.ListComponent));

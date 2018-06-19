@@ -72,8 +72,8 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="dataTables_filter">
-                                    <a class="btn btn-primary" [routerLink] = "['/backend/plugin/template/install']"><i class="fa fa-download"></i> Install</a>
-                                    <a class="btn btn-warning" (click)="uninstallTemplate()"><i class="fa fa-trash-o"></i> Uninstall</a>
+                                    <a class="btn btn-primary" [routerLink] = "['/backend/plugin/template/install']"><i class="fa fa-download"></i> MarketPlace</a>
+                                    <a class="btn btn-warning" (click)="uninstallTemplates()"><i class="fa fa-trash-o"></i> Uninstall</a>
                                 </div>
                             </div>
                         </div>
@@ -110,10 +110,10 @@
                                             {{temp.version}}
                                         </td>
                                         <td width="38px">
-                                            <a href="javascript:void(0)" (click)="activateTemplate(temp)" title="Active"><i class="fa fa-power-off" style="color:red"></i></a>
+                                            <a (click)="activateTemplate(temp)" title="Active"><i class="fa fa-power-off" style="color:red"></i></a>
                                         </td>
                                         <td width="38px">
-                                            <a *ngIf="temp.installed === true && temp.toUpdate === true" (click)="updatePlugin(temp)" title="Update"><i class="fa fa-refresh" style="color:orange; font-size: 16px; cursor:pointer;"></i></a>
+                                            <a *ngIf="temp.installed === true && temp.toUpdate === true" (click)="updateTemplate(temp)" title="Update"><i class="fa fa-refresh" style="color:orange; font-size: 16px; cursor:pointer;"></i></a>
                                         </td>
                                         <td width="38px">
                                             <a *ngIf="temp.installed === false" (click)="installTemplate(temp)" title="Install"><i class="fa fa-download" style="color:orange; font-size: 16px; cursor:pointer;"></i> </a>

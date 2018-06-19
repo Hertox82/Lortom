@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Services\Classes\LortomAuth;
 use App\Services\Classes\LortomUserProvider;
-use App\Services\PackageManager;
+use App\Services\Classes\PackageManager;
 use App\Services\PluginCreateCompiler;
 use App\Services\PluginDeleteCompiler;
 use App\Services\PluginRoutingCompiler;

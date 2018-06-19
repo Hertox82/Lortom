@@ -98,11 +98,21 @@ export class PluginService extends MasterService
             );
     }
 
+    uninstallTemplates(templates: LtTemplate[]): Observable <any> {
+        return this.http.put(this.apiManager.getPathByName('instTemp'),templates,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response;
+                }
+            );
+    }
+
     uninstallTemplate(template: LtTemplate): Observable<any> {
         return this.http.put(this.apiManager.getPathByName('instTemp'),template,this.getOptions())
             .map(
                 (response: Response) => {
-                    return response.json().message;
+                    //return response.json().message;
+                    return response;
                 }
             );
     }

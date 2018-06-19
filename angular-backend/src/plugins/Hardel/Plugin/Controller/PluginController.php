@@ -211,26 +211,46 @@ class PluginController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function uninstallTemplate(Request $request) {
-        $input = $request->all();
 
-        $fileName = ltpm()->getFileName($input['vendor'],$input['name'],$input['version'],false);
+        $input = $this->sanitizeTemplateUninstall($request->all());
 
-        //deactivate the plugin
-        $this->actionTemplate($input['vendor'],$input['name'],"Uninstall");
+        foreach ($input as $template) {
 
-        ltpm()->removeAutoloadFromComposer($input['vendor'],$input['name']);
+            $fileName = ltpm()->getFileName($template['vendor'],$template['name'],$template['version'],false);
+            //deactivate the plugin
+            $this->actionTemplate($template['vendor'],$template['name'],"Uninstall");
 
+            ltpm()->removeAutoloadFromComposer($template['vendor'],$template['name']);
+            $commandDump = '/Applications/XAMPP/xamppfiles/bin/php /usr/local/bin/composer.phar dump-autoload';
+            system($commandDump);
 
-        $commandDump = '/Applications/XAMPP/xamppfiles/bin/php /usr/local/bin/composer.phar dump-autoload';
-        system($commandDump);
+            $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js uninstall-t {$fileName}";
+            $command1= "cd ../ && ";
+            $command = $command1.$command2;
 
-        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js uninstall-t {$fileName}";
-        $command1= "cd ../ && ";
-        $command = $command1.$command2;
+            exec($command,$stdout);
 
-        exec($command,$stdout);
+        }
 
         return response()->json(['message' => 'ok']);
+    }
+
+    protected function sanitizeTemplateUninstall($input) {
+
+        if(!isset($input[0])) {
+            $vendor = $input['vendor'];
+            $name = $input['name'];
+            $version = $input['version'];
+
+            $input = [];
+            $input[] = [
+                'vendor'  => $vendor,
+                'name'    => $name,
+                'version' => $version
+            ];
+        }
+
+        return $input;
     }
 
     /**

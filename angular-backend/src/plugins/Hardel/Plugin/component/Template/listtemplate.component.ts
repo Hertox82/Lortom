@@ -24,10 +24,19 @@ export class ListTemplateComponent extends ListComponent implements OnInit {
         this.onComponentInit({
             name: 'tpSer',
             permission: 'Hardel.Plugin.Template',
-            upd: 'updatePlugins$'
+            upd: 'updateTemplate$'
         }, 'router', 'retrieveListOfTemplate');
     }
     ngOnInit() {}
+
+    /**
+     * function to push or splice item into Deleted List of Roles
+     * @param ev
+     * @param data
+     */
+    eventChange(ev, data: LtTemplate): void {
+        this.eventChangeData(ev, data);
+    }
 
 
     retrieveListOfTemplate() {
@@ -89,5 +98,17 @@ export class ListTemplateComponent extends ListComponent implements OnInit {
                 this.retrieveListOfTemplate();
             }
         );
+    }
+
+    uninstallTemplates() {
+        if (confirm('Do you really uninstall this plugins?')) {
+            this.tpSer.uninstallTemplates(this.listOfDataToDelete).subscribe(
+                (message: boolean) => {
+                    if (message) {
+                       this.retrieveListOfTemplate();
+                    }
+                }
+            );
+        }
     }
 }
