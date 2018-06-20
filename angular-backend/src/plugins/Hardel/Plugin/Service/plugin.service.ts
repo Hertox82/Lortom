@@ -15,6 +15,7 @@ export class PluginService extends MasterService
 {
     listOfPlugins : LtPlugin[];
     listOfTemplate: LtTemplate[];
+    listOfTemplates: LtTemplate[];
 
     private _updatePlugins = new Subject();
     private _updateTemplate = new Subject();
@@ -235,6 +236,12 @@ export class PluginService extends MasterService
         let data = template as LtTemplate[];
         this.setItem('template',data);
         this.listOfTemplate = data;
+    }
+
+    setTemplates(templates: any): void {
+        let data = templates as LtTemplate [];
+        this.setItem('templates',data);
+        this.listOfTemplates = data;
     }
 
     /**

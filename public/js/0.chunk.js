@@ -6281,6 +6281,11 @@ var PluginService = (function (_super) {
         this.setItem('template', data);
         this.listOfTemplate = data;
     };
+    PluginService.prototype.setTemplates = function (templates) {
+        var data = templates;
+        this.setItem('templates', data);
+        this.listOfTemplates = data;
+    };
     /**
      * This function get listOfPlugins
      * @returns {any}
@@ -6510,7 +6515,8 @@ var InstallTemplateComponent = (function (_super) {
                 _this.inTmp.getTemplateFrom()
                     .subscribe(function (data) {
                     _this.widthStyle = '99%';
-                    _this.inTmp.setTemplate(data);
+                    _this.inTmp.setTemplate(data.template);
+                    _this.inTmp.setTemplates(data.templates);
                     mod.close();
                     _this.widthStyle = '10%';
                 });
@@ -6747,7 +6753,14 @@ var ListTemplateComponent = (function (_super) {
         return _this;
     }
     ListTemplateComponent.prototype.ngOnInit = function () {
-        console.log('roma merda');
+        var _this = this;
+        this.router.events.subscribe(function (data) {
+            if (data instanceof router_1.NavigationEnd) {
+                if (data.url === _this.myRoot) {
+                    _this.retrieveListOfTemplate();
+                }
+            }
+        });
     };
     /**
      * function to push or splice item into Deleted List of Roles
@@ -6764,6 +6777,7 @@ var ListTemplateComponent = (function (_super) {
             _this.listOfTemplate = data.template;
             _this.listOfData = _this.listOfNotActiveTemplate;
             _this.tpSer.setTemplate(_this.listOfTemplate);
+            _this.tpSer.setTemplates(_this.listOfNotActiveTemplate);
             _this.updateListaShow();
         });
     };
@@ -6805,7 +6819,7 @@ var ListTemplateComponent = (function (_super) {
     };
     ListTemplateComponent.prototype.uninstallTemplates = function () {
         var _this = this;
-        if (confirm('Do you really uninstall this plugins?')) {
+        if (confirm('Do you really uninstall this templates?')) {
             this.tpSer.uninstallTemplates(this.listOfDataToDelete).subscribe(function (message) {
                 if (message) {
                     _this.retrieveListOfTemplate();

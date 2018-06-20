@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ListComponent} from "@Lortom/model/list.component";
 import {LtTemplate} from "@Lortom/plugins/Hardel/Plugin/Service/plugin.interface";
 import {PluginService} from "@Lortom/plugins/Hardel/Plugin/Service/plugin.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 
 
 @Component({
@@ -28,7 +28,15 @@ export class ListTemplateComponent extends ListComponent implements OnInit {
         }, 'router', 'retrieveListOfTemplate');
     }
     ngOnInit() {
-        console.log('roma merda');
+        this.router.events.subscribe(
+            (data) => {
+                if(data instanceof NavigationEnd) {
+                    if(data.url === this.myRoot) {
+                       this.retrieveListOfTemplate();
+                    }
+                }
+            }
+        );
     }
 
     /**
@@ -48,6 +56,7 @@ export class ListTemplateComponent extends ListComponent implements OnInit {
                 this.listOfTemplate = data.template as LtTemplate[];
                 this.listOfData = this.listOfNotActiveTemplate;
                 this.tpSer.setTemplate(this.listOfTemplate);
+                this.tpSer.setTemplates(this.listOfNotActiveTemplate);
                 this.updateListaShow();
             }
         );
@@ -103,7 +112,7 @@ export class ListTemplateComponent extends ListComponent implements OnInit {
     }
 
     uninstallTemplates() {
-        if (confirm('Do you really uninstall this plugins?')) {
+        if (confirm('Do you really uninstall this templates?')) {
             this.tpSer.uninstallTemplates(this.listOfDataToDelete).subscribe(
                 (message: boolean) => {
                     if (message) {

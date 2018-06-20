@@ -34,6 +34,7 @@ export class InstallTemplateComponent extends ListComponent implements OnInit {
     ngOnInit() {}
 
     retrieveListOfLatestTemplate() {
+
         this.inTmp.getLatestTemplate().subscribe(
             (data: LtTemplate[]) => {
 
@@ -55,9 +56,10 @@ export class InstallTemplateComponent extends ListComponent implements OnInit {
                     this.widthStyle = '80%';
                     this.inTmp.getTemplateFrom()
                         .subscribe(
-                            (data: LtTemplate[]) => {
+                            (data: any) => {
                                 this.widthStyle = '99%';
-                                this.inTmp.setTemplate(data);
+                                this.inTmp.setTemplate(data.template as LtTemplate[]);
+                                this.inTmp.setTemplates(data.templates as LtTemplate[]);
                                 mod.close();
                                 this.widthStyle= '10%';
                             }
