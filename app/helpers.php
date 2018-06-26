@@ -60,3 +60,19 @@ if(! function_exists('template_path')) {
 
     }
 }
+
+if(! function_exists('getObjectFromValueKey')) {
+
+    function getObjectFromValueKey($listArray,$key,$value) {
+
+        foreach ($listArray as $object) {
+
+            if($object[$key] === $value)
+            {
+                return $object;
+            }
+        }
+
+        return null;
+    }
+}

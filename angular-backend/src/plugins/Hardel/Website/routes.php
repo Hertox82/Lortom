@@ -45,6 +45,11 @@ Route::put('/component',[
     'uses'   => 'WebsiteController@storeComponent'
 ]);
 
+Route::get('/template/active/models', [
+    'as'    => 'apiGetModelsTemplateActive',
+    'uses'  => 'WebsiteController@getModelsFromActiveTemplate'
+]);
+
 Route::get('/menus',[
     'as'     => 'apiGetMenus',
     'uses'   => 'WebsiteController@getMenus'

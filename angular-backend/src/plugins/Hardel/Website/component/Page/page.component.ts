@@ -6,6 +6,7 @@ import {LortomComponent, LtPageComponent, Page, createLtPageComponentFrom} from 
 import {WebsiteService} from "../../Services/website.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {hasOwnProperty} from "tslint/lib/utils";
+import {NgbModal, ModalDismissReasons} from "@ng-bootstrap/ng-bootstrap";
 @Component({
     selector : 'wb-page',
     templateUrl : './page.component.html',
@@ -24,8 +25,13 @@ export class PageComponent implements OnInit
     listOfState : {id? : number, label? : string}[];
     listOfComponent =[];
     filteredList : LortomComponent[];
+    listOfModels: any;
+    Model: {label: string, functions: any[]};
+    listOfModelIndex: {label: string, functions: any[]} [] = [];
+    listOfFunctions: string [] = [];
+    Function: string;
 
-    constructor(private pService : WebsiteService, private router : ActivatedRoute,private nav : Router) {
+    constructor(private pService : WebsiteService, private router : ActivatedRoute,private nav : Router, private sModal: NgbModal) {
         this.isEdit = false;
         this.notFound = false;
         this.query = '';
@@ -51,6 +57,12 @@ export class PageComponent implements OnInit
         this.pService.getComponentsFrom().subscribe(
             (data: LortomComponent[]) => {
                 this.listOfComponent = data;
+            }
+        );
+
+        this.pService.getModelsFrom().subscribe(
+            (data: any) => {
+                this.listOfModels = data;
             }
         );
 
@@ -89,6 +101,77 @@ export class PageComponent implements OnInit
         }
     }
 
+    openModal(event, modal, item) {
+        //Stop bubbling
+        event.target.blur();
+        event.preventDefault();
+        //assign to ModelObject the item
+        this.Function = item.functions;
+
+        this.Model = {label: '', functions: []};
+
+        //transform List of Object in array
+        for(let obj in this.listOfModels) {
+
+            this.listOfModelIndex.push(this.listOfModels[obj]);
+        }
+
+        //Check if Model is present
+        if(item.Object in this.listOfModels)
+        {
+            this.Model = this.listOfModels[item.Object];
+        }
+
+        //intialize listOfFunction, and if Model is not empty, assign it list of functions
+        this.objectChange();
+
+        //open a Bootstrap Modal.
+        const mod = this.sModal.open(modal);
+
+        //check action on Modal (save and close)
+        mod.result.then((result) => {
+
+            if(result === 'SAVE_DATA') {
+                for (let obj in this.listOfModels) {
+                    let Modello = this.listOfModels[obj];
+
+                    if (Modello.label === this.Model.label) {
+                        item.Object = obj;
+                    }
+                }
+
+                item.functions = this.Function;
+            }
+            else {
+                item.Object = null;
+                item.functions = null;
+            }
+        },(reason) => {
+            //reason is fired when modal is closed
+           let result = console.log(this.getDismissReason(reason));
+
+           this.Model = {label: '', functions: []};
+           //this.ModelObject = null;
+           this.Function = '';
+        })
+
+    }
+
+    private getDismissReason(reason: any): string {
+        if (reason === ModalDismissReasons.ESC) {
+            return 'by pressing ESC';
+        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+            return 'by clicking on a backdrop';
+        } else {
+            return  `with: ${reason}`;
+        }
+    }
+
+    objectChange() {
+
+        this.listOfFunctions = this.Model.functions;
+    }
+
     eraseComponent(item: LtPageComponent) {
         const index = this.page.components.indexOf(item);
 
@@ -111,6 +194,8 @@ export class PageComponent implements OnInit
             this.filteredList = this.listOfComponent.filter(function(el){
                 return el.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
             }.bind(this));
+        } else {
+            this.filteredList = [];
         }
     }
 

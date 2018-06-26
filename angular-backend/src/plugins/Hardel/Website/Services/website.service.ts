@@ -41,6 +41,7 @@ export class WebsiteService extends MasterService{
             { namePath : 'getMenus', path: 'menus'},
             { namePath : 'saveMenu', path: 'menu'},
             { namePath : 'getMenuAtt', path: 'menus/attribute/list'},
+            { namePath : 'getModels', path: 'template/active/models'}
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -183,6 +184,15 @@ export class WebsiteService extends MasterService{
             .map(
                 (response: Response) => {
                     return response.json().menus;
+                }
+            );
+    }
+
+    getModelsFrom() : Observable<any> {
+        return this.http.get(this.apiManager.getPathByName('getModels'))
+            .map(
+                (response: Response) => {
+                    return response.json().models;
                 }
             );
     }

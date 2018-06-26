@@ -10,18 +10,18 @@ var map = {
 	],
 	"../plugins/Hardel/Plugin/plugin.module": [
 		"./src/plugins/Hardel/Plugin/plugin.module.ts",
-		0,
-		"common"
+		"common",
+		2
 	],
 	"../plugins/Hardel/Settings/settings.module": [
 		"./src/plugins/Hardel/Settings/settings.module.ts",
-		2,
-		"common"
+		"common",
+		1
 	],
 	"../plugins/Hardel/Website/website.module": [
 		"./src/plugins/Hardel/Website/website.module.ts",
-		1,
-		"common"
+		"common",
+		0
 	]
 };
 function webpackAsyncContext(req) {
@@ -61,7 +61,7 @@ module.exports = module.exports.toString();
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div *ngIf=\"isAuth == true && isLogin == false; else login\">\n    <header class=\"main-header\">\n        <a class=\"logo\">\n            <span>Lortom</span>\n        </a>\n        <app-navbar></app-navbar>\n    </header>\n\n    <aside class=\"main-sidebar\">\n       <section class=\"sidebar\">\n           <app-user-side [user]=\"user\"></app-user-side>\n           <app-menu-items></app-menu-items>\n       </section>\n    </aside>\n\n    <!-- Qui viene messo il rootlet-->\n    <div class=\"content-wrapper\">\n        <router-outlet></router-outlet>\n    </div>\n\n\n    <footer>\n        &copy; Lortom 2017 - MIT License - created by Hernan Ariel De Luca\n    </footer>\n</div>\n\n<ng-template #login>\n    <router-outlet></router-outlet>\n</ng-template>"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div *ngIf=\"isAuth == true && isLogin == false; else login\">\n    <header class=\"main-header\">\n        <a class=\"logo\">\n            <span>Lortom</span>\n        </a>\n        <app-navbar></app-navbar>\n    </header>\n\n    <aside class=\"main-sidebar\">\n       <section class=\"sidebar\">\n           <app-user-side [user]=\"user\"></app-user-side>\n           <app-menu-items></app-menu-items>\n       </section>\n    </aside>\n\n    <!-- Qui viene messo il rootlet-->\n    <div class=\"content-wrapper\">\n        <router-outlet></router-outlet>\n    </div>\n\n\n    <footer>\n        &copy; Lortom 2018 - MIT License - created by Hernan Ariel De Luca\n    </footer>\n</div>\n\n<ng-template #login>\n    <router-outlet></router-outlet>\n</ng-template>"
 
 /***/ }),
 

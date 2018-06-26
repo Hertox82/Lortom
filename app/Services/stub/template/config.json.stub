@@ -6,6 +6,9 @@
     "require": {
     }
   },
+  "models": [
+
+  ],
   "frontend": {
     "autoload": {
       "psr-4": {

@@ -139,11 +139,47 @@ class PackageManager {
     }
 
 
+    /**
+     * This function remove the Autoload of Template from Composer.json
+     * @param $vendor
+     * @param $name
+     */
     public function removeAutoloadFromComposer($vendor, $name) {
 
         $this->addAndRemoveAutoloadFromComposer($vendor,$name,false);
     }
 
+
+    public function getModelsFromActiveTemplate() {
+
+        $templateActive = $this->getActiveTemplate();
+
+        $this->loadTemplateConfigJson($templateActive['vendor'],$templateActive['name']);
+
+        $result = [];
+
+        foreach ($this->TemplateConfigJSON['models'] as $Class) {
+            $function = new \ReflectionClass($Class);
+
+            $listOfObject = $function->getMethods(\ReflectionMethod::IS_STATIC);
+            $label = explode('\\',$Class);
+            $label = $label[count($label)-1];
+
+            $result[$Class]['label'] = $label;
+            foreach ($listOfObject as $object) {
+                $result[$Class]['functions'][] = $object->name;
+            }
+        }
+
+        return $result;
+    }
+
+    protected function getActiveTemplate() {
+
+        $this->config();
+
+        return getObjectFromValueKey($this->LtpmConfigJSON['template'],'active',true);
+    }
 
     protected function addAndRemoveAutoloadFromComposer($vendor,$name,$add=true){
         //load info "autoload" from config.json into the Template Folder

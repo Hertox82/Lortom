@@ -147,16 +147,13 @@
                                             {{comp.name}}
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" [ngModel]="comp.Object" name="objecto-{{i}}" *ngIf="isEdit === false; else editObject" readonly>
+                                            <input type="text" class="form-control" [ngModel]="comp.Object"  name="objecto-{{i}}" *ngIf="isEdit === false; else editObject" readonly>
                                             <ng-template #editObject>
-                                                <input type="text" class="form-control" [(ngModel)]="comp.Object" name="objecto-{{i}}">
+                                                <input type="text" class="form-control" [(ngModel)]="comp.Object" name="objecto-{{i}}" (focus)="openModal($event,addModal2,comp)" readonly>
                                             </ng-template>
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" [ngModel]="comp.functions" name="functions-{{i}}" *ngIf="isEdit === false; else editFunctions" readonly>
-                                            <ng-template #editFunctions>
-                                                <input type="text" class="form-control" [(ngModel)]="comp.functions" name="functions-{{i}}">
-                                            </ng-template>
+                                            <input type="text" class="form-control" [ngModel]="comp.functions" name="functions-{{i}}"  readonly>
                                         </td>
                                         <td>
                                             <a class="td_orange" (click)="eraseComponent(comp)" *ngIf="isEdit == true"><i class="fa fa-window-close-o"></i></a>
@@ -213,4 +210,40 @@
             </div>
         </div>
     </div>
+    <ng-template #addModal2 let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <h4 class="modal-title">Object and Functions</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group flex-group">
+                        <label class="col-md-4">Object</label>
+                        <div class="col-md-4">
+                            <select class="form-control" name="ObjectModel" [(ngModel)] = "Model" (ngModelChange) = "objectChange()">
+                                <option *ngFor="let x of listOfModelIndex" [ngValue]="x" [attr.selected] = "x.label === Model.label ?  true : null">{{x.label}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group flex-group">
+                        <label class="col-md-4">Functions</label>
+                        <div class="col-md-4">
+                            <select class="form-control" name="ObjectFunctions" [(ngModel)] = "Function">
+                                <option *ngFor="let h of listOfFunctions" [value]="h">{{h}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+           <button type="button" class="btn btn-outline-dark" (click)="c('SAVE_DATA')">Save</button>
+            <button type="button" class="btn btn-outline-dark" (click)="c('CLEAR_DATA')">Clear Data</button>
+        </div>
+    </ng-template>
 </form>

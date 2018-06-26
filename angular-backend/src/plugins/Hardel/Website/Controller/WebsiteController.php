@@ -44,6 +44,12 @@ class WebsiteController extends Controller
     }
 
 
+    public function getModelsFromActiveTemplate(Request $request) {
+
+        return response()->json(['models' => ltpm()->getModelsFromActiveTemplate()]);
+    }
+
+
     /**
      * This Create or Update a LortomPage
      * @param Request $request

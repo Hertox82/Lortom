@@ -14,6 +14,9 @@
             "Hardel@Dashboard": "1.0.1"
         }
     },
+    "models": [
+        "LortomTemplate\\Model\\HomePage"
+    ],
     "frontend": {
         "autoload": {
             "psr-4": {

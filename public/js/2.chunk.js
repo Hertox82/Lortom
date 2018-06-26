@@ -1,20 +1,13 @@
 webpackJsonp([2],{
 
-/***/ "./src/plugins/Hardel/Settings/Services/settings.interfaces.ts":
+/***/ "./src/plugins/Hardel/Plugin/Service/plugin.service.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-//# sourceMappingURL=settings.interfaces.js.map
-
-/***/ }),
-
-/***/ "./src/plugins/Hardel/Settings/Services/settings.service.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
+/**
+ * Created by hernan on 13/12/2017.
+ */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -36,443 +29,244 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var http_1 = __webpack_require__("./node_modules/@angular/http/@angular/http.es5.js");
-__webpack_require__("./node_modules/rxjs/Rx.js");
-var Subject_1 = __webpack_require__("./node_modules/rxjs/Subject.js");
 var master_service_1 = __webpack_require__("./src/services/master.service.ts");
-var SettingsService = (function (_super) {
-    __extends(SettingsService, _super);
-    function SettingsService(http) {
+var http_1 = __webpack_require__("./node_modules/@angular/http/@angular/http.es5.js");
+var Subject_1 = __webpack_require__("./node_modules/rxjs/Subject.js");
+var PluginService = (function (_super) {
+    __extends(PluginService, _super);
+    function PluginService(http) {
         var _this = _super.call(this) || this;
         _this.http = http;
-        _this._updateRoles = new Subject_1.Subject();
-        _this.updateRoles$ = _this._updateRoles.asObservable();
-        _this._updateUsers = new Subject_1.Subject();
-        _this.updateUsers$ = _this._updateUsers.asObservable();
+        _this._updatePlugins = new Subject_1.Subject();
+        _this._updateTemplate = new Subject_1.Subject();
+        _this.updatePlugins$ = _this._updatePlugins.asObservable();
+        _this.updateTemplate$ = _this._updateTemplate.asObservable();
         // write the api route for setting
         var urls = [
-            { namePath: 'getPermission', path: 'permissions' },
-            { namePath: 'getRoles', path: 'roles' },
-            { namePath: 'saveRole', path: 'role' },
-            { namePath: 'getUsers', path: 'users' },
-            { namePath: 'saveUser', path: 'user' }
+            { namePath: 'getPlugins', path: 'plugins' },
+            { namePath: 'installPlugin', path: 'plugin' },
+            { namePath: 'packPlugin', path: 'plugin/pack' },
+            { namePath: 'delPack', path: 'plugin/delete' },
+            { namePath: 'getLatestPlugin', path: 'plugins/latest' },
+            { namePath: 'getLatestTemplate', path: 'templates/latest' },
+            { namePath: 'getTemplate', path: 'templates' },
+            { namePath: 'packTemplate', path: 'template/pack' },
+            { namePath: 'unPackTemp', path: 'template/delpack' },
+            { namePath: 'instTemp', path: 'template' }
         ];
         //Add the Api to the ApiManager
         _this.apiManager.addListUrlApi(urls);
         return _this;
     }
+    /* Section call to API */
     /**
-     * This function retrive the roles from the API (Laravel)
+     * This function Call API in order to get List of Plugin
      * @returns {Observable<R>}
      */
-    SettingsService.prototype.getRolesFrom = function () {
-        return this.http.get(this.apiManager.getPathByName('getRoles'))
+    PluginService.prototype.getPluginsFrom = function () {
+        return this.http.get(this.apiManager.getPathByName('getPlugins'))
             .map(function (response) {
-            return response.json().roles;
+            return response.json().plugins;
         });
     };
-    SettingsService.prototype.getUsersFrom = function () {
-        return this.http.get(this.apiManager.getPathByName('getUsers'))
+    PluginService.prototype.getTemplateFrom = function () {
+        return this.http.get(this.apiManager.getPathByName('getTemplate'))
             .map(function (response) {
-            return response.json().users;
+            return response.json();
         });
     };
-    SettingsService.prototype.updateRoleInList = function (role) {
-        this.updateItemInList(role, 'listOfRoles');
+    PluginService.prototype.getLatestPlugin = function () {
+        return this.http.get(this.apiManager.getPathByName('getLatestPlugin'))
+            .map(function (response) {
+            return response.json().plugins;
+        });
     };
-    SettingsService.prototype.updateUserInList = function (user) {
-        this.updateItemInList(user, 'listOfUsers');
+    PluginService.prototype.getLatestTemplate = function () {
+        return this.http.get(this.apiManager.getPathByName('getLatestTemplate'))
+            .map(function (response) {
+            return response.json().template;
+        });
     };
     /**
-     * This function retrive the permissions from the API (Laravel)
+     * This Function call API in order to Delete a list of Plugins
+     * @param plugins
      * @returns {Observable<R>}
      */
-    SettingsService.prototype.getPermissionsFrom = function () {
-        return this.http.get(this.apiManager.getPathByName('getPermission'))
+    PluginService.prototype.uninstallPlugins = function (plugins) {
+        return this.http.put(this.apiManager.getPathByName('getPlugins'), plugins, this.getOptions())
             .map(function (response) {
-            return response.json().permissions;
+            return response.json().message;
+        });
+    };
+    PluginService.prototype.uninstallTemplates = function (templates) {
+        return this.http.put(this.apiManager.getPathByName('instTemp'), templates, this.getOptions())
+            .map(function (response) {
+            return response.json().message;
+        });
+    };
+    PluginService.prototype.uninstallTemplate = function (template) {
+        return this.http.put(this.apiManager.getPathByName('instTemp'), template, this.getOptions())
+            .map(function (response) {
+            return response.json().message;
+        });
+    };
+    PluginService.prototype.deletePackPlugin = function (plugin) {
+        return this.http.post(this.apiManager.getPathByName('delPack'), plugin, this.getOptions())
+            .map(function (response) {
+            return response.json().plugins;
+        });
+    };
+    PluginService.prototype.deletePackTemplate = function (template) {
+        return this.http.post(this.apiManager.getPathByName('unPackTemp'), template, this.getOptions())
+            .map(function (response) {
+            return response.json().message;
         });
     };
     /**
-     * This function set the Roles
-     * @param roles
+     * This function call API in order to Install the Plugin
+     * @param plugin
+     * @returns {Observable<R>}
      */
-    SettingsService.prototype.setRoles = function (roles) {
-        this.setItem('roles', roles);
-        this.listOfRoles = roles;
+    PluginService.prototype.installPlugin = function (plugin) {
+        return this.http.post(this.apiManager.getPathByName('installPlugin'), plugin, this.getOptions())
+            .map(function (response) {
+            return response.json().message;
+        });
+    };
+    PluginService.prototype.installTemplate = function (template) {
+        return this.http.post(this.apiManager.getPathByName('instTemp'), template, this.getOptions())
+            .map(function (response) {
+            return response.json().message;
+        });
+    };
+    PluginService.prototype.activateTemplate = function (template) {
+        return this.http.post(this.apiManager.getPathByName('actiTemp'), template, this.getOptions())
+            .map(function (response) {
+            return response.json().message;
+        });
+    };
+    PluginService.prototype.deactivateTemplate = function (template) {
+        return this.http.post(this.apiManager.getPathByName('deactiTemp'), template, this.getOptions())
+            .map(function (response) {
+            return response.json().message;
+        });
     };
     /**
-     * This function set the Users
-     * @param users
+     * This function call API in order to Update the Plugin
+     * @param plugin
+     * @returns {Observable<R>}
      */
-    SettingsService.prototype.setUsers = function (users) {
-        this.setItem('users', users);
-        this.listOfUsers = users;
+    PluginService.prototype.updatePlugin = function (plugin) {
+        return this.http.put(this.apiManager.getPathByName('installPlugin'), plugin, this.getOptions())
+            .map(function (response) {
+            return response.json().messsage;
+        });
+    };
+    PluginService.prototype.updateTemplate = function (template) {
+        return this.http.put(this.apiManager.getPathByName('installTemplate'), template, this.getOptions())
+            .map(function (response) {
+            return response.json().message;
+        });
+    };
+    PluginService.prototype.packPlugin = function (plugin) {
+        return this.http.post(this.apiManager.getPathByName('packPlugin'), plugin, this.getOptions())
+            .map(function (response) {
+            return response.json().plugins;
+        });
+    };
+    PluginService.prototype.packTemplate = function (template) {
+        return this.http.post(this.apiManager.getPathByName('packTemplate'), template, this.getOptions())
+            .map(function (response) {
+            return response.json().message;
+        });
+    };
+    /* End Section call to API*/
+    /**
+     * This function set plugins and store it into a Session
+     * @param plugins
+     */
+    PluginService.prototype.setPlugins = function (plugins) {
+        var data = plugins;
+        this.setItem('plugins', data);
+        this.listOfPlugins = data;
+    };
+    PluginService.prototype.setTemplate = function (template) {
+        var data = template;
+        this.setItem('template', data);
+        this.listOfTemplate = data;
+    };
+    PluginService.prototype.setTemplates = function (templates) {
+        var data = templates;
+        this.setItem('templates', data);
+        this.listOfTemplates = data;
     };
     /**
-     * This function is to set new role into the listOfRoles
-     * @param role
+     * This function get listOfPlugins
+     * @returns {any}
      */
-    SettingsService.prototype.setRole = function (role) {
-        var roles = this.getRoles();
-        roles.push(role);
-        this.deleteRoleFromCache();
-        this.setRoles(roles);
+    PluginService.prototype.getPlugins = function () {
+        return this.getItem('plugins', 'listOfPlugins');
     };
     /**
-     * This function is to set new User into the listOfUsers
-     * @param user
+     * this function delete plugins from cache
      */
-    SettingsService.prototype.setUser = function (user) {
-        var users = this.getUsers();
-        users.push(user);
-        this.deleteUserFromCache();
-        this.setUsers(users);
+    PluginService.prototype.deletePluginFromCache = function () {
+        this.deleteItem('plugins', 'listOfPlugins');
     };
     /**
-     * This function delete listOfRoles from Cache
-     */
-    SettingsService.prototype.deleteRoleFromCache = function () {
-        this.deleteItem('roles', 'listOfRoles');
-    };
-    /**
-     * This function delete listOfUsers from Cache
-     */
-    SettingsService.prototype.deleteUserFromCache = function () {
-        this.deleteItem('users', 'listOfUsers');
-    };
-    /**
-     * This function check if Dataset of Roles exist
+     * this function return if Plugins Exists
      * @returns {boolean}
      */
-    SettingsService.prototype.checkRolesExist = function () {
-        return this.checkItemExist('roles');
+    PluginService.prototype.checkPluginsExist = function () {
+        return this.checkItemExist('plugins');
     };
+    /* Fire Event*/
     /**
-     * This function check if Dataset of Users exist
-     * @returns {boolean}
+     * this function fire event
      */
-    SettingsService.prototype.checkUsersExist = function () {
-        return this.checkItemExist('users');
+    PluginService.prototype.updateListOfPlugins = function () {
+        this._updatePlugins.next();
     };
-    /**
-     * This function return Role passing a property
-     * @param name
-     * @param value
-     * @returns {Role}
-     */
-    SettingsService.prototype.getRoleByProperty = function (name, value) {
-        return this.getItemByProperty(name, value, 'roles', 'listOfRoles');
+    PluginService.prototype.updateListOfTemplate = function () {
+        this._updateTemplate.next();
     };
-    /**
-     * This function return User passing a property
-     * @param name
-     * @param value
-     * @returns {User}
-     */
-    SettingsService.prototype.getUserByProperty = function (name, value) {
-        return this.getItemByProperty(name, value, 'users', 'listOfUsers');
-    };
-    /**
-     * This function check if a role has permission
-     * @param role
-     * @param permission
-     * @returns {boolean}
-     */
-    SettingsService.prototype.roleHasPermission = function (role, permission) {
-        var response = false;
-        role.permissions.forEach(function (p) {
-            if (p.name === permission) {
-                response = true;
-            }
-        });
-        return response;
-    };
-    /**
-     * This function return a Role Array
-     * @returns {Role[]}
-     */
-    SettingsService.prototype.getRoles = function () {
-        return this.getItem('roles', 'listOfRoles');
-    };
-    /**
-     * This function return a User Array
-     * @returns {User[]}
-     */
-    SettingsService.prototype.getUsers = function () {
-        return this.getItem('users', 'listOfUsers');
-    };
-    /**
-     * This function call API in order to Update the Role
-     * @param role
-     * @returns {Observable<R>}
-     */
-    SettingsService.prototype.saveRole = function (role) {
-        return this.http.put(this.apiManager.getPathByName('saveRole'), role, this.getOptions())
-            .map(function (response) {
-            return response.json().role;
-        });
-    };
-    /**
-     * This function call API in order to update the User
-     * @param user
-     * @returns {Observable<R>}
-     */
-    SettingsService.prototype.saveUser = function (user) {
-        return this.http.put(this.apiManager.getPathByName('saveUser'), user, this.getOptions())
-            .map(function (response) {
-            return response.json().user;
-        });
-    };
-    /**
-     * This function call API in order to create new Role
-     * @param role
-     * @returns {Observable<R>}
-     */
-    SettingsService.prototype.newRole = function (role) {
-        return this.http.post(this.apiManager.getPathByName('saveRole'), role, this.getOptions())
-            .map(function (response) {
-            return response.json().role;
-        });
-    };
-    /**
-     * This function call API in order to create new User
-     * @param user
-     * @returns {Observable<R>}
-     */
-    SettingsService.prototype.newUser = function (user) {
-        return this.http.post(this.apiManager.getPathByName('saveUser'), user, this.getOptions())
-            .map(function (response) {
-            return response.json().user;
-        });
-    };
-    /**
-     * This function call API in order to delete Array of Role
-     * @param roles
-     * @returns {Observable<R>}
-     */
-    SettingsService.prototype.deleteRoles = function (roles) {
-        return this.http.put(this.apiManager.getPathByName('getRoles'), roles, this.getOptions())
-            .map(function (response) {
-            return response.json().roles;
-        });
-    };
-    /**
-     * This function call API in order to delete Array of User
-     * @param users
-     * @returns {Observable<R>}
-     */
-    SettingsService.prototype.deleteUsers = function (users) {
-        return this.http.put(this.apiManager.getPathByName('getUsers'), users, this.getOptions())
-            .map(function (response) {
-            return response.json().roles;
-        });
-    };
-    /**
-     * This function emit an Event
-     */
-    SettingsService.prototype.updateListOfRoles = function () {
-        this._updateRoles.next();
-    };
-    /**
-     * This function emit an Event
-     */
-    SettingsService.prototype.updateListOfUsers = function () {
-        this._updateUsers.next();
-    };
-    return SettingsService;
+    return PluginService;
 }(master_service_1.MasterService));
-SettingsService = __decorate([
+PluginService = __decorate([
     core_1.Injectable(),
     __metadata("design:paramtypes", [typeof (_a = typeof http_1.Http !== "undefined" && http_1.Http) === "function" && _a || Object])
-], SettingsService);
-exports.SettingsService = SettingsService;
+], PluginService);
+exports.PluginService = PluginService;
 var _a;
-//# sourceMappingURL=settings.service.js.map
+//# sourceMappingURL=plugin.service.js.map
 
 /***/ }),
 
-/***/ "./src/plugins/Hardel/Settings/component/NewRole/rolenew.component.html":
+/***/ "./src/plugins/Hardel/Plugin/component/InstallPlugin/install-plugin.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"role.name\" >\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-list\"></i>\n                <span>Permissions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn cyan\" data-toggle=\"modal\" data-target=\"#addModal\">\n                    <i class=\"fa fa-plus\"></i>\n                    Add\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\" *ngIf=\"role.permissions.length > 0\">\n                                    <thead>\n                                    <tr>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let permission of role.permissions\">\n                                        <td>\n                                            {{permission.name}}\n                                        </td>\n                                        <td>\n                                            <a class=\"td_orange\" (click)=\"erasePermission(permission)\" *ngIf=\"isEdit == true\"><i class=\"fa fa-window-close-o\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n    <div id=\"addModal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"addModal\"  aria-hidden=\"true\">\n        <div class=\"modal-dialog\">\n            <div class=\"modal-content\">\n                <div class=\"modal-header\">\n                    <div class=\"modal-title\">\n                        Searching For Permission\n                        <button class=\"close\" data-dismiss = \"modal\" aria-label=\"hidden\"><i class=\"fa fa-times\"></i></button>\n                    </div>\n                </div>\n                <div class=\"modal-body\">\n                    <div class=\"row\">\n                        <div class=\"col-md-12\">\n                            <div class=\"form-group flex-group\">\n                                <label class=\"col-md-4\">Name</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control input-sm\" name=\"query\" [(ngModel)]=\"query\" (keyup)=\"filter()\" autocomplete=\"off\">\n                                    <div class=\"suggestions\" *ngIf=\"filteredList.length > 0\">\n                                        <ul>\n                                            <li class=\"suggestion-li\" *ngFor=\"let item of filteredList\">\n                                                <a (click)=\"addPermissions(item)\">{{item.name}}</a>\n                                            </li>\n                                        </ul>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"modal-footer\">\n                    <div class=\"m-footer\">\n\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</form>"
+module.exports = "\n<div class=\"container deck\">\n    <div class=\"row\">\n        <div class=\"col-md-6\">\n            <lt-entry-pagination\n                    [entry]=\"'50-5'\"\n                    (onEntry)=\"onPerPage($event)\"\n            >\n            </lt-entry-pagination>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div *ngFor=\"let pl of listToShow\" class=\"col-lg-3\">\n            <div class=\"card-lt\">\n                <h4>{{pl.vendor}} - {{pl.name}}</h4>\n                <p>version: {{pl.version}}</p>\n                <a *ngIf=\"pl?.toUpdate === true; else otherTmp\" class=\"btn btn-success btn-lt\" style=\"cursor:pointer;\" (click)=\"updatePlugin(pl)\"><i class=\"fa fa-refresh\"></i> Update Plugin</a>\n                <ng-template #otherTmp>\n                    <a class=\"btn btn-primary btn-lt\" style=\"cursor:pointer;\" (click)=\"downloadPlugin(pl,progressModal)\"><i class=\"fa fa-download\"></i> Installa Plugin</a>\n                </ng-template>\n            </div>\n        </div>\n    </div>\n</div>\n<lt-pagination\n        [pagesToShow]=\"3\"\n        [perPage]=\"perPage\"\n        [count]=\"listOfLatestPlugin.length\"\n        [loading]=\"false\"\n        [page]=\"actualPage\"\n        (goNext)=\"onNext($event)\"\n        (goPage)=\"onPage($event)\"\n        (goPrev)=\"onPrev()\"\n>\n</lt-pagination>\n\n<ng-template #progressModal>\n<!-- Modal -->\n    <div class=\"modal-header\">\n        <h5 class=\"modal-title\" id=\"exampleModalLabel\">Modal title</h5>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n        </button>\n    </div>\n    <div class=\"modal-body\">\n        <div class=\"progress\">\n            <div class=\"progress-bar progress-bar-striped\" role=\"progressbar\" [style.width]=\"widthStyle\" aria-valuenow=\"10\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>\n        </div>\n    </div>\n</ng-template>"
 
 /***/ }),
 
-/***/ "./src/plugins/Hardel/Settings/component/NewRole/rolenew.component.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-var RoleNewComponent = (function () {
-    function RoleNewComponent(sService, router) {
-        this.sService = sService;
-        this.router = router;
-        this.listPermissions = [];
-        this.isEdit = false;
-        this.filteredList = [];
-        this.query = '';
-        this.role = {
-            id: -1,
-            name: '',
-            check: false,
-            permissions: []
-        };
-    }
-    RoleNewComponent.prototype.ngOnInit = function () {
-        this.retrivePermission();
-    };
-    RoleNewComponent.prototype.retrivePermission = function () {
-        var _this = this;
-        this.sService.getPermissionsFrom().subscribe(function (perms) {
-            _this.listPermissions = perms;
-            _this.role.permissions.forEach(function (item) {
-                var index = -1;
-                for (var i = 0; i < _this.listPermissions.length; i++) {
-                    var m = _this.listPermissions[i];
-                    if (m.id === item.id && m.name === item.name) {
-                        index = i;
-                        break;
-                    }
-                }
-                if (index > -1) {
-                    _this.listPermissions.splice(index, 1);
-                }
-            });
-        });
-        this.cloneRole();
-    };
-    /**
-     * This function filter permission for research
-     */
-    RoleNewComponent.prototype.filter = function () {
-        if (this.query !== "") {
-            this.filteredList = this.listPermissions.filter(function (el) {
-                return el.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
-            }.bind(this));
-        }
-    };
-    /**
-     * This function delete Permission from role.permissions
-     * @param item
-     */
-    RoleNewComponent.prototype.erasePermission = function (item) {
-        // cancella il permesso
-        this.listPermissions.push(item);
-        var index = this.role.permissions.indexOf(item);
-        if (index > -1) {
-            this.role.permissions.splice(index, 1);
-        }
-    };
-    /**
-     * This Function add Permission at the moment to role.permissions
-     * @param item
-     */
-    RoleNewComponent.prototype.addPermissions = function (item) {
-        //aggiunge un permesso
-        this.filteredList = [];
-        this.query = item.name;
-        this.role.permissions.push(item);
-        var index = this.listPermissions.indexOf(item);
-        if (index > -1) {
-            this.listPermissions.splice(index, 1);
-        }
-    };
-    /**
-     * This function go to save Mode
-     */
-    RoleNewComponent.prototype.saveMode = function () {
-        //salva i cambiamenti
-        var _this = this;
-        if (!this.isEqual(this.role, this.copyRole)) {
-            if (this.role.name.length == 0) {
-                alert('You must write a name of Role, please!');
-                this.cloneCopyRole();
-                return;
-            }
-            this.sService.newRole(this.role).subscribe(function (data) {
-                if (!data.hasOwnProperty('state')) {
-                    data.state = false;
-                }
-                //push the item into roles
-                _this.sService.setRole(data);
-                _this.sService.updateListOfRoles();
-                //navigate to Settings Roles
-                _this.router.navigate(['/backend/settings/roles']);
-            });
-        }
-    };
-    RoleNewComponent.prototype.isEqual = function (v, v2) {
-        return (v.name == v2.name) && (v.state == v2.state) && (v.permissions.length == v2.permissions.length);
-    };
-    /**
-     * This function clone the Role
-     */
-    RoleNewComponent.prototype.cloneRole = function () {
-        var permissions = [];
-        for (var _i = 0, _a = this.role.permissions; _i < _a.length; _i++) {
-            var perm = _a[_i];
-            permissions.push(perm);
-        }
-        this.copyRole = Object.assign({}, this.role);
-        this.copyRole.permissions = permissions;
-    };
-    /**
-     * This function clone the CopyRole
-     */
-    RoleNewComponent.prototype.cloneCopyRole = function () {
-        var permissions = [];
-        for (var _i = 0, _a = this.copyRole.permissions; _i < _a.length; _i++) {
-            var perm = _a[_i];
-            permissions.push(perm);
-        }
-        this.role = Object.assign({}, this.copyRole);
-        this.role.permissions = permissions;
-    };
-    return RoleNewComponent;
-}());
-RoleNewComponent = __decorate([
-    core_1.Component({
-        selector: 'settings-new-role',
-        template: __webpack_require__("./src/plugins/Hardel/Settings/component/NewRole/rolenew.component.html"),
-        styles: ['']
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof settings_service_1.SettingsService !== "undefined" && settings_service_1.SettingsService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
-], RoleNewComponent);
-exports.RoleNewComponent = RoleNewComponent;
-var _a, _b;
-//# sourceMappingURL=rolenew.component.js.map
-
-/***/ }),
-
-/***/ "./src/plugins/Hardel/Settings/component/NewUser/usernew.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"user.name\" >\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nome\" class=\"col-md-2 control-label\">Email</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"email\" placeholder=\"Email\" id=\"email\" [(ngModel)] = \"user.email\" >\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nome\" class=\"col-md-2 control-label\">Password</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"password\" class=\"form-control\" name=\"password\" placeholder=\"Password\" id=\"password\" [(ngModel)] = \"user.password\" >\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-list\"></i>\n                <span>Role</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn cyan\" data-toggle=\"modal\" data-target=\"#addModal\">\n                    <i class=\"fa fa-plus\"></i>\n                    Add\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\" *ngIf=\"user.role !== undefined\">\n                                    <thead>\n                                    <tr>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr>\n                                        <td>\n                                            {{user.role.name}}\n                                        </td>\n                                        <td>\n                                            <a class=\"td_orange\" (click)=\"eraseRole(user.role)\"><i class=\"fa fa-window-close-o\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n    <div id=\"addModal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"addModal\"  aria-hidden=\"true\">\n        <div class=\"modal-dialog\">\n            <div class=\"modal-content\">\n                <div class=\"modal-header\">\n                    <div class=\"modal-title\">\n                        Searching For Permission\n                        <button class=\"close\" data-dismiss = \"modal\" aria-label=\"hidden\"><i class=\"fa fa-times\"></i></button>\n                    </div>\n                </div>\n                <div class=\"modal-body\">\n                    <div class=\"row\">\n                        <div class=\"col-md-12\">\n                            <div class=\"form-group flex-group\">\n                                <label class=\"col-md-4\">Name</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control input-sm\" name=\"query\" [(ngModel)]=\"query\" (keyup)=\"filter()\" autocomplete=\"off\">\n                                    <div class=\"suggestions\" *ngIf=\"filteredList.length > 0\">\n                                        <ul>\n                                            <li class=\"suggestion-li\" *ngFor=\"let item of filteredList\">\n                                                <a (click)=\"addRole(item)\">{{item.name}}</a>\n                                            </li>\n                                        </ul>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"modal-footer\">\n                    <div class=\"m-footer\">\n\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</form>"
-
-/***/ }),
-
-/***/ "./src/plugins/Hardel/Settings/component/NewUser/usernew.component.ts":
+/***/ "./src/plugins/Hardel/Plugin/component/InstallPlugin/install-plugin.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /**
- * Created by hernan on 09/11/2017.
+ * Created by hernan on 14/12/2017.
  */
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -484,361 +278,99 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
+var plugin_service_1 = __webpack_require__("./src/plugins/Hardel/Plugin/Service/plugin.service.ts");
 var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-var UserNewComponent = (function () {
-    function UserNewComponent(nService, router) {
-        this.nService = nService;
-        this.router = router;
-        this.listRole = [];
-        this.filteredList = [];
-        this.query = '';
-        this.user = {
-            id: -1,
-            name: '',
-            check: false,
-            email: ''
-        };
+var list_component_1 = __webpack_require__("./src/model/list.component.ts");
+var ng_bootstrap_1 = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
+var InstallPluginComponent = (function (_super) {
+    __extends(InstallPluginComponent, _super);
+    function InstallPluginComponent(inPl, router, serviceModal) {
+        var _this = _super.call(this) || this;
+        _this.inPl = inPl;
+        _this.router = router;
+        _this.serviceModal = serviceModal;
+        _this.listOfLatestPlugin = [];
+        _this.retrieveListOfLatestPlugin();
+        return _this;
     }
-    UserNewComponent.prototype.ngOnInit = function () {
-        this.retriveRoles();
-    };
-    UserNewComponent.prototype.retriveRoles = function () {
+    InstallPluginComponent.prototype.ngOnInit = function () { };
+    InstallPluginComponent.prototype.retrieveListOfLatestPlugin = function () {
         var _this = this;
-        this.nService.getRolesFrom().subscribe(function (roles) {
-            _this.listRole = roles;
+        this.inPl.getLatestPlugin().subscribe(function (data) {
+            _this.listOfLatestPlugin = data;
+            _this.listOfData = _this.listOfLatestPlugin;
+            _this.updateListaShow();
         });
-        this.cloneUser();
     };
-    /**
-     * This function filter permission for research
-     */
-    UserNewComponent.prototype.filter = function () {
-        if (this.query !== "") {
-            this.filteredList = this.listRole.filter(function (el) {
-                return el.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
-            }.bind(this));
-        }
-    };
-    /**
-     * This function delete Role from user.role
-     * @param item
-     */
-    UserNewComponent.prototype.eraseRole = function (item) {
-        // cancella il permesso
-        this.listRole.push(item);
-        delete this.user.role;
-    };
-    /**
-     * This Function add Role at the moment to user.role
-     * @param item
-     */
-    UserNewComponent.prototype.addRole = function (item) {
-        //aggiunge un permesso
-        this.filteredList = [];
-        this.query = item.name;
-        this.user.role = item;
-        var index = this.listRole.indexOf(item);
-        if (index > -1) {
-            this.listRole.splice(index, 1);
-        }
-    };
-    /**
-     * This function go to save Mode
-     */
-    UserNewComponent.prototype.saveMode = function () {
-        //salva i cambiamenti
+    InstallPluginComponent.prototype.downloadPlugin = function (plugin, modal) {
         var _this = this;
-        if (!this.isEqual(this.user, this.copyUser)) {
-            if (this.user.email.length == 0) {
-                alert('You must write a name of Role, please!');
-                this.cloneCopyUser();
-                return;
-            }
-            this.nService.newUser(this.user).subscribe(function (data) {
-                if (!data.hasOwnProperty('state')) {
-                    data.state = false;
-                }
-                //push the item into roles
-                _this.nService.setUser(data);
-                _this.nService.updateListOfUsers();
-                //navigate to Settings Roles
-                _this.router.navigate(['/backend/settings/users']);
-            });
-        }
-    };
-    UserNewComponent.prototype.isEqual = function (v, v2) {
-        return (v.email == v2.email) && (v.state == v2.state) && (v.name == v2.name);
-    };
-    /**
-     * This function clone the User
-     */
-    UserNewComponent.prototype.cloneUser = function () {
-        var permissions = [];
-        this.copyUser = Object.assign({}, this.user);
-        if (this.user.role !== undefined) {
-            for (var _i = 0, _a = this.user.role.permissions; _i < _a.length; _i++) {
-                var perm = _a[_i];
-                permissions.push(perm);
-            }
-            var role = void 0;
-            role = Object.assign({}, this.user.role);
-            this.copyUser.role = role;
-            this.copyUser.role.permissions = permissions;
-        }
-    };
-    /**
-     * This function clone the CopyUser
-     */
-    UserNewComponent.prototype.cloneCopyUser = function () {
-        var permissions = [];
-        for (var _i = 0, _a = this.copyUser.role.permissions; _i < _a.length; _i++) {
-            var perm = _a[_i];
-            permissions.push(perm);
-        }
-        var role;
-        role = Object.assign({}, this.copyUser.role);
-        this.user = Object.assign({}, this.copyUser);
-        this.user.role = role;
-        this.user.role.permissions = permissions;
-    };
-    return UserNewComponent;
-}());
-UserNewComponent = __decorate([
-    core_1.Component({
-        selector: 'settings-new-user',
-        template: __webpack_require__("./src/plugins/Hardel/Settings/component/NewUser/usernew.component.html"),
-        styles: ['']
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof settings_service_1.SettingsService !== "undefined" && settings_service_1.SettingsService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
-], UserNewComponent);
-exports.UserNewComponent = UserNewComponent;
-var _a, _b;
-//# sourceMappingURL=usernew.component.js.map
-
-/***/ }),
-
-/***/ "./src/plugins/Hardel/Settings/component/Role/role.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<form class=\"form\" *ngIf=\"notFound == true\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn darkorange\" (click)=\"editMode()\">\n                    <i class=\"fa fa-edit\"></i>\n                    Edit\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"nome\" [ngModel] = \"role.name\" placeholder=\"Nome\" id=\"nome\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                    <ng-template #editName>\n                                        <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"role.name\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-list\"></i>\n                <span>Permissions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn cyan\" data-toggle=\"modal\" data-target=\"#addModal\" *ngIf=\"isEdit == true\">\n                    <i class=\"fa fa-plus\"></i>\n                    Add\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let permission of role.permissions\">\n                                        <td>\n                                            {{permission.name}}\n                                        </td>\n                                        <td>\n                                            <a class=\"td_orange\" (click)=\"erasePermission(permission)\" *ngIf=\"isEdit == true\"><i class=\"fa fa-window-close-o\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n    <div id=\"addModal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"addModal\"  aria-hidden=\"true\">\n        <div class=\"modal-dialog\">\n            <div class=\"modal-content\">\n                <div class=\"modal-header\">\n                    <div class=\"modal-title\">\n                        Searching For Permission \n                        <button class=\"close\" data-dismiss = \"modal\" aria-label=\"hidden\"><i class=\"fa fa-times\"></i></button>\n                    </div>\n                </div>\n                <div class=\"modal-body\">\n                    <div class=\"row\">\n                        <div class=\"col-md-12\">\n                            <div class=\"form-group flex-group\">\n                                <label class=\"col-md-4\">Name</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control input-sm\" name=\"query\" [(ngModel)]=\"query\" (keyup)=\"filter()\" autocomplete=\"off\">\n                                    <div class=\"suggestions\" *ngIf=\"filteredList.length > 0\">\n                                        <ul>\n                                            <li class=\"suggestion-li\" *ngFor=\"let item of filteredList\">\n                                                <a (click)=\"addPermissions(item)\">{{item.name}}</a>\n                                            </li>\n                                        </ul>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"modal-footer\">\n                    <div class=\"m-footer\">\n\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</form>"
-
-/***/ }),
-
-/***/ "./src/plugins/Hardel/Settings/component/Role/role.component.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
-var settings_interfaces_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.interfaces.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-var RoleComponent = (function () {
-    function RoleComponent(sService, router, nav) {
-        var _this = this;
-        this.sService = sService;
-        this.router = router;
-        this.nav = nav;
-        this.listPermissions = [];
-        this.isEdit = false;
-        this.notFound = false;
-        this.filteredList = [];
-        this.query = '';
-        this.role = {
-            id: -2,
-            name: '',
-            check: false,
-            permissions: []
-        };
-        this.sub = this.router.params.subscribe(function (params) {
-            _this.id = +params['id'];
-            _this.role = _this.sService.getRoleByProperty('id', _this.id);
-            if (_this.role != null) {
-                _this.notFound = true;
-            }
-            else {
-                _this.nav.navigate(['/backend/not-found']);
-            }
-            _this.copyRole = Object.assign({}, _this.role);
-        });
-    }
-    RoleComponent.prototype.ngOnInit = function () {
-        this.retrivePermission();
-    };
-    RoleComponent.prototype.ngOnDestroy = function () {
-        this.sub.unsubscribe();
-    };
-    /**
-     * This function pass into edit Mode
-     */
-    RoleComponent.prototype.editMode = function () {
-        //passa in modalità edit
-        this.isEdit = !this.isEdit;
-    };
-    /**
-     * This function go to save Mode
-     */
-    RoleComponent.prototype.saveMode = function () {
-        var _this = this;
-        //salva i cambiamenti
-        if (this.role !== this.copyRole) {
-            if (this.role.name.length == 0) {
-                alert('You must write a name of Role, please!');
-                this.cloneCopyRole();
-                return;
-            }
-            this.sService.saveRole(this.role).subscribe(function (role) {
-                _this.role = role;
-                _this.retrivePermission();
-                _this.sService.updateRoleInList(_this.role);
-                _this.editMode();
-            });
-        }
-    };
-    /**
-     * This function is to get Permission from API
-     */
-    RoleComponent.prototype.retrivePermission = function () {
-        var _this = this;
-        this.sService.getPermissionsFrom().subscribe(function (perms) {
-            _this.listPermissions = perms;
-            if (_this.role != null) {
-                _this.role.permissions.forEach(function (item) {
-                    var index = -1;
-                    for (var i = 0; i < _this.listPermissions.length; i++) {
-                        var m = _this.listPermissions[i];
-                        if (m.id === item.id && m.name === item.name) {
-                            index = i;
-                            break;
-                        }
-                    }
-                    if (index > -1) {
-                        _this.listPermissions.splice(index, 1);
-                    }
+        var mod = this.serviceModal.open(modal);
+        this.widthStyle = '20%';
+        this.inPl.installPlugin(plugin).subscribe(function (message) {
+            if (message) {
+                _this.widthStyle = '40%';
+                _this.retrieveListOfLatestPlugin();
+                _this.widthStyle = '80%';
+                _this.inPl.getPluginsFrom()
+                    .subscribe(function (data) {
+                    _this.widthStyle = '99%';
+                    _this.inPl.setPlugins(data);
+                    mod.close();
+                    _this.widthStyle = '10%';
                 });
             }
         });
-        this.cloneRole();
     };
-    /**
-     * This function reset the Information of Role
-     */
-    RoleComponent.prototype.resetMode = function () {
-        if (this.role !== this.copyRole) {
-            if (confirm('Are you sure you don\'t want to save this changement and restore it?')) {
-                this.cloneCopyRole();
+    InstallPluginComponent.prototype.updatePlugin = function (plugin, modal) {
+        var _this = this;
+        //this is to update plugin
+        var mod = this.serviceModal.open(modal);
+        this.widthStyle = '20%';
+        this.inPl.updatePlugin(plugin).subscribe(function (message) {
+            if (message) {
+                _this.widthStyle = '40%';
+                _this.retrieveListOfLatestPlugin();
+                _this.widthStyle = '80%';
+                _this.inPl.getPluginsFrom()
+                    .subscribe(function (data) {
+                    _this.widthStyle = '99%';
+                    _this.inPl.setPlugins(data);
+                    mod.close();
+                    _this.widthStyle = '10%';
+                });
             }
-        }
+        });
     };
-    /**
-     * This Function add Permission at the moment to role.permissions
-     * @param item
-     */
-    RoleComponent.prototype.addPermissions = function (item) {
-        //aggiunge un permesso
-        this.filteredList = [];
-        this.query = item.name;
-        this.role.permissions.push(item);
-        var index = this.listPermissions.indexOf(item);
-        if (index > -1) {
-            this.listPermissions.splice(index, 1);
-        }
-    };
-    /**
-     * This function delete Permission from role.permissions
-     * @param item
-     */
-    RoleComponent.prototype.erasePermission = function (item) {
-        // cancella il permesso
-        this.listPermissions.push(item);
-        var index = this.role.permissions.indexOf(item);
-        if (index > -1) {
-            this.role.permissions.splice(index, 1);
-        }
-    };
-    /**
-     * This function filter permission for research
-     */
-    RoleComponent.prototype.filter = function () {
-        if (this.query !== "") {
-            this.filteredList = this.listPermissions.filter(function (el) {
-                return el.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
-            }.bind(this));
-        }
-        else {
-        }
-    };
-    /**
-     * This function clone the Role
-     */
-    RoleComponent.prototype.cloneRole = function () {
-        if (this.role != null) {
-            var permissions = [];
-            for (var _i = 0, _a = this.role.permissions; _i < _a.length; _i++) {
-                var perm = _a[_i];
-                permissions.push(perm);
-            }
-            this.copyRole = Object.assign({}, this.role);
-            this.copyRole.permissions = permissions;
-        }
-    };
-    /**
-     * This function clone the CopyRole
-     */
-    RoleComponent.prototype.cloneCopyRole = function () {
-        var permissions = [];
-        for (var _i = 0, _a = this.copyRole.permissions; _i < _a.length; _i++) {
-            var perm = _a[_i];
-            permissions.push(perm);
-        }
-        this.role = Object.assign({}, this.copyRole);
-        this.role.permissions = permissions;
-    };
-    return RoleComponent;
-}());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", typeof (_a = typeof settings_interfaces_1.Role !== "undefined" && settings_interfaces_1.Role) === "function" && _a || Object)
-], RoleComponent.prototype, "role", void 0);
-RoleComponent = __decorate([
+    return InstallPluginComponent;
+}(list_component_1.ListComponent));
+InstallPluginComponent = __decorate([
     core_1.Component({
-        selector: 'app-role',
-        template: __webpack_require__("./src/plugins/Hardel/Settings/component/Role/role.component.html"),
+        selector: 'pl-install',
+        template: __webpack_require__("./src/plugins/Hardel/Plugin/component/InstallPlugin/install-plugin.component.html"),
         styles: ['']
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof settings_service_1.SettingsService !== "undefined" && settings_service_1.SettingsService) === "function" && _b || Object, typeof (_c = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _c || Object, typeof (_d = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _d || Object])
-], RoleComponent);
-exports.RoleComponent = RoleComponent;
-var _a, _b, _c, _d;
-//# sourceMappingURL=role.component.js.map
+    __metadata("design:paramtypes", [typeof (_a = typeof plugin_service_1.PluginService !== "undefined" && plugin_service_1.PluginService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object, typeof (_c = typeof ng_bootstrap_1.NgbModal !== "undefined" && ng_bootstrap_1.NgbModal) === "function" && _c || Object])
+], InstallPluginComponent);
+exports.InstallPluginComponent = InstallPluginComponent;
+var _a, _b, _c;
+//# sourceMappingURL=install-plugin.component.js.map
 
 /***/ }),
 
-/***/ "./src/plugins/Hardel/Settings/component/Roles/roles.component.html":
+/***/ "./src/plugins/Hardel/Plugin/component/InstallTemplate/install-template.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> Roles</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/settings/users']\" data-toggle=\"tab\"> Users</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <lt-entry-pagination\n                                [entry]=\"'50-5'\"\n                                (onEntry)=\"onPerPage($event)\"\n                                >\n                                </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/settings/roles/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deleteRoles()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                        <tr *ngFor=\"let role of listToShow\">\n                                            <td>\n                                                <input type=\"checkbox\" (change)=\"eventChange($event,role)\" [(ngModel)] = \"role.check\">\n                                            </td>\n                                            <td>\n                                                {{role.name}}\n                                            </td>\n                                            <td>\n                                                <a [routerLink] = \"['/backend/settings/roles',role.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                            </td>\n                                        </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                            [pagesToShow]=\"3\"\n                            [perPage]=\"perPage\"\n                            [count]=\"listaRole.length\"\n                            [loading]=\"false\"\n                            [page]=\"actualPage\"\n                            (goNext)=\"onNext($event)\"\n                            (goPage)=\"onPage($event)\"\n                            (goPrev)=\"onPrev()\"\n                        ></lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
+module.exports = "<div class=\"container deck\">\n    <div class=\"row\">\n        <div class=\"col-md-6\">\n            <lt-entry-pagination\n                    [entry]=\"'50-5'\"\n                    (onEntry)=\"onPerPage($event)\"\n            >\n            </lt-entry-pagination>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div *ngFor=\"let pl of listToShow\" class=\"col-lg-3\">\n            <div class=\"card-lt\">\n                <h4>{{pl.vendor}} - {{pl.name}}</h4>\n                <p>version: {{pl.version}}</p>\n                <a *ngIf=\"pl?.toUpdate === true; else otherTmp\" class=\"btn btn-success btn-lt\" style=\"cursor:pointer;\" (click)=\"updateTemplate(pl)\"><i class=\"fa fa-refresh\"></i> Update Template</a>\n                <ng-template #otherTmp>\n                    <a class=\"btn btn-primary btn-lt\" style=\"cursor:pointer;\" (click)=\"downloadTemplate(pl,progressModal)\"><i class=\"fa fa-download\"></i> Installa Template</a>\n                </ng-template>\n            </div>\n        </div>\n    </div>\n</div>\n<lt-pagination\n        [pagesToShow]=\"3\"\n        [perPage]=\"perPage\"\n        [count]=\"listOfLatestTemplate.length\"\n        [loading]=\"false\"\n        [page]=\"actualPage\"\n        (goNext)=\"onNext($event)\"\n        (goPage)=\"onPage($event)\"\n        (goPrev)=\"onPrev()\"\n>\n</lt-pagination>\n\n<ng-template #progressModal>\n    <!-- Modal -->\n    <div class=\"modal-header\">\n        <h5 class=\"modal-title\" id=\"exampleModalLabel\">Modal title</h5>\n        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n            <span aria-hidden=\"true\">&times;</span>\n        </button>\n    </div>\n    <div class=\"modal-body\">\n        <div class=\"progress\">\n            <div class=\"progress-bar progress-bar-striped\" role=\"progressbar\" [style.width]=\"widthStyle\" aria-valuenow=\"10\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>\n        </div>\n    </div>\n</ng-template>"
 
 /***/ }),
 
-/***/ "./src/plugins/Hardel/Settings/component/Roles/roles.component.ts":
+/***/ "./src/plugins/Hardel/Plugin/component/InstallTemplate/install-template.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 /**
- * Created by hernan on 30/10/2017.
+ * Created by hernan on 04/06/2018.
  */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -861,81 +393,108 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
 var list_component_1 = __webpack_require__("./src/model/list.component.ts");
-var RolesComponent = (function (_super) {
-    __extends(RolesComponent, _super);
-    function RolesComponent(c_Service, router) {
+var plugin_service_1 = __webpack_require__("./src/plugins/Hardel/Plugin/Service/plugin.service.ts");
+var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var ng_bootstrap_1 = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
+var InstallTemplateComponent = (function (_super) {
+    __extends(InstallTemplateComponent, _super);
+    function InstallTemplateComponent(inTmp, router, serviceModal) {
         var _this = _super.call(this) || this;
-        _this.c_Service = c_Service;
+        _this.inTmp = inTmp;
         _this.router = router;
-        _this.listaRole = [];
-        _this.myRoot = '/backend/settings/roles';
-        _this.isRoot = false;
-        _this.onComponentInit({
-            name: 'c_Service',
-            permission: 'Hardel.Settings.Roles',
-            upd: 'updateRoles$'
-        }, 'router', 'retrieveListOfRoles');
+        _this.serviceModal = serviceModal;
+        _this.listOfLatestTemplate = [];
+        _this.retrieveListOfLatestTemplate();
         return _this;
     }
-    RolesComponent.prototype.ngOnInit = function () { };
-    RolesComponent.prototype.retrieveListOfRoles = function () {
-        this.retrieveListOfData({
-            name: 'c_Service',
-            getData: 'getRoles',
-            setData: 'setRoles',
-            callApi: 'getRolesFrom',
-            check: 'checkRolesExist'
-        }, 'listaRole');
+    InstallTemplateComponent.prototype.ngOnInit = function () { };
+    InstallTemplateComponent.prototype.retrieveListOfLatestTemplate = function () {
+        var _this = this;
+        this.inTmp.getLatestTemplate().subscribe(function (data) {
+            _this.listOfLatestTemplate = data;
+            _this.listOfData = _this.listOfLatestTemplate;
+            _this.updateListaShow();
+        });
     };
-    /**
-     * function to push or splice item into Deleted List of Roles
-     * @param ev
-     * @param data
-     */
-    RolesComponent.prototype.eventChange = function (ev, data) {
-        this.eventChangeData(ev, data);
+    InstallTemplateComponent.prototype.downloadTemplate = function (template, modal) {
+        var _this = this;
+        var mod = this.serviceModal.open(modal);
+        this.widthStyle = '20%';
+        this.inTmp.installTemplate(template).subscribe(function (message) {
+            if (message) {
+                _this.widthStyle = '40%';
+                _this.retrieveListOfLatestTemplate();
+                _this.widthStyle = '80%';
+                _this.inTmp.getTemplateFrom()
+                    .subscribe(function (data) {
+                    _this.widthStyle = '99%';
+                    _this.inTmp.setTemplate(data.template);
+                    _this.inTmp.setTemplates(data.templates);
+                    mod.close();
+                    _this.widthStyle = '10%';
+                });
+            }
+        });
     };
-    RolesComponent.prototype.deleteRoles = function () {
-        this.deleteData({
-            name: 'c_Service',
-            setData: 'setRoles',
-            delFn: 'deleteRoles'
-        }, 'listaRole', "Do you really want delete this Roles?");
+    InstallTemplateComponent.prototype.updateTemplate = function (template, modal) {
+        var _this = this;
+        //this is to update plugin
+        var mod = this.serviceModal.open(modal);
+        this.widthStyle = '20%';
+        this.inTmp.updateTemplate(template).subscribe(function (message) {
+            if (message) {
+                _this.widthStyle = '40%';
+                _this.retrieveListOfLatestTemplate();
+                _this.widthStyle = '80%';
+                _this.inTmp.getPluginsFrom()
+                    .subscribe(function (data) {
+                    _this.widthStyle = '99%';
+                    _this.inTmp.setPlugins(data);
+                    mod.close();
+                    _this.widthStyle = '10%';
+                });
+            }
+        });
     };
-    return RolesComponent;
+    return InstallTemplateComponent;
 }(list_component_1.ListComponent));
-RolesComponent = __decorate([
+InstallTemplateComponent = __decorate([
     core_1.Component({
-        selector: 'app-roles-component',
-        template: __webpack_require__("./src/plugins/Hardel/Settings/component/Roles/roles.component.html"),
+        selector: 'template-install',
+        template: __webpack_require__("./src/plugins/Hardel/Plugin/component/InstallTemplate/install-template.component.html"),
         styles: ['']
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof settings_service_1.SettingsService !== "undefined" && settings_service_1.SettingsService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
-], RolesComponent);
-exports.RolesComponent = RolesComponent;
-var _a, _b;
-//# sourceMappingURL=roles.component.js.map
+    __metadata("design:paramtypes", [typeof (_a = typeof plugin_service_1.PluginService !== "undefined" && plugin_service_1.PluginService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object, typeof (_c = typeof ng_bootstrap_1.NgbModal !== "undefined" && ng_bootstrap_1.NgbModal) === "function" && _c || Object])
+], InstallTemplateComponent);
+exports.InstallTemplateComponent = InstallTemplateComponent;
+var _a, _b, _c;
+//# sourceMappingURL=install-template.component.js.map
 
 /***/ }),
 
-/***/ "./src/plugins/Hardel/Settings/component/User/user.component.html":
+/***/ "./src/plugins/Hardel/Plugin/component/Plugins/listplugin.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form class=\"form\" *ngIf=\"notFound == true\">\n<div class=\"portlet\">\n    <div class=\"portlet-title\">\n        <div class=\"caption\">\n            <i class=\"fa fa-database\"></i>\n            <span>General Definitions</span>\n        </div>\n        <div class=\"actions\">\n            <button class=\"btn darkorange\" (click)=\"editMode()\">\n                <i class=\"fa fa-edit\"></i>\n                Edit\n            </button>\n        </div>\n    </div>\n    <div class=\"portlet-body\">\n        <div class=\"portlet-form-body\">\n            <div class=\"container\">\n                <div class=\"row\">\n                    <div class=\"col-12\">\n                        <div class=\"form-group flex-group\">\n                            <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                            <div class=\"col-md-4\">\n                                <input type=\"text\" class=\"form-control\" name=\"nome\" [ngModel] = \"user.name\" placeholder=\"Nome\" id=\"nome\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                <ng-template #editName>\n                                    <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"user.name\" >\n                                </ng-template>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"col-12\">\n                        <div class=\"form-group flex-group\">\n                            <label for=\"nome\" class=\"col-md-2 control-label\">Email</label>\n                            <div class=\"col-md-4\">\n                                <input type=\"text\" class=\"form-control\" name=\"email\" [ngModel] = \"user.email\" placeholder=\"Nome\" id=\"email\" readonly>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n<div class=\"portlet\">\n    <div class=\"portlet-title\">\n        <div class=\"caption\">\n            <i class=\"fa fa-list\"></i>\n            <span>Role</span>\n        </div>\n        <div class=\"actions\">\n            <button class=\"btn cyan\" data-toggle=\"modal\" data-target=\"#addModal\" *ngIf=\"isEdit == true\">\n                <i class=\"fa fa-plus\"></i>\n                Add\n            </button>\n        </div>\n    </div>\n    <div class=\"portlet-body\">\n        <div class=\"box\">\n            <div class=\"box-header\">\n\n            </div>\n            <div class=\"box-body\">\n                <div class=\"wrapper\">\n                    <div class=\"row\">\n                        <div class=\"col-sm-12\">\n                            <table class=\"table table-bordered table-striped\" *ngIf=\"user.role !== undefined\">\n                                <thead>\n                                <tr>\n                                    <th>\n                                        <a>Nome</a>\n                                    </th>\n                                    <th style=\"width: 50px;\"></th>\n                                </tr>\n                                </thead>\n                                <tbody>\n                                <tr>\n                                    <td>\n                                        {{user.role.name}}\n                                    </td>\n                                    <td>\n                                        <a *ngIf=\"isEdit == true\" class=\"td_orange\" (click)=\"eraseRole(user.role)\"><i class=\"fa fa-window-close-o\"></i></a>\n                                    </td>\n                                </tr>\n                                </tbody>\n                            </table>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n<div class=\"row\">\n    <div class=\"col-12\">\n        <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n        <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n    </div>\n</div>\n<div id=\"addModal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"addModal\"  aria-hidden=\"true\">\n    <div class=\"modal-dialog\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <div class=\"modal-title\">\n                    Searching For Permission\n                    <button class=\"close\" data-dismiss = \"modal\" aria-label=\"hidden\"><i class=\"fa fa-times\"></i></button>\n                </div>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"row\">\n                    <div class=\"col-md-12\">\n                        <div class=\"form-group flex-group\">\n                            <label class=\"col-md-4\">Name</label>\n                            <div class=\"col-md-4\">\n                                <input type=\"text\" class=\"form-control input-sm\" name=\"query\" [(ngModel)]=\"query\" (keyup)=\"filter()\" autocomplete=\"off\">\n                                <div class=\"suggestions\" *ngIf=\"filteredList.length > 0\">\n                                    <ul>\n                                        <li class=\"suggestion-li\" *ngFor=\"let item of filteredList\">\n                                            <a (click)=\"addRole(item)\">{{item.name}}</a>\n                                        </li>\n                                    </ul>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div class=\"modal-footer\">\n                <div class=\"m-footer\">\n\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n</form>"
+module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> List Plugin</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/plugin/template']\" data-toggle=\"tab\"> Template</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <lt-entry-pagination\n                                        [entry]=\"'50-5'\"\n                                        (onEntry)=\"onPerPage($event)\"\n                                >\n                                </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/plugin/plugins/install']\"><i class=\"fa fa-download\"></i> Install</a>\n                                    <a class=\"btn btn-warning\" (click)=\"uninstallPlugins()\"><i class=\"fa fa-trash-o\"></i> Uninstall</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Vendor</a>\n                                        </th>\n                                        <th>\n                                            <a>Name</a>\n                                        </th>\n                                        <th>\n                                            <a>Version</a>\n                                        </th>\n                                        <th style=\"width: 50px;\" colspan=\"3\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let plugin of listToShow\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,plugin)\" [(ngModel)] = \"plugin.check\">\n                                        </td>\n                                        <td>\n                                            {{plugin.vendor}}\n                                        </td>\n                                        <td>\n                                            {{plugin.name}}\n                                        </td>\n                                        <td>\n                                            {{plugin.version}}\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a (click)=\"updatePlugin(plugin)\" title=\"Update\"><i class=\"fa fa-refresh\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i></a>\n                                        </td>\n                                        <td width=\"38px\">\n                                           <a *ngIf=\"plugin.packed === false\" (click)=\"packPlugin(plugin)\" title=\"Packing\"><i class=\"fa fa-cube\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i> </a>\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a *ngIf=\"plugin.packed === true\" (click)=\"deletePlugin(plugin)\"  title=\"Delete Packing\"><i class=\"fa fa-times\" style=\"color:orange; font-size: 16px; cursor: pointer;\"></i> </a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                                [pagesToShow]=\"3\"\n                                [perPage]=\"perPage\"\n                                [count]=\"listOfPlugins.length\"\n                                [loading]=\"false\"\n                                [page]=\"actualPage\"\n                                (goNext)=\"onNext($event)\"\n                                (goPage)=\"onPage($event)\"\n                                (goPrev)=\"onPrev()\"\n                        ></lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
 
 /***/ }),
 
-/***/ "./src/plugins/Hardel/Settings/component/User/user.component.ts":
+/***/ "./src/plugins/Hardel/Plugin/component/Plugins/listplugin.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-/**
- * Created by hernan on 10/11/2017.
- */
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -947,199 +506,125 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var settings_interfaces_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.interfaces.ts");
-var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
+var plugin_service_1 = __webpack_require__("./src/plugins/Hardel/Plugin/Service/plugin.service.ts");
 var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-var UserComponent = (function () {
-    function UserComponent(sService, router, nav) {
-        var _this = this;
-        this.sService = sService;
-        this.router = router;
-        this.nav = nav;
-        this.listRoles = [];
-        this.isEdit = false;
-        this.notFound = false;
-        this.filteredList = [];
-        this.query = '';
-        this.user = {
-            id: -2,
-            name: '',
-            email: '',
-            check: false,
-            role: null
-        };
-        this.sub = this.router.params.subscribe(function (params) {
-            _this.id = +params['id'];
-            _this.user = _this.sService.getUserByProperty('id', _this.id);
-            if (_this.user != null) {
-                _this.notFound = true;
-            }
-            else {
-                _this.nav.navigate(['/backend/not-found']);
-            }
-            _this.cloneUser();
-        });
+var list_component_1 = __webpack_require__("./src/model/list.component.ts");
+var ListPluginComponent = (function (_super) {
+    __extends(ListPluginComponent, _super);
+    function ListPluginComponent(plsSer, router) {
+        var _this = _super.call(this) || this;
+        _this.plsSer = plsSer;
+        _this.router = router;
+        _this.myRoot = '/backend/plugin/plugins';
+        _this.isRoot = false;
+        _this.listOfPlugins = [];
+        _this.onComponentInit({
+            name: 'plsSer',
+            permission: 'Hardel.Plugin.Plugins',
+            upd: 'updatePlugins$'
+        }, 'router', 'retrieveListOfPlugins');
+        return _this;
     }
-    UserComponent.prototype.ngOnInit = function () {
-        this.retriveRoles();
-    };
-    UserComponent.prototype.ngOnDestroy = function () {
-        this.sub.unsubscribe();
-    };
+    ListPluginComponent.prototype.ngOnInit = function () { };
     /**
-     * This function pass into edit Mode
+     * This function call the Service in order to get the list Of Plugins
      */
-    UserComponent.prototype.editMode = function () {
-        //passa in modalità edit
-        this.isEdit = !this.isEdit;
-    };
-    /**
-     * This function go to save Mode
-     */
-    UserComponent.prototype.saveMode = function () {
+    ListPluginComponent.prototype.retrieveListOfPlugins = function () {
         var _this = this;
-        //salva i cambiamenti
-        if (this.user !== this.copyUser) {
-            if (this.user.email.length == 0) {
-                alert('You must write an email of User, please!');
-                this.cloneCopyUser();
-                return;
-            }
-            this.sService.saveUser(this.user).subscribe(function (user) {
-                _this.user = user;
-                _this.retriveRoles();
-                _this.sService.updateUserInList(_this.user);
-                _this.editMode();
+        this.plsSer.getPluginsFrom().subscribe(function (listPl) {
+            _this.listOfPlugins = listPl;
+            _this.listOfData = _this.listOfPlugins;
+            _this.plsSer.setPlugins(_this.listOfPlugins);
+            _this.updateListaShow();
+        });
+    };
+    /**
+     * function to push or splice item into Deleted List of Roles
+     * @param ev
+     * @param data
+     */
+    ListPluginComponent.prototype.eventChange = function (ev, data) {
+        this.eventChangeData(ev, data);
+    };
+    /**
+     * This function is to delete Plugins selected
+     */
+    ListPluginComponent.prototype.deletePlugin = function (plugin) {
+        var _this = this;
+        this.plsSer.deletePackPlugin(plugin).subscribe(function (data) {
+            _this.listOfPlugins = data;
+            _this.listOfData = _this.listOfPlugins;
+            _this.plsSer.setPlugins(_this.listOfPlugins);
+            _this.retrieveListOfData({
+                name: 'plsSer',
+                getData: 'getPlugins',
+                setData: 'setPlugins',
+                callApi: 'getPluginsFrom',
+                check: 'checkPluginsExist'
+            }, 'listOfPlugins');
+        });
+    };
+    ListPluginComponent.prototype.updatePlugin = function (plugin) {
+        console.log('update this plugin');
+    };
+    ListPluginComponent.prototype.packPlugin = function (plugin) {
+        var _this = this;
+        this.plsSer.packPlugin(plugin).subscribe(function (data) {
+            _this.listOfPlugins = data;
+            _this.listOfData = _this.listOfPlugins;
+            _this.plsSer.setPlugins(_this.listOfPlugins);
+            _this.retrieveListOfData({
+                name: 'plsSer',
+                getData: 'getPlugins',
+                setData: 'setPlugins',
+                callApi: 'getPluginsFrom',
+                check: 'checkPluginsExist'
+            }, 'listOfPlugins');
+        });
+    };
+    ListPluginComponent.prototype.uninstallPlugins = function () {
+        var _this = this;
+        if (confirm('Do you really uninstall this plugins?')) {
+            this.plsSer.uninstallPlugins(this.listOfDataToDelete).subscribe(function (message) {
+                if (message) {
+                    _this.plsSer.getPluginsFrom().subscribe(function (listPl) {
+                        _this.listOfPlugins = listPl;
+                        _this.listOfData = _this.listOfPlugins;
+                        _this.plsSer.setPlugins(_this.listOfPlugins);
+                        _this.updateListaShow();
+                    });
+                }
             });
         }
     };
-    /**
-     * This function is to get Permission from API
-     */
-    UserComponent.prototype.retriveRoles = function () {
-        var _this = this;
-        this.sService.getRolesFrom().subscribe(function (roles) {
-            _this.listRoles = roles;
-            var index = _this.listRoles.indexOf(_this.user.role);
-            if (index > -1) {
-                _this.listRoles.splice(index, 1);
-            }
-        });
-        this.cloneUser();
-    };
-    /**
-     * This function reset the Information of Role
-     */
-    UserComponent.prototype.resetMode = function () {
-        if (this.isEqual(this.user, this.copyUser)) {
-            if (confirm('Are you sure you don\'t want to save this changement and restore it?')) {
-                this.cloneCopyUser();
-            }
-        }
-    };
-    UserComponent.prototype.isEqual = function (v, v2) {
-        return (v.email == v2.email) && (v.state == v2.state) && (v.name == v2.name);
-    };
-    /**
-     * This function delete Role from user.role
-     * @param item
-     */
-    UserComponent.prototype.eraseRole = function (item) {
-        // cancella il permesso
-        this.listRoles.push(item);
-        delete this.user.role;
-    };
-    /**
-     * This Function add Role at the moment to user.role
-     * @param item
-     */
-    UserComponent.prototype.addRole = function (item) {
-        //aggiunge un permesso
-        this.filteredList = [];
-        this.query = item.name;
-        this.user.role = item;
-        var index = this.listRoles.indexOf(item);
-        if (index > -1) {
-            this.listRoles.splice(index, 1);
-        }
-    };
-    /**
-     * This function filter permission for research
-     */
-    UserComponent.prototype.filter = function () {
-        if (this.query !== "") {
-            this.filteredList = this.listRoles.filter(function (el) {
-                return el.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
-            }.bind(this));
-        }
-    };
-    /**
-     * This function clone the User
-     */
-    UserComponent.prototype.cloneUser = function () {
-        var permissions = [];
-        this.copyUser = Object.assign({}, this.user);
-        if (this.user.role !== undefined) {
-            for (var _i = 0, _a = this.user.role.permissions; _i < _a.length; _i++) {
-                var perm = _a[_i];
-                permissions.push(perm);
-            }
-            var role = void 0;
-            role = Object.assign({}, this.user.role);
-            this.copyUser.role = role;
-            this.copyUser.role.permissions = permissions;
-        }
-    };
-    /**
-     * This function clone the CopyUser
-     */
-    UserComponent.prototype.cloneCopyUser = function () {
-        var permissions = [];
-        for (var _i = 0, _a = this.copyUser.role.permissions; _i < _a.length; _i++) {
-            var perm = _a[_i];
-            permissions.push(perm);
-        }
-        var role;
-        role = Object.assign({}, this.copyUser.role);
-        this.user = Object.assign({}, this.copyUser);
-        this.user.role = role;
-        this.user.role.permissions = permissions;
-    };
-    return UserComponent;
-}());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", typeof (_a = typeof settings_interfaces_1.User !== "undefined" && settings_interfaces_1.User) === "function" && _a || Object)
-], UserComponent.prototype, "user", void 0);
-UserComponent = __decorate([
+    return ListPluginComponent;
+}(list_component_1.ListComponent));
+ListPluginComponent = __decorate([
     core_1.Component({
-        selector: 'settings-user',
-        template: __webpack_require__("./src/plugins/Hardel/Settings/component/User/user.component.html"),
+        selector: 'pl-list',
+        template: __webpack_require__("./src/plugins/Hardel/Plugin/component/Plugins/listplugin.component.html"),
         styles: ['']
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof settings_service_1.SettingsService !== "undefined" && settings_service_1.SettingsService) === "function" && _b || Object, typeof (_c = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _c || Object, typeof (_d = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _d || Object])
-], UserComponent);
-exports.UserComponent = UserComponent;
-var _a, _b, _c, _d;
-//# sourceMappingURL=user.component.js.map
+    __metadata("design:paramtypes", [typeof (_a = typeof plugin_service_1.PluginService !== "undefined" && plugin_service_1.PluginService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
+], ListPluginComponent);
+exports.ListPluginComponent = ListPluginComponent;
+var _a, _b;
+//# sourceMappingURL=listplugin.component.js.map
 
 /***/ }),
 
-/***/ "./src/plugins/Hardel/Settings/component/Users/users.component.html":
+/***/ "./src/plugins/Hardel/Plugin/component/Template/listtemplate.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li>\n            <a [routerLink]=\"['/backend/settings/roles']\" data-toggle=\"tab\"> Roles</a>\n        </li>\n        <li class=\"active\">\n            <a  href=\"#tab_1\" data-toggle=\"tab\"> Users</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                               <lt-entry-pagination\n                               [entry]=\"'50-5'\"\n                               (onEntry)=\"onPerPage($event)\"\n                               >\n                               </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/settings/users/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deleteUsers()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th>\n                                            <a>Email</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let user of listToShow\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,user)\" [(ngModel)] = \"user.check\">\n                                        </td>\n                                        <td>\n                                            {{user.name}}\n                                        </td>\n                                        <td>\n                                            {{user.email}}\n                                        </td>\n                                        <td>\n                                            <a [routerLink] = \"['/backend/settings/users',user.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                            [pagesToShow]=\"3\"\n                            [perPage]=\"perPage\"\n                            [count]=\"listaUser.length\"\n                            [loading]=\"false\"\n                            [page]=\"actualPage\"\n                            (goNext)=\"onNext($event)\"\n                            (goPage)=\"onPage($event)\"\n                            (goPrev)=\"onPrev()\"\n                        ></lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
+module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li>\n            <a [routerLink]=\"['/backend/plugin/plugins']\"  data-toggle=\"tab\"> List Plugin</a>\n        </li>\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> Template</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n       <div class=\"box\">\n           <div class=\"box-header\">\n               <div class=\"caption\">\n                   <i class=\"fa fa-database\"></i>\n                   <span>Template Active</span>\n               </div>\n           </div>\n           <div class=\"box-body\">\n                <div class=\"wrapper\">\n                    <div class=\"row\">\n                        <div class=\"col-sm-12\">\n                            <table class=\"table table-bordered table-striped\">\n                                <thead>\n                                <tr>\n                                    <th>Vendor</th>\n                                    <th>Name</th>\n                                    <th>Version</th>\n                                    <th colspan=\"4\"></th>\n                                </tr>\n                                </thead>\n                                <tbody>\n                                <tr *ngFor=\"let temp of listOfTemplate\">\n                                    <td>{{temp.vendor}}</td>\n                                    <td>{{temp.name}}</td>\n                                    <td>{{temp.version}}</td>\n                                    <td width=\"38px\">\n                                        <a (click)=\"deactivateTemplate(temp)\" title=\"Active\"><i class=\"fa fa-power-off\" style=\"color:green\"></i></a>\n                                    </td>\n                                    <td width=\"38px\">\n                                        <a *ngIf=\"temp.installed === true\" (click)=\"uninstallTemplate(temp)\" title=\"Uninstall\"><i class=\"fa fa-trash-o\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i> </a>\n                                    </td>\n                                    <td width=\"38px\">\n                                        <a *ngIf=\"temp.packed === false\" (click)=\"packTemplate(temp)\" title=\"Packing\"><i class=\"fa fa-cube\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i> </a>\n                                    </td>\n                                    <td width=\"38px\">\n                                        <a *ngIf=\"temp.packed === true\" (click)=\"unpackTemplate(temp)\"  title=\"Delete Packing\"><i class=\"fa fa-times\" style=\"color:orange; font-size: 16px; cursor: pointer;\"></i> </a>\n                                    </td>\n                                </tr>\n                                </tbody>\n                            </table>\n                        </div>\n                    </div>\n                </div>\n           </div>\n       </div>\n    </div>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <lt-entry-pagination\n                                        [entry]=\"'50-5'\"\n                                        (onEntry)=\"onPerPage($event)\"\n                                >\n                                </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/plugin/template/install']\"><i class=\"fa fa-download\"></i> MarketPlace</a>\n                                    <a class=\"btn btn-warning\" (click)=\"uninstallTemplates()\"><i class=\"fa fa-trash-o\"></i> Uninstall</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Vendor</a>\n                                        </th>\n                                        <th>\n                                            <a>Name</a>\n                                        </th>\n                                        <th>\n                                            <a>Version</a>\n                                        </th>\n                                        <th style=\"width: 50px;\" colspan=\"4\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let temp of listToShow\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,temp)\" [(ngModel)] = \"temp.check\">\n                                        </td>\n                                        <td>\n                                            {{temp.vendor}}\n                                        </td>\n                                        <td>\n                                            {{temp.name}}\n                                        </td>\n                                        <td>\n                                            {{temp.version}}\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a (click)=\"activateTemplate(temp)\" title=\"Active\"><i class=\"fa fa-power-off\" style=\"color:red\"></i></a>\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a *ngIf=\"temp.installed === true && temp.toUpdate === true\" (click)=\"updateTemplate(temp)\" title=\"Update\"><i class=\"fa fa-refresh\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i></a>\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a *ngIf=\"temp.installed === false\" (click)=\"installTemplate(temp)\" title=\"Install\"><i class=\"fa fa-download\" style=\"color:orange; font-size: 16px; cursor:pointer;\"></i> </a>\n                                        </td>\n                                        <td width=\"38px\">\n                                            <a *ngIf=\"temp.packed === true\" (click)=\"unpackTemplate(temp)\"  title=\"Delete Packing\"><i class=\"fa fa-times\" style=\"color:orange; font-size: 16px; cursor: pointer;\"></i> </a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                                [pagesToShow]=\"3\"\n                                [perPage]=\"perPage\"\n                                [count]=\"listOfNotActiveTemplate.length\"\n                                [loading]=\"false\"\n                                [page]=\"actualPage\"\n                                (goNext)=\"onNext($event)\"\n                                (goPage)=\"onPage($event)\"\n                                (goPrev)=\"onPrev()\"\n                        ></lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
 
 /***/ }),
 
-/***/ "./src/plugins/Hardel/Settings/component/Users/users.component.ts":
+/***/ "./src/plugins/Hardel/Plugin/component/Template/listtemplate.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-/**
- * Created by hernan on 09/11/2017.
- */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -1161,98 +646,148 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
 var list_component_1 = __webpack_require__("./src/model/list.component.ts");
-var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
-var UsersComponent = (function (_super) {
-    __extends(UsersComponent, _super);
-    function UsersComponent(s_Service, router) {
+var plugin_service_1 = __webpack_require__("./src/plugins/Hardel/Plugin/Service/plugin.service.ts");
+var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var ListTemplateComponent = (function (_super) {
+    __extends(ListTemplateComponent, _super);
+    function ListTemplateComponent(tpSer, router) {
         var _this = _super.call(this) || this;
-        _this.s_Service = s_Service;
+        _this.tpSer = tpSer;
         _this.router = router;
-        _this.listaUser = [];
-        _this.myRoot = '/backend/settings/users';
+        _this.myRoot = '/backend/plugin/template';
         _this.isRoot = false;
+        _this.listOfTemplate = [];
+        _this.listOfNotActiveTemplate = [];
         _this.onComponentInit({
-            name: 's_Service',
-            permission: 'Hardel.Settings.Users',
-            upd: 'updateUsers$'
-        }, 'router', 'retrieveListOfUsers');
+            name: 'tpSer',
+            permission: 'Hardel.Plugin.Template',
+            upd: 'updateTemplate$'
+        }, 'router', 'retrieveListOfTemplate');
         return _this;
     }
-    UsersComponent.prototype.ngOnInit = function () { };
-    UsersComponent.prototype.retrieveListOfUsers = function () {
-        this.retrieveListOfData({
-            name: 's_Service',
-            getData: 'getUsers',
-            setData: 'setUsers',
-            callApi: 'getUsersFrom',
-            check: 'checkUsersExist'
-        }, 'listaUser');
+    ListTemplateComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.router.events.subscribe(function (data) {
+            if (data instanceof router_1.NavigationEnd) {
+                if (data.url === _this.myRoot) {
+                    _this.retrieveListOfTemplate();
+                }
+            }
+        });
     };
     /**
      * function to push or splice item into Deleted List of Roles
      * @param ev
      * @param data
      */
-    UsersComponent.prototype.eventChange = function (ev, data) {
+    ListTemplateComponent.prototype.eventChange = function (ev, data) {
         this.eventChangeData(ev, data);
     };
-    UsersComponent.prototype.deleteUsers = function () {
-        this.deleteData({
-            name: 's_Service',
-            setData: 'setUsers',
-            delFn: 'deleteUsers'
-        }, 'listaUser', "Do you really want delete this Users?");
+    ListTemplateComponent.prototype.retrieveListOfTemplate = function () {
+        var _this = this;
+        this.tpSer.getTemplateFrom().subscribe(function (data) {
+            _this.listOfNotActiveTemplate = data.templates;
+            _this.listOfTemplate = data.template;
+            _this.listOfData = _this.listOfNotActiveTemplate;
+            _this.tpSer.setTemplate(_this.listOfTemplate);
+            _this.tpSer.setTemplates(_this.listOfNotActiveTemplate);
+            _this.updateListaShow();
+        });
     };
-    return UsersComponent;
+    ListTemplateComponent.prototype.packTemplate = function (temp) {
+        var _this = this;
+        this.tpSer.packTemplate(temp).subscribe(function (data) {
+            _this.retrieveListOfTemplate();
+        });
+    };
+    ListTemplateComponent.prototype.unpackTemplate = function (temp) {
+        var _this = this;
+        this.tpSer.deletePackTemplate(temp).subscribe(function (data) {
+            _this.retrieveListOfTemplate();
+        });
+    };
+    ListTemplateComponent.prototype.activateTemplate = function (temp) {
+        var _this = this;
+        this.tpSer.activateTemplate(temp).subscribe(function (data) {
+            _this.retrieveListOfTemplate();
+        });
+    };
+    ListTemplateComponent.prototype.deactivateTemplate = function (temp) {
+        var _this = this;
+        this.tpSer.deactivateTemplate(temp).subscribe(function (data) {
+            _this.retrieveListOfTemplate();
+        });
+    };
+    ListTemplateComponent.prototype.installTemplate = function (temp) {
+        var _this = this;
+        this.tpSer.installTemplate(temp).subscribe(function (data) {
+            _this.retrieveListOfTemplate();
+        });
+    };
+    ListTemplateComponent.prototype.uninstallTemplate = function (temp) {
+        var _this = this;
+        this.tpSer.uninstallTemplate(temp).subscribe(function (data) {
+            _this.retrieveListOfTemplate();
+        });
+    };
+    ListTemplateComponent.prototype.uninstallTemplates = function () {
+        var _this = this;
+        if (confirm('Do you really uninstall this templates?')) {
+            this.tpSer.uninstallTemplates(this.listOfDataToDelete).subscribe(function (message) {
+                if (message) {
+                    _this.retrieveListOfTemplate();
+                }
+            });
+        }
+    };
+    return ListTemplateComponent;
 }(list_component_1.ListComponent));
-UsersComponent = __decorate([
+ListTemplateComponent = __decorate([
     core_1.Component({
-        selector: 'settings-users',
-        template: __webpack_require__("./src/plugins/Hardel/Settings/component/Users/users.component.html"),
+        selector: 'tp-list',
+        template: __webpack_require__("./src/plugins/Hardel/Plugin/component/Template/listtemplate.component.html"),
         styles: ['']
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof settings_service_1.SettingsService !== "undefined" && settings_service_1.SettingsService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
-], UsersComponent);
-exports.UsersComponent = UsersComponent;
+    __metadata("design:paramtypes", [typeof (_a = typeof plugin_service_1.PluginService !== "undefined" && plugin_service_1.PluginService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
+], ListTemplateComponent);
+exports.ListTemplateComponent = ListTemplateComponent;
 var _a, _b;
-//# sourceMappingURL=users.component.js.map
+//# sourceMappingURL=listtemplate.component.js.map
 
 /***/ }),
 
-/***/ "./src/plugins/Hardel/Settings/component/index.ts":
+/***/ "./src/plugins/Hardel/Plugin/component/index.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+/**
+ * Created by hernan on 13/12/2017.
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
-var settings_component_1 = __webpack_require__("./src/plugins/Hardel/Settings/component/settings.component.ts");
-exports.SettingsComponent = settings_component_1.SettingsComponent;
-var role_component_1 = __webpack_require__("./src/plugins/Hardel/Settings/component/Role/role.component.ts");
-exports.RoleComponent = role_component_1.RoleComponent;
-var roles_component_1 = __webpack_require__("./src/plugins/Hardel/Settings/component/Roles/roles.component.ts");
-exports.RolesComponent = roles_component_1.RolesComponent;
-var rolenew_component_1 = __webpack_require__("./src/plugins/Hardel/Settings/component/NewRole/rolenew.component.ts");
-exports.RoleNewComponent = rolenew_component_1.RoleNewComponent;
-var users_component_1 = __webpack_require__("./src/plugins/Hardel/Settings/component/Users/users.component.ts");
-exports.UsersComponent = users_component_1.UsersComponent;
-var usernew_component_1 = __webpack_require__("./src/plugins/Hardel/Settings/component/NewUser/usernew.component.ts");
-exports.UserNewComponent = usernew_component_1.UserNewComponent;
-var user_component_1 = __webpack_require__("./src/plugins/Hardel/Settings/component/User/user.component.ts");
-exports.UserComponent = user_component_1.UserComponent;
+var plugin_component_1 = __webpack_require__("./src/plugins/Hardel/Plugin/component/plugin.component.ts");
+exports.PluginComponent = plugin_component_1.PluginComponent;
+var listplugin_component_1 = __webpack_require__("./src/plugins/Hardel/Plugin/component/Plugins/listplugin.component.ts");
+exports.ListPluginComponent = listplugin_component_1.ListPluginComponent;
+var install_plugin_component_1 = __webpack_require__("./src/plugins/Hardel/Plugin/component/InstallPlugin/install-plugin.component.ts");
+exports.InstallPluginComponent = install_plugin_component_1.InstallPluginComponent;
+var listtemplate_component_1 = __webpack_require__("./src/plugins/Hardel/Plugin/component/Template/listtemplate.component.ts");
+exports.ListTemplateComponent = listtemplate_component_1.ListTemplateComponent;
+var install_template_component_1 = __webpack_require__("./src/plugins/Hardel/Plugin/component/InstallTemplate/install-template.component.ts");
+exports.InstallTemplateComponent = install_template_component_1.InstallTemplateComponent;
 //# sourceMappingURL=index.js.map
 
 /***/ }),
 
-/***/ "./src/plugins/Hardel/Settings/component/settings.component.html":
+/***/ "./src/plugins/Hardel/Plugin/component/plugin.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\">\n        <h1>Settings</h1>\n        <breadcrumbs></breadcrumbs>\n    </div>\n    <div class=\"content\">\n        <router-outlet></router-outlet>\n        <div class=\"portlet\" *ngIf=\"isRoot === true\">\n            <div class=\"portlet-title\">\n                <div class=\"caption\">\n                    <i class=\"fa fa-database\"></i>\n                    <span>Overviews</span>\n                </div>\n                <div class=\"actions\">\n                </div>\n            </div>\n            <div class=\"portlet-body\">\n                <div class=\"tiles\">\n                    <a [routerLink]=\"['/backend/settings/users']\">\n                        <div class=\"tile double bg-cyan\">\n                            <div class=\"tile-body\">\n                                <i class=\"fa fa-users fa-6\"></i>\n                            </div>\n                            <div class=\"tile-object\">\n                                <div class=\"name\">\n                                    Users\n                                </div>\n                            </div>\n                        </div>\n                    </a>\n                    <a [routerLink]=\"['/backend/settings/roles']\">\n                        <div class=\"tile bg-orange\">\n                            <div class=\"tile-body\">\n                                    <i class=\"fa fa-list fa-6\"></i>\n                            </div>\n                            <div class=\"tile-object\">\n                                <div class=\"name\">\n                                    Roles\n                                </div>\n                            </div>\n                        </div>\n                    </a>\n                </div>\n            </div>\n        </div>\n\n    </div>\n</div>"
+module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\">\n        <h1>Plugin</h1>\n        <breadcrumbs></breadcrumbs>\n    </div>\n    <div class=\"content\">\n        <router-outlet></router-outlet>\n        <div class=\"portlet\" *ngIf=\"isRoot === true\">\n            <div class=\"portlet-title\">\n                <div class=\"caption\">\n                    <i class=\"fa fa-database\"></i>\n                    <span>Overviews</span>\n                </div>\n                <div class=\"actions\">\n                </div>\n            </div>\n            <div class=\"portlet-body\">\n                <div class=\"tiles\">\n                    <a [routerLink]=\"['/backend/plugin/plugins']\">\n                        <div class=\"tile double bg-cyan\">\n                            <div class=\"tile-body\">\n                                <i class=\"fa fa-plug fa-6\"></i>\n                            </div>\n                            <div class=\"tile-object\">\n                                <div class=\"name\">\n                                    Plugins\n                                </div>\n                            </div>\n                        </div>\n                    </a>\n                    <a [routerLink]=\"['/backend/plugin/template']\">\n                        <div class=\"tile bg-orange\">\n                            <div class=\"tile-body\">\n                                <i class=\"fa fa-university fa-6\"></i>\n                            </div>\n                            <div class=\"tile-object\">\n                                <div class=\"name\">\n                                    Template\n                                </div>\n                            </div>\n                        </div>\n                    </a>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
 
-/***/ "./src/plugins/Hardel/Settings/component/settings.component.ts":
+/***/ "./src/plugins/Hardel/Plugin/component/plugin.component.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1271,20 +806,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
 var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-var SettingsComponent = (function () {
-    function SettingsComponent(router, service) {
+var PluginComponent = (function () {
+    function PluginComponent(pr) {
         var _this = this;
-        this.router = router;
-        this.service = service;
-        this.myRoot = '/backend/settings';
-        if (!this.service.hasPermissions('Hardel.Settings')) {
-            this.router.navigate(['/backend/dashboard']);
-        }
+        this.pr = pr;
+        this.myRoot = '/backend/plugin';
         this.isRoot = true;
-        //trigger the event for the overview
-        this.router.events.subscribe(function (val) {
+        this.pr.events.subscribe(function (val) {
             if (val instanceof router_1.NavigationEnd) {
                 if (_this.myRoot === val.url) {
                     _this.isRoot = true;
@@ -1295,24 +824,24 @@ var SettingsComponent = (function () {
             }
         });
     }
-    SettingsComponent.prototype.ngOnInit = function () {
+    PluginComponent.prototype.ngOnInit = function () {
     };
-    return SettingsComponent;
+    return PluginComponent;
 }());
-SettingsComponent = __decorate([
+PluginComponent = __decorate([
     core_1.Component({
-        selector: 'app-settings',
-        template: __webpack_require__("./src/plugins/Hardel/Settings/component/settings.component.html")
+        selector: 'app-plugin',
+        template: __webpack_require__("./src/plugins/Hardel/Plugin/component/plugin.component.html")
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _a || Object, typeof (_b = typeof settings_service_1.SettingsService !== "undefined" && settings_service_1.SettingsService) === "function" && _b || Object])
-], SettingsComponent);
-exports.SettingsComponent = SettingsComponent;
-var _a, _b;
-//# sourceMappingURL=settings.component.js.map
+    __metadata("design:paramtypes", [typeof (_a = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _a || Object])
+], PluginComponent);
+exports.PluginComponent = PluginComponent;
+var _a;
+//# sourceMappingURL=plugin.component.js.map
 
 /***/ }),
 
-/***/ "./src/plugins/Hardel/Settings/settings.module.ts":
+/***/ "./src/plugins/Hardel/Plugin/plugin.module.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1328,63 +857,69 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var settings_routing_1 = __webpack_require__("./src/plugins/Hardel/Settings/settings.routing.ts");
-var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
+var plugin_routing_1 = __webpack_require__("./src/plugins/Hardel/Plugin/plugin.routing.ts");
 var common_1 = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
 var forms_1 = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/@angular/http.es5.js");
-var _1 = __webpack_require__("./src/app/backend-module/index.ts");
+var breadcrumbs_1 = __webpack_require__("./src/app/backend-module/breadcrumbs/index.ts");
 var uielement_module_1 = __webpack_require__("./src/app/backend-module/UIElement/uielement.module.ts");
-var SettingsModule = (function () {
-    function SettingsModule() {
+var plugin_service_1 = __webpack_require__("./src/plugins/Hardel/Plugin/Service/plugin.service.ts");
+var ng_bootstrap_1 = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
+var PluginModule = (function () {
+    function PluginModule() {
     }
-    return SettingsModule;
+    return PluginModule;
 }());
-SettingsModule = __decorate([
+PluginModule = __decorate([
     core_1.NgModule({
         imports: [
             common_1.CommonModule,
             forms_1.FormsModule,
             http_1.HttpModule,
-            settings_routing_1.routing,
-            _1.BreadCrumbModule,
-            uielement_module_1.UIElementModule
+            plugin_routing_1.routing,
+            breadcrumbs_1.BreadCrumbModule,
+            uielement_module_1.UIElementModule,
+            ng_bootstrap_1.NgbModule.forRoot()
         ],
-        providers: [settings_service_1.SettingsService],
-        declarations: [settings_routing_1.routedComponents]
+        providers: [plugin_service_1.PluginService],
+        declarations: [plugin_routing_1.pluginComponent]
     })
-], SettingsModule);
-exports.SettingsModule = SettingsModule;
-//# sourceMappingURL=settings.module.js.map
+], PluginModule);
+exports.PluginModule = PluginModule;
+//# sourceMappingURL=plugin.module.js.map
 
 /***/ }),
 
-/***/ "./src/plugins/Hardel/Settings/settings.routing.ts":
+/***/ "./src/plugins/Hardel/Plugin/plugin.routing.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by hernan on 17/10/2017.
  */
+Object.defineProperty(exports, "__esModule", { value: true });
 var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-var component_1 = __webpack_require__("./src/plugins/Hardel/Settings/component/index.ts");
+var PL = __webpack_require__("./src/plugins/Hardel/Plugin/component/index.ts");
 var routes = [
-    { path: '', component: component_1.SettingsComponent, data: { breadcrumb: 'Settings' }, children: [
-            { path: 'roles', component: component_1.RolesComponent, data: { breadcrumb: 'Roles' }, children: [
-                    { path: 'new', component: component_1.RoleNewComponent, data: { breadcrumb: 'New Role' } },
-                    { path: ':id', component: component_1.RoleComponent, data: { breadcrumb: 'Role' } },
+    { path: '', component: PL.PluginComponent, data: { breadcrumb: 'Plugins' }, children: [
+            { path: 'plugins', component: PL.ListPluginComponent, data: { breadcrumb: 'List' }, children: [
+                    { path: 'install', component: PL.InstallPluginComponent, data: { breadcrumb: 'Install' } }
                 ] },
-            { path: 'users', component: component_1.UsersComponent, data: { breadcrumb: 'Users' }, children: [
-                    { path: 'new', component: component_1.UserNewComponent, data: { breadcrumb: 'New User' } },
-                    { path: ':id', component: component_1.UserComponent, data: { breadcrumb: 'User' } }
+            { path: 'template', component: PL.ListTemplateComponent, data: { breadcrumb: 'Template List' }, children: [
+                    { path: 'install', component: PL.InstallTemplateComponent, data: { breadcrumb: 'Template Install' } }
                 ] }
         ] }
 ];
 exports.routing = router_1.RouterModule.forChild(routes);
-exports.routedComponents = [component_1.SettingsComponent, component_1.RolesComponent, component_1.RoleComponent, component_1.RoleNewComponent, component_1.UsersComponent, component_1.UserNewComponent, component_1.UserComponent];
-//# sourceMappingURL=settings.routing.js.map
+exports.pluginComponent = [
+    PL.PluginComponent,
+    PL.ListPluginComponent,
+    PL.InstallPluginComponent,
+    PL.ListTemplateComponent,
+    PL.InstallTemplateComponent
+];
+//# sourceMappingURL=plugin.routing.js.map
 
 /***/ })
 
