@@ -19,6 +19,31 @@ class WebsiteController extends Controller
     }
 
     /**
+     * @Api({
+            "description" : "This method rebuild the Page, with Page ID"
+     * })
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function rebuildPage(Request $request) {
+
+        $input = $request->all();
+
+        $Page = LortomPages::find($input['id']);
+
+        $message = 'I Cannot find this Page';
+
+        if($Page) {
+            if($Page instanceof LortomPages) {
+                $Page->buildPage(true);
+                $message = 'Ok, the Page is rebuilt';
+            }
+        }
+
+        return response()->json(['message' => $message]);
+    }
+
+    /**
      * Api Request for get All Pages
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse

@@ -104,10 +104,34 @@ class LortomPages extends Model
         $view = $this->fileName;
         $data = [];
 
-        $fileName = resource_path().'/views/'.$view.'.blade.php';
+        $this->buildPage();
 
+        $data = $this->getDataFromComponent($variable);
+
+        return [$view,$data];
+    }
+
+    /**
+     * This function build and rebuild the Page
+     * @param bool $rebuild
+     */
+    public function buildPage($rebuild = false) {
+        $fileName = $this->getViewPath();
+
+        $write = false;
         if(!File::exists($fileName))
         {
+           $write = true;
+
+        }
+        else {
+            if($rebuild === true)
+            {
+                $write = true;
+            }
+        }
+
+        if($write) {
             $source  = "@extends('welcome') \n";
             $source.= "@section('title', '$this->title')\n";
             $source.= "@section('content')\n";
@@ -115,12 +139,17 @@ class LortomPages extends Model
             $source.= " \n @endsection \n";
 
             File::put($fileName,$source);
-
         }
+    }
 
-        $data = $this->getDataFromComponent($variable);
 
-        return [$view,$data];
+    /**
+     * This function return the View Path
+     * @return string
+     */
+    public function getViewPath() {
+
+        return resource_path().'/views/'.$this->fileName.'.blade.php';
     }
 
     /**
