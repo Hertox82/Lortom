@@ -9,6 +9,10 @@
   "models": [
 
   ],
+  "assets": {
+     "css": [],
+     "js": []
+  },
   "frontend": {
     "autoload": {
       "psr-4": {

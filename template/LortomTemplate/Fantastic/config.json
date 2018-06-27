@@ -17,6 +17,10 @@
     "models": [
         "LortomTemplate\\Model\\HomePage"
     ],
+    "assets": {
+        "css": [],
+        "js": []
+    },
     "frontend": {
         "autoload": {
             "psr-4": {
