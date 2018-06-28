@@ -5,11 +5,13 @@ namespace App\Providers;
 use App\Services\Classes\LortomAuth;
 use App\Services\Classes\LortomUserProvider;
 use App\Services\Classes\PackageManager;
+use App\Services\LortomSeeder;
 use App\Services\PluginCreateCompiler;
 use App\Services\PluginDeleteCompiler;
 use App\Services\PluginRoutingCompiler;
 use App\Services\PluginsConfigCompiler;
 use App\Services\PluginUpdateCompiler;
+use App\Services\RepoSeeder;
 use Illuminate\Support\ServiceProvider;
 
 use Illuminate\Support\Facades\Schema;
@@ -64,6 +66,14 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton('ltpm', function($app) {
            return new PackageManager();
+        });
+
+        $this->app->singleton('lt.seeder',function($app){
+            return new RepoSeeder();
+        });
+
+        $this->app->bind('App\Services\LortomSeeder',function($app){
+            return new LortomSeeder($app['lt.seeder']);
         });
     }
 

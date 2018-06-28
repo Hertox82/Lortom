@@ -9,6 +9,12 @@ return [
         'excel' => [
             'seed' => base_path().'/database/export/excel/seeds/',
             'migrations' => base_path().'/database/export/excel/migration/'
+        ],
+        'seeder' => [
+            'namespace'  => '',
+            'useClasses' => [
+                'use App\Services\LortomSeeder as Seeder;'
+            ]
         ]
     ]
 ];

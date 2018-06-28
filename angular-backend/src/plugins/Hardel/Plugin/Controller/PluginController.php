@@ -122,6 +122,8 @@ class PluginController extends Controller
         $this->packageAction($input['vendor'],$input['name'],$input['version']);
         $this->actionTemplate($input['vendor'],$input['name']);
 
+        //call function in order to make a right migration from new template
+
         return response()->json(['message' => true]);
     }
 
