@@ -23,6 +23,7 @@ class Kernel extends ConsoleKernel
         Commands\CreateTemplate::class,
         Commands\DeleteTemplate::class,
         Commands\AddTempPlugin::class,
+        Commands\ExportTemplateDatabase::class
     ];
 
     /**

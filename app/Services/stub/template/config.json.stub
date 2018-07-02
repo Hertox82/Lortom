@@ -16,7 +16,7 @@
   "frontend": {
     "autoload": {
       "psr-4": {
-        "#vendor#\\": "template/#vendor#/#name#/frontend"
+        "#vendor#\\#name#\\": "template/#vendor#/#name#/frontend"
       }
     }
   }

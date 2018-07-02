@@ -37,44 +37,93 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('plugin.config.compiler',function($app){
-            return new PluginsConfigCompiler();
-        });
+        $services = $this->getAllData();
 
-        $this->app->singleton('App\Services\PluginRoutingCompiler',function($app){
-            return new PluginRoutingCompiler();
-        });
+        foreach ($services as $service) {
+            $method = $service['method'];
+            $abstract = $service['abstract'];
+            $closure = $service['closure'];
 
-        $this->app->singleton('App\Services\PluginCreateCompiler',function($app){
-            return new PluginCreateCompiler($app['plugin.config.compiler']);
-        });
+            $this->app->$method($abstract,$closure);
+        }
 
-        $this->app->singleton('App\Services\PluginDeleteCompiler',function($app){
-            return new PluginDeleteCompiler($app['plugin.config.compiler']);
-        });
-        $this->app->singleton('App\Services\PluginUpdateCompiler',function($app){
-            return new PluginUpdateCompiler($app['plugin.config.compiler']);
-        });
+    }
 
-        $this->app->singleton('lt.user.provider',function(){
-           return new LortomUserProvider();
-        });
 
-        $this->app->singleton('ltAuth', function($app){
-            return new LortomAuth($this->app['lt.user.provider']);
-        });
+    protected function getAllData() {
 
-        $this->app->singleton('ltpm', function($app) {
-           return new PackageManager();
-        });
-
-        $this->app->singleton('lt.seeder',function($app){
-            return new RepoSeeder();
-        });
-
-        $this->app->bind('App\Services\LortomSeeder',function($app){
-            return new LortomSeeder($app['lt.seeder']);
-        });
+        return [
+          [
+              'method'      => 'bind',
+              'abstract'    => 'plugin.config.compiler',
+              'closure'     => function($app){
+                return new PluginsConfigCompiler();
+              }
+          ],
+            [
+                'method'      => 'singleton',
+                'abstract'    => 'App\Services\PluginRoutingCompiler',
+                'closure'     => function($app){
+                    return new PluginRoutingCompiler();
+                }
+            ],
+            [
+                'method'      => 'singleton',
+                'abstract'    => 'App\Services\PluginCreateCompiler',
+                'closure'     => function($app){
+                    return new PluginCreateCompiler($app['plugin.config.compiler']);
+                }
+            ],
+            [
+                'method'      => 'singleton',
+                'abstract'    => 'App\Services\PluginDeleteCompiler',
+                'closure'     => function($app){
+                    return new PluginDeleteCompiler($app['plugin.config.compiler']);
+                }
+            ],
+            [
+                'method'      => 'singleton',
+                'abstract'    => 'App\Services\PluginUpdateCompiler',
+                'closure'     => function($app){
+                    return new PluginUpdateCompiler($app['plugin.config.compiler']);
+                }
+            ],
+            [
+                'method'      => 'singleton',
+                'abstract'    => 'lt.user.provider',
+                'closure'     => function($app){
+                    return new LortomUserProvider();
+                }
+            ],
+            [
+                'method'      => 'singleton',
+                'abstract'    => 'ltAuth',
+                'closure'     => function($app){
+                    return new LortomAuth($this->app['lt.user.provider']);
+                }
+            ],
+            [
+                'method'      => 'singleton',
+                'abstract'    => 'ltpm',
+                'closure'     => function($app){
+                    return new PackageManager();
+                }
+            ],
+            [
+                'method'      => 'singleton',
+                'abstract'    => 'lt.seeder',
+                'closure'     => function($app){
+                    return new RepoSeeder();
+                }
+            ],
+            [
+                'method'      => 'bind',
+                'abstract'    => 'App\Services\LortomSeeder',
+                'closure'     => function($app){
+                    return new LortomSeeder($app['lt.seeder']);
+                }
+            ],
+        ];
     }
 
 

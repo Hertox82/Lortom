@@ -227,4 +227,30 @@ class PackageManager {
 
         return $this->LtpmConfigJSON;
     }
+
+    /**
+     * This function return basePathActiveTemplate
+     * @return string
+     */
+    public function basePathActiveTemplate() {
+
+        $templateActive = $this->getActiveTemplate();
+
+        return $this->getTemplateFolder($templateActive['vendor'],$templateActive['name']);
+    }
+
+
+    /**
+     * Return the Namespace of Active Template
+     * @return string
+     */
+    public function getNamespaceActiveTemplate() {
+
+        $templateActive = $this->getActiveTemplate();
+
+        $vendor = $templateActive['vendor'];
+        $name = $templateActive['name'];
+
+        return "$vendor\\$name";
+    }
 }
