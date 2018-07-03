@@ -615,3 +615,12 @@
   </div>
 </footer> 
  @endsection 
+@if(View::exists('js.js'))
+	 @include('js.js')
+@endif
+@if(View::exists('css.css'))
+	 @include('css.css')
+@endif
+@if(View::exists('meta.home-meta'))
+	 @include('meta.home-meta')
+@endif

@@ -18,8 +18,10 @@
         "LortomTemplate\\Model\\HomePage"
     ],
     "assets": {
-        "css": [],
-        "js": []
+        "css": [
+        ],
+        "js": [
+        ]
     },
     "frontend": {
         "autoload": {

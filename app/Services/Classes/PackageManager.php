@@ -253,4 +253,15 @@ class PackageManager {
 
         return "$vendor\\$name";
     }
+
+    /**
+     * This function return Active Template Config json
+     * @return mixed|null
+     */
+    public function getActiveTemplateConfigJSON() {
+
+        $templateActive = $this->getActiveTemplate();
+
+        return $this->loadTemplateConfigJson($templateActive['vendor'],$templateActive['name']);
+    }
 }

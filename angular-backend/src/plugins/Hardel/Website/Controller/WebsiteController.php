@@ -35,7 +35,8 @@ class WebsiteController extends Controller
 
         if($Page) {
             if($Page instanceof LortomPages) {
-                $Page->buildPage(true);
+
+                $Page->rebuildPage();
                 $message = 'Ok, the Page is rebuilt';
             }
         }
