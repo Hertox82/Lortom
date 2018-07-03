@@ -6,7 +6,7 @@
 import {Injectable} from "@angular/core";
 import {MasterService} from "@Lortom/services/master.service";
 import {Http, Response} from "@angular/http";
-import {LtPlugin} from "@Lortom/plugins/Hardel/Plugin/Service/plugin.interface";
+import {LtPlugin, LtTemplate} from "@Lortom/plugins/Hardel/Plugin/Service/plugin.interface";
 import {Observable} from "rxjs/Observable";
 import {Subject} from "rxjs/Subject";
 
@@ -14,9 +14,13 @@ import {Subject} from "rxjs/Subject";
 export class PluginService extends MasterService
 {
     listOfPlugins : LtPlugin[];
+    listOfTemplate: LtTemplate[];
+    listOfTemplates: LtTemplate[];
 
     private _updatePlugins = new Subject();
+    private _updateTemplate = new Subject();
     updatePlugins$ = this._updatePlugins.asObservable();
+    updateTemplate$ = this._updateTemplate.asObservable();
 
     constructor(private http: Http) {
         super();
@@ -27,13 +31,18 @@ export class PluginService extends MasterService
             { namePath: 'installPlugin', path: 'plugin'},
             { namePath: 'packPlugin', path: 'plugin/pack'},
             { namePath: 'delPack', path: 'plugin/delete'},
-            { namePath: 'getLatestPlugin', path: 'plugins/latest'}
+            { namePath: 'getLatestPlugin', path: 'plugins/latest'},
+            { namePath: 'getLatestTemplate', path: 'templates/latest'},
+            { namePath: 'getTemplate', path: 'templates'},
+            { namePath: 'packTemplate', path: 'template/pack'},
+            { namePath: 'unPackTemp', path: 'template/delpack'},
+            { namePath: 'instTemp', path: 'template'}
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
     }
 
-    /* Section call to API*/
+    /* Section call to API */
 
     /**
      * This function Call API in order to get List of Plugin
@@ -48,11 +57,29 @@ export class PluginService extends MasterService
             );
     }
 
+    getTemplateFrom(): Observable<any> {
+        return this.http.get(this.apiManager.getPathByName('getTemplate'))
+            .map(
+                (response: Response) => {
+                    return response.json();
+                }
+            );
+    }
+
     getLatestPlugin(): Observable<any> {
         return this.http.get(this.apiManager.getPathByName('getLatestPlugin'))
             .map(
                 (response: Response) => {
                     return response.json().plugins;
+                }
+            );
+    }
+
+    getLatestTemplate(): Observable<any> {
+        return this.http.get(this.apiManager.getPathByName('getLatestTemplate'))
+            .map(
+                (response: Response) => {
+                    return response.json().template;
                 }
             );
     }
@@ -72,11 +99,38 @@ export class PluginService extends MasterService
             );
     }
 
+    uninstallTemplates(templates: LtTemplate[]): Observable <any> {
+        return this.http.put(this.apiManager.getPathByName('instTemp'),templates,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().message;
+                }
+            );
+    }
+
+    uninstallTemplate(template: LtTemplate): Observable<any> {
+        return this.http.put(this.apiManager.getPathByName('instTemp'),template,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().message;
+                }
+            );
+    }
+
     deletePackPlugin(plugin: LtPlugin): Observable<any> {
         return this.http.post(this.apiManager.getPathByName('delPack'),plugin,this.getOptions())
             .map(
                 (response: Response) => {
                     return response.json().plugins;
+                }
+            );
+    }
+
+    deletePackTemplate(template: LtTemplate): Observable<any> {
+        return this.http.post(this.apiManager.getPathByName('unPackTemp'),template,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().message;
                 }
             );
     }
@@ -95,6 +149,34 @@ export class PluginService extends MasterService
             );
     }
 
+    installTemplate(template: LtTemplate): Observable<any> {
+        return this.http.post(this.apiManager.getPathByName('instTemp'),template,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().message;
+                }
+            );
+    }
+
+    activateTemplate(template: LtTemplate): Observable<any> {
+        return this.http.post(this.apiManager.getPathByName('actiTemp'),template,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().message;
+                }
+            );
+    }
+
+    deactivateTemplate(template: LtTemplate): Observable<any> {
+        return this.http.post(this.apiManager.getPathByName('deactiTemp'),template,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().message;
+                }
+            );
+
+    }
+
     /**
      * This function call API in order to Update the Plugin
      * @param plugin
@@ -109,11 +191,29 @@ export class PluginService extends MasterService
             );
     }
 
+    updateTemplate(template: LtTemplate): Observable<any> {
+        return this.http.put(this.apiManager.getPathByName('installTemplate'),template,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().message;
+                }
+            );
+    }
+
     packPlugin(plugin: LtPlugin): Observable<any> {
         return this.http.post(this.apiManager.getPathByName('packPlugin'),plugin,this.getOptions())
             .map(
                 (response: Response) => {
                     return response.json().plugins;
+                }
+            );
+    }
+
+    packTemplate(template: LtTemplate): Observable<any> {
+        return this.http.post(this.apiManager.getPathByName('packTemplate'),template,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().message;
                 }
             );
     }
@@ -129,6 +229,19 @@ export class PluginService extends MasterService
         let data = plugins as LtPlugin[];
         this.setItem('plugins',data);
         this.listOfPlugins = data;
+    }
+
+    setTemplate(template: any): void {
+
+        let data = template as LtTemplate[];
+        this.setItem('template',data);
+        this.listOfTemplate = data;
+    }
+
+    setTemplates(templates: any): void {
+        let data = templates as LtTemplate [];
+        this.setItem('templates',data);
+        this.listOfTemplates = data;
     }
 
     /**
@@ -165,6 +278,10 @@ export class PluginService extends MasterService
     updateListOfPlugins()
     {
         this._updatePlugins.next();
+    }
+
+    updateListOfTemplate() {
+        this._updateTemplate.next();
     }
 
 }

@@ -94,30 +94,81 @@ class LortomPages extends Model
     }
 
 
+    /**
+     * This function rendering the view of the Page
+     * @param $variable
+     * @return array
+     */
     public function renderData($variable) {
 
         $view = $this->fileName;
         $data = [];
 
-        $fileName = resource_path().'/views/'.$view.'.blade.php';
-
-        if(!File::exists($fileName))
-        {
-            $source  = "@extends('welcome') \n";
-            $source.= "@section('title', '$this->title')\n";
-            $source.= "@section('content')\n";
-            $source = $this->compileComponent($source);
-            $source.= " \n @endsection \n";
-
-            File::put($fileName,$source);
-
-        }
+        $this->compileCss();
+        $this->compileJS();
+        $this->compileMetaTag();
+        $this->buildPage();
 
         $data = $this->getDataFromComponent($variable);
 
         return [$view,$data];
     }
 
+    /**
+     * This function build and rebuild the Page
+     * @param bool $rebuild
+     */
+    protected function buildPage($rebuild = false) {
+        $fileName = $this->getViewPath();
+
+        if($this->checkIfCompilable($fileName,$rebuild)) {
+            $source  = "@extends('welcome') \n";
+            if($this->title === '#custom#')
+                $source.= "@section('title', \$title)\n";
+            else
+                $source.= "@section('title', '$this->title')\n";
+            $source.= "@section('content')\n";
+            $source = $this->compileComponent($source);
+            $source.= " \n @endsection \n";
+            $source.="@if(View::exists('js.js'))\n";
+            $source.="\t @include('js.js')\n";
+            $source.="@endif\n";
+            $source.="@if(View::exists('css.css'))\n";
+            $source.="\t @include('css.css')\n";
+            $source.="@endif\n";
+            $source.="@if(View::exists('meta.{$this->fileName}-meta'))\n";
+            $source.="\t @include('meta.{$this->fileName}-meta')\n";
+            $source.="@endif\n";
+
+            File::put($fileName,$source);
+        }
+    }
+
+    /**
+     * This function is to rebuild page with js,css and meta tag
+     */
+    public function rebuildPage() {
+        $this->compileCss(true);
+        $this->compileJS(true);
+        $this->compileMetaTag(true);
+        $this->buildPage(true);
+    }
+
+
+    /**
+     * This function return the View Path
+     * @return string
+     */
+    public function getViewPath() {
+
+        return resource_path().'/views/'.$this->fileName.'.blade.php';
+    }
+
+    /**
+     * This function compile into a variable $source the appearance of a List of Components
+     * @param $source
+     * @return string
+     */
     protected function compileComponent($source) {
         $components = $this->components();
 
@@ -128,24 +179,162 @@ class LortomPages extends Model
         return $source;
     }
 
+    /**
+     * This function take all Component of this Page and call the singular function
+     * @param $data
+     * @return array
+     */
     protected function getDataFromComponent($data)
     {
         $components = $this->getListComponents();
-        $data['id'] = $this->id;
 
         $response = [];
+
         foreach ($components as $cmp)
         {
+            $adding = [];
             if(property_exists($cmp,'Object'))
             {
 
                 $class = "\\".$cmp->Object;
                 $function = $cmp->functions;
-                $otherData =  ($class != null && $function != null) ? call_user_func_array(array($class,$function),array($data,$cmp->idComponent)) : [];
+
+                $rclass = new \ReflectionClass($class);
+                $listArgs = $rclass->getMethod($function)->getParameters();
+
+                foreach ($listArgs as $args) {
+                    if($args->name === 'idComponent') {
+                        $adding[] = $cmp->idComponent;
+                    } else if($args->name == 'idPage') {
+                        $adding[] = $this->id;
+                    }
+                }
+
+                $adding = array_merge($adding,$data);
+
+                $otherData =  ($class != null && $function != null) ? call_user_func_array(array($class,$function),$adding) : [];
+
                 $response = array_merge($response,$otherData);
             }
         }
 
         return $response;
+    }
+
+
+    protected function compileMetaTag($rebuild=false) {
+        // do something for meta tag
+        $fileName = resource_path()."/views/meta/{$this->fileName}-meta.blade.php";
+
+        if(!File::exists(resource_path().'/views/meta')){
+            File::makeDirectory(resource_path().'/views/meta',0777,true);
+        }
+
+        if($this->checkIfCompilable($fileName,$rebuild)) {
+
+            $listOfMetaTag = explode('|',$this->metaTag);
+            $listOfMetaDesc = explode('|',$this->metaDesc);
+
+            if(count($listOfMetaDesc) === count($listOfMetaTag)) {
+                $stub="@push('meta-tag')\n";
+                $count = count($listOfMetaDesc);
+
+                for($i = 0; $i < $count; $i++) {
+                    $stub.="\t";
+                    $tag = $listOfMetaTag[$i];
+                    $desc = $listOfMetaDesc[$i];
+                    $stub.="<meta name=\"$tag\" content=\"$desc\">";
+                    $stub.="\n";
+                }
+                $stub.="@endpush \n";
+                if(count($listOfMetaDesc) === 0) {
+                    File::delete($fileName);
+                } else {
+                    File::put($fileName, $stub);
+                }
+            }
+        }
+
+    }
+
+    protected function compileCss($rebuild=false) {
+        $fileName = resource_path().'/views/css/css.blade.php';
+
+        if(!File::exists(resource_path().'/views/css')){
+            File::makeDirectory(resource_path().'/views/css',0777,true);
+        }
+        if($this->checkIfCompilable($fileName,$rebuild)) {
+
+            $configJson = ltpm()->getActiveTemplateConfigJSON();
+
+            $listOfCSS = $configJson['assets']['css'];
+            $stub= "@push('css')  \n";
+            foreach ($listOfCSS as $css) {
+                $stub.="\t";
+                $stub.="<link rel=\"stylesheet\" href=\"$css\">";
+                $stub.="\n";
+            }
+            $stub.="@endpush \n";
+
+            if(count($listOfCSS) === 0) {
+                File::delete($fileName);
+            }else {
+                File::put($fileName, $stub);
+            }
+        }
+    }
+
+    /**
+     * This function compile JS from config.json template into a page
+     * @param bool $rebuild
+     */
+    protected function compileJS($rebuild = false) {
+
+        $fileName = resource_path().'/views/js/js.blade.php';
+
+        if(!File::exists(resource_path().'/views/js')){
+            File::makeDirectory(resource_path().'/views/js',0777,true);
+        }
+
+        if($this->checkIfCompilable($fileName,$rebuild)) {
+
+            $configJson = ltpm()->getActiveTemplateConfigJSON();
+
+            $listOfJS = $configJson['assets']['js'];
+            $stub= "@push('script')  \n";
+            foreach ($listOfJS as $js) {
+                $stub.="\t";
+                $stub.="<script type=\"text/javascript\" src=\"$js\">";
+                $stub.="\n";
+            }
+            $stub.="@endpush \n";
+
+            if(count($listOfJS) === 0) {
+                File::delete($fileName);
+            } else {
+                File::put($fileName,$stub);
+            }
+        }
+    }
+
+    /**
+     * This function check if File is compilable or not
+     * @param $filename
+     * @param $rebuild
+     * @return bool
+     */
+    protected function checkIfCompilable($filename,$rebuild) {
+
+        $write = false;
+        if(!File::exists($filename)) {
+            // crea file
+            $write = true;
+        }
+
+        if($rebuild) {
+            $write = true;
+        }
+
+        return $write;
     }
 }

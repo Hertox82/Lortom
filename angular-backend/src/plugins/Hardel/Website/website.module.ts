@@ -9,6 +9,7 @@ import {EditorModule} from "@Lortom-Backend/Editor/editor";
 import {UIElementModule} from "@Lortom-Backend/UIElement/uielement.module";
 import { CodemirrorModule } from "lt-codemirror";
 import { LtTreeviewModule } from "lt-treeview";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { LtTreeviewModule } from "lt-treeview";
         UIElementModule,
         CodemirrorModule,
         LtTreeviewModule,
+        NgbModule.forRoot(),
     ],
     providers : [WebsiteService],
     declarations: [websiteComponent]

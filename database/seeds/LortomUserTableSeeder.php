@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Database\Seeder;
+use App\Services\LortomSeeder as Seeder;
 
 class LortomUserTableSeeder extends Seeder
 {
@@ -9,6 +9,9 @@ class LortomUserTableSeeder extends Seeder
      *
      * @return void
      */
+
+    protected $register = true;
+
     public function run()
     {
         DB::table('lt_user')->insert([
@@ -20,4 +23,5 @@ class LortomUserTableSeeder extends Seeder
             'updated_at'    => date("Y-m-d H:i:s")
         ]);
     }
+
 }

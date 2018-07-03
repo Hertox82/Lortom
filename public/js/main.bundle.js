@@ -6,26 +6,22 @@ webpackJsonp(["main"],{
 var map = {
 	"../plugins/Hardel/Dashboard/dashboard.module": [
 		"./src/plugins/Hardel/Dashboard/dashboard.module.ts",
-		4
+		3
 	],
 	"../plugins/Hardel/Plugin/plugin.module": [
 		"./src/plugins/Hardel/Plugin/plugin.module.ts",
-		0,
-		"common"
-	],
-	"../plugins/Hardel/Prova/prova.module": [
-		"./src/plugins/Hardel/Prova/prova.module.ts",
-		3
+		"common",
+		2
 	],
 	"../plugins/Hardel/Settings/settings.module": [
 		"./src/plugins/Hardel/Settings/settings.module.ts",
-		2,
-		"common"
+		"common",
+		1
 	],
 	"../plugins/Hardel/Website/website.module": [
 		"./src/plugins/Hardel/Website/website.module.ts",
-		1,
-		"common"
+		"common",
+		0
 	]
 };
 function webpackAsyncContext(req) {
@@ -65,7 +61,7 @@ module.exports = module.exports.toString();
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div *ngIf=\"isAuth == true && isLogin == false; else login\">\n    <header class=\"main-header\">\n        <a class=\"logo\">\n            <span>Lortom</span>\n        </a>\n        <app-navbar></app-navbar>\n    </header>\n\n    <aside class=\"main-sidebar\">\n       <section class=\"sidebar\">\n           <app-user-side [user]=\"user\"></app-user-side>\n           <app-menu-items></app-menu-items>\n       </section>\n    </aside>\n\n    <!-- Qui viene messo il rootlet-->\n    <div class=\"content-wrapper\">\n        <router-outlet></router-outlet>\n    </div>\n\n\n    <footer>\n        &copy; Lortom 2017 - MIT License - created by Hernan Ariel De Luca\n    </footer>\n</div>\n\n<ng-template #login>\n    <router-outlet></router-outlet>\n</ng-template>"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div *ngIf=\"isAuth == true && isLogin == false; else login\">\n    <header class=\"main-header\">\n        <a class=\"logo\">\n            <span>Lortom</span>\n        </a>\n        <app-navbar></app-navbar>\n    </header>\n\n    <aside class=\"main-sidebar\">\n       <section class=\"sidebar\">\n           <app-user-side [user]=\"user\"></app-user-side>\n           <app-menu-items></app-menu-items>\n       </section>\n    </aside>\n\n    <!-- Qui viene messo il rootlet-->\n    <div class=\"content-wrapper\">\n        <router-outlet></router-outlet>\n    </div>\n\n\n    <footer>\n        &copy; Lortom 2018 - MIT License - created by Hernan Ariel De Luca\n    </footer>\n</div>\n\n<ng-template #login>\n    <router-outlet></router-outlet>\n</ng-template>"
 
 /***/ }),
 
@@ -213,11 +209,10 @@ var routes = [
     { path: 'backend/logout', component: login_1.LogoutComponent },
     { path: 'backend/profile/edit', component: user_module_1.UserModelComponent },
     { path: 'backend/not-found', component: notfoundpage_1.NotFoundComponent },
-    { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' },
     { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' },
     { path: 'backend/website', loadChildren: '../plugins/Hardel/Website/website.module#WebsiteModule' },
     { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' },
-    { path: 'backend/prova', loadChildren: '../plugins/Hardel/Prova/prova.module#ProvaModule' }
+    { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' }
 ];
 exports.routing = router_1.RouterModule.forRoot(routes);
 //# sourceMappingURL=app.routing.js.map

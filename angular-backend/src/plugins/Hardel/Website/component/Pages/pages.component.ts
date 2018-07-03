@@ -60,4 +60,13 @@ export class PagesComponent extends ListComponent implements OnInit
             delFn: 'deletePages'
         },'listaPages',"Do you really want delete this Pages?");
     }
+
+    reBuild(idPage) {
+        console.log(idPage);
+        this.wb_Service.rebuildPage(idPage).subscribe(
+            (data: any) => {
+                alert(data);
+            }
+        );
+    }
 }

@@ -20,9 +20,10 @@ Lortom is an Content Management System built in Laravel 5.5 + Angular 4
 - [x] Create Plugins Installer
 - [x] Create Plugins Exporter
 - [x] Create Template System for Front-end
-- [ ] Create Command to Build Template
-- [ ] Create Command to Export Template
-- [ ] Create Command to Install Template
+- [x] Create Command to Build Template
+- [x] Create Command to Export Template
+- [x] Create Command to Install Template
+- [ ] Create Command Line installer
 - [ ] Styling the Backend
 
 
@@ -57,6 +58,7 @@ In order to create a Plugin in Lortom, you must understand the folder structure
  
  
  ##### Create command
+ 
  ```bash
  $ php artisan lortom-plugin:create --vendor-name=Vendor,Name
  ```
@@ -106,7 +108,7 @@ In order to create a Plugin in Lortom, you must understand the folder structure
   ```bash
     $ php artisan lortom-permission:update --vendor-name=Vendor,Name
   ```
-    
+
   
  
  

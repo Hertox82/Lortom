@@ -25,6 +25,11 @@ Route::get('/pages/attribute/list',[
     'uses'   => 'WebsiteController@getPageAttributeList'
 ]);
 
+Route::post('/page/rebuild',[
+    'as'    => 'apiRebuildPage',
+    'uses'  => 'WebsiteController@rebuildPage'
+]);
+
 Route::get('/components',[
     'as'     => 'apiGetComponents',
     'uses'   => 'WebsiteController@getComponents'
@@ -43,6 +48,11 @@ Route::post('/component',[
 Route::put('/component',[
     'as'     => 'apiUpdateComponent',
     'uses'   => 'WebsiteController@storeComponent'
+]);
+
+Route::get('/template/active/models', [
+    'as'    => 'apiGetModelsTemplateActive',
+    'uses'  => 'WebsiteController@getModelsFromActiveTemplate'
 ]);
 
 Route::get('/menus',[

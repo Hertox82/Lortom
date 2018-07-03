@@ -80,9 +80,10 @@ footer { margin-left: 200px; padding: 10px; border:1px solid #dde0e6; font-size:
 .tabbable-custom>.nav-tabs>li.active { border-top: 3px solid #edc36b; margin-top: 0; position: relative; background-color: white; border-left: 1px solid #ddd; border-right: 1px solid #ddd;}
 
 .tabbable-custom>.nav-tabs>li.active>a { border-top: none !important; font-weight: 400; color: #555; background-color: #fff; border-bottom-color: transparent; cursor: default; }
-.tabbable-custom>.tab-content { background-color: #fff; border: 1px solid #ddd; padding: 10px; }
+.tabbable-custom>.tab-content { background-color: #fff; border: 1px solid #ddd; padding: 10px; margin-bottom: 30px;}
 
 .box {padding-left: 10px; padding-right: 10px;}
+.box-header {color: orange; padding: 5px 5px 10px; margin-bottom: 3px;}
 .wrapper .dataTables_length label {display: inline-block;}
 .wrapper .dataTables_length label select { display: inline-block; width: 70px; margin: 0px 10px;}
 .wrapper .dataTables_filter label {display: inline-block;}

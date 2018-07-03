@@ -53,6 +53,10 @@ class PluginCreateCompiler extends AbstractPlugin
         return $this;
     }
 
+    /**
+     *
+     * @return $this
+     */
     public function writingFileProviders()
     {
         //create file into Providers

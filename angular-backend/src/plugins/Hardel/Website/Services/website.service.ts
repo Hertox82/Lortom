@@ -41,6 +41,8 @@ export class WebsiteService extends MasterService{
             { namePath : 'getMenus', path: 'menus'},
             { namePath : 'saveMenu', path: 'menu'},
             { namePath : 'getMenuAtt', path: 'menus/attribute/list'},
+            { namePath : 'getModels', path: 'template/active/models'},
+            { namePath : 'rebuild', path: 'page/rebuild'}
         ];
         //Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -187,6 +189,15 @@ export class WebsiteService extends MasterService{
             );
     }
 
+    getModelsFrom() : Observable<any> {
+        return this.http.get(this.apiManager.getPathByName('getModels'))
+            .map(
+                (response: Response) => {
+                    return response.json().models;
+                }
+            );
+    }
+
     /**
      * This function set pages and store it into a Session
      * @param pages
@@ -316,6 +327,16 @@ export class WebsiteService extends MasterService{
             .map(
                 (response: Response) => {
                     return response.json().menu;
+                }
+            );
+    }
+
+    rebuildPage(id: number) : Observable<any> {
+        let obj = {id: id};
+        return this.http.post(this.apiManager.getPathByName('rebuild'),obj,this.getOptions())
+            .map(
+                (response: Response) => {
+                    return response.json().message;
                 }
             );
     }

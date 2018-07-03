@@ -1,21 +1,20 @@
 <?php
 
-namespace LortomTemplate\Model;
-
-use Plugins\Hardel\Website\Model\LortomComponent;
-use Plugins\Hardel\Website\Model\LortomMenu;
-use Plugins\Hardel\Website\Model\LortomPages;
-
 /**
- * Created by PhpStorm.
  * User: hernan
  * Date: 01/12/2017
  * Time: 14:47
  */
 
+namespace LortomTemplate\Fantastic\Model;
+
+use Plugins\Hardel\Website\Model\LortomComponent;
+use Plugins\Hardel\Website\Model\LortomMenu;
+use Plugins\Hardel\Website\Model\LortomPages;
+
 class HomePage
 {
-    public static function topBanner($data,$idComponent)
+    public static function topBanner($idComponent)
     {
         $LComponent = LortomComponent::find($idComponent);
 
@@ -25,10 +24,10 @@ class HomePage
         foreach ($variable as $v)
         {
             if($v == 'topLogo') {
-                $lista[$v] = './images/logo.png';
+                $lista[$v] = $_ENV['APP_URL'].'/images/logo.png';
             }
             else if($v == 'topImg') {
-                $lista[$v] = './images/foglia-pasticche.png';
+                $lista[$v] = $_ENV['APP_URL'].'/images/foglia-pasticche.png';
             }
         }
 
@@ -36,7 +35,7 @@ class HomePage
 
     }
 
-    public static function navBar($data,$idComponent)
+    public static function navBar($idPage)
     {
         $LMenu = LortomMenu::where([['idParent','_root'],['idPage','!=',null]])->get();
 
@@ -45,12 +44,36 @@ class HomePage
 
             $label = $m->name;
             $Page = LortomPages::find($m->idPage);
-            $select = ($Page->id === $data['id']) ? :false;
+            $select = ($Page->id === $idPage) ? :false;
             $href = $Page->slug;
 
             $lista [] = ['href'=> $href, 'label' => $label, 'selected' => $select];
         }
 
         return ['menuList' => $lista];
+    }
+
+    public static function headerCarousel() {
+
+        $images = [
+            [
+                'title' => 'Titolo1',
+                'desc'  => 'breve descrizione',
+                'src'   => $_ENV['APP_URL'].'/images/boxCarousel.png'
+            ],
+            [
+                'title' => 'Titolo2',
+                'desc'  => 'breve descrizione2',
+                'src'   => $_ENV['APP_URL'].'/images/boxCarousel.png'
+            ],
+            [
+                'title' => 'Titolo3',
+                'desc'  => 'breve descrizione3',
+                'src'   => $_ENV['APP_URL'].'/images/boxCarousel.png'
+            ],
+
+        ];
+
+        return compact('images');
     }
 }
