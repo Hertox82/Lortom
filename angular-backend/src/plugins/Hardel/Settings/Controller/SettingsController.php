@@ -9,9 +9,9 @@
 namespace Plugins\Hardel\Settings\Controller;
 
 use App\Http\Controllers\Controller;
-use App\LortomPermission;
-use App\LortomRole;
-use App\LortomUser;
+use LTFramework\LortomPermission;
+use LTFramework\LortomRole;
+use LTFramework\LortomUser;
 use Illuminate\Http\Request;
 use DB;
 class SettingsController extends Controller

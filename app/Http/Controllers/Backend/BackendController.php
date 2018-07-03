@@ -7,8 +7,8 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\LortomPermission;
-use App\LortomUser;
+use LTFramework\LortomPermission;
+use LTFramework\LortomUser;
 use App\Services\Classes\LortomAuth;
 use Illuminate\Http\Request;
 use Cookie;

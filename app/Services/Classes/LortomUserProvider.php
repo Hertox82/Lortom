@@ -8,7 +8,7 @@
 
 namespace App\Services\Classes;
 
-use App\LortomUser;
+use LTFramework\LortomUser;
 use Hash;
 use Session;
 use Illuminate\Support\Facades\Cookie;
