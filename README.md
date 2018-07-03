@@ -1,30 +1,11 @@
 # Lortom
 Lortom is an Content Management System built in Laravel 5.5 + Angular 4
 
-### TODO LIST
 
-- [x] Installation System for Plugins in Lortom
-- [x] Pass routing Angular with Artisan Command
-- [x] Create Automatization to build a Plugin
-- [x] Deleting Plugin in Safe mode (with Artisan command)
-- [x] Update Plugin configuration
-- [x] Create Artisan Command for Plugins
-- [X] Manage Submenu
-- [x] Manage position on Menu
-- [x] Create System Auth on Backend
-- [x] Create logout from Backend
-- [x] Implement UserModule for deleting, updating and creating new User
-- [x] Implement the Role and Permissions for Users
-- [x] Create Component to Manage Breadcrumbs and Title
-- [x] Create Artisan Command for Plugin's Migration
-- [x] Create Plugins Installer
-- [x] Create Plugins Exporter
-- [x] Create Template System for Front-end
-- [x] Create Command to Build Template
-- [x] Create Command to Export Template
-- [x] Create Command to Install Template
-- [ ] Create Command Line installer
-- [ ] Styling the Backend
+## ROAD TO ALPHA-1
+
+- [ ] Create lortom/framework library
+- [ ] Create lortom/installer to install via composer the application
 
 
 ## Create Plugin on Lortom

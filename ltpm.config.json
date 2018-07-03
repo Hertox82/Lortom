@@ -23,6 +23,21 @@
             "vendor": "Hardel",
             "name": "Dashboard",
             "version": "1.0.1"
+        },
+        {
+            "vendor": "Hardel",
+            "name": "Settings",
+            "version": "1.0.0"
+        },
+        {
+            "vendor": "Hardel",
+            "name": "Website",
+            "version": "1.0.0"
+        },
+        {
+            "vendor": "Hardel",
+            "name": "Plugin",
+            "version": "1.0.0"
         }
     ]
 }
