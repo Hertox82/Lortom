@@ -6,7 +6,7 @@
  * Time: 14:47
  */
 
-namespace LortomTemplate\Model;
+namespace LortomTemplate\Fantastic\Model;
 
 use Plugins\Hardel\Website\Model\LortomComponent;
 use Plugins\Hardel\Website\Model\LortomMenu;
@@ -14,7 +14,7 @@ use Plugins\Hardel\Website\Model\LortomPages;
 
 class HomePage
 {
-    public static function topBanner($data,$idComponent)
+    public static function topBanner($idComponent)
     {
         $LComponent = LortomComponent::find($idComponent);
 
@@ -35,7 +35,7 @@ class HomePage
 
     }
 
-    public static function navBar($data,$idComponent)
+    public static function navBar($idPage)
     {
         $LMenu = LortomMenu::where([['idParent','_root'],['idPage','!=',null]])->get();
 
@@ -44,7 +44,7 @@ class HomePage
 
             $label = $m->name;
             $Page = LortomPages::find($m->idPage);
-            $select = ($Page->id === $data['id']) ? :false;
+            $select = ($Page->id === $idPage) ? :false;
             $href = $Page->slug;
 
             $lista [] = ['href'=> $href, 'label' => $label, 'selected' => $select];
@@ -53,7 +53,7 @@ class HomePage
         return ['menuList' => $lista];
     }
 
-    public static function headerCarousel($data,$idComponent) {
+    public static function headerCarousel() {
 
         $images = [
             [

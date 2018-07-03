@@ -123,7 +123,10 @@ class LortomPages extends Model
 
         if($this->checkIfCompilable($fileName,$rebuild)) {
             $source  = "@extends('welcome') \n";
-            $source.= "@section('title', '$this->title')\n";
+            if($this->title === '#custom#')
+                $source.= "@section('title', \$title)\n";
+            else
+                $source.= "@section('title', '$this->title')\n";
             $source.= "@section('content')\n";
             $source = $this->compileComponent($source);
             $source.= " \n @endsection \n";
@@ -184,17 +187,33 @@ class LortomPages extends Model
     protected function getDataFromComponent($data)
     {
         $components = $this->getListComponents();
-        $data['id'] = $this->id;
 
         $response = [];
+
         foreach ($components as $cmp)
         {
+            $adding = [];
             if(property_exists($cmp,'Object'))
             {
 
                 $class = "\\".$cmp->Object;
                 $function = $cmp->functions;
-                $otherData =  ($class != null && $function != null) ? call_user_func_array(array($class,$function),array($data,$cmp->idComponent)) : [];
+
+                $rclass = new \ReflectionClass($class);
+                $listArgs = $rclass->getMethod($function)->getParameters();
+
+                foreach ($listArgs as $args) {
+                    if($args->name === 'idComponent') {
+                        $adding[] = $cmp->idComponent;
+                    } else if($args->name == 'idPage') {
+                        $adding[] = $this->id;
+                    }
+                }
+
+                $adding = array_merge($adding,$data);
+
+                $otherData =  ($class != null && $function != null) ? call_user_func_array(array($class,$function),$adding) : [];
+
                 $response = array_merge($response,$otherData);
             }
         }

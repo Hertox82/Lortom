@@ -22,7 +22,8 @@ Lortom is an Content Management System built in Laravel 5.5 + Angular 4
 - [x] Create Template System for Front-end
 - [x] Create Command to Build Template
 - [x] Create Command to Export Template
-- [ ] Create Command to Install Template
+- [x] Create Command to Install Template
+- [ ] Create Command Line installer
 - [ ] Styling the Backend
 
 

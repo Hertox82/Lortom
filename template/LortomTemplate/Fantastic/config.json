@@ -15,7 +15,8 @@
         }
     },
     "models": [
-        "LortomTemplate\\Model\\HomePage"
+        "LortomTemplate\\Fantastic\\Model\\HomePage",
+        "LortomTemplate\\Fantastic\\Model\\ProdottoPage"
     ],
     "assets": {
         "css": [
@@ -26,7 +27,7 @@
     "frontend": {
         "autoload": {
             "psr-4": {
-                "LortomTemplate\\": "template/LortomTemplate/Fantastic/frontend"
+                "LortomTemplate\\Fantastic\\": "template/LortomTemplate/Fantastic/frontend"
             }
         }
     }
