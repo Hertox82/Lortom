@@ -24,4 +24,5 @@ angular-backend/README.md
 .idea/
 compressed
 composer.lock
-libLortom
+libLortom/
+hadeluca/
