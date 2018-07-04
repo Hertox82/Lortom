@@ -9,7 +9,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Services\PluginUpdateCompiler;
+use LTFramework\Services\PluginUpdateCompiler;
 use File;
 
 class UpdateMigrationUp extends Command
@@ -19,7 +19,7 @@ class UpdateMigrationUp extends Command
     protected $description = "This command is to unroll a Migration from Plugin";
 
     /**
-     * @var \App\Services\PluginUpdateCompiler
+     * @var \LTFramework\Services\PluginUpdateCompiler
      */
     protected $compiler;
 

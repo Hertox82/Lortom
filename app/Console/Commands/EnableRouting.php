@@ -7,7 +7,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\PluginRoutingCompiler;
+use LTFramework\Services\PluginRoutingCompiler;
 use Illuminate\Console\Command;
 
 class EnableRouting extends Command
@@ -22,7 +22,7 @@ class EnableRouting extends Command
 
     /**
      *
-     * @var \App\Services\PluginRoutingCompiler
+     * @var \LTFramework\Services\PluginRoutingCompiler
      */
     protected $compiler;
 

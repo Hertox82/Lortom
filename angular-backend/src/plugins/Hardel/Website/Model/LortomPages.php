@@ -6,7 +6,6 @@ namespace Plugins\Hardel\Website\Model;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 use File;
-use LortomTemplate\Model\HomePage;
 
 class LortomPages extends Model
 {
@@ -192,6 +191,7 @@ class LortomPages extends Model
 
         foreach ($components as $cmp)
         {
+
             $adding = [];
             if(property_exists($cmp,'Object'))
             {
@@ -199,17 +199,20 @@ class LortomPages extends Model
                 $class = "\\".$cmp->Object;
                 $function = $cmp->functions;
 
-                $rclass = new \ReflectionClass($class);
-                $listArgs = $rclass->getMethod($function)->getParameters();
+                if(strlen($class) != 1) {
+                    $rclass = new \ReflectionClass($class);
 
-                foreach ($listArgs as $args) {
-                    if($args->name === 'idComponent') {
-                        $adding[] = $cmp->idComponent;
-                    } else if($args->name == 'idPage') {
-                        $adding[] = $this->id;
+
+                    $listArgs = $rclass->getMethod($function)->getParameters();
+
+                    foreach ($listArgs as $args) {
+                        if ($args->name === 'idComponent') {
+                            $adding[] = $cmp->idComponent;
+                        } else if ($args->name == 'idPage') {
+                            $adding[] = $this->id;
+                        }
                     }
                 }
-
                 $adding = array_merge($adding,$data);
 
                 $otherData =  ($class != null && $function != null) ? call_user_func_array(array($class,$function),$adding) : [];

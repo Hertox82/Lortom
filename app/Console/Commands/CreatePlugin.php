@@ -7,7 +7,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\PluginCreateCompiler;
+use LTFramework\Services\PluginCreateCompiler;
 use Illuminate\Console\Command;
 use File;
 
@@ -22,7 +22,7 @@ class CreatePlugin extends Command
     protected $description = 'In Order to create a plugin digit --vendor-name=Vendor,Name';
 
     /**
-     * @var \App\Services\PluginCreateCompiler
+     * @var \LTFramework\Services\PluginCreateCompiler
      */
     protected $compiler;
 

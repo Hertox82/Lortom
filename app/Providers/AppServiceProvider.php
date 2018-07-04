@@ -2,16 +2,16 @@
 
 namespace App\Providers;
 
-use App\Services\Classes\LortomAuth;
-use App\Services\Classes\LortomUserProvider;
-use App\Services\Classes\PackageManager;
-use App\Services\LortomSeeder;
-use App\Services\PluginCreateCompiler;
-use App\Services\PluginDeleteCompiler;
-use App\Services\PluginRoutingCompiler;
-use App\Services\PluginsConfigCompiler;
-use App\Services\PluginUpdateCompiler;
-use App\Services\RepoSeeder;
+use LTFramework\Services\Classes\LortomAuth;
+use LTFramework\Services\Classes\LortomUserProvider;
+use LTFramework\Services\Classes\PackageManager;
+use LTFramework\Services\LortomSeeder;
+use LTFramework\Services\PluginCreateCompiler;
+use LTFramework\Services\PluginDeleteCompiler;
+use LTFramework\Services\PluginRoutingCompiler;
+use LTFramework\Services\PluginsConfigCompiler;
+use LTFramework\Services\PluginUpdateCompiler;
+use LTFramework\Services\RepoSeeder;
 use Illuminate\Support\ServiceProvider;
 
 use Illuminate\Support\Facades\Schema;
@@ -25,8 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->bootHelper();
-
         Schema::defaultStringLength(191);
     }
 
@@ -124,14 +122,5 @@ class AppServiceProvider extends ServiceProvider
                 }
             ],
         ];
-    }
-
-
-    private function bootHelper()
-    {
-        if(file_exists($file = __DIR__.'/../helpers.php'))
-        {
-            require $file;
-        }
     }
 }

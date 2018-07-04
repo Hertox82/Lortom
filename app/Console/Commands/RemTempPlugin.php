@@ -9,7 +9,7 @@
 namespace App\Console\Commands;
 
 use App\Console\Commands\LortomCommand as Command;
-use App\Services\TemplatePlugCompiler;
+use LTFramework\Services\TemplatePlugCompiler;
 use App\Exceptions\VNException;
 
 
@@ -21,7 +21,7 @@ class RemTempPlugin extends Command{
     protected $description = "In Order to remove a plugin into a template digit --vendor-name=Vendor,Name (for template) --name-plugin=Vendor,Name (for plugin)";
 
     /**
-     * @var \App\Services\TemplatePlugCompiler;
+     * @var \LTFramework\Services\TemplatePlugCompiler;
      */
     protected $compiler;
 

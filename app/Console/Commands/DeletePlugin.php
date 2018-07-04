@@ -9,7 +9,7 @@
 namespace App\Console\Commands;
 
 
-use App\Services\PluginDeleteCompiler;
+use LTFramework\Services\PluginDeleteCompiler;
 use Illuminate\Console\Command;
 use File;
 
@@ -21,7 +21,7 @@ class DeletePlugin extends Command
     protected $description = "This command delete all folder and clean all configuration from your Plugin";
 
     /**
-     * @var \App\Services\PluginDeleteCompiler
+     * @var \LTFramework\Services\PluginDeleteCompiler
      */
     protected $compiler;
 

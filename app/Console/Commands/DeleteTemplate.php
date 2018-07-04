@@ -8,7 +8,7 @@
 namespace App\Console\Commands;
 
 use App\Console\Commands\LortomCommand as Command;
-use App\Services\TemplateDeleteCompiler;
+use LTFramework\Services\TemplateDeleteCompiler;
 use App\Services\Traits\ActionCommand;
 use App\Exceptions\VNException;
 use File;
@@ -22,7 +22,7 @@ class DeleteTemplate extends Command{
     protected $description = "In Order to delete a template digit --vendor-name=Vendor,Name";
 
     /**
-     * @var \App\Services\TemplateDeleteCompiler
+     * @var \LTFramework\Services\TemplateDeleteCompiler
      */
     protected $compiler;
 

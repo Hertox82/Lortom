@@ -9,7 +9,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Services\PluginUpdateCompiler;
+use LTFramework\Services\PluginUpdateCompiler;
 use File;
 
 class UpdatePermission extends Command
@@ -19,7 +19,7 @@ class UpdatePermission extends Command
     protected $description= "This command update the permission of selected plugin";
 
     /**
-     * @var \App\Services\PluginUpdateCompiler
+     * @var \LTFramework\Services\PluginUpdateCompiler
      */
     protected $compiler;
 

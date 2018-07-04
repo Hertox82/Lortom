@@ -12,7 +12,7 @@ use Closure;
 use Illuminate\Contracts\Encryption\Encrypter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use App\Services\Facades\LtAuth;
+use LTFramework\Services\Facades\LtAuth;
 use Illuminate\Support\Facades\Cookie;
 
 class LortomAuthentication

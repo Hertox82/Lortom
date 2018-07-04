@@ -10,7 +10,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use File;
-use App\Services\PluginUpdateCompiler;
+use LTFramework\Services\PluginUpdateCompiler;
 
 
 class UpdateMigrationDown extends Command
@@ -20,7 +20,7 @@ class UpdateMigrationDown extends Command
     protected $description = "This command is to rollup a Migration from Plugin";
 
     /**
-     * @var \App\Services\PluginUpdateCompiler
+     * @var \LTFramework\Services\PluginUpdateCompiler
      */
     protected $compiler;
 

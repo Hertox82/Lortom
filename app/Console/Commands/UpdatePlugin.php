@@ -9,7 +9,7 @@
 namespace App\Console\Commands;
 
 
-use App\Services\PluginUpdateCompiler;
+use LTFramework\Services\PluginUpdateCompiler;
 use Illuminate\Console\Command;
 use File;
 
@@ -20,7 +20,7 @@ class UpdatePlugin extends Command
     protected $description= "This command update the plugin selected";
 
     /**
-     * @var \App\Services\PluginUpdateCompiler
+     * @var \LTFramework\Services\PluginUpdateCompiler
      */
     protected $compiler;
 

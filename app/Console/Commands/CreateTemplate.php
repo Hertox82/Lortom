@@ -9,7 +9,7 @@ namespace App\Console\Commands;
 
 use App\Exceptions\VNException;
 use App\Console\Commands\LortomCommand as Command;
-use App\Services\TemplateCreateCompiler;
+use LTFramework\Services\TemplateCreateCompiler;
 use File;
 use Artisan;
 
@@ -24,7 +24,7 @@ class CreateTemplate extends Command
     protected $description = 'In Order to create a template digit --vendor-name=Vendor,Name';
 
     /**
-     * @var \App\Services\TemplateCreateCompiler
+     * @var \LTFramework\Services\TemplateCreateCompiler
      */
     protected $compiler;
 

@@ -10,7 +10,7 @@ namespace App\Console\Commands;
 
 use App\Console\Commands\LortomCommand as Command;
 use App\Exceptions\VNException;
-use App\Services\TemplatePlugCompiler;
+use LTFramework\Services\TemplatePlugCompiler;
 
 class AddTempPlugin extends Command{
 
@@ -27,7 +27,7 @@ class AddTempPlugin extends Command{
     protected $description = 'In Order to add a plugin into a template digit --vendor-name=Vendor,Name (for template) --name-plugin=Vendor,Name (for plugin)';
 
     /**
-     * @var \App\Services\TemplatePlugCompiler;
+     * @var \LTFramework\Services\TemplatePlugCompiler;
      */
     protected $compiler;
 
