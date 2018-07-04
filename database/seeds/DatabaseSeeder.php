@@ -1,6 +1,6 @@
 <?php
 
-use App\Services\LortomSeeder as Seeder;
+use LTFramework\Services\LortomSeeder as Seeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,12 +11,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
-        //$this->call(LortomUserTableSeeder::class);
-        //$this->call(LortomRolesTableSeeder::class);
-        //$this->call(LortomPermissionsTableSeeder::class);
-        //$this->call(LortomUserRolesSeeder::class);
-        //$this->call(LortomRolesPermissionsSeeder::class);
         $this->call($this->all());
 
     }

@@ -5,10 +5,12 @@
  * Time: 12:41
  */
 
-use Illuminate\Database\Seeder;
+use LTFramework\Services\LortomSeeder as Seeder;
 
 class LortomRolesTableSeeder extends Seeder
 {
+    protected $register = true;
+
     public function run(){
         DB::table('lt_roles')->insert([
             'id'        => 1,

@@ -12,5 +12,4 @@ return [
     LortomPermissionsTableSeeder::class,
     LortomUserRolesSeeder::class,
     LortomRolesPermissionsSeeder::class,
-    LortomTemplate\Seeder\TemplateSeeder::class
 ];

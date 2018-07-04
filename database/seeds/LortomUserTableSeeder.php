@@ -1,6 +1,6 @@
 <?php
 
-use App\Services\LortomSeeder as Seeder;
+use LTFramework\Services\LortomSeeder as Seeder;
 
 class LortomUserTableSeeder extends Seeder
 {

@@ -13,7 +13,7 @@ return [
         'seeder' => [
             'namespace'  => '',
             'useClasses' => [
-                'use App\Services\LortomSeeder as Seeder;'
+                'use LTFramework\Services\LortomSeeder as Seeder;'
             ]
         ]
     ]
