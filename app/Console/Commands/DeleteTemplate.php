@@ -9,7 +9,7 @@ namespace App\Console\Commands;
 
 use App\Console\Commands\LortomCommand as Command;
 use LTFramework\Services\TemplateDeleteCompiler;
-use App\Services\Traits\ActionCommand;
+use LTFramework\Services\Traits\ActionCommand;
 use App\Exceptions\VNException;
 use File;
 

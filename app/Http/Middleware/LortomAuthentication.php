@@ -9,9 +9,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Encryption\Encrypter;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use LTFramework\Services\Facades\LtAuth;
 use Illuminate\Support\Facades\Cookie;
 
