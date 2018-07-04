@@ -16,9 +16,9 @@ class LortomUserTableSeeder extends Seeder
     {
         DB::table('lt_user')->insert([
             'id'            => 1,
-            'name'          => 'Hernan Ariel De Luca',
-            'email'         => 'hadeluca@lortom.com',
-            'password'      => bcrypt('lortom_dev'),
+            'name'          => 'Admin',
+            'email'         => 'admin@dummysite.com',
+            'password'      => bcrypt('dummy_password'),
             'created_at'    => date("Y-m-d H:i:s"),
             'updated_at'    => date("Y-m-d H:i:s")
         ]);
