@@ -1,6 +1,5 @@
 <?php
 /**
- * Created by PhpStorm.
  * User: hernan
  * Date: 17/10/2017
  * Time: 16:16
@@ -28,4 +27,5 @@ class HardelSettingsServiceProvider extends ServiceProvider
                 ->group(__DIR__.'/../routes.php');
         }
     }
+
 }
