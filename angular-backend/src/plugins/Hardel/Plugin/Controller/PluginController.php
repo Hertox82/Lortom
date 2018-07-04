@@ -7,7 +7,7 @@
 
 namespace Plugins\Hardel\Plugin\Controller;
 
-use App\Http\Controllers\LortomController as Controller;
+use LTFramework\Controllers\LortomController as Controller;
 use Illuminate\Http\Request;
 use File;
 use Illuminate\Support\Facades\Artisan;
