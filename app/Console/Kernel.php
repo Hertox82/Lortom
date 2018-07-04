@@ -13,17 +13,6 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\EnableRouting::class,
-        Commands\CreatePlugin::class,
-        Commands\DeletePlugin::class,
-        Commands\UpdatePlugin::class,
-        Commands\UpdatePermission::class,
-        Commands\UpdateMigrationUp::class,
-        Commands\UpdateMigrationDown::class,
-        Commands\CreateTemplate::class,
-        Commands\DeleteTemplate::class,
-        Commands\AddTempPlugin::class,
-        Commands\ExportTemplateDatabase::class
     ];
 
     /**
