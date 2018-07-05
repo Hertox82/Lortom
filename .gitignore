@@ -25,3 +25,8 @@ angular-backend/README.md
 composer.lock
 hadeluca/
 template/
+resources/
+!resources/views/api-doc.blade.php
+!resources/views/login.blade.php
+!resources/views/welcome.blade.php
+!resources/views/backend/backend-angular.blade.php
