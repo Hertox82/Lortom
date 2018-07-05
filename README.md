@@ -5,7 +5,6 @@ Lortom is an Content Management System built in Laravel 5.5 + Angular 4
 ## ROAD TO ALPHA-1
 
 - [ ] Create lortom/framework library
-- [ ] Create lortom/installer to install via composer the application
 
 
 ## Create Plugin on Lortom
@@ -91,7 +90,7 @@ In order to create a Plugin in Lortom, you must understand the folder structure
   ```
   
   
-  ## Create Template in Lortom
+  ## Create Template on Lortom
   
   To create a template in Lortom, the first thing to do is understand how the folder structure works
   
@@ -175,6 +174,61 @@ In order to create a Plugin in Lortom, you must understand the folder structure
 - `assets`: you can specify `css` and `js` in order to inject into html
 - `frontend`: this will be generated automatically and inserted into the composer.json of the application
 
+
+#### Use Artisan Command
+ 
+ 
+##### Create command
+
+```bash
+$ php artisan lt-template:create --vendor-name=Vendor,Name
+```
+
+This command allow you a creation of template.
+ 
+ you can also digit this command:
+ 
+ ```bash
+  $ php artisan lt-template:create
+ ```
+ 
+ and simply answer the questions.
+ 
+ ##### Delete command
+  
+   ```bash
+   $ php artisan lt-template:delete --vendor-name=Vendor,Name
+   ```
+   
+   This command delete all references of template.
+   
+   
+ ##### Add Plugin into Template
+ 
+ ```bash
+ $ php artisan lt-template:add-plugin --vendor-name=Vendor,Name [for template] --name-plugin=Vendor,Name (for plugin)
+ ```
+ 
+ This command add plugin into template, please make sure you have installed the necessary plugins and then be able to add them to the template.
+  
+ 
+  
+##### Remove Plugin from Template
+
+```bash
+$ php artisan lt-template:rm-plugin --vendor-name=Vendor,Name [for template] --name-plugin=Vendor,Name (for plugin)
+```
+
+This command remove plugin from template.
+
+
+##### Export Database
+
+```bash
+$ php artisan lt-template:dbexp
+```
+
+This command exports the components from the db by taking the active template.
   
  
  
