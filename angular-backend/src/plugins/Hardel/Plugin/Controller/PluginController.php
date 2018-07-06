@@ -42,7 +42,7 @@ class PluginController extends Controller
 
     public function getTest(Request $request) {
 
-        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js test";
+        $command2= "{$_ENV['NODE_JS']} {$_ENV['LTPM']} test";
         $command1= "cd ../angular-backend && ";
         $command = $command1.$command2;
         exec($command,$mario);
@@ -81,7 +81,7 @@ class PluginController extends Controller
 
         $fileName = $this->getFileName($input['vendor'],$input['name'],$input['version'],false);
 
-        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js install-t {$fileName}";
+        $command2= "{$_ENV['NODE_JS']} {$_ENV['LTPM']} install-t {$fileName}";
         $command1= "cd ../ && ";
         $command = $command1.$command2;
 
@@ -176,7 +176,7 @@ class PluginController extends Controller
 
         $fileName = ltpm()->getFileName($vendor,$name,$version,false);
 
-        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js {$action} {$fileName}";
+        $command2= "{$_ENV['NODE_JS']} {$_ENV['LTPM']} {$action} {$fileName}";
         $command1= "cd ../ && ";
         $command = $command1.$command2;
 
@@ -226,7 +226,7 @@ class PluginController extends Controller
             $commandDump = '/Applications/XAMPP/xamppfiles/bin/php /usr/local/bin/composer.phar dump-autoload';
             system($commandDump);
 
-            $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js uninstall-t {$fileName}";
+            $command2= "{$_ENV['NODE_JS']} {$_ENV['LTPM']} uninstall-t {$fileName}";
             $command1= "cd ../ && ";
             $command = $command1.$command2;
 
@@ -312,7 +312,7 @@ class PluginController extends Controller
 
         $fileName = "{$vendor}-{$name}-{$version}.tgz";
 
-        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js package {$fileName}";
+        $command2= "{$_ENV['NODE_JS']} {$_ENV['LTPM']} package {$fileName}";
         $command1= "cd ../ && ";
         $command = $command1.$command2;
 
@@ -346,7 +346,7 @@ class PluginController extends Controller
 
         $fileName = $this->getFileName($vendor,$name,$version,false);
 
-        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js package-t {$fileName}";
+        $command2= "{$_ENV['NODE_JS']} {$_ENV['LTPM']} package-t {$fileName}";
         $command1= "cd ../ && ";
         $command = $command1.$command2;
 
@@ -373,7 +373,7 @@ class PluginController extends Controller
 
         $fileName = "{$vendor}-{$name}-{$version}.tgz";
 
-        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js delpack {$fileName}";
+        $command2= "{$_ENV['NODE_JS']} {$_ENV['LTPM']} delpack {$fileName}";
         $command1= "cd ../ && ";
         $command = $command1.$command2;
 
@@ -402,7 +402,7 @@ class PluginController extends Controller
 
         $fileName = $this->getFileName($vendor,$name,$version,false);
 
-        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js deltemp {$fileName}";
+        $command2= "{$_ENV['NODE_JS']} {$_ENV['LTPM']} deltemp {$fileName}";
         $command1= "cd ../ && ";
         $command = $command1.$command2;
 
@@ -420,7 +420,7 @@ class PluginController extends Controller
      */
     public function getLatestPlugin(Request $request) {
 
-        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js latest-plugin";
+        $command2= "{$_ENV['NODE_JS']} {$_ENV['LTPM']} latest-plugin";
         $command1= "cd ../ && ";
         $command = $command1.$command2;
 
@@ -449,7 +449,7 @@ class PluginController extends Controller
     }
 
     public function getLatestTemplate(Request $request) {
-        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js latest-template";
+        $command2= "{$_ENV['NODE_JS']} {$_ENV['LTPM']} latest-template";
         $command1= "cd ../ && ";
         $command = $command1.$command2;
 
@@ -726,11 +726,11 @@ class PluginController extends Controller
      */
     protected function opUninstall($vendor,$name,$version){
 
-        Artisan::call('lortom-plugin:delete',['--vendor-name'=> $vendor.','.$name, '--silent' => true]);
+        Artisan::call('lt-plugin:delete',['--vendor-name'=> $vendor.','.$name, '--silent' => true]);
 
         $fileName = $this->getFileName($vendor,$name,$version);
 
-        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js uninstall {$fileName}";
+        $command2= "{$_ENV['NODE_JS']} {$_ENV['LTPM']} uninstall {$fileName}";
         $command1= "cd ../ && ";
         $command = $command1.$command2;
 
@@ -748,20 +748,20 @@ class PluginController extends Controller
 
         $fileName = $this->getFileName($vendor,$name,$version);
 
-        $command2= "/usr/local/bin/node /usr/local/lib/node_modules/lt-pm/lt.js install {$fileName}";
+        $command2= "{$_ENV['NODE_JS']} {$_ENV['LTPM']} install {$fileName}";
         $command1= "cd ../ && ";
         $command = $command1.$command2;
 
         exec($command,$mario);
 
-        Artisan::call('lortom-plugin:update',['--vendor-name'=> $vendor.','.$name, '--silent' => true]);
+        Artisan::call('lt-plugin:update',['--vendor-name'=> $vendor.','.$name, '--silent' => true]);
     }
 
     /**
      * This function rebuild for angular
      */
     protected function opRebuild() {
-        $command2  = "/usr/local/bin/node /usr/local/lib/node_modules/npm/bin/npm-cli.js run build";
+        $command2  = "{$_ENV['NODE_JS']} {$_ENV['NPM']} run build";
         $command = "cd angular-backend && ".$command2;
 
         exec($command,$out);
