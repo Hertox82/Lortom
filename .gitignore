@@ -32,3 +32,4 @@ resources/
 !resources/views/backend/backend-angular.blade.php
 ltpm.config.json
 angular-backend/src/plugins/
+!angular-backend/src/plugins/.gitkeep
