@@ -12,4 +12,5 @@ return [
     LortomPermissionsTableSeeder::class,
     LortomUserRolesSeeder::class,
     LortomRolesPermissionsSeeder::class,
+    //Here the other Seeder Class
 ];
