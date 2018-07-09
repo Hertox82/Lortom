@@ -166,10 +166,6 @@ return [
        App\Providers\RouteServiceProvider::class,
         Hardel\Exporter\DBExporterServiceProvider::class,
        LTFramework\LTFrameworkProvider::class,
-       Plugins\Hardel\Settings\Providers\HardelSettingsServiceProvider::class,
-       Plugins\Hardel\Plugin\Providers\HardelPluginServiceProvider::class,
-       Plugins\Hardel\Website\Providers\HardelWebsiteServiceProvider::class,
-       Plugins\Hardel\Dashboard\Providers\HardelDashboardServiceProvider::class
 
 
      ],
