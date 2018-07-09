@@ -25,7 +25,6 @@ angular-backend/README.md
 composer.lock
 hadeluca/
 template/
-!template/.gitkeep
 resources/
 !resources/views/api-doc.blade.php
 !resources/views/login.blade.php
@@ -33,4 +32,3 @@ resources/
 !resources/views/backend/backend-angular.blade.php
 ltpm.config.json
 angular-backend/src/plugins/
-!angular-backend/src/plugins/.gitkeep
