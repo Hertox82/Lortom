@@ -30,4 +30,3 @@ resources/
 !resources/views/welcome.blade.php
 !resources/views/backend/backend-angular.blade.php
 ltpm.config.json
-angular-backend/src/plugins/
