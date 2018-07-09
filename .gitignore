@@ -33,3 +33,4 @@ resources/
 ltpm.config.json
 angular-backend/src/plugins/
 !angular-backend/src/plugins/.gitkeep
+!template/.gitkeep
