@@ -24,7 +24,6 @@ angular-backend/README.md
 .idea/
 composer.lock
 hadeluca/
-template/
 resources/
 !resources/views/api-doc.blade.php
 !resources/views/login.blade.php
