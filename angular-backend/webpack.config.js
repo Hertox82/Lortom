@@ -411,16 +411,16 @@ module.exports = {
       "name": "scripts",
       "fileName": "[name].bundle.js",
       "filesToConcat": [
-        "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/node_modules/jquery/dist/jquery.slim.js",
-        "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/node_modules/tether/dist/js/tether.js",
-        "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/node_modules/popper.js/dist/umd/popper.js",
-        "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/node_modules/bootstrap/dist/js/bootstrap.min.js",
-        "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/node_modules/tinymce/tinymce.js",
-        "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/node_modules/tinymce/themes/modern/theme.js",
-        "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/node_modules/tinymce/plugins/link/plugin.js",
-        "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/node_modules/tinymce/plugins/paste/plugin.js",
-        "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/node_modules/tinymce/plugins/table/plugin.js",
-          "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/node_modules/codemirror/lib/codemirror.js",
+          path.join(process.cwd(),"node_modules/jquery/dist/jquery.slim.js"),
+          path.join(process.cwd(), "node_modules/tether/dist/js/tether.js"),
+          path.join(process.cwd(), "node_modules/popper.js/dist/umd/popper.js"),
+          path.join(process.cwd(),"node_modules/bootstrap/dist/js/bootstrap.min.js"),
+          path.join(process.cwd(),"node_modules/tinymce/tinymce.js"),
+          path.join(process.cwd(),"node_modules/tinymce/themes/modern/theme.js"),
+          path.join(process.cwd(),"tinymce/plugins/link/plugin.js"),
+          path.join(process.cwd(),"node_modules/tinymce/plugins/paste/plugin.js"),
+          path.join(process.cwd(),"node_modules/tinymce/plugins/table/plugin.js"),
+          path.join(process.cwd(),"node_modules/codemirror/lib/codemirror.js"),
       ]
     }),
     new InsertConcatAssetsWebpackPlugin([
@@ -428,7 +428,7 @@ module.exports = {
     ]),
     new CopyWebpackPlugin([
       {
-        "context": "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/src/",
+        "context": path.join(process.cwd(),"src/"),
         "to": "",
         "from": {
           "glob": "assets/**/*",
@@ -436,7 +436,7 @@ module.exports = {
         }
       },
       {
-        "context": "/Applications/XAMPP/xamppfiles/htdocs/Lortom/angular-backend/src/",
+        "context": path.join(process.cwd(),"src/"),
         "to": "",
         "from": {
           "glob": "favicon.ico",
