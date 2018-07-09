@@ -58,8 +58,7 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate",
-            "@php artisan lt-setup:init",
-            "@php artisan migrate"
+            "@php artisan lt-setup:init"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
