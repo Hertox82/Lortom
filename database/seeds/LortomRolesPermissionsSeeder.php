@@ -10,7 +10,7 @@ use LTFramework\Services\LortomSeeder as Seeder;
 
 class LortomRolesPermissionsSeeder extends Seeder
 {
-    protected $register = true;
+    //protected $register = true;
 
     public function run(){
 
