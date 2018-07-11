@@ -417,7 +417,7 @@ module.exports = {
           path.join(process.cwd(),"node_modules/bootstrap/dist/js/bootstrap.min.js"),
           path.join(process.cwd(),"node_modules/tinymce/tinymce.js"),
           path.join(process.cwd(),"node_modules/tinymce/themes/modern/theme.js"),
-          path.join(process.cwd(),"tinymce/plugins/link/plugin.js"),
+          path.join(process.cwd(),"node_modules/tinymce/plugins/link/plugin.js"),
           path.join(process.cwd(),"node_modules/tinymce/plugins/paste/plugin.js"),
           path.join(process.cwd(),"node_modules/tinymce/plugins/table/plugin.js"),
           path.join(process.cwd(),"node_modules/codemirror/lib/codemirror.js"),
