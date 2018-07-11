@@ -24,9 +24,4 @@ angular-backend/README.md
 .idea/
 composer.lock
 hadeluca/
-resources/
-!resources/views/api-doc.blade.php
-!resources/views/login.blade.php
-!resources/views/welcome.blade.php
-!resources/views/backend/backend-angular.blade.php
 ltpm.config.json
