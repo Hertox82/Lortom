@@ -11,16 +11,5 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::get('/backend',function(){
-   return view('backend.backend-angular');
-})->middleware('lortom.auth');
 
-Route::group(['prefix' => '/backend', 'middleware' => 'lortom.auth'], function(){
-    Route::any('{catchAll}', function(){
-        return view('backend.backend-angular');
-    })->where('catchAll','(.*)');
-});

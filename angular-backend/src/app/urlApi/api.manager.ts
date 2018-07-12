@@ -9,7 +9,7 @@ export class ApiManager{
     basePath : string;
     apiUrl : any;
     constructor() {
-        this.basePath = 'http://lortom.dev/api/';
+        this.basePath = 'http://lortom.local/api/';
         this.apiUrl = [
             { namePath: 'getMenu', path:this.basePath+'populate-slidebar'},
             { namePath: 'login', path:this.basePath+'login'},

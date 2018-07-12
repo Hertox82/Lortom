@@ -1,0 +1,11 @@
+{
+    "cwd": "angular-backend/src/plugins",
+    "repo": "compressed",
+    "depl": "angular-backend/src/plugins",
+    "deplt": "template",
+    "cwdT": "template",
+    "template": [
+    ],
+    "plugins": [
+    ]
+}

@@ -80,9 +80,10 @@ footer { margin-left: 200px; padding: 10px; border:1px solid #dde0e6; font-size:
 .tabbable-custom>.nav-tabs>li.active { border-top: 3px solid #edc36b; margin-top: 0; position: relative; background-color: white; border-left: 1px solid #ddd; border-right: 1px solid #ddd;}
 
 .tabbable-custom>.nav-tabs>li.active>a { border-top: none !important; font-weight: 400; color: #555; background-color: #fff; border-bottom-color: transparent; cursor: default; }
-.tabbable-custom>.tab-content { background-color: #fff; border: 1px solid #ddd; padding: 10px; }
+.tabbable-custom>.tab-content { background-color: #fff; border: 1px solid #ddd; padding: 10px; margin-bottom: 30px;}
 
 .box {padding-left: 10px; padding-right: 10px;}
+.box-header {color: orange; padding: 5px 5px 10px; margin-bottom: 3px;}
 .wrapper .dataTables_length label {display: inline-block;}
 .wrapper .dataTables_length label select { display: inline-block; width: 70px; margin: 0px 10px;}
 .wrapper .dataTables_filter label {display: inline-block;}
@@ -148,3 +149,11 @@ a.page-link.disabled { display: none;  }
 .error-page>.error-content>p {padding:10px; font-size: 14px;}
 .error-page>.error-content>p>a {color:orange; cursor: pointer;}
 .error-page>.error-content>p>a:hover {color:darkorange;}
+
+/* Card-Lt*/
+
+.card-lt {padding: 5px; background-color: white; min-height: 150px; position: relative;}
+.btn-lt {position: absolute; bottom: 10px; right: 10px; color: white !important;}
+.card-lt h4 {padding: 4px; width: 205px;}
+.card-lt p {    margin-bottom: 40px; width: 204px; padding: 0px 4px 18px 4px; font-size: 14px; font-style: italic; }
+.container.deck {background-color: #8080801a; padding-top: 10px; padding-bottom: 10px;}

@@ -9,10 +9,6 @@ const routes: Routes = [
               {path: 'backend/login', component: LoginComponent}, 
               {path: 'backend/logout', component: LogoutComponent}, 
               {path: 'backend/profile/edit', component : UserModelComponent }, 
-              {path: 'backend/not-found', component: NotFoundComponent}, 
-       {path: 'backend/dashboard' , loadChildren:'../plugins/Hardel/Dashboard/dashboard.module#DashboardModule'},
-       {path: 'backend/plugin' , loadChildren:'../plugins/Hardel/Plugin/plugin.module#PluginModule'},
-       {path: 'backend/settings' , loadChildren:'../plugins/Hardel/Settings/settings.module#SettingsModule'},
-       {path: 'backend/website' , loadChildren:'../plugins/Hardel/Website/website.module#WebsiteModule'}
+              {path: 'backend/not-found', component: NotFoundComponent},
 ]; 
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes);

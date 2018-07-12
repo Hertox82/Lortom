@@ -1,0 +1,7 @@
+*
+
+!views/api-doc.blade.php
+!views/login.blade.php
+!views/welcome.blade.php
+!views/backend/backend-angular.blade.php
+!.gitignore

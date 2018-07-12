@@ -1,18 +1,26 @@
 {
     "name": "hadeluca/lortom",
     "description": "Lortom is a CMS based on Laravel Framework, The Backend was built with Angular 4",
-    "keywords": ["cms", "laravel","angular4","laravel plus angular", "angular 4"],
+    "keywords": [
+        "cms",
+        "laravel",
+        "angular4",
+        "laravel plus angular",
+        "angular 4"
+    ],
     "license": "MIT",
     "type": "project",
     "authors": [
         {
-            "name" : "Hernan Ariel De Luca",
+            "name": "Hernan Ariel De Luca",
             "email": "hadeluca@gmail.com"
         }
     ],
     "require": {
         "php": ">=7.0.0",
         "fideloper/proxy": "~3.3",
+        "hadeluca/db-exporter": "^2.0",
+        "hadeluca/lortom-framework": "1.0.*@alpha",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0"
     },
@@ -24,12 +32,11 @@
     },
     "autoload": {
         "classmap": [
-            "database/seeds",
-            "database/factories"
+            "database/seeds"
         ],
         "psr-4": {
             "App\\": "app/",
-            "Plugins\\":"angular-backend/src/plugins/"
+            "Plugins\\": "angular-backend/src/plugins/"
         }
     },
     "autoload-dev": {
@@ -40,15 +47,18 @@
     "extra": {
         "laravel": {
             "dont-discover": [
+                "hadeluca/db-exporter"
             ]
         }
     },
     "scripts": {
         "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php -r \"file_exists('ltpm.config.json') || copy('ltpm.config.json.example', 'ltpm.config.json');\""
         ],
         "post-create-project-cmd": [
-            "@php artisan key:generate"
+            "@php artisan key:generate",
+            "@php artisan lt-setup:init"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
@@ -59,5 +69,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
-    }
+    },
+    "minimum-stability": "alpha",
+    "prefer-stable": true
 }

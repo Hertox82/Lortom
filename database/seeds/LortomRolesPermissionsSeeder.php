@@ -5,11 +5,13 @@
  * Time: 15:21
  */
 
-use Illuminate\Database\Seeder;
+use LTFramework\Services\LortomSeeder as Seeder;
 
 
 class LortomRolesPermissionsSeeder extends Seeder
 {
+    //protected $register = true;
+
     public function run(){
 
         DB::table('lt_roles_permissions')->insert([
