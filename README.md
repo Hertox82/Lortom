@@ -1,235 +1,78 @@
 # Lortom
 Lortom is an Content Management System built in Laravel 5.5 + Angular 4
 
+[ChangeLog](CHANGELOG.md)
 
-## ROAD TO ALPHA-1
-
-- [ ] Create lortom/framework library
-
-
-## Create Plugin on Lortom
-
-In order to create a Plugin in Lortom, you must understand the folder structure
-
-```
- --Lortom
-   |
-   |--- angular-backend
-        |
-        |--- e2e
-        |--- node_modules
-        |--- src
-             |-- "angular's folder"
-             |   
-             |   ...
-             |
-             |-- plugins
-   |
-   |--  laravel-app
- ```
- 
- into angular-backend there is the folder named  *plugins* and in this folder you can put your own plugin respecting the
- follow structure:
- 
- */plugins/vendor/name_of_plugin*
- 
- 
- #### Use Artisan Command
- 
- 
- ##### Create command
- 
- ```bash
- $ php artisan lt-plugin:create --vendor-name=Vendor,Name
- ```
- 
- This command allow you a creation of plugin.
- 
- you can also digit this command:
- 
- ```bash
-  $ php artisan lt-plugin:create
- ```
- 
- and simply answer the questions
- 
- 
- ##### Update command
- 
- ```bash
- $ php artisan lt-plugin:update --vendor-name=Vendor,Name --no-routing
- ```
- 
- This command update single configuration of plugin and passing the option "--no-routing" doesn't update the 
- 'plugin-name'.routing.ts
- 
- 
- ##### Delete command
- 
-  ```bash
-  $ php artisan lt-plugin:delete --vendor-name=Vendor,Name
-  ```
-  
-  This command delete all references of plugin.
-  
-  
-  #### Enable Routing
-  
-  This command bring some routing configuration from plugin_config.php and put into the 'app.routing.ts'
-  
-  ```bash
-  $ php artisan lt-routing:enable
-  ```
-  
-  #### Permissions Update
-  
-  This command update into Database the permission write into the config/plugins.php
-  
-  ```bash
-    $ php artisan lt-permission:update --vendor-name=Vendor,Name
-  ```
-  
-  
-  ## Create Template on Lortom
-  
-  To create a template in Lortom, the first thing to do is understand how the folder structure works
-  
-  ```
-  --Lortom
-     |
-     |--- angular-backend
-          |
-          |--- e2e
-          |--- node_modules
-          |--- src
-               |-- "angular's folder"
-               |   
-               |   ...
-               |
-               |-- plugins
-     |
-     |--- laravel-app
-          |
-          |--- template
-               |
-               |--- Vendor
-                    |
-                    |--- NameOfTemplate
-                         |
-                         |--- frontend
-                         |    |
-                         |    |-- Model
-                         |
-                         |--- config.json
-  ```
-  
-  In the Model folder will be put the classes that will take care of processing the data of the various pages created. 
-  The File config.json is as follows:
-  
-  ```json
-  {
-    "vendor": "LortomTemplate",
-    "name": "Awesome",
-    "version": "0.1.0",
-    "author": {
-        "name": "Hernan Ariel De Luca",
-        "email": "hadeluca[at]gmail.com"
-    },
-    "plugins": {
-        "require": {
-            "Hardel@Plugin": "1.0.0",
-            "Hardel@Settings": "1.0.0",
-            "Hardel@Website": "1.0.0",
-            "Hardel@Dashboard": "1.0.0"
-        }
-    },
-    "models": [
-        "LortomTemplate\\Awesome\\Model\\HomePage",
-        "LortomTemplate\\Awesome\\Model\\ProductPage"
-    ],
-    "assets": {
-        "css": [
-          "/path/to/css/style.css"
-        ],
-        "js": [
-          "/path/to/js/some.js"
-        ]
-    },
-    "frontend": {
-        "autoload": {
-            "psr-4": {
-                "LortomTemplate\\Awesome\\": "template/LortomTemplate/Awesome/frontend"
-            }
-        }
-    }
-  }
-  ```
-
-- `vendor`: the vendor name;
-- `name`: the name of template;
-- `version`: the version of Template (please, follow the [Semantic Versioning](https://semver.org/));
-- `author`: you can put your `name`and your `email`;
-- `plugins`: this is a list of Plugins that your template `require`;
-- `models`: here the classes dealing with the manipulation of frontend data must be entered;
-- `assets`: you can specify `css` and `js` in order to inject into html
-- `frontend`: this will be generated automatically and inserted into the composer.json of the application
+## Installing Lortom CMS
 
 
-#### Use Artisan Command
+### Requirements
+
+- php >=7.0.0
+- OpenSSL PHP Extension
+- PDO PHP Extension
+- Mbstring PHP Extension
+- Tokenizer PHP Extension
+- XML PHP Extension
+
+
+
+
+### First Step
+
+In order to install the Lortom CMS, before you must install:
+
+- [NodeJS](https://nodejs.org/it/)
+- [LTpm](https://github.com/Hertox82/lt-pm)
+
+
+### Second Step
+
+Configure your `Database`, choose one from MySQL, SQLite, Postgres or SQL Server
  
  
-##### Create command
+### Third Step
+
+
+run this command on your console:
 
 ```bash
-$ php artisan lt-template:create --vendor-name=Vendor,Name
+$ composer create-project "hadeluca/lortom" blog --prefer-dist
 ```
 
-This command allow you a creation of template.
- 
- you can also digit this command:
- 
- ```bash
-  $ php artisan lt-template:create
- ```
- 
- and simply answer the questions.
- 
- ##### Delete command
-  
-   ```bash
-   $ php artisan lt-template:delete --vendor-name=Vendor,Name
-   ```
-   
-   This command delete all references of template.
-   
-   
- ##### Add Plugin into Template
- 
- ```bash
- $ php artisan lt-template:add-plugin --vendor-name=Vendor,Name [for template] --name-plugin=Vendor,Name (for plugin)
- ```
- 
- This command add plugin into template, please make sure you have installed the necessary plugins and then be able to add them to the template.
-  
- 
-  
-##### Remove Plugin from Template
+Composer download for you the package and install the dependencies.
+
+### Fourth Step
+
+before launching the setup command, look in the .env file if the following variables match the actual path with your path:
+
+- `NODE_JS`
+- `NPM`
+- `LTPM`
+
+
+### Fifth Step
+
+Ok now it's time to run the Lortom setup command. It will ask you questions about configuring the `database`
 
 ```bash
-$ php artisan lt-template:rm-plugin --vendor-name=Vendor,Name [for template] --name-plugin=Vendor,Name (for plugin)
+$ php artisan lt-setup:init
 ```
 
-This command remove plugin from template.
+this command:
 
+- Write .env database configuration
+- Run migration
+- create in config folder 2 files
+- Install the follows plugins: Dashboard, Settings, Plugin and Website
+- install Angular in background
 
-##### Export Database
+##
 
-```bash
-$ php artisan lt-template:dbexp
-```
+Ok, now everything is ready, you can start creating something really cool.
 
-This command exports the components from the db by taking the active template.
-  
+If you want to know how to build a Plugin or Template please, read this [document](DEVELOPMENT.md)
+
  
  
  
