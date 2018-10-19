@@ -37,8 +37,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/@angular/http.es5.js");
-__webpack_require__("./node_modules/rxjs/Rx.js");
-var Subject_1 = __webpack_require__("./node_modules/rxjs/Subject.js");
+__webpack_require__("./node_modules/rxjs/_esm5/Rx.js");
+var Subject_1 = __webpack_require__("./node_modules/rxjs/_esm5/Subject.js");
 var master_service_1 = __webpack_require__("./src/services/master.service.ts");
 var SettingsService = (function (_super) {
     __extends(SettingsService, _super);
@@ -328,7 +328,7 @@ var RoleNewComponent = (function () {
         this.role = {
             id: -1,
             name: '',
-            state: false,
+            check: false,
             permissions: []
         };
     }
@@ -496,7 +496,7 @@ var UserNewComponent = (function () {
         this.user = {
             id: -1,
             name: '',
-            state: false,
+            check: false,
             email: ''
         };
     }
@@ -658,7 +658,7 @@ var RoleComponent = (function () {
         this.role = {
             id: -2,
             name: '',
-            state: false,
+            check: false,
             permissions: []
         };
         this.sub = this.router.params.subscribe(function (params) {
@@ -828,7 +828,7 @@ var _a, _b, _c, _d;
 /***/ "./src/plugins/Hardel/Settings/component/Roles/roles.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> Roles</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/settings/users']\" data-toggle=\"tab\"> Users</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <lt-entry-pagination\n                                [entry]=\"'50-5'\"\n                                (onEntry)=\"onPerPage($event)\"\n                                >\n                                </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/settings/roles/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deleteRoles()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                        <tr *ngFor=\"let role of listaRole\">\n                                            <td>\n                                                <input type=\"checkbox\" (change)=\"eventChange($event,role)\" [(ngModel)] = \"role.state\">\n                                            </td>\n                                            <td>\n                                                {{role.name}}\n                                            </td>\n                                            <td>\n                                                <a [routerLink] = \"['/backend/settings/roles',role.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                            </td>\n                                        </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                            [pagesToShow]=\"3\"\n                            [perPage]=\"perPage\"\n                            [count]=\"listaRole.length\"\n                            [loading]=\"false\"\n                            [page]=\"actualPage\"\n                            (goNext)=\"onNext($event)\"\n                            (goPage)=\"onPage($event)\"\n                            (goPrev)=\"onPrev()\"\n                        ></lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
+module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li class=\"active\">\n            <a href=\"#tab_1\" data-toggle=\"tab\"> Roles</a>\n        </li>\n        <li>\n            <a [routerLink]=\"['/backend/settings/users']\" data-toggle=\"tab\"> Users</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                                <lt-entry-pagination\n                                [entry]=\"'50-5'\"\n                                (onEntry)=\"onPerPage($event)\"\n                                >\n                                </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/settings/roles/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deleteRoles()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                        <tr *ngFor=\"let role of listToShow\">\n                                            <td>\n                                                <input type=\"checkbox\" (change)=\"eventChange($event,role)\" [(ngModel)] = \"role.check\">\n                                            </td>\n                                            <td>\n                                                {{role.name}}\n                                            </td>\n                                            <td>\n                                                <a [routerLink] = \"['/backend/settings/roles',role.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                            </td>\n                                        </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                            [pagesToShow]=\"3\"\n                            [perPage]=\"perPage\"\n                            [count]=\"listaRole.length\"\n                            [loading]=\"false\"\n                            [page]=\"actualPage\"\n                            (goNext)=\"onNext($event)\"\n                            (goPage)=\"onPage($event)\"\n                            (goPrev)=\"onPrev()\"\n                        ></lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -840,6 +840,16 @@ module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n   
 /**
  * Created by hernan on 30/10/2017.
  */
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -853,84 +863,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
 var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-var pagination_service_1 = __webpack_require__("./src/services/pagination.service.ts");
-var RolesComponent = (function () {
+var list_component_1 = __webpack_require__("./src/model/list.component.ts");
+var RolesComponent = (function (_super) {
+    __extends(RolesComponent, _super);
     function RolesComponent(c_Service, router) {
-        var _this = this;
-        this.c_Service = c_Service;
-        this.router = router;
-        this.listaRole = [];
-        this.myRoot = '/backend/settings/roles';
-        this.isRoot = false;
-        if (!this.c_Service.hasPermissions("Hardel.Settings.Roles")) {
-            this.router.navigate(['/backend/dashboard']);
-        }
-        //This is to manage the Pagination
-        this.pagServ = new pagination_service_1.PaginationService();
-        this.actualPage = 1;
-        this.perPage = 3;
-        this.listaRoleDelete = [];
-        this.router.events.subscribe(function (val) {
-            if (val instanceof router_1.NavigationEnd) {
-                if (_this.myRoot === val.url) {
-                    _this.isRoot = true;
-                }
-                else {
-                    _this.isRoot = false;
-                }
-            }
-        });
-        this.retrieveListOfRoles();
-        this.c_Service.updateRoles$.subscribe(function () {
-            _this.retrieveListOfRoles();
-        });
+        var _this = _super.call(this) || this;
+        _this.c_Service = c_Service;
+        _this.router = router;
+        _this.listaRole = [];
+        _this.myRoot = '/backend/settings/roles';
+        _this.isRoot = false;
+        _this.onComponentInit({
+            name: 'c_Service',
+            permission: 'Hardel.Settings.Roles',
+            upd: 'updateRoles$'
+        }, 'router', 'retrieveListOfRoles');
+        return _this;
     }
-    RolesComponent.prototype.ngOnInit = function () {
-    };
+    RolesComponent.prototype.ngOnInit = function () { };
     RolesComponent.prototype.retrieveListOfRoles = function () {
-        var _this = this;
-        if (!this.c_Service.checkRolesExist()) {
-            this.c_Service.getRolesFrom().subscribe(function (roles) {
-                _this.listaRole = roles;
-                _this.listaRole.forEach(function (role) {
-                    role.state = false;
-                });
-                _this.c_Service.setRoles(_this.listaRole);
-                _this.updateListaShow();
-            });
-        }
-        else {
-            this.listaRole = this.c_Service.getRoles();
-            this.listaRole.forEach(function (item) {
-                if (!item.hasOwnProperty('state')) {
-                    item.state = false;
-                }
-            });
-            this.updateListaShow();
-        }
-    };
-    RolesComponent.prototype.onPerPage = function (n) {
-        this.perPage = n;
-        this.updateListaShow();
-    };
-    RolesComponent.prototype.updateListaShow = function () {
-        this.listaShowRole = this.pagServ.getShowList({
-            entry: this.perPage,
-            list: this.listaRole,
-            pageToShow: this.actualPage
-        });
-    };
-    RolesComponent.prototype.onPrev = function () {
-        this.actualPage--;
-        this.updateListaShow();
-    };
-    RolesComponent.prototype.onNext = function (ev) {
-        this.actualPage++;
-        this.updateListaShow();
-    };
-    RolesComponent.prototype.onPage = function (page) {
-        this.actualPage = page;
-        this.updateListaShow();
+        this.retrieveListOfData({
+            name: 'c_Service',
+            getData: 'getRoles',
+            setData: 'setRoles',
+            callApi: 'getRolesFrom',
+            check: 'checkRolesExist'
+        }, 'listaRole');
     };
     /**
      * function to push or splice item into Deleted List of Roles
@@ -938,31 +896,17 @@ var RolesComponent = (function () {
      * @param data
      */
     RolesComponent.prototype.eventChange = function (ev, data) {
-        if (ev.target.checked) {
-            this.listaRoleDelete.push(data);
-        }
-        else {
-            var index = this.listaRoleDelete.indexOf(data);
-            if (index > -1) {
-                this.listaRoleDelete.splice(index, 1);
-            }
-        }
+        this.eventChangeData(ev, data);
     };
     RolesComponent.prototype.deleteRoles = function () {
-        var _this = this;
-        if (this.listaRoleDelete.length > 0) {
-            if (confirm('Do you really want delete this Roles?')) {
-                this.c_Service.deleteRoles(this.listaRoleDelete).subscribe(function (data) {
-                    _this.listaRoleDelete = [];
-                    _this.listaRole = data;
-                    _this.c_Service.setRoles(_this.listaRole);
-                    _this.updateListaShow();
-                });
-            }
-        }
+        this.deleteData({
+            name: 'c_Service',
+            setData: 'setRoles',
+            delFn: 'deleteRoles'
+        }, 'listaRole', "Do you really want delete this Roles?");
     };
     return RolesComponent;
-}());
+}(list_component_1.ListComponent));
 RolesComponent = __decorate([
     core_1.Component({
         selector: 'app-roles-component',
@@ -1021,7 +965,7 @@ var UserComponent = (function () {
             id: -2,
             name: '',
             email: '',
-            state: false,
+            check: false,
             role: null
         };
         this.sub = this.router.params.subscribe(function (params) {
@@ -1184,7 +1128,7 @@ var _a, _b, _c, _d;
 /***/ "./src/plugins/Hardel/Settings/component/Users/users.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li>\n            <a [routerLink]=\"['/backend/settings/roles']\" data-toggle=\"tab\"> Roles</a>\n        </li>\n        <li class=\"active\">\n            <a  href=\"#tab_1\" data-toggle=\"tab\"> Users</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                               <lt-entry-pagination\n                               [entry]=\"'50-5'\"\n                               (onEntry)=\"onPerPage($event)\"\n                               >\n                               </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/settings/users/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deleteUsers()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th>\n                                            <a>Email</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let user of listaShowUser\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,user)\" [(ngModel)] = \"user.state\">\n                                        </td>\n                                        <td>\n                                            {{user.name}}\n                                        </td>\n                                        <td>\n                                            {{user.email}}\n                                        </td>\n                                        <td>\n                                            <a [routerLink] = \"['/backend/settings/users',user.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                            [pagesToShow]=\"3\"\n                            [perPage]=\"perPage\"\n                            [count]=\"listaUser.length\"\n                            [loading]=\"false\"\n                            [page]=\"actualPage\"\n                            (goNext)=\"onNext($event)\"\n                            (goPage)=\"onPage($event)\"\n                            (goPrev)=\"onPrev()\"\n                        ></lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
+module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n    <ul class=\"nav nav-tabs\">\n        <li>\n            <a [routerLink]=\"['/backend/settings/roles']\" data-toggle=\"tab\"> Roles</a>\n        </li>\n        <li class=\"active\">\n            <a  href=\"#tab_1\" data-toggle=\"tab\"> Users</a>\n        </li>\n    </ul>\n    <div class=\"tab-content\">\n        <div class=\"tab-pane active\" id=\"tab_1\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-md-8\">\n                               <lt-entry-pagination\n                               [entry]=\"'50-5'\"\n                               (onEntry)=\"onPerPage($event)\"\n                               >\n                               </lt-entry-pagination>\n                            </div>\n                            <div class=\"col-md-4\">\n                                <div class=\"dataTables_filter\">\n                                    <label>\n                                        Search:\n                                        <input type=\"search\" class=\"form-control input-sm\">\n                                    </label>\n                                    <a class=\"btn btn-primary\" [routerLink] = \"['/backend/settings/users/new']\"><i class=\"fa fa-file\"></i> New</a>\n                                    <a class=\"btn btn-danger\" (click)=\"deleteUsers()\"><i class=\"fa fa-times\"></i> Delete</a>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\">\n                                    <thead>\n                                    <tr>\n                                        <th style=\"width: 30px;\"></th>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th>\n                                            <a>Email</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let user of listToShow\">\n                                        <td>\n                                            <input type=\"checkbox\" (change)=\"eventChange($event,user)\" [(ngModel)] = \"user.check\">\n                                        </td>\n                                        <td>\n                                            {{user.name}}\n                                        </td>\n                                        <td>\n                                            {{user.email}}\n                                        </td>\n                                        <td>\n                                            <a [routerLink] = \"['/backend/settings/users',user.id]\"><i class=\"fa fa-edit\" style=\"color:orange; font-size: 16px;\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                        <lt-pagination\n                            [pagesToShow]=\"3\"\n                            [perPage]=\"perPage\"\n                            [count]=\"listaUser.length\"\n                            [loading]=\"false\"\n                            [page]=\"actualPage\"\n                            (goNext)=\"onNext($event)\"\n                            (goPage)=\"onPage($event)\"\n                            (goPrev)=\"onPrev()\"\n                        ></lt-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -1196,6 +1140,16 @@ module.exports = "<div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n   
 /**
  * Created by hernan on 09/11/2017.
  */
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1207,86 +1161,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
 var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-var pagination_service_1 = __webpack_require__("./src/services/pagination.service.ts");
-var UsersComponent = (function () {
+var list_component_1 = __webpack_require__("./src/model/list.component.ts");
+var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
+var UsersComponent = (function (_super) {
+    __extends(UsersComponent, _super);
     function UsersComponent(s_Service, router) {
-        var _this = this;
-        this.s_Service = s_Service;
-        this.router = router;
-        this.listaUser = [];
-        this.myRoot = '/backend/settings/users';
-        this.isRoot = false;
-        if (!this.s_Service.hasPermissions('Hardel.Settings.Users')) {
-            this.router.navigate(['/backend/dashboard']);
-        }
-        //This is to manage the Pagination
-        this.pagServ = new pagination_service_1.PaginationService();
-        this.actualPage = 1;
-        this.perPage = 3;
-        this.listaUserDelete = [];
-        this.router.events.subscribe(function (val) {
-            if (val instanceof router_1.NavigationEnd) {
-                if (_this.myRoot === val.url) {
-                    _this.isRoot = true;
-                }
-                else {
-                    _this.isRoot = false;
-                }
-            }
-        });
-        this.retrieveListOfUsers();
-        this.s_Service.updateUsers$.subscribe(function () {
-            _this.retrieveListOfUsers();
-        });
+        var _this = _super.call(this) || this;
+        _this.s_Service = s_Service;
+        _this.router = router;
+        _this.listaUser = [];
+        _this.myRoot = '/backend/settings/users';
+        _this.isRoot = false;
+        _this.onComponentInit({
+            name: 's_Service',
+            permission: 'Hardel.Settings.Users',
+            upd: 'updateUsers$'
+        }, 'router', 'retrieveListOfUsers');
+        return _this;
     }
-    UsersComponent.prototype.ngOnInit = function () {
-    };
+    UsersComponent.prototype.ngOnInit = function () { };
     UsersComponent.prototype.retrieveListOfUsers = function () {
-        var _this = this;
-        if (!this.s_Service.checkUsersExist()) {
-            this.s_Service.getUsersFrom().subscribe(function (users) {
-                _this.listaUser = users;
-                _this.listaUser.forEach(function (user) {
-                    user.state = false;
-                });
-                _this.s_Service.setUsers(_this.listaUser);
-                _this.updateListaShow();
-            });
-        }
-        else {
-            this.listaUser = this.s_Service.getUsers();
-            this.listaUser.forEach(function (item) {
-                if (!item.hasOwnProperty('state')) {
-                    item.state = false;
-                }
-            });
-            this.updateListaShow();
-        }
-    };
-    UsersComponent.prototype.onPerPage = function (n) {
-        this.perPage = n;
-        this.updateListaShow();
-    };
-    UsersComponent.prototype.updateListaShow = function () {
-        this.listaShowUser = this.pagServ.getShowList({
-            entry: this.perPage,
-            list: this.listaUser,
-            pageToShow: this.actualPage
-        });
-    };
-    UsersComponent.prototype.onPrev = function () {
-        this.actualPage--;
-        this.updateListaShow();
-    };
-    UsersComponent.prototype.onNext = function (ev) {
-        this.actualPage++;
-        this.updateListaShow();
-    };
-    UsersComponent.prototype.onPage = function (page) {
-        this.actualPage = page;
-        this.updateListaShow();
+        this.retrieveListOfData({
+            name: 's_Service',
+            getData: 'getUsers',
+            setData: 'setUsers',
+            callApi: 'getUsersFrom',
+            check: 'checkUsersExist'
+        }, 'listaUser');
     };
     /**
      * function to push or splice item into Deleted List of Roles
@@ -1294,31 +1196,17 @@ var UsersComponent = (function () {
      * @param data
      */
     UsersComponent.prototype.eventChange = function (ev, data) {
-        if (ev.target.checked) {
-            this.listaUserDelete.push(data);
-        }
-        else {
-            var index = this.listaUserDelete.indexOf(data);
-            if (index > -1) {
-                this.listaUserDelete.splice(index, 1);
-            }
-        }
+        this.eventChangeData(ev, data);
     };
     UsersComponent.prototype.deleteUsers = function () {
-        var _this = this;
-        if (this.listaUserDelete.length > 0) {
-            if (confirm('Do you really want delete this Roles?')) {
-                this.s_Service.deleteUsers(this.listaUserDelete).subscribe(function (data) {
-                    _this.listaUserDelete = [];
-                    _this.listaUser = data;
-                    _this.s_Service.setUsers(_this.listaUser);
-                    _this.updateListaShow();
-                });
-            }
-        }
+        this.deleteData({
+            name: 's_Service',
+            setData: 'setUsers',
+            delFn: 'deleteUsers'
+        }, 'listaUser', "Do you really want delete this Users?");
     };
     return UsersComponent;
-}());
+}(list_component_1.ListComponent));
 UsersComponent = __decorate([
     core_1.Component({
         selector: 'settings-users',

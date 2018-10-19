@@ -184,7 +184,7 @@ NgbAccordion.decorators = [
                 selector: 'ngb-accordion',
                 exportAs: 'ngbAccordion',
                 host: { 'role': 'tablist', '[attr.aria-multiselectable]': '!closeOtherPanels' },
-                template: "\n    <ng-template ngFor let-panel [ngForOf]=\"panels\">\n      <div class=\"card\">\n        <div role=\"tab\" id=\"{{panel.id}}-header\"\n          [class]=\"'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')\" [class.active]=\"panel.isOpen\">\n          <a href (click)=\"!!toggle(panel.id)\" [class.text-muted]=\"panel.disabled\" [attr.tabindex]=\"(panel.disabled ? '-1' : null)\"\n            [attr.aria-expanded]=\"panel.isOpen\" [attr.aria-controls]=\"(panel.isOpen ? panel.id : null)\"\n            [attr.aria-disabled]=\"panel.disabled\">\n            {{panel.title}}<ng-template [ngTemplateOutlet]=\"panel.titleTpl?.templateRef\"></ng-template>\n          </a>\n        </div>\n        <div id=\"{{panel.id}}\" role=\"tabpanel\" [attr.aria-labelledby]=\"panel.id + '-header'\" \n             class=\"card-body {{panel.isOpen ? 'show' : null}}\" *ngIf=\"!destroyOnHide || panel.isOpen\">\n             <ng-template [ngTemplateOutlet]=\"panel.contentTpl.templateRef\"></ng-template>\n        </div>\n      </div>\n    </ng-template>\n  "
+                template: "\n    <ng-template ngFor let-panel [ngForOf]=\"panels\">\n      <div class=\"card\">\n        <div role=\"tab\" id=\"{{panel.id}}-header\"\n          [class]=\"'card-header ' + (panel.type ? 'card-'+panel.type: type ? 'card-'+type : '')\" [class.active]=\"panel.isOpen\">\n          <a href (click)=\"!!toggle(panel.id)\" [class.text-muted]=\"panel.disabled\" [attr.tabindex]=\"(panel.disabled ? '-1' : null)\"\n            [attr.aria-expanded]=\"panel.isOpen\" [attr.aria-controls]=\"(panel.isOpen ? panel.id : null)\"\n            [attr.aria-disabled]=\"panel.disabled\">\n            {{panel.title}}<ng-template [ngTemplateOutlet]=\"panel.titleTpl?.templateRef\"></ng-template>\n          </a>\n        </div>\n        <div id=\"{{panel.id}}\" role=\"tabpanel\" [attr.aria-labelledby]=\"panel.id + '-header'\"\n             class=\"card-body collapse {{panel.isOpen ? 'show' : null}}\" *ngIf=\"!destroyOnHide || panel.isOpen\">\n             <ng-template [ngTemplateOutlet]=\"panel.contentTpl.templateRef\"></ng-template>\n        </div>\n      </div>\n    </ng-template>\n  "
             },] },
 ];
 /** @nocollapse */
@@ -622,6 +622,9 @@ var NgbRadio = (function () {
         set: function (isFocused) {
             if (this._label) {
                 this._label.focused = isFocused;
+            }
+            if (!isFocused) {
+                this._group.onTouched();
             }
         },
         enumerable: true,
@@ -1173,6 +1176,7 @@ var NgbInputDatepicker = (function () {
         this._service = _service;
         this._calendar = _calendar;
         this._cRef = null;
+        this._disabled = false;
         /**
             * Placement of a datepicker popup accepts:
             *    "top", "top-left", "top-right", "bottom", "bottom-left", "bottom-right",
@@ -1190,20 +1194,28 @@ var NgbInputDatepicker = (function () {
         this._validatorChange = function () { };
         this._zoneSubscription = ngZone.onStable.subscribe(function () {
             if (_this._cRef) {
-                Object(__WEBPACK_IMPORTED_MODULE_5__util_positioning__["a" /* positionElements */])(_this._elRef.nativeElement, _this._cRef.location.nativeElement, _this.placement);
+                Object(__WEBPACK_IMPORTED_MODULE_5__util_positioning__["a" /* positionElements */])(_this._elRef.nativeElement, _this._cRef.location.nativeElement, _this.placement, _this.container === 'body');
             }
         });
     }
+    Object.defineProperty(NgbInputDatepicker.prototype, "disabled", {
+        get: function () {
+            return this._disabled;
+        },
+        set: function (value) {
+            this._disabled = value === '' || (value && value !== 'false');
+            if (this.isOpen()) {
+                this._cRef.instance.setDisabledState(this._disabled);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     NgbInputDatepicker.prototype.registerOnChange = function (fn) { this._onChange = fn; };
     NgbInputDatepicker.prototype.registerOnTouched = function (fn) { this._onTouched = fn; };
     NgbInputDatepicker.prototype.registerOnValidatorChange = function (fn) { this._validatorChange = fn; };
     ;
-    NgbInputDatepicker.prototype.setDisabledState = function (isDisabled) {
-        this._renderer.setProperty(this._elRef.nativeElement, 'disabled', isDisabled);
-        if (this.isOpen()) {
-            this._cRef.instance.setDisabledState(isDisabled);
-        }
-    };
+    NgbInputDatepicker.prototype.setDisabledState = function (isDisabled) { this.disabled = isDisabled; };
     NgbInputDatepicker.prototype.validate = function (c) {
         var value = c.value;
         if (value === null || value === undefined) {
@@ -1242,10 +1254,10 @@ var NgbInputDatepicker = (function () {
             var cf = this._cfr.resolveComponentFactory(__WEBPACK_IMPORTED_MODULE_3__datepicker__["a" /* NgbDatepicker */]);
             this._cRef = this._vcRef.createComponent(cf);
             this._applyPopupStyling(this._cRef.location.nativeElement);
-            this._cRef.instance.writeValue(this._model);
             this._applyDatepickerInputs(this._cRef.instance);
             this._subscribeForDatepickerOutputs(this._cRef.instance);
             this._cRef.instance.ngOnInit();
+            this._cRef.instance.writeValue(this._model);
             // date selection event handling
             this._cRef.instance.registerOnChange(function (selectedDate) {
                 _this.writeValue(selectedDate);
@@ -1254,6 +1266,10 @@ var NgbInputDatepicker = (function () {
             });
             // focus handling
             this._cRef.instance.focus();
+            this._cRef.instance.setDisabledState(this.disabled);
+            if (this.container === 'body') {
+                window.document.querySelector(this.container).appendChild(this._cRef.location.nativeElement);
+            }
         }
     };
     /**
@@ -1315,6 +1331,7 @@ var NgbInputDatepicker = (function () {
     NgbInputDatepicker.prototype._subscribeForDatepickerOutputs = function (datepickerInstance) {
         var _this = this;
         datepickerInstance.navigate.subscribe(function (date) { return _this.navigate.emit(date); });
+        datepickerInstance.select.subscribe(function () { _this.close(); });
     };
     NgbInputDatepicker.prototype._writeModelValue = function (model) {
         this._renderer.setProperty(this._elRef.nativeElement, 'value', this._parserFormatter.format(model));
@@ -1334,7 +1351,8 @@ NgbInputDatepicker.decorators = [
                     '(input)': 'manualDateChange($event.target.value)',
                     '(change)': 'manualDateChange($event.target.value, true)',
                     '(keyup.esc)': 'close()',
-                    '(blur)': 'onBlur()'
+                    '(blur)': 'onBlur()',
+                    '[disabled]': 'disabled'
                 },
                 providers: [NGB_DATEPICKER_VALUE_ACCESSOR, NGB_DATEPICKER_VALIDATOR, __WEBPACK_IMPORTED_MODULE_7__datepicker_service__["a" /* NgbDatepickerService */]]
             },] },
@@ -1363,7 +1381,9 @@ NgbInputDatepicker.propDecorators = {
     'showWeekdays': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
     'showWeekNumbers': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
     'startDate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+    'container': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
     'navigate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+    'disabled': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
 };
 //# sourceMappingURL=datepicker-input.js.map
 
@@ -1627,8 +1647,8 @@ NgbDatepickerNavigation.decorators = [
                 selector: 'ngb-datepicker-navigation',
                 changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush,
                 host: { 'class': 'd-flex justify-content-between', '[class.collapsed]': '!showSelect' },
-                styles: ["\n    :host {\n      height: 2rem;\n      line-height: 1.85rem;\n    }\n    :host.collapsed {\n      margin-bottom: -2rem;        \n    }\n    .ngb-dp-navigation-chevron::before {\n      border-style: solid;\n      border-width: 0.2em 0.2em 0 0;\n      content: '';\n      display: inline-block;\n      height: 0.75em;\n      transform: rotate(-135deg);\n      -webkit-transform: rotate(-135deg);\n      -ms-transform: rotate(-135deg);\n      width: 0.75em;\n      margin: 0 0 0 0.5rem;\n    }    \n    .ngb-dp-navigation-chevron.right:before {\n      -webkit-transform: rotate(45deg);\n      -ms-transform: rotate(45deg);\n      transform: rotate(45deg);\n      margin: 0 0.5rem 0 0;\n    }\n    .btn-link {\n      cursor: pointer;\n      outline: 0;\n    }\n    .btn-link[disabled] {\n      cursor: not-allowed;\n      opacity: .65;\n    }    \n  "],
-                template: "\n    <button type=\"button\" class=\"btn-link\" (click)=\"!!doNavigate(navigation.PREV)\" [disabled]=\"prevDisabled()\" tabindex=\"-1\">\n      <span class=\"ngb-dp-navigation-chevron\"></span>    \n    </button>\n    \n    <ngb-datepicker-navigation-select *ngIf=\"showSelect\" class=\"d-block\" [style.width.rem]=\"months * 9\"\n      [date]=\"date\"\n      [minDate]=\"minDate\"\n      [maxDate]=\"maxDate\"\n      [disabled] = \"disabled\"\n      (select)=\"selectDate($event)\">\n    </ngb-datepicker-navigation-select>\n    \n    <button type=\"button\" class=\"btn-link\" (click)=\"!!doNavigate(navigation.NEXT)\" [disabled]=\"nextDisabled()\" tabindex=\"-1\">\n      <span class=\"ngb-dp-navigation-chevron right\"></span>\n    </button>\n  "
+                styles: ["\n    :host {\n      height: 2rem;\n      line-height: 1.85rem;\n    }\n    :host.collapsed {\n      margin-bottom: -2rem;\n    }\n    .ngb-dp-navigation-chevron::before {\n      border-style: solid;\n      border-width: 0.2em 0.2em 0 0;\n      content: '';\n      display: inline-block;\n      height: 0.75em;\n      transform: rotate(-135deg);\n      -webkit-transform: rotate(-135deg);\n      -ms-transform: rotate(-135deg);\n      width: 0.75em;\n      margin: 0 0 0 0.5rem;\n    }\n    .ngb-dp-navigation-chevron.right:before {\n      -webkit-transform: rotate(45deg);\n      -ms-transform: rotate(45deg);\n      transform: rotate(45deg);\n      margin: 0 0.5rem 0 0;\n    }\n  "],
+                template: "\n    <button type=\"button\" class=\"btn btn-sm btn-link\" (click)=\"!!doNavigate(navigation.PREV)\" [disabled]=\"prevDisabled()\" tabindex=\"-1\">\n      <span class=\"ngb-dp-navigation-chevron\"></span>\n    </button>\n    <ngb-datepicker-navigation-select *ngIf=\"showSelect\" class=\"d-block\" [style.width.rem]=\"months * 9\"\n      [date]=\"date\"\n      [minDate]=\"minDate\"\n      [maxDate]=\"maxDate\"\n      [disabled] = \"disabled\"\n      (select)=\"selectDate($event)\">\n    </ngb-datepicker-navigation-select>\n    <button type=\"button\" class=\"btn btn-sm btn-link\" (click)=\"!!doNavigate(navigation.NEXT)\" [disabled]=\"nextDisabled()\" tabindex=\"-1\">\n      <span class=\"ngb-dp-navigation-chevron right\"></span>\n    </button>\n  "
             },] },
 ];
 /** @nocollapse */
@@ -1660,11 +1680,9 @@ NgbDatepickerNavigation.propDecorators = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ngb_date__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/ngb-date.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_util__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/util/util.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Subject__ = __webpack_require__("./node_modules/rxjs/Subject.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_Subject__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Subject__ = __webpack_require__("./node_modules/rxjs/_esm5/Subject.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__datepicker_tools__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/datepicker-tools.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_operator_filter__ = __webpack_require__("./node_modules/rxjs/operator/filter.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_operator_filter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_operator_filter__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_operator_filter__ = __webpack_require__("./node_modules/rxjs/_esm5/operator/filter.js");
 
 
 
@@ -1676,10 +1694,26 @@ var NgbDatepickerService = (function () {
     function NgbDatepickerService(_calendar) {
         this._calendar = _calendar;
         this._model$ = new __WEBPACK_IMPORTED_MODULE_4_rxjs_Subject__["Subject"]();
-        this._state = { disabled: false, displayMonths: 1, firstDayOfWeek: 1, focusVisible: false, months: [], selectedDate: null };
+        this._select$ = new __WEBPACK_IMPORTED_MODULE_4_rxjs_Subject__["Subject"]();
+        this._state = {
+            disabled: false,
+            displayMonths: 1,
+            firstDayOfWeek: 1,
+            focusVisible: false,
+            months: [],
+            navigation: 'select',
+            selectedDate: null
+        };
     }
     Object.defineProperty(NgbDatepickerService.prototype, "model$", {
-        get: function () { return __WEBPACK_IMPORTED_MODULE_6_rxjs_operator_filter__["filter"].call(this._model$.asObservable(), function (model) { return model.months.length > 0; }); },
+        get: function () {
+            return __WEBPACK_IMPORTED_MODULE_6_rxjs_operator_filter__["a" /* filter */].call(this._model$.asObservable(), function (model) { return model.months.length > 0; });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgbDatepickerService.prototype, "select$", {
+        get: function () { return __WEBPACK_IMPORTED_MODULE_6_rxjs_operator_filter__["a" /* filter */].call(this._select$.asObservable(), function (date) { return date !== null; }); },
         enumerable: true,
         configurable: true
     });
@@ -1746,6 +1780,15 @@ var NgbDatepickerService = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(NgbDatepickerService.prototype, "navigation", {
+        set: function (navigation) {
+            if (this._state.navigation !== navigation) {
+                this._nextState({ navigation: navigation });
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     NgbDatepickerService.prototype.focus = function (date) {
         if (!this._state.disabled && this._calendar.isValid(date) && Object(__WEBPACK_IMPORTED_MODULE_5__datepicker_tools__["d" /* isChangedDate */])(this._state.focusDate, date)) {
             this._nextState({ focusDate: date });
@@ -1755,8 +1798,8 @@ var NgbDatepickerService = (function () {
         this.focus(this._calendar.getNext(this._state.focusDate, period, number));
     };
     NgbDatepickerService.prototype.focusSelect = function () {
-        if (Object(__WEBPACK_IMPORTED_MODULE_5__datepicker_tools__["e" /* isDateSelectable */])(this._state.months, this._state.focusDate)) {
-            this.select(this._state.focusDate);
+        if (Object(__WEBPACK_IMPORTED_MODULE_5__datepicker_tools__["e" /* isDateSelectable */])(this._state.focusDate, this._state.minDate, this._state.maxDate, this._state.disabled, this._state.markDisabled)) {
+            this.select(this._state.focusDate, { emitEvent: true });
         }
     };
     NgbDatepickerService.prototype.open = function (date) {
@@ -1764,10 +1807,17 @@ var NgbDatepickerService = (function () {
             this._nextState({ firstDate: date });
         }
     };
-    NgbDatepickerService.prototype.select = function (date) {
+    NgbDatepickerService.prototype.select = function (date, options) {
+        if (options === void 0) { options = {}; }
         var validDate = this.toValidDate(date, null);
-        if (!this._state.disabled && Object(__WEBPACK_IMPORTED_MODULE_5__datepicker_tools__["d" /* isChangedDate */])(this._state.selectedDate, validDate)) {
-            this._nextState({ selectedDate: validDate });
+        if (!this._state.disabled) {
+            if (Object(__WEBPACK_IMPORTED_MODULE_5__datepicker_tools__["d" /* isChangedDate */])(this._state.selectedDate, validDate)) {
+                this._nextState({ selectedDate: validDate });
+            }
+            if (options.emitEvent &&
+                Object(__WEBPACK_IMPORTED_MODULE_5__datepicker_tools__["e" /* isDateSelectable */])(validDate, this._state.minDate, this._state.maxDate, this._state.disabled, this._state.markDisabled)) {
+                this._select$.next(validDate);
+            }
         }
     };
     NgbDatepickerService.prototype.toValidDate = function (date, defaultValue) {
@@ -1818,6 +1868,10 @@ var NgbDatepickerService = (function () {
         if ('disabled' in patch) {
             state.focusVisible = false;
         }
+        // initial rebuild via 'select()'
+        if ('selectedDate' in patch && this._state.months.length === 0) {
+            startDate = state.selectedDate;
+        }
         // focus date changed
         if ('focusDate' in patch) {
             state.focusDate = Object(__WEBPACK_IMPORTED_MODULE_5__datepicker_tools__["b" /* checkDateInRange */])(state.focusDate, state.minDate, state.maxDate);
@@ -1842,6 +1896,12 @@ var NgbDatepickerService = (function () {
             state.months = months;
             state.firstDate = months.length > 0 ? months[0].firstDate : undefined;
             state.lastDate = months.length > 0 ? months[months.length - 1].lastDate : undefined;
+            // reset selected date if 'markDisabled' returns true
+            if ('selectedDate' in patch && state.selectedDate !== null) {
+                if (!Object(__WEBPACK_IMPORTED_MODULE_5__datepicker_tools__["e" /* isDateSelectable */])(state.selectedDate, state.minDate, state.maxDate, state.disabled, state.markDisabled)) {
+                    state.selectedDate = null;
+                }
+            }
             // adjusting focus after months were built
             if ('firstDate' in patch) {
                 if (state.focusDate === undefined || state.focusDate.before(state.firstDate) ||
@@ -1879,6 +1939,8 @@ NgbDatepickerService.ctorParameters = function () { return [
 /* unused harmony export buildMonth */
 /* unused harmony export getFirstViewDate */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ngb_date__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/ngb-date.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_util__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/util/util.js");
+
 
 function isChangedDate(prev, next) {
     return !dateComparator(prev, next);
@@ -1900,19 +1962,14 @@ function checkDateInRange(date, minDate, maxDate) {
     }
     return date;
 }
-function isDateSelectable(months, date) {
-    var selectable = false;
-    var month = months.find(function (curMonth) { return curMonth.year === date.year && curMonth.number === date.month; });
-    if (month) {
-        month.weeks.find(function (week) {
-            var day = week.days.find(function (day) { return date.equals(day.date); });
-            if (day && !day.context.disabled) {
-                selectable = true;
-            }
-            return !!day;
-        });
-    }
-    return selectable;
+function isDateSelectable(date, minDate, maxDate, isDisabled, markDisabled) {
+    // clang-format off
+    return !(!Object(__WEBPACK_IMPORTED_MODULE_1__util_util__["b" /* isDefined */])(date) ||
+        isDisabled ||
+        (markDisabled && markDisabled(date, { year: date.year, month: date.month })) ||
+        (minDate && date.before(minDate)) ||
+        (maxDate && date.after(maxDate)));
+    // clang-format on
 }
 function buildMonths(calendar, months, date, minDate, maxDate, displayMonths, firstDayOfWeek, markDisabled, force) {
     var newMonths = [];
@@ -2019,8 +2076,10 @@ var NavigationEvent;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__datepicker_view_model__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/datepicker-view-model.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__util_util__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/util/util.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__datepicker_config__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/datepicker-config.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__datepicker_i18n__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/datepicker-i18n.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__datepicker_tools__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/datepicker-tools.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ngb_date_adapter__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-adapter.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__datepicker_i18n__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/datepicker-i18n.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__datepicker_tools__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/datepicker-tools.js");
+
 
 
 
@@ -2041,7 +2100,7 @@ var NGB_DATEPICKER_VALUE_ACCESSOR = {
  * A lightweight and highly configurable datepicker directive
  */
 var NgbDatepicker = (function () {
-    function NgbDatepicker(_keyMapService, _service, _calendar, i18n, config, _cd, _elementRef) {
+    function NgbDatepicker(_keyMapService, _service, _calendar, i18n, config, _cd, _elementRef, _ngbDateAdapter) {
         var _this = this;
         this._keyMapService = _keyMapService;
         this._service = _service;
@@ -2049,11 +2108,17 @@ var NgbDatepicker = (function () {
         this.i18n = i18n;
         this._cd = _cd;
         this._elementRef = _elementRef;
+        this._ngbDateAdapter = _ngbDateAdapter;
         /**
          * An event fired when navigation happens and currently displayed month changes.
          * See NgbDatepickerNavigateEvent for the payload info.
          */
         this.navigate = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        /**
+         * An event fired when user selects a date using keyboard or mouse.
+         * The payload of the event is currently selected NgbDateStruct.
+         */
+        this.select = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         this.onChange = function (_) { };
         this.onTouched = function () { };
         this.dayTemplate = config.dayTemplate;
@@ -2067,6 +2132,7 @@ var NgbDatepicker = (function () {
         this.showWeekdays = config.showWeekdays;
         this.showWeekNumbers = config.showWeekNumbers;
         this.startDate = config.startDate;
+        this._selectSubscription = _service.select$.subscribe(function (date) { _this.select.emit(date.toStruct()); });
         this._subscription = _service.model$.subscribe(function (model) {
             var newDate = model.firstDate;
             var oldDate = _this.model ? _this.model.firstDate : null;
@@ -2074,10 +2140,9 @@ var NgbDatepicker = (function () {
             var oldSelectedDate = _this.model ? _this.model.selectedDate : null;
             _this.model = model;
             // handling selection change
-            if (Object(__WEBPACK_IMPORTED_MODULE_10__datepicker_tools__["d" /* isChangedDate */])(newSelectedDate, oldSelectedDate)) {
+            if (Object(__WEBPACK_IMPORTED_MODULE_11__datepicker_tools__["d" /* isChangedDate */])(newSelectedDate, oldSelectedDate)) {
                 _this.onTouched();
-                _this.onChange(newSelectedDate ? { year: newSelectedDate.year, month: newSelectedDate.month, day: newSelectedDate.day } :
-                    null);
+                _this.onChange(_this._ngbDateAdapter.toModel(newSelectedDate));
             }
             // emitting navigation event if the first month changes
             if (!newDate.equals(oldDate)) {
@@ -2110,12 +2175,16 @@ var NgbDatepicker = (function () {
     NgbDatepicker.prototype.navigateTo = function (date) {
         this._service.open(date ? new __WEBPACK_IMPORTED_MODULE_3__ngb_date__["a" /* NgbDate */](date.year, date.month, 1) : this._calendar.getToday());
     };
-    NgbDatepicker.prototype.ngOnDestroy = function () { this._subscription.unsubscribe(); };
+    NgbDatepicker.prototype.ngOnDestroy = function () {
+        this._subscription.unsubscribe();
+        this._selectSubscription.unsubscribe();
+    };
     NgbDatepicker.prototype.ngOnInit = function () {
         if (this.model === undefined) {
             this._service.displayMonths = Object(__WEBPACK_IMPORTED_MODULE_7__util_util__["h" /* toInteger */])(this.displayMonths);
             this._service.markDisabled = this.markDisabled;
             this._service.firstDayOfWeek = this.firstDayOfWeek;
+            this._service.navigation = this.navigation;
             this._setDates();
         }
     };
@@ -2129,11 +2198,14 @@ var NgbDatepicker = (function () {
         if (changes['firstDayOfWeek']) {
             this._service.firstDayOfWeek = this.firstDayOfWeek;
         }
+        if (changes['navigation']) {
+            this._service.navigation = this.navigation;
+        }
         this._setDates();
     };
     NgbDatepicker.prototype.onDateSelect = function (date) {
         this._service.focus(date);
-        this.writeValue(date);
+        this._service.select(date, { emitEvent: true });
     };
     NgbDatepicker.prototype.onKeyDown = function (event) { this._keyMapService.processKey(event); };
     NgbDatepicker.prototype.onNavigateDateSelect = function (date) { this._service.open(date); };
@@ -2151,7 +2223,7 @@ var NgbDatepicker = (function () {
     NgbDatepicker.prototype.registerOnTouched = function (fn) { this.onTouched = fn; };
     NgbDatepicker.prototype.setDisabledState = function (isDisabled) { this._service.disabled = isDisabled; };
     NgbDatepicker.prototype.showFocus = function (focusVisible) { this._service.focusVisible = focusVisible; };
-    NgbDatepicker.prototype.writeValue = function (value) { this._service.select(value); };
+    NgbDatepicker.prototype.writeValue = function (value) { this._service.select(__WEBPACK_IMPORTED_MODULE_3__ngb_date__["a" /* NgbDate */].from(this._ngbDateAdapter.fromModel(value))); };
     NgbDatepicker.prototype._setDates = function () {
         var startDate = this._service.toValidDate(this.startDate, this._calendar.getToday());
         var minDate = this._service.toValidDate(this.minDate, this._calendar.getPrev(startDate, 'y', 10));
@@ -2179,7 +2251,7 @@ NgbDatepicker.decorators = [
                     '(keydown)': 'onKeyDown($event)'
                 },
                 styles: ["\n    :host {\n      border: 1px solid rgba(0, 0, 0, 0.125);\n    }\n    .ngb-dp-header {\n      border-bottom: 1px solid rgba(0, 0, 0, 0.125);\n    }\n    .ngb-dp-month {\n      pointer-events: none;\n    }\n    ngb-datepicker-month-view {\n      pointer-events: auto;\n    }\n    .ngb-dp-month:first-child {\n      margin-left: 0 !important;\n    }\n    .ngb-dp-month-name {\n      font-size: larger;\n      height: 2rem;\n      line-height: 2rem;\n    }\n  "],
-                template: "\n    <ng-template #dt let-date=\"date\" let-currentMonth=\"currentMonth\" let-selected=\"selected\" let-disabled=\"disabled\" let-focused=\"focused\">\n      <div ngbDatepickerDayView\n        [date]=\"date\"\n        [currentMonth]=\"currentMonth\"\n        [selected]=\"selected\"\n        [disabled]=\"disabled\"\n        [focused]=\"focused\">\n      </div>\n    </ng-template>\n\n    <div class=\"ngb-dp-header bg-light pt-1 rounded-top\" [style.height.rem]=\"getHeaderHeight()\"\n         [style.marginBottom.rem]=\"-getHeaderMargin()\">\n      <ngb-datepicker-navigation *ngIf=\"navigation !== 'none'\"\n        [date]=\"model.firstDate\"\n        [minDate]=\"model.minDate\"\n        [maxDate]=\"model.maxDate\"\n        [months]=\"model.months.length\"\n        [disabled]=\"model.disabled\"\n        [showWeekNumbers]=\"showWeekNumbers\"\n        [showSelect]=\"navigation === 'select'\"\n        (navigate)=\"onNavigateEvent($event)\"\n        (select)=\"onNavigateDateSelect($event)\">\n      </ngb-datepicker-navigation>\n    </div>\n\n    <div class=\"ngb-dp-months d-flex px-1 pb-1\">\n      <ng-template ngFor let-month [ngForOf]=\"model.months\" let-i=\"index\">\n        <div class=\"ngb-dp-month d-block ml-3\">\n          <div *ngIf=\"navigation !== 'select' || displayMonths > 1\" class=\"ngb-dp-month-name text-center\">\n            {{ i18n.getMonthFullName(month.number) }} {{ month.year }}\n          </div>\n          <ngb-datepicker-month-view\n            [month]=\"month\"\n            [dayTemplate]=\"dayTemplate || dt\"\n            [showWeekdays]=\"showWeekdays\"\n            [showWeekNumbers]=\"showWeekNumbers\"\n            [outsideDays]=\"(displayMonths === 1 ? outsideDays : 'hidden')\"\n            (select)=\"onDateSelect($event)\">\n          </ngb-datepicker-month-view>\n        </div>\n      </ng-template>\n    </div>\n  ",
+                template: "\n    <ng-template #dt let-date=\"date\" let-currentMonth=\"currentMonth\" let-selected=\"selected\" let-disabled=\"disabled\" let-focused=\"focused\">\n      <div ngbDatepickerDayView\n        [date]=\"date\"\n        [currentMonth]=\"currentMonth\"\n        [selected]=\"selected\"\n        [disabled]=\"disabled\"\n        [focused]=\"focused\">\n      </div>\n    </ng-template>\n\n    <div class=\"ngb-dp-header bg-light pt-1 rounded-top\" [style.height.rem]=\"getHeaderHeight()\"\n         [style.marginBottom.rem]=\"-getHeaderMargin()\">\n      <ngb-datepicker-navigation *ngIf=\"model.navigation !== 'none'\"\n        [date]=\"model.firstDate\"\n        [minDate]=\"model.minDate\"\n        [maxDate]=\"model.maxDate\"\n        [months]=\"model.months.length\"\n        [disabled]=\"model.disabled\"\n        [showWeekNumbers]=\"showWeekNumbers\"\n        [showSelect]=\"model.navigation === 'select'\"\n        (navigate)=\"onNavigateEvent($event)\"\n        (select)=\"onNavigateDateSelect($event)\">\n      </ngb-datepicker-navigation>\n    </div>\n\n    <div class=\"ngb-dp-months d-flex px-1 pb-1\">\n      <ng-template ngFor let-month [ngForOf]=\"model.months\" let-i=\"index\">\n        <div class=\"ngb-dp-month d-block ml-3\">\n          <div *ngIf=\"model.navigation !== 'select' || displayMonths > 1\" class=\"ngb-dp-month-name text-center\">\n            {{ i18n.getMonthFullName(month.number) }} {{ month.year }}\n          </div>\n          <ngb-datepicker-month-view\n            [month]=\"month\"\n            [dayTemplate]=\"dayTemplate || dt\"\n            [showWeekdays]=\"showWeekdays\"\n            [showWeekNumbers]=\"showWeekNumbers\"\n            [outsideDays]=\"(displayMonths === 1 ? outsideDays : 'hidden')\"\n            (select)=\"onDateSelect($event)\">\n          </ngb-datepicker-month-view>\n        </div>\n      </ng-template>\n    </div>\n  ",
                 providers: [NGB_DATEPICKER_VALUE_ACCESSOR, __WEBPACK_IMPORTED_MODULE_4__datepicker_service__["a" /* NgbDatepickerService */], __WEBPACK_IMPORTED_MODULE_5__datepicker_keymap_service__["a" /* NgbDatepickerKeyMapService */]]
             },] },
 ];
@@ -2188,10 +2260,11 @@ NgbDatepicker.ctorParameters = function () { return [
     { type: __WEBPACK_IMPORTED_MODULE_5__datepicker_keymap_service__["a" /* NgbDatepickerKeyMapService */], },
     { type: __WEBPACK_IMPORTED_MODULE_4__datepicker_service__["a" /* NgbDatepickerService */], },
     { type: __WEBPACK_IMPORTED_MODULE_2__ngb_calendar__["a" /* NgbCalendar */], },
-    { type: __WEBPACK_IMPORTED_MODULE_9__datepicker_i18n__["a" /* NgbDatepickerI18n */], },
+    { type: __WEBPACK_IMPORTED_MODULE_10__datepicker_i18n__["a" /* NgbDatepickerI18n */], },
     { type: __WEBPACK_IMPORTED_MODULE_8__datepicker_config__["a" /* NgbDatepickerConfig */], },
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"], },
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
+    { type: __WEBPACK_IMPORTED_MODULE_9__ngb_date_adapter__["a" /* NgbDateAdapter */], },
 ]; };
 NgbDatepicker.propDecorators = {
     'dayTemplate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
@@ -2206,6 +2279,7 @@ NgbDatepicker.propDecorators = {
     'showWeekNumbers': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
     'startDate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
     'navigate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+    'select': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
 };
 //# sourceMappingURL=datepicker.js.map
 
@@ -2215,7 +2289,7 @@ NgbDatepicker.propDecorators = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return NgbDatepickerModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return NgbDatepickerModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__datepicker__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/datepicker.js");
@@ -2227,20 +2301,27 @@ NgbDatepicker.propDecorators = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__datepicker_i18n__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/datepicker-i18n.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ngb_calendar__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/ngb-calendar.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ngb_date_parser_formatter__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-parser-formatter.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__datepicker_navigation_select__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/datepicker-navigation-select.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__datepicker_config__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/datepicker-config.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_2__datepicker__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_5__datepicker_input__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ngb_date_adapter__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-adapter.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__datepicker_navigation_select__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/datepicker-navigation-select.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__datepicker_config__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/datepicker-config.js");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_2__datepicker__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return __WEBPACK_IMPORTED_MODULE_5__datepicker_input__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_9__ngb_calendar__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__hijri_ngb_calendar_islamic_civil__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/hijri/ngb-calendar-islamic-civil.js");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_13__hijri_ngb_calendar_islamic_civil__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__hijri_ngb_calendar_islamic_civil__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/hijri/ngb-calendar-islamic-civil.js");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_14__hijri_ngb_calendar_islamic_civil__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__hijri_ngb_calendar_islamic_umalqura__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/hijri/ngb-calendar-islamic-umalqura.js");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_15__hijri_ngb_calendar_islamic_umalqura__["a"]; });
 /* unused harmony reexport NgbDatepickerMonthView */
 /* unused harmony reexport NgbDatepickerDayView */
 /* unused harmony reexport NgbDatepickerNavigation */
 /* unused harmony reexport NgbDatepickerNavigationSelect */
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_12__datepicker_config__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_8__datepicker_i18n__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_10__ngb_date_parser_formatter__["b"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_13__datepicker_config__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return __WEBPACK_IMPORTED_MODULE_8__datepicker_i18n__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_11__ngb_date_adapter__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_10__ngb_date_parser_formatter__["b"]; });
+
+
+
 
 
 
@@ -2274,7 +2355,8 @@ var NgbDatepickerModule = (function () {
             providers: [
                 { provide: __WEBPACK_IMPORTED_MODULE_9__ngb_calendar__["a" /* NgbCalendar */], useClass: __WEBPACK_IMPORTED_MODULE_9__ngb_calendar__["b" /* NgbCalendarGregorian */] },
                 { provide: __WEBPACK_IMPORTED_MODULE_8__datepicker_i18n__["a" /* NgbDatepickerI18n */], useClass: __WEBPACK_IMPORTED_MODULE_8__datepicker_i18n__["b" /* NgbDatepickerI18nDefault */] },
-                { provide: __WEBPACK_IMPORTED_MODULE_10__ngb_date_parser_formatter__["b" /* NgbDateParserFormatter */], useClass: __WEBPACK_IMPORTED_MODULE_10__ngb_date_parser_formatter__["a" /* NgbDateISOParserFormatter */] }, __WEBPACK_IMPORTED_MODULE_12__datepicker_config__["a" /* NgbDatepickerConfig */]
+                { provide: __WEBPACK_IMPORTED_MODULE_10__ngb_date_parser_formatter__["b" /* NgbDateParserFormatter */], useClass: __WEBPACK_IMPORTED_MODULE_10__ngb_date_parser_formatter__["a" /* NgbDateISOParserFormatter */] },
+                { provide: __WEBPACK_IMPORTED_MODULE_11__ngb_date_adapter__["a" /* NgbDateAdapter */], useClass: __WEBPACK_IMPORTED_MODULE_11__ngb_date_adapter__["b" /* NgbDateStructAdapter */] }, __WEBPACK_IMPORTED_MODULE_13__datepicker_config__["a" /* NgbDatepickerConfig */]
             ]
         };
     };
@@ -2284,7 +2366,7 @@ var NgbDatepickerModule = (function () {
 NgbDatepickerModule.decorators = [
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"], args: [{
                 declarations: [
-                    __WEBPACK_IMPORTED_MODULE_2__datepicker__["a" /* NgbDatepicker */], __WEBPACK_IMPORTED_MODULE_3__datepicker_month_view__["a" /* NgbDatepickerMonthView */], __WEBPACK_IMPORTED_MODULE_4__datepicker_navigation__["a" /* NgbDatepickerNavigation */], __WEBPACK_IMPORTED_MODULE_11__datepicker_navigation_select__["a" /* NgbDatepickerNavigationSelect */], __WEBPACK_IMPORTED_MODULE_7__datepicker_day_view__["a" /* NgbDatepickerDayView */],
+                    __WEBPACK_IMPORTED_MODULE_2__datepicker__["a" /* NgbDatepicker */], __WEBPACK_IMPORTED_MODULE_3__datepicker_month_view__["a" /* NgbDatepickerMonthView */], __WEBPACK_IMPORTED_MODULE_4__datepicker_navigation__["a" /* NgbDatepickerNavigation */], __WEBPACK_IMPORTED_MODULE_12__datepicker_navigation_select__["a" /* NgbDatepickerNavigationSelect */], __WEBPACK_IMPORTED_MODULE_7__datepicker_day_view__["a" /* NgbDatepickerDayView */],
                     __WEBPACK_IMPORTED_MODULE_5__datepicker_input__["a" /* NgbInputDatepicker */]
                 ],
                 exports: [__WEBPACK_IMPORTED_MODULE_2__datepicker__["a" /* NgbDatepicker */], __WEBPACK_IMPORTED_MODULE_5__datepicker_input__["a" /* NgbInputDatepicker */]],
@@ -2536,6 +2618,296 @@ NgbCalendarIslamicCivil.ctorParameters = function () { return []; };
 
 /***/ }),
 
+/***/ "./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/hijri/ngb-calendar-islamic-umalqura.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NgbCalendarIslamicUmalqura; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ngb_calendar_islamic_civil__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/hijri/ngb-calendar-islamic-civil.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ngb_calendar_hijri__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/hijri/ngb-calendar-hijri.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ngb_date__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/ngb-date.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+
+
+
+
+/**
+ * Umalqura calendar is one type of Hijri calendars used in islamic countries.
+ * This Calendar is used by Saudi Arabia for administrative purpose.
+ * Unlike tabular calendars, the algorithm involves astronomical calculation, but it's still deterministic.
+ * http://cldr.unicode.org/development/development-process/design-proposals/islamic-calendar-types
+ */
+var GREGORIAN_FIRST_DATE = new Date(1882, 10, 12);
+var GREGORIAN_LAST_DATE = new Date(2174, 10, 25);
+var HIJRI_BEGIN = 1300;
+var HIJRI_END = 1600;
+var ONE_DAY = 1000 * 60 * 60 * 24;
+var ISLAMIC_CIVIL = new __WEBPACK_IMPORTED_MODULE_0__ngb_calendar_islamic_civil__["a" /* NgbCalendarIslamicCivil */]();
+var MONTH_LENGTH = [
+    // 1300-1304
+    '101010101010', '110101010100', '111011001001', '011011010100', '011011101010',
+    // 1305-1309
+    '001101101100', '101010101101', '010101010101', '011010101001', '011110010010',
+    // 1310-1314
+    '101110101001', '010111010100', '101011011010', '010101011100', '110100101101',
+    // 1315-1319
+    '011010010101', '011101001010', '101101010100', '101101101010', '010110101101',
+    // 1320-1324
+    '010010101110', '101001001111', '010100010111', '011010001011', '011010100101',
+    // 1325-1329
+    '101011010101', '001011010110', '100101011011', '010010011101', '101001001101',
+    // 1330-1334
+    '110100100110', '110110010101', '010110101100', '100110110110', '001010111010',
+    // 1335-1339
+    '101001011011', '010100101011', '101010010101', '011011001010', '101011101001',
+    // 1340-1344
+    '001011110100', '100101110110', '001010110110', '100101010110', '101011001010',
+    // 1345-1349
+    '101110100100', '101111010010', '010111011001', '001011011100', '100101101101',
+    // 1350-1354
+    '010101001101', '101010100101', '101101010010', '101110100101', '010110110100',
+    // 1355-1359
+    '100110110110', '010101010111', '001010010111', '010101001011', '011010100011',
+    // 1360-1364
+    '011101010010', '101101100101', '010101101010', '101010101011', '010100101011',
+    // 1365-1369
+    '110010010101', '110101001010', '110110100101', '010111001010', '101011010110',
+    // 1370-1374
+    '100101010111', '010010101011', '100101001011', '101010100101', '101101010010',
+    // 1375-1379
+    '101101101010', '010101110101', '001001110110', '100010110111', '010001011011',
+    // 1380-1384
+    '010101010101', '010110101001', '010110110100', '100111011010', '010011011101',
+    // 1385-1389
+    '001001101110', '100100110110', '101010101010', '110101010100', '110110110010',
+    // 1390-1394
+    '010111010101', '001011011010', '100101011011', '010010101011', '101001010101',
+    // 1395-1399
+    '101101001001', '101101100100', '101101110001', '010110110100', '101010110101',
+    // 1400-1404
+    '101001010101', '110100100101', '111010010010', '111011001001', '011011010100',
+    // 1405-1409
+    '101011101001', '100101101011', '010010101011', '101010010011', '110101001001',
+    // 1410-1414
+    '110110100100', '110110110010', '101010111001', '010010111010', '101001011011',
+    // 1415-1419
+    '010100101011', '101010010101', '101100101010', '101101010101', '010101011100',
+    // 1420-1424
+    '010010111101', '001000111101', '100100011101', '101010010101', '101101001010',
+    // 1425-1429
+    '101101011010', '010101101101', '001010110110', '100100111011', '010010011011',
+    // 1430-1434
+    '011001010101', '011010101001', '011101010100', '101101101010', '010101101100',
+    // 1435-1439
+    '101010101101', '010101010101', '101100101001', '101110010010', '101110101001',
+    // 1440-1444
+    '010111010100', '101011011010', '010101011010', '101010101011', '010110010101',
+    // 1445-1449
+    '011101001001', '011101100100', '101110101010', '010110110101', '001010110110',
+    // 1450-1454
+    '101001010110', '111001001101', '101100100101', '101101010010', '101101101010',
+    // 1455-1459
+    '010110101101', '001010101110', '100100101111', '010010010111', '011001001011',
+    // 1460-1464
+    '011010100101', '011010101100', '101011010110', '010101011101', '010010011101',
+    // 1465-1469
+    '101001001101', '110100010110', '110110010101', '010110101010', '010110110101',
+    // 1470-1474
+    '001011011010', '100101011011', '010010101101', '010110010101', '011011001010',
+    // 1475-1479
+    '011011100100', '101011101010', '010011110101', '001010110110', '100101010110',
+    // 1480-1484
+    '101010101010', '101101010100', '101111010010', '010111011001', '001011101010',
+    // 1485-1489
+    '100101101101', '010010101101', '101010010101', '101101001010', '101110100101',
+    // 1490-1494
+    '010110110010', '100110110101', '010011010110', '101010010111', '010101000111',
+    // 1495-1499
+    '011010010011', '011101001001', '101101010101', '010101101010', '101001101011',
+    // 1500-1504
+    '010100101011', '101010001011', '110101000110', '110110100011', '010111001010',
+    // 1505-1509
+    '101011010110', '010011011011', '001001101011', '100101001011', '101010100101',
+    // 1510-1514
+    '101101010010', '101101101001', '010101110101', '000101110110', '100010110111',
+    // 1515-1519
+    '001001011011', '010100101011', '010101100101', '010110110100', '100111011010',
+    // 1520-1524
+    '010011101101', '000101101101', '100010110110', '101010100110', '110101010010',
+    // 1525-1529
+    '110110101001', '010111010100', '101011011010', '100101011011', '010010101011',
+    // 1530-1534
+    '011001010011', '011100101001', '011101100010', '101110101001', '010110110010',
+    // 1535-1539
+    '101010110101', '010101010101', '101100100101', '110110010010', '111011001001',
+    // 1540-1544
+    '011011010010', '101011101001', '010101101011', '010010101011', '101001010101',
+    // 1545-1549
+    '110100101001', '110101010100', '110110101010', '100110110101', '010010111010',
+    // 1550-1554
+    '101000111011', '010010011011', '101001001101', '101010101010', '101011010101',
+    // 1555-1559
+    '001011011010', '100101011101', '010001011110', '101000101110', '110010011010',
+    // 1560-1564
+    '110101010101', '011010110010', '011010111001', '010010111010', '101001011101',
+    // 1565-1569
+    '010100101101', '101010010101', '101101010010', '101110101000', '101110110100',
+    // 1570-1574
+    '010110111001', '001011011010', '100101011010', '101101001010', '110110100100',
+    // 1575-1579
+    '111011010001', '011011101000', '101101101010', '010101101101', '010100110101',
+    // 1580-1584
+    '011010010101', '110101001010', '110110101000', '110111010100', '011011011010',
+    // 1585-1589
+    '010101011011', '001010011101', '011000101011', '101100010101', '101101001010',
+    // 1590-1594
+    '101110010101', '010110101010', '101010101110', '100100101110', '110010001111',
+    // 1595-1599
+    '010100100111', '011010010101', '011010101010', '101011010110', '010101011101',
+    // 1600
+    '001010011101'
+];
+function getDaysDiff(date1, date2) {
+    var diff = Math.abs(date1.getTime() - date2.getTime());
+    return Math.round(diff / ONE_DAY);
+}
+var NgbCalendarIslamicUmalqura = (function (_super) {
+    __extends(NgbCalendarIslamicUmalqura, _super);
+    function NgbCalendarIslamicUmalqura() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+    * Returns the equivalent islamic(Umalqura) date value for a give input Gregorian date.
+    * `gdate` is s JS Date to be converted to Hijri.
+    */
+    NgbCalendarIslamicUmalqura.prototype.fromGregorian = function (gDate) {
+        var hDay = 1, hMonth = 0, hYear = 1300;
+        var daysDiff = getDaysDiff(gDate, GREGORIAN_FIRST_DATE);
+        if (gDate.getTime() - GREGORIAN_FIRST_DATE.getTime() >= 0 && gDate.getTime() - GREGORIAN_LAST_DATE.getTime() <= 0) {
+            var year = 1300;
+            for (var i = 0; i < MONTH_LENGTH.length; i++, year++) {
+                for (var j = 0; j < 12; j++) {
+                    var numOfDays = +MONTH_LENGTH[i][j] + 29;
+                    if (daysDiff <= numOfDays) {
+                        hDay = daysDiff + 1;
+                        if (hDay > numOfDays) {
+                            hDay = 1;
+                            j++;
+                        }
+                        if (j > 11) {
+                            j = 0;
+                            year++;
+                        }
+                        hMonth = j;
+                        hYear = year;
+                        return new __WEBPACK_IMPORTED_MODULE_2__ngb_date__["a" /* NgbDate */](hYear, hMonth + 1, hDay);
+                    }
+                    daysDiff = daysDiff - numOfDays;
+                }
+            }
+        }
+        else {
+            return ISLAMIC_CIVIL.fromGregorian(gDate);
+        }
+    };
+    /**
+    * Converts the current Hijri date to Gregorian.
+    */
+    NgbCalendarIslamicUmalqura.prototype.toGregorian = function (hijriDate) {
+        var hYear = hijriDate.year;
+        var hMonth = hijriDate.month - 1;
+        var hDay = hijriDate.day;
+        var gDate = new Date(GREGORIAN_FIRST_DATE);
+        var dayDiff = hDay - 1;
+        if (hYear >= HIJRI_BEGIN && hYear <= HIJRI_END) {
+            for (var y = 0; y < hYear - HIJRI_BEGIN; y++) {
+                for (var m = 0; m < 12; m++) {
+                    dayDiff += +MONTH_LENGTH[y][m] + 29;
+                }
+            }
+            for (var m = 0; m < hMonth; m++) {
+                dayDiff += +MONTH_LENGTH[hYear - HIJRI_BEGIN][m] + 29;
+            }
+            gDate.setDate(GREGORIAN_FIRST_DATE.getDate() + dayDiff);
+        }
+        else {
+            gDate = ISLAMIC_CIVIL.toGregorian(hijriDate);
+        }
+        return gDate;
+    };
+    /**
+    * Returns the number of days in a specific Hijri month.
+    * `month` is 1 for Muharram, 2 for Safar, etc.
+    * `year` is any Hijri year.
+    */
+    NgbCalendarIslamicUmalqura.prototype.getDaysInIslamicMonth = function (month, year) {
+        if (year >= HIJRI_BEGIN && year <= HIJRI_END) {
+            var pos = year - HIJRI_BEGIN;
+            return MONTH_LENGTH[pos].charAt(month - 1) === '1' ? 30 : 29;
+        }
+        return ISLAMIC_CIVIL.getDaysInIslamicMonth(month, year);
+    };
+    NgbCalendarIslamicUmalqura.prototype.getNext = function (date, period, number) {
+        if (period === void 0) { period = 'd'; }
+        if (number === void 0) { number = 1; }
+        date = __WEBPACK_IMPORTED_MODULE_2__ngb_date__["a" /* NgbDate */].from(date);
+        switch (period) {
+            case 'y':
+                date = this.setYear(date, date.year + number);
+                date.month = 1;
+                date.day = 1;
+                return date;
+            case 'm':
+                date = this.setMonth(date, date.month + number);
+                date.day = 1;
+                return date;
+            case 'd':
+                return this.setDay(date, date.day + number);
+            default:
+                return date;
+        }
+    };
+    NgbCalendarIslamicUmalqura.prototype.getPrev = function (date, period, number) {
+        if (period === void 0) { period = 'd'; }
+        if (number === void 0) { number = 1; }
+        return this.getNext(date, period, -number);
+    };
+    NgbCalendarIslamicUmalqura.prototype.getWeekday = function (date) {
+        var day = this.toGregorian(date).getDay();
+        // in JS Date Sun=0, in ISO 8601 Sun=7
+        return day === 0 ? 7 : day;
+    };
+    NgbCalendarIslamicUmalqura.prototype.getWeekNumber = function (week, firstDayOfWeek) {
+        // in JS Date Sun=0, in ISO 8601 Sun=7
+        if (firstDayOfWeek === 7) {
+            firstDayOfWeek = 0;
+        }
+        var thursdayIndex = (4 + 7 - firstDayOfWeek) % 7;
+        var date = week[thursdayIndex];
+        var jsDate = this.toGregorian(date);
+        jsDate.setDate(jsDate.getDate() + 4 - (jsDate.getDay() || 7)); // Thursday
+        var time = jsDate.getTime();
+        var MuhDate = this.toGregorian(new __WEBPACK_IMPORTED_MODULE_2__ngb_date__["a" /* NgbDate */](date.year, 1, 1)); // Compare with Muharram 1
+        return Math.floor(Math.round((time - MuhDate.getTime()) / ONE_DAY) / 7) + 1;
+    };
+    NgbCalendarIslamicUmalqura.prototype.getToday = function () { return this.fromGregorian(new Date()); };
+    return NgbCalendarIslamicUmalqura;
+}(__WEBPACK_IMPORTED_MODULE_1__ngb_calendar_hijri__["a" /* NgbCalendarHijri */]));
+
+NgbCalendarIslamicUmalqura.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_3__angular_core__["Injectable"] },
+];
+/** @nocollapse */
+NgbCalendarIslamicUmalqura.ctorParameters = function () { return []; };
+//# sourceMappingURL=ngb-calendar-islamic-umalqura.js.map
+
+/***/ }),
+
 /***/ "./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/ngb-calendar.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2644,6 +3016,69 @@ NgbCalendarGregorian.decorators = [
 /** @nocollapse */
 NgbCalendarGregorian.ctorParameters = function () { return []; };
 //# sourceMappingURL=ngb-calendar.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-adapter.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NgbDateAdapter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return NgbDateStructAdapter; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+
+/**
+ * Abstract type serving as a DI token for the service converting from your application Date model to internal
+ * NgbDateStruct model.
+ * A default implementation converting from and to NgbDateStruct is provided for retro-compatibility,
+ * but you can provide another implementation to use an alternative format, ie for using with native Date Object.
+ */
+var NgbDateAdapter = (function () {
+    function NgbDateAdapter() {
+    }
+    return NgbDateAdapter;
+}());
+
+NgbDateAdapter.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
+];
+/** @nocollapse */
+NgbDateAdapter.ctorParameters = function () { return []; };
+var NgbDateStructAdapter = (function (_super) {
+    __extends(NgbDateStructAdapter, _super);
+    function NgbDateStructAdapter() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Converts a NgbDateStruct value into NgbDateStruct value
+     * @param  {NgbDateStruct} value
+     * @return {NgbDateStruct}
+     */
+    NgbDateStructAdapter.prototype.fromModel = function (date) {
+        return date ? { year: date.year, month: date.month, day: date.day || 1 } : null;
+    };
+    /**
+     * Converts a NgbDateStruct value into NgbDateStruct value
+     * @param  {NgbDateStruct} value
+     * @return {NgbDateStruct}
+     */
+    NgbDateStructAdapter.prototype.toModel = function (date) {
+        return date ? { year: date.year, month: date.month, day: date.day || 1 } : null;
+    };
+    return NgbDateStructAdapter;
+}(NgbDateAdapter));
+
+NgbDateStructAdapter.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
+];
+/** @nocollapse */
+NgbDateStructAdapter.ctorParameters = function () { return []; };
+//# sourceMappingURL=ngb-date-adapter.js.map
 
 /***/ }),
 
@@ -2819,15 +3254,18 @@ var NgbDropdownMenu = (function () {
     };
     NgbDropdownMenu.prototype.applyPlacement = function (_placement) {
         // remove the current placement classes
-        this._renderer.removeClass(this._elementRef.nativeElement.parentElement, 'dropup');
+        this._renderer.removeClass(this._elementRef.nativeElement.parentNode, 'dropup');
+        this._renderer.removeClass(this._elementRef.nativeElement.parentNode, 'dropdown');
         this.placement = _placement;
         /**
          * apply the new placement
-         * change the class only in case of top to show up arrow
-         * or use defualt which is dropdown to show down arrow
+         * in case of top use up-arrow or down-arrow otherwise
          */
         if (_placement.search('^top') !== -1) {
-            this._renderer.addClass(this._elementRef.nativeElement.parentElement, 'dropup');
+            this._renderer.addClass(this._elementRef.nativeElement.parentNode, 'dropup');
+        }
+        else {
+            this._renderer.addClass(this._elementRef.nativeElement.parentNode, 'dropdown');
         }
     };
     return NgbDropdownMenu;
@@ -3065,12 +3503,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbCollapse", function() { return __WEBPACK_IMPORTED_MODULE_5__collapse_collapse_module__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbCalendar", function() { return __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbCalendarIslamicCivil", function() { return __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["b"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbDatepickerModule", function() { return __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["g"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbDatepickerI18n", function() { return __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["f"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbDatepickerConfig", function() { return __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["e"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbDateParserFormatter", function() { return __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["c"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbDatepicker", function() { return __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["d"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbInputDatepicker", function() { return __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["h"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbCalendarIslamicUmalqura", function() { return __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["c"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbDatepickerModule", function() { return __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["i"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbDatepickerI18n", function() { return __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["h"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbDatepickerConfig", function() { return __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["g"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbDateParserFormatter", function() { return __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["e"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbDateAdapter", function() { return __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["d"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbDatepicker", function() { return __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["f"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbInputDatepicker", function() { return __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["j"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbDropdownModule", function() { return __WEBPACK_IMPORTED_MODULE_7__dropdown_dropdown_module__["c"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbDropdownConfig", function() { return __WEBPACK_IMPORTED_MODULE_7__dropdown_dropdown_module__["b"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NgbDropdown", function() { return __WEBPACK_IMPORTED_MODULE_7__dropdown_dropdown_module__["a"]; });
@@ -3141,7 +3581,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 var NGB_MODULES = [
-    __WEBPACK_IMPORTED_MODULE_1__accordion_accordion_module__["c" /* NgbAccordionModule */], __WEBPACK_IMPORTED_MODULE_2__alert_alert_module__["c" /* NgbAlertModule */], __WEBPACK_IMPORTED_MODULE_3__buttons_buttons_module__["a" /* NgbButtonsModule */], __WEBPACK_IMPORTED_MODULE_4__carousel_carousel_module__["c" /* NgbCarouselModule */], __WEBPACK_IMPORTED_MODULE_5__collapse_collapse_module__["b" /* NgbCollapseModule */], __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["g" /* NgbDatepickerModule */],
+    __WEBPACK_IMPORTED_MODULE_1__accordion_accordion_module__["c" /* NgbAccordionModule */], __WEBPACK_IMPORTED_MODULE_2__alert_alert_module__["c" /* NgbAlertModule */], __WEBPACK_IMPORTED_MODULE_3__buttons_buttons_module__["a" /* NgbButtonsModule */], __WEBPACK_IMPORTED_MODULE_4__carousel_carousel_module__["c" /* NgbCarouselModule */], __WEBPACK_IMPORTED_MODULE_5__collapse_collapse_module__["b" /* NgbCollapseModule */], __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["i" /* NgbDatepickerModule */],
     __WEBPACK_IMPORTED_MODULE_7__dropdown_dropdown_module__["c" /* NgbDropdownModule */], __WEBPACK_IMPORTED_MODULE_8__modal_modal_module__["d" /* NgbModalModule */], __WEBPACK_IMPORTED_MODULE_9__pagination_pagination_module__["c" /* NgbPaginationModule */], __WEBPACK_IMPORTED_MODULE_10__popover_popover_module__["c" /* NgbPopoverModule */], __WEBPACK_IMPORTED_MODULE_11__progressbar_progressbar_module__["c" /* NgbProgressbarModule */], __WEBPACK_IMPORTED_MODULE_12__rating_rating_module__["c" /* NgbRatingModule */],
     __WEBPACK_IMPORTED_MODULE_13__tabset_tabset_module__["f" /* NgbTabsetModule */], __WEBPACK_IMPORTED_MODULE_14__timepicker_timepicker_module__["c" /* NgbTimepickerModule */], __WEBPACK_IMPORTED_MODULE_15__tooltip_tooltip_module__["c" /* NgbTooltipModule */], __WEBPACK_IMPORTED_MODULE_16__typeahead_typeahead_module__["d" /* NgbTypeaheadModule */]
 ];
@@ -3156,7 +3596,7 @@ NgbRootModule.decorators = [
                 imports: [
                     __WEBPACK_IMPORTED_MODULE_2__alert_alert_module__["c" /* NgbAlertModule */].forRoot(), __WEBPACK_IMPORTED_MODULE_3__buttons_buttons_module__["a" /* NgbButtonsModule */].forRoot(), __WEBPACK_IMPORTED_MODULE_5__collapse_collapse_module__["b" /* NgbCollapseModule */].forRoot(), __WEBPACK_IMPORTED_MODULE_11__progressbar_progressbar_module__["c" /* NgbProgressbarModule */].forRoot(),
                     __WEBPACK_IMPORTED_MODULE_15__tooltip_tooltip_module__["c" /* NgbTooltipModule */].forRoot(), __WEBPACK_IMPORTED_MODULE_16__typeahead_typeahead_module__["d" /* NgbTypeaheadModule */].forRoot(), __WEBPACK_IMPORTED_MODULE_1__accordion_accordion_module__["c" /* NgbAccordionModule */].forRoot(), __WEBPACK_IMPORTED_MODULE_4__carousel_carousel_module__["c" /* NgbCarouselModule */].forRoot(),
-                    __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["g" /* NgbDatepickerModule */].forRoot(), __WEBPACK_IMPORTED_MODULE_7__dropdown_dropdown_module__["c" /* NgbDropdownModule */].forRoot(), __WEBPACK_IMPORTED_MODULE_8__modal_modal_module__["d" /* NgbModalModule */].forRoot(), __WEBPACK_IMPORTED_MODULE_9__pagination_pagination_module__["c" /* NgbPaginationModule */].forRoot(),
+                    __WEBPACK_IMPORTED_MODULE_6__datepicker_datepicker_module__["i" /* NgbDatepickerModule */].forRoot(), __WEBPACK_IMPORTED_MODULE_7__dropdown_dropdown_module__["c" /* NgbDropdownModule */].forRoot(), __WEBPACK_IMPORTED_MODULE_8__modal_modal_module__["d" /* NgbModalModule */].forRoot(), __WEBPACK_IMPORTED_MODULE_9__pagination_pagination_module__["c" /* NgbPaginationModule */].forRoot(),
                     __WEBPACK_IMPORTED_MODULE_10__popover_popover_module__["c" /* NgbPopoverModule */].forRoot(), __WEBPACK_IMPORTED_MODULE_11__progressbar_progressbar_module__["c" /* NgbProgressbarModule */].forRoot(), __WEBPACK_IMPORTED_MODULE_12__rating_rating_module__["c" /* NgbRatingModule */].forRoot(), __WEBPACK_IMPORTED_MODULE_13__tabset_tabset_module__["f" /* NgbTabsetModule */].forRoot(),
                     __WEBPACK_IMPORTED_MODULE_14__timepicker_timepicker_module__["c" /* NgbTimepickerModule */].forRoot(), __WEBPACK_IMPORTED_MODULE_15__tooltip_tooltip_module__["c" /* NgbTooltipModule */].forRoot()
                 ],
@@ -3892,7 +4332,7 @@ NgbPopoverWindow.decorators = [
                     '[id]': 'id'
                 },
                 template: "\n    <div class=\"arrow\"></div>\n    <h3 class=\"popover-header\">{{title}}</h3><div class=\"popover-body\"><ng-content></ng-content></div>",
-                styles: ["\n    :host.bs-popover-top .arrow, :host.bs-popover-bottom .arrow {\n      left: 50%;\n    }\n\n    :host.bs-popover-top-left .arrow, :host.bs-popover-bottom-left .arrow {\n      left: 2em;\n    }\n\n    :host.bs-popover-top-right .arrow, :host.bs-popover-bottom-right .arrow {\n      left: auto;\n      right: 2em;\n    }\n\n    :host.bs-popover-left .arrow, :host.bs-popover-right .arrow {\n      top: 50%;\n    }\n    \n    :host.bs-popover-left-top .arrow, :host.bs-popover-right-top .arrow {\n      top: 0.7em;\n    }\n\n    :host.bs-popover-left-bottom .arrow, :host.bs-popover-right-bottom .arrow {\n      top: auto;\n      bottom: 0.7em;\n    }\n  "]
+                styles: ["\n    :host.bs-popover-top .arrow, :host.bs-popover-bottom .arrow {\n      left: 50%;\n      margin-left: -5px;\n    }\n\n    :host.bs-popover-top-left .arrow, :host.bs-popover-bottom-left .arrow {\n      left: 2em;\n    }\n\n    :host.bs-popover-top-right .arrow, :host.bs-popover-bottom-right .arrow {\n      left: auto;\n      right: 2em;\n    }\n\n    :host.bs-popover-left .arrow, :host.bs-popover-right .arrow {\n      top: 50%;\n      margin-top: -5px;\n    }\n    \n    :host.bs-popover-left-top .arrow, :host.bs-popover-right-top .arrow {\n      top: 0.7em;\n    }\n\n    :host.bs-popover-left-bottom .arrow, :host.bs-popover-right-bottom .arrow {\n      top: auto;\n      bottom: 0.7em;\n    }\n  "]
             },] },
 ];
 /** @nocollapse */
@@ -4103,6 +4543,7 @@ var NgbProgressbar = (function () {
         this.striped = config.striped;
         this.type = config.type;
         this.showValue = config.showValue;
+        this.height = config.height;
     }
     NgbProgressbar.prototype.getValue = function () { return Object(__WEBPACK_IMPORTED_MODULE_1__util_util__["a" /* getValueInRange */])(this.value, this.max); };
     NgbProgressbar.prototype.getPercentValue = function () { return 100 * this.getValue() / this.max; };
@@ -4113,7 +4554,7 @@ NgbProgressbar.decorators = [
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
                 selector: 'ngb-progressbar',
                 changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush,
-                template: "\n    <div class=\"progress\">\n      <div class=\"progress-bar{{type ? ' bg-' + type : ''}}{{animated ? ' progress-bar-animated' : ''}}{{striped ?\n    ' progress-bar-striped' : ''}}\" role=\"progressbar\" [style.width.%]=\"getPercentValue()\"\n    [attr.aria-valuenow]=\"getValue()\" aria-valuemin=\"0\" [attr.aria-valuemax]=\"max\">\n        <span *ngIf=\"showValue\">{{getPercentValue()}}%</span><ng-content></ng-content>\n      </div>\n    </div>\n  "
+                template: "\n    <div class=\"progress\" [style.height]=\"height\">\n      <div class=\"progress-bar{{type ? ' bg-' + type : ''}}{{animated ? ' progress-bar-animated' : ''}}{{striped ?\n    ' progress-bar-striped' : ''}}\" role=\"progressbar\" [style.width.%]=\"getPercentValue()\"\n    [attr.aria-valuenow]=\"getValue()\" aria-valuemin=\"0\" [attr.aria-valuemax]=\"max\">\n        <span *ngIf=\"showValue\">{{getPercentValue()}}%</span><ng-content></ng-content>\n      </div>\n    </div>\n  "
             },] },
 ];
 /** @nocollapse */
@@ -4127,6 +4568,7 @@ NgbProgressbar.propDecorators = {
     'showValue': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
     'type': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
     'value': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+    'height': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
 };
 //# sourceMappingURL=progressbar.js.map
 
@@ -4286,7 +4728,7 @@ var NgbRating = (function () {
         }
     };
     NgbRating.prototype.ngOnInit = function () {
-        this.contexts = Array.from({ length: this.max }, function () { return ({ fill: 0 }); });
+        this.contexts = Array.from({ length: this.max }, function (v, k) { return ({ fill: 0, index: k }); });
         this._updateState(this.rate);
     };
     NgbRating.prototype.registerOnChange = function (fn) { this.onChange = fn; };
@@ -4852,8 +5294,8 @@ var NgbTimepicker = (function () {
 NgbTimepicker.decorators = [
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
                 selector: 'ngb-timepicker',
-                styles: ["\n    .ngb-tp {\n      display: flex;\n      align-items: center;\n    }\n\n    .ngb-tp-hour, .ngb-tp-minute, .ngb-tp-second, .ngb-tp-meridian {\n      display: flex;\n      flex-direction: column;\n      align-items: center;\n      justify-content: space-around;\n    }\n\n    .ngb-tp-spacer {\n      width: 1em;\n      text-align: center;\n    }\n\n    .chevron::before {\n      border-style: solid;\n      border-width: 0.29em 0.29em 0 0;\n      content: '';\n      display: inline-block;\n      height: 0.69em;\n      left: 0.05em;\n      position: relative;\n      top: 0.15em;\n      transform: rotate(-45deg);\n      -webkit-transform: rotate(-45deg);\n      -ms-transform: rotate(-45deg);\n      vertical-align: middle;\n      width: 0.71em;\n    }\n\n    .chevron.bottom:before {\n      top: -.3em;\n      -webkit-transform: rotate(135deg);\n      -ms-transform: rotate(135deg);\n      transform: rotate(135deg);\n    }\n\n    .btn-link {\n      outline: 0;\n    }\n\n    .btn-link.disabled {\n      cursor: not-allowed;\n      opacity: .65;\n    }\n\n    input {\n      text-align: center;\n      display: inline-block;\n      width: auto;\n    }\n  "],
-                template: "\n    <fieldset [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n      <div class=\"ngb-tp\">\n        <div class=\"ngb-tp-hour\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeHour(hourStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron\"></span>\n            <span class=\"sr-only\">Increment hours</span>\n          </button>\n          <input type=\"text\" class=\"form-control\" [ngClass]=\"setFormControlSize()\" maxlength=\"2\" size=\"2\" placeholder=\"HH\"\n            [value]=\"formatHour(model?.hour)\" (change)=\"updateHour($event.target.value)\"\n            [readonly]=\"readonlyInputs\" [disabled]=\"disabled\" aria-label=\"Hours\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeHour(-hourStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron bottom\"></span>\n            <span class=\"sr-only\">Decrement hours</span>\n          </button>\n        </div>\n        <div class=\"ngb-tp-spacer\">:</div>\n        <div class=\"ngb-tp-minute\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeMinute(minuteStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron\"></span>\n            <span class=\"sr-only\">Increment minutes</span>\n          </button>\n          <input type=\"text\" class=\"form-control\" [ngClass]=\"setFormControlSize()\" maxlength=\"2\" size=\"2\" placeholder=\"MM\"\n            [value]=\"formatMinSec(model?.minute)\" (change)=\"updateMinute($event.target.value)\"\n            [readonly]=\"readonlyInputs\" [disabled]=\"disabled\" aria-label=\"Minutes\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeMinute(-minuteStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron bottom\"></span>\n            <span class=\"sr-only\">Decrement minutes</span>\n          </button>\n        </div>\n        <div *ngIf=\"seconds\" class=\"ngb-tp-spacer\">:</div>\n        <div *ngIf=\"seconds\" class=\"ngb-tp-second\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeSecond(secondStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron\"></span>\n            <span class=\"sr-only\">Increment seconds</span>\n          </button>\n          <input type=\"text\" class=\"form-control\" [ngClass]=\"setFormControlSize()\" maxlength=\"2\" size=\"2\" placeholder=\"SS\"\n            [value]=\"formatMinSec(model?.second)\" (change)=\"updateSecond($event.target.value)\"\n            [readonly]=\"readonlyInputs\" [disabled]=\"disabled\" aria-label=\"Seconds\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeSecond(-secondStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron bottom\"></span>\n            <span class=\"sr-only\">Decrement seconds</span>\n          </button>\n        </div>\n        <div *ngIf=\"meridian\" class=\"ngb-tp-spacer\"></div>\n        <div *ngIf=\"meridian\" class=\"ngb-tp-meridian\">\n          <button type=\"button\" class=\"btn btn-outline-primary\" [ngClass]=\"setButtonSize()\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\"\n            (click)=\"toggleMeridian()\">{{model?.hour >= 12 ? 'PM' : 'AM'}}</button>\n        </div>\n      </div>\n    </fieldset>\n  ",
+                styles: ["\n    .ngb-tp {\n      display: flex;\n      align-items: center;\n    }\n\n    .ngb-tp-hour, .ngb-tp-minute, .ngb-tp-second, .ngb-tp-meridian {\n      display: flex;\n      flex-direction: column;\n      align-items: center;\n      justify-content: space-around;\n    }\n\n    .ngb-tp-spacer {\n      width: 1em;\n      text-align: center;\n    }\n\n    .chevron::before {\n      border-style: solid;\n      border-width: 0.29em 0.29em 0 0;\n      content: '';\n      display: inline-block;\n      height: 0.69em;\n      left: 0.05em;\n      position: relative;\n      top: 0.15em;\n      transform: rotate(-45deg);\n      -webkit-transform: rotate(-45deg);\n      -ms-transform: rotate(-45deg);\n      vertical-align: middle;\n      width: 0.71em;\n    }\n\n    .chevron.bottom:before {\n      top: -.3em;\n      -webkit-transform: rotate(135deg);\n      -ms-transform: rotate(135deg);\n      transform: rotate(135deg);\n    }\n\n    input {\n      text-align: center;\n      display: inline-block;\n      width: auto;\n    }\n  "],
+                template: "\n    <fieldset [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n      <div class=\"ngb-tp\">\n        <div class=\"ngb-tp-hour\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeHour(hourStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron\"></span>\n            <span class=\"sr-only\">Increment hours</span>\n          </button>\n          <input type=\"text\" class=\"form-control\" [ngClass]=\"setFormControlSize()\" maxlength=\"2\" size=\"2\" placeholder=\"HH\"\n            [value]=\"formatHour(model?.hour)\" (change)=\"updateHour($event.target.value)\"\n            [readonly]=\"readonlyInputs\" [disabled]=\"disabled\" aria-label=\"Hours\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeHour(-hourStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron bottom\"></span>\n            <span class=\"sr-only\">Decrement hours</span>\n          </button>\n        </div>\n        <div class=\"ngb-tp-spacer\">:</div>\n        <div class=\"ngb-tp-minute\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeMinute(minuteStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron\"></span>\n            <span class=\"sr-only\">Increment minutes</span>\n          </button>\n          <input type=\"text\" class=\"form-control\" [ngClass]=\"setFormControlSize()\" maxlength=\"2\" size=\"2\" placeholder=\"MM\"\n            [value]=\"formatMinSec(model?.minute)\" (change)=\"updateMinute($event.target.value)\"\n            [readonly]=\"readonlyInputs\" [disabled]=\"disabled\" aria-label=\"Minutes\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeMinute(-minuteStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron bottom\"></span>\n            <span class=\"sr-only\">Decrement minutes</span>\n          </button>\n        </div>\n        <div *ngIf=\"seconds\" class=\"ngb-tp-spacer\">:</div>\n        <div *ngIf=\"seconds\" class=\"ngb-tp-second\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeSecond(secondStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron\"></span>\n            <span class=\"sr-only\">Increment seconds</span>\n          </button>\n          <input type=\"text\" class=\"form-control\" [ngClass]=\"setFormControlSize()\" maxlength=\"2\" size=\"2\" placeholder=\"SS\"\n            [value]=\"formatMinSec(model?.second)\" (change)=\"updateSecond($event.target.value)\"\n            [readonly]=\"readonlyInputs\" [disabled]=\"disabled\" aria-label=\"Seconds\">\n          <button *ngIf=\"spinners\" type=\"button\" class=\"btn btn-link\" [ngClass]=\"setButtonSize()\" (click)=\"changeSecond(-secondStep)\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\">\n            <span class=\"chevron bottom\"></span>\n            <span class=\"sr-only\">Decrement seconds</span>\n          </button>\n        </div>\n        <div *ngIf=\"meridian\" class=\"ngb-tp-spacer\"></div>\n        <div *ngIf=\"meridian\" class=\"ngb-tp-meridian\">\n          <button type=\"button\" class=\"btn btn-outline-primary\" [ngClass]=\"setButtonSize()\"\n            [disabled]=\"disabled\" [class.disabled]=\"disabled\"\n            (click)=\"toggleMeridian()\">{{model?.hour >= 12 ? 'PM' : 'AM'}}</button>\n        </div>\n      </div>\n    </fieldset>\n  ",
                 providers: [NGB_TIMEPICKER_VALUE_ACCESSOR]
             },] },
 ];
@@ -5329,16 +5771,11 @@ NgbTypeaheadWindow.propDecorators = {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NgbTypeahead; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject__ = __webpack_require__("./node_modules/rxjs/BehaviorSubject.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_let__ = __webpack_require__("./node_modules/rxjs/operator/let.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_let___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_operator_let__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_do__ = __webpack_require__("./node_modules/rxjs/operator/do.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_do___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_operator_do__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_operator_switchMap__ = __webpack_require__("./node_modules/rxjs/operator/switchMap.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_operator_switchMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_operator_switchMap__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_observable_fromEvent__ = __webpack_require__("./node_modules/rxjs/observable/fromEvent.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_observable_fromEvent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_observable_fromEvent__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject__ = __webpack_require__("./node_modules/rxjs/_esm5/BehaviorSubject.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_let__ = __webpack_require__("./node_modules/rxjs/_esm5/operator/let.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_do__ = __webpack_require__("./node_modules/rxjs/_esm5/operator/do.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_operator_switchMap__ = __webpack_require__("./node_modules/rxjs/_esm5/operator/switchMap.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_observable_fromEvent__ = __webpack_require__("./node_modules/rxjs/_esm5/observable/fromEvent.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__util_positioning__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/util/positioning.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__typeahead_window__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/typeahead/typeahead-window.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__util_popup__ = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/util/popup.js");
@@ -5398,8 +5835,8 @@ var NgbTypeahead = (function () {
         this.focusFirst = config.focusFirst;
         this.showHint = config.showHint;
         this.placement = config.placement;
-        this._valueChanges = Object(__WEBPACK_IMPORTED_MODULE_6_rxjs_observable_fromEvent__["fromEvent"])(_elementRef.nativeElement, 'input', function ($event) { return $event.target.value; });
-        this._resubscribeTypeahead = new __WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject__["BehaviorSubject"](null);
+        this._valueChanges = Object(__WEBPACK_IMPORTED_MODULE_6_rxjs_observable_fromEvent__["a" /* fromEvent */])(_elementRef.nativeElement, 'input', function ($event) { return $event.target.value; });
+        this._resubscribeTypeahead = new __WEBPACK_IMPORTED_MODULE_2_rxjs_BehaviorSubject__["a" /* BehaviorSubject */](null);
         this._popupService = new __WEBPACK_IMPORTED_MODULE_9__util_popup__["b" /* PopupService */](__WEBPACK_IMPORTED_MODULE_8__typeahead_window__["a" /* NgbTypeaheadWindow */], _injector, _viewContainerRef, _renderer, componentFactoryResolver);
         this._zoneSubscription = ngZone.onStable.subscribe(function () {
             if (_this.isPopupOpen()) {
@@ -5409,19 +5846,19 @@ var NgbTypeahead = (function () {
     }
     NgbTypeahead.prototype.ngOnInit = function () {
         var _this = this;
-        var inputValues$ = __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_do__["_do"].call(this._valueChanges, function (value) {
+        var inputValues$ = __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_do__["a" /* _do */].call(this._valueChanges, function (value) {
             _this._userInput = value;
             if (_this.editable) {
                 _this._onChange(value);
             }
         });
-        var results$ = __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_let__["letProto"].call(inputValues$, this.ngbTypeahead);
-        var processedResults$ = __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_do__["_do"].call(results$, function () {
+        var results$ = __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_let__["a" /* letProto */].call(inputValues$, this.ngbTypeahead);
+        var processedResults$ = __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_do__["a" /* _do */].call(results$, function () {
             if (!_this.editable) {
                 _this._onChange(undefined);
             }
         });
-        var userInput$ = __WEBPACK_IMPORTED_MODULE_5_rxjs_operator_switchMap__["switchMap"].call(this._resubscribeTypeahead, function () { return processedResults$; });
+        var userInput$ = __WEBPACK_IMPORTED_MODULE_5_rxjs_operator_switchMap__["a" /* switchMap */].call(this._resubscribeTypeahead, function () { return processedResults$; });
         this._subscription = this._subscribeToUserInput(userInput$);
     };
     NgbTypeahead.prototype.ngOnDestroy = function () {
@@ -5435,12 +5872,23 @@ var NgbTypeahead = (function () {
     NgbTypeahead.prototype.setDisabledState = function (isDisabled) {
         this._renderer.setProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
     };
+    NgbTypeahead.prototype.onDocumentClick = function (event) {
+        if (event.target !== this._elementRef.nativeElement) {
+            this.dismissPopup();
+        }
+    };
+    /**
+     * Dismisses typeahead popup window
+     */
     NgbTypeahead.prototype.dismissPopup = function () {
         if (this.isPopupOpen()) {
             this._closePopup();
             this._writeInputValue(this._userInput);
         }
     };
+    /**
+     * Returns true if the typeahead popup window is displayed
+     */
     NgbTypeahead.prototype.isPopupOpen = function () { return this._windowRef != null; };
     NgbTypeahead.prototype.handleBlur = function () {
         this._resubscribeTypeahead.next(null);
@@ -5566,10 +6014,11 @@ var NgbTypeahead = (function () {
 NgbTypeahead.decorators = [
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"], args: [{
                 selector: 'input[ngbTypeahead]',
+                exportAs: 'ngbTypeahead',
                 host: {
                     '(blur)': 'handleBlur()',
                     '[class.open]': 'isPopupOpen()',
-                    '(document:click)': 'dismissPopup()',
+                    '(document:click)': 'onDocumentClick($event)',
                     '(keydown)': 'handleKeyDown($event)',
                     'autocomplete': 'off',
                     'autocapitalize': 'off',

@@ -6,22 +6,22 @@ webpackJsonp(["main"],{
 var map = {
 	"../plugins/Hardel/Dashboard/dashboard.module": [
 		"./src/plugins/Hardel/Dashboard/dashboard.module.ts",
-		3
+		"dashboard.module"
 	],
 	"../plugins/Hardel/Plugin/plugin.module": [
 		"./src/plugins/Hardel/Plugin/plugin.module.ts",
 		"common",
-		2
+		"plugin.module"
 	],
 	"../plugins/Hardel/Settings/settings.module": [
 		"./src/plugins/Hardel/Settings/settings.module.ts",
 		"common",
-		1
+		"settings.module"
 	],
 	"../plugins/Hardel/Website/website.module": [
 		"./src/plugins/Hardel/Website/website.module.ts",
 		"common",
-		0
+		"website.module"
 	]
 };
 function webpackAsyncContext(req) {
@@ -41,20 +41,9 @@ module.exports = webpackAsyncContext;
 /***/ }),
 
 /***/ "./src/app/app.component.css":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
+module.exports = ""
 
 /***/ }),
 
@@ -435,7 +424,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-__webpack_require__("./node_modules/rxjs/add/operator/filter.js");
+__webpack_require__("./node_modules/rxjs/_esm5/add/operator/filter.js");
 var BreadCrumbsComponent = (function () {
     function BreadCrumbsComponent(activatedRoute, router) {
         var _this = this;
@@ -607,20 +596,9 @@ exports.LogoutComponent = logout_component_1.LogoutComponent;
 /***/ }),
 
 /***/ "./src/app/backend-module/login/login.component.css":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, ".form-title { padding: 20px;  color: orange;}\n.form-body {padding: 20px; min-height: 266px;}\n.form { position: absolute; top:300px; left:24%; width:50%; border: 1px solid orange}\n.form h1 {text-align: center;}\ninput {  width:100%; height: 30px; margin-top: 15px; margin-bottom: 15px; height: 42px;}\ninput::-webkit-input-placeholder{ text-transform: uppercase;}\ninput:-ms-input-placeholder{ text-transform: uppercase;}\ninput::placeholder{ text-transform: uppercase;}\nbutton { position: absolute; bottom:23px; right: 42%; background-color: orange; text-transform: uppercase; color:white; border:1px transparent; padding: 10px 30px}\n.error {color:red; font-size:12px;}", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
+module.exports = ".form-title { padding: 20px;  color: orange;}\n.form-body {padding: 20px; min-height: 266px;}\n.form { position: absolute; top:300px; left:24%; width:50%; border: 1px solid orange}\n.form h1 {text-align: center;}\ninput {  width:100%; height: 30px; margin-top: 15px; margin-bottom: 15px; height: 42px;}\ninput::-webkit-input-placeholder{ text-transform: uppercase;}\ninput::-ms-input-placeholder{ text-transform: uppercase;}\ninput::placeholder{ text-transform: uppercase;}\nbutton { position: absolute; bottom:23px; right: 42%; background-color: orange; text-transform: uppercase; color:white; border:1px transparent; padding: 10px 30px}\n.error {color:red; font-size:12px;}"
 
 /***/ }),
 
@@ -768,20 +746,9 @@ exports.MenuItemsComponent = menu_items_component_1.MenuItemsComponent;
 /***/ }),
 
 /***/ "./src/app/backend-module/menu-items/menu-item/menu-item.component.css":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
+module.exports = ""
 
 /***/ }),
 
@@ -871,20 +838,9 @@ var _a, _b, _c;
 /***/ }),
 
 /***/ "./src/app/backend-module/menu-items/menu-items.component.css":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
+module.exports = ""
 
 /***/ }),
 
@@ -1005,20 +961,9 @@ exports.NavbarComponent = navbar_component_1.NavbarComponent;
 /***/ }),
 
 /***/ "./src/app/backend-module/navbar/navbar-item/navbar-item.component.css":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
+module.exports = ""
 
 /***/ }),
 
@@ -1114,20 +1059,9 @@ var _a, _b, _c;
 /***/ }),
 
 /***/ "./src/app/backend-module/navbar/navbar.component.css":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
+module.exports = ""
 
 /***/ }),
 
@@ -1438,20 +1372,9 @@ var _a, _b, _c;
 /***/ }),
 
 /***/ "./src/app/backend-module/user-module/user-side/user-side.component.css":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "\n", ""]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
+module.exports = "\n"
 
 /***/ }),
 
@@ -1583,7 +1506,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 var http_1 = __webpack_require__("./node_modules/@angular/http/@angular/http.es5.js");
-__webpack_require__("./node_modules/rxjs/Rx.js");
+__webpack_require__("./node_modules/rxjs/_esm5/Rx.js");
 var api_manager_1 = __webpack_require__("./src/app/urlApi/api.manager.ts");
 var MenuService = (function () {
     function MenuService(http) {
@@ -1764,7 +1687,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var Subject_1 = __webpack_require__("./node_modules/rxjs/Subject.js");
+var Subject_1 = __webpack_require__("./node_modules/rxjs/_esm5/Subject.js");
 var EventService = (function () {
     function EventService() {
         this._clicked = new Subject_1.Subject();
