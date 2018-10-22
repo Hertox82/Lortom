@@ -14,8 +14,11 @@ export class MenuItemsComponent implements OnInit {
   constructor(private menuService: MenuService) { }
 
   ngOnInit() {
-    this.menuService.getMenu()
-        .subscribe(
+    this.menuService.getMenu().map(
+         (response : {menulista: SlideItem[]}) => {
+              return response.menulista;
+            }
+        ).subscribe(
             (menuItems : SlideItem[]) => this.items = menuItems,
             (error : Response) => console.log(error)
         );

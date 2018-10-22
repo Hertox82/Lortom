@@ -4,7 +4,6 @@
 
 
 import {Injectable} from "@angular/core";
-import {Http, Response} from "@angular/http";
 import {HttpClient} from "@angular/common/http";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
@@ -157,8 +156,8 @@ export class WebsiteService extends MasterService{
     {
         return this.http.get(this.apiManager.getPathByName('getPages'))
             .map(
-                (response : Response) => {
-                    return response.json().pages;
+                (response : {pages: Page[]}) => {
+                    return response.pages;
                 }
             );
     }
@@ -171,8 +170,8 @@ export class WebsiteService extends MasterService{
     {
         return this.http.get(this.apiManager.getPathByName('getComponents'))
             .map(
-                (response : Response) => {
-                    return response.json().components;
+                (response : {components: LortomComponent [] }) => {
+                    return response.components;
                 }
             );
     }
@@ -184,8 +183,8 @@ export class WebsiteService extends MasterService{
     getMenusFrom() : Observable<any> {
         return this.http.get(this.apiManager.getPathByName('getMenus'))
             .map(
-                (response: Response) => {
-                    return response.json().menus;
+                (response: {menus: LortomMenu[]}) => {
+                    return response.menus;
                 }
             );
     }
@@ -193,8 +192,8 @@ export class WebsiteService extends MasterService{
     getModelsFrom() : Observable<any> {
         return this.http.get(this.apiManager.getPathByName('getModels'))
             .map(
-                (response: Response) => {
-                    return response.json().models;
+                (response: {models: any}) => {
+                    return response.models;
                 }
             );
     }
@@ -263,8 +262,8 @@ export class WebsiteService extends MasterService{
 
         return this.http.put(this.apiManager.getPathByName('getPages'),pages,this.getOptions())
             .map(
-                (response : Response) => {
-                    return response.json().pages;
+                (response : {pages: Page[]}) => {
+                    return response.pages;
                 }
             );
     }
@@ -278,8 +277,8 @@ export class WebsiteService extends MasterService{
     {
         return this.http.put(this.apiManager.getPathByName('getComponents'),cmp,this.getOptions())
             .map(
-                (response : Response) => {
-                    return response.json().components;
+                (response : {components: LortomComponent[]}) => {
+                    return response.components;
                 }
             );
     }
@@ -292,8 +291,8 @@ export class WebsiteService extends MasterService{
     deleteMenus(menu: LortomMenu[] ): Observable<any> {
         return this.http.put(this.apiManager.getPathByName('getMenus'),menu,this.getOptions())
             .map(
-                (response: Response) => {
-                    return response.json().menus;
+                (response: {menus: LortomMenu[]}) => {
+                    return response.menus;
                 }
             );
     }
@@ -307,8 +306,8 @@ export class WebsiteService extends MasterService{
 
         return this.http.post(this.apiManager.getPathByName('savePage'),page,this.getOptions())
             .map(
-                (response : Response) => {
-                    return response.json().page;
+                (response : {page: Page}) => {
+                    return response.page;
                 }
             );
     }
@@ -317,8 +316,8 @@ export class WebsiteService extends MasterService{
 
         return this.http.post(this.apiManager.getPathByName('saveComponent'),comp,this.getOptions())
             .map(
-                (response: Response) => {
-                    return response.json().component;
+                (response: {component: LortomComponent}) => {
+                    return response.component;
                 }
             )
     }
@@ -326,8 +325,8 @@ export class WebsiteService extends MasterService{
     createMenu(menu: any): Observable<any> {
         return this.http.post(this.apiManager.getPathByName('saveMenu'),menu,this.getOptions())
             .map(
-                (response: Response) => {
-                    return response.json().menu;
+                (response: {menu: LortomMenu}) => {
+                    return response.menu;
                 }
             );
     }
@@ -336,8 +335,8 @@ export class WebsiteService extends MasterService{
         let obj = {id: id};
         return this.http.post(this.apiManager.getPathByName('rebuild'),obj,this.getOptions())
             .map(
-                (response: Response) => {
-                    return response.json().message;
+                (response: {message: any}) => {
+                    return response.message;
                 }
             );
     }
@@ -424,8 +423,8 @@ export class WebsiteService extends MasterService{
     getPageAtt() : Observable<any> {
         return this.http.get(this.apiManager.getPathByName('getPageAtt'))
             .map(
-                (response : Response) => {
-                    return response.json();
+                response => {
+                    return response;
                 }
             );
     }
@@ -437,8 +436,8 @@ export class WebsiteService extends MasterService{
     getMenuAtt() : Observable<any> {
         return this.http.get(this.apiManager.getPathByName('getMenuAtt'))
             .map(
-                (response: Response) => {
-                    return response.json().data;
+                (response: {data: any}) => {
+                    return response.data;
                 }
             );
     }
@@ -465,8 +464,8 @@ export class WebsiteService extends MasterService{
 
         return this.http.put(this.apiManager.getPathByName('savePage'),page,this.getOptions())
             .map(
-                (response : Response) => {
-                    return response.json().page;
+                (response : {page: Page}) => {
+                    return response.page;
                 }
             );
     }
@@ -480,8 +479,8 @@ export class WebsiteService extends MasterService{
 
         return this.http.put(this.apiManager.getPathByName('saveComponent'),comp,this.getOptions())
             .map(
-                (response : Response) => {
-                    return response.json().component;
+                (response : {component: LortomComponent}) => {
+                    return response.component;
                 }
             );
     }
@@ -494,8 +493,8 @@ export class WebsiteService extends MasterService{
     saveMenu(menu: any): Observable<any> {
         return this.http.put(this.apiManager.getPathByName('saveMenu'),menu,this.getOptions())
             .map(
-                (response: Response) => {
-                    return response.json().menu;
+                (response: {menu: any}) => {
+                    return response.menu;
                 }
             );
     }

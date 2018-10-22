@@ -28,9 +28,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var master_service_1 = __webpack_require__("./src/services/master.service.ts");
-var http_1 = __webpack_require__("./node_modules/@angular/http/@angular/http.es5.js");
+var http_1 = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
 var Subject_1 = __webpack_require__("./node_modules/rxjs/_esm5/Subject.js");
 var PluginService = (function (_super) {
     __extends(PluginService, _super);
@@ -66,25 +66,25 @@ var PluginService = (function (_super) {
     PluginService.prototype.getPluginsFrom = function () {
         return this.http.get(this.apiManager.getPathByName('getPlugins'))
             .map(function (response) {
-            return response.json().plugins;
+            return response.plugins;
         });
     };
     PluginService.prototype.getTemplateFrom = function () {
         return this.http.get(this.apiManager.getPathByName('getTemplate'))
             .map(function (response) {
-            return response.json();
+            return response;
         });
     };
     PluginService.prototype.getLatestPlugin = function () {
         return this.http.get(this.apiManager.getPathByName('getLatestPlugin'))
             .map(function (response) {
-            return response.json().plugins;
+            return response.plugins;
         });
     };
     PluginService.prototype.getLatestTemplate = function () {
         return this.http.get(this.apiManager.getPathByName('getLatestTemplate'))
             .map(function (response) {
-            return response.json().template;
+            return response.template;
         });
     };
     /**
@@ -95,31 +95,31 @@ var PluginService = (function (_super) {
     PluginService.prototype.uninstallPlugins = function (plugins) {
         return this.http.put(this.apiManager.getPathByName('getPlugins'), plugins, this.getOptions())
             .map(function (response) {
-            return response.json().message;
+            return response.message;
         });
     };
     PluginService.prototype.uninstallTemplates = function (templates) {
         return this.http.put(this.apiManager.getPathByName('instTemp'), templates, this.getOptions())
             .map(function (response) {
-            return response.json().message;
+            return response.message;
         });
     };
     PluginService.prototype.uninstallTemplate = function (template) {
         return this.http.put(this.apiManager.getPathByName('instTemp'), template, this.getOptions())
             .map(function (response) {
-            return response.json().message;
+            return response.message;
         });
     };
     PluginService.prototype.deletePackPlugin = function (plugin) {
         return this.http.post(this.apiManager.getPathByName('delPack'), plugin, this.getOptions())
             .map(function (response) {
-            return response.json().plugins;
+            return response.plugins;
         });
     };
     PluginService.prototype.deletePackTemplate = function (template) {
         return this.http.post(this.apiManager.getPathByName('unPackTemp'), template, this.getOptions())
             .map(function (response) {
-            return response.json().message;
+            return response.message;
         });
     };
     /**
@@ -130,25 +130,25 @@ var PluginService = (function (_super) {
     PluginService.prototype.installPlugin = function (plugin) {
         return this.http.post(this.apiManager.getPathByName('installPlugin'), plugin, this.getOptions())
             .map(function (response) {
-            return response.json().message;
+            return response.message;
         });
     };
     PluginService.prototype.installTemplate = function (template) {
         return this.http.post(this.apiManager.getPathByName('instTemp'), template, this.getOptions())
             .map(function (response) {
-            return response.json().message;
+            return response.message;
         });
     };
     PluginService.prototype.activateTemplate = function (template) {
         return this.http.post(this.apiManager.getPathByName('actiTemp'), template, this.getOptions())
             .map(function (response) {
-            return response.json().message;
+            return response.message;
         });
     };
     PluginService.prototype.deactivateTemplate = function (template) {
         return this.http.post(this.apiManager.getPathByName('deactiTemp'), template, this.getOptions())
             .map(function (response) {
-            return response.json().message;
+            return response.message;
         });
     };
     /**
@@ -159,25 +159,25 @@ var PluginService = (function (_super) {
     PluginService.prototype.updatePlugin = function (plugin) {
         return this.http.put(this.apiManager.getPathByName('installPlugin'), plugin, this.getOptions())
             .map(function (response) {
-            return response.json().messsage;
+            return response.messsage;
         });
     };
     PluginService.prototype.updateTemplate = function (template) {
         return this.http.put(this.apiManager.getPathByName('installTemplate'), template, this.getOptions())
             .map(function (response) {
-            return response.json().message;
+            return response.message;
         });
     };
     PluginService.prototype.packPlugin = function (plugin) {
         return this.http.post(this.apiManager.getPathByName('packPlugin'), plugin, this.getOptions())
             .map(function (response) {
-            return response.json().plugins;
+            return response.plugins;
         });
     };
     PluginService.prototype.packTemplate = function (template) {
         return this.http.post(this.apiManager.getPathByName('packTemplate'), template, this.getOptions())
             .map(function (response) {
-            return response.json().message;
+            return response.message;
         });
     };
     /* End Section call to API*/
@@ -230,15 +230,14 @@ var PluginService = (function (_super) {
     PluginService.prototype.updateListOfTemplate = function () {
         this._updateTemplate.next();
     };
+    PluginService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], PluginService);
     return PluginService;
 }(master_service_1.MasterService));
-PluginService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [typeof (_a = typeof http_1.Http !== "undefined" && http_1.Http) === "function" && _a || Object])
-], PluginService);
 exports.PluginService = PluginService;
-var _a;
-//# sourceMappingURL=plugin.service.js.map
+
 
 /***/ }),
 
@@ -277,9 +276,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var plugin_service_1 = __webpack_require__("./src/plugins/Hardel/Plugin/Service/plugin.service.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var list_component_1 = __webpack_require__("./src/model/list.component.ts");
 var ng_bootstrap_1 = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
 var InstallPluginComponent = (function (_super) {
@@ -341,19 +340,18 @@ var InstallPluginComponent = (function (_super) {
             }
         });
     };
+    InstallPluginComponent = __decorate([
+        core_1.Component({
+            selector: 'pl-install',
+            template: __webpack_require__("./src/plugins/Hardel/Plugin/component/InstallPlugin/install-plugin.component.html"),
+            styles: ['']
+        }),
+        __metadata("design:paramtypes", [plugin_service_1.PluginService, router_1.Router, ng_bootstrap_1.NgbModal])
+    ], InstallPluginComponent);
     return InstallPluginComponent;
 }(list_component_1.ListComponent));
-InstallPluginComponent = __decorate([
-    core_1.Component({
-        selector: 'pl-install',
-        template: __webpack_require__("./src/plugins/Hardel/Plugin/component/InstallPlugin/install-plugin.component.html"),
-        styles: ['']
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof plugin_service_1.PluginService !== "undefined" && plugin_service_1.PluginService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object, typeof (_c = typeof ng_bootstrap_1.NgbModal !== "undefined" && ng_bootstrap_1.NgbModal) === "function" && _c || Object])
-], InstallPluginComponent);
 exports.InstallPluginComponent = InstallPluginComponent;
-var _a, _b, _c;
-//# sourceMappingURL=install-plugin.component.js.map
+
 
 /***/ }),
 
@@ -392,10 +390,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var list_component_1 = __webpack_require__("./src/model/list.component.ts");
 var plugin_service_1 = __webpack_require__("./src/plugins/Hardel/Plugin/Service/plugin.service.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var ng_bootstrap_1 = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
 var InstallTemplateComponent = (function (_super) {
     __extends(InstallTemplateComponent, _super);
@@ -457,19 +455,18 @@ var InstallTemplateComponent = (function (_super) {
             }
         });
     };
+    InstallTemplateComponent = __decorate([
+        core_1.Component({
+            selector: 'template-install',
+            template: __webpack_require__("./src/plugins/Hardel/Plugin/component/InstallTemplate/install-template.component.html"),
+            styles: ['']
+        }),
+        __metadata("design:paramtypes", [plugin_service_1.PluginService, router_1.Router, ng_bootstrap_1.NgbModal])
+    ], InstallTemplateComponent);
     return InstallTemplateComponent;
 }(list_component_1.ListComponent));
-InstallTemplateComponent = __decorate([
-    core_1.Component({
-        selector: 'template-install',
-        template: __webpack_require__("./src/plugins/Hardel/Plugin/component/InstallTemplate/install-template.component.html"),
-        styles: ['']
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof plugin_service_1.PluginService !== "undefined" && plugin_service_1.PluginService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object, typeof (_c = typeof ng_bootstrap_1.NgbModal !== "undefined" && ng_bootstrap_1.NgbModal) === "function" && _c || Object])
-], InstallTemplateComponent);
 exports.InstallTemplateComponent = InstallTemplateComponent;
-var _a, _b, _c;
-//# sourceMappingURL=install-template.component.js.map
+
 
 /***/ }),
 
@@ -505,9 +502,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var plugin_service_1 = __webpack_require__("./src/plugins/Hardel/Plugin/Service/plugin.service.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var list_component_1 = __webpack_require__("./src/model/list.component.ts");
 var ListPluginComponent = (function (_super) {
     __extends(ListPluginComponent, _super);
@@ -597,19 +594,18 @@ var ListPluginComponent = (function (_super) {
             });
         }
     };
+    ListPluginComponent = __decorate([
+        core_1.Component({
+            selector: 'pl-list',
+            template: __webpack_require__("./src/plugins/Hardel/Plugin/component/Plugins/listplugin.component.html"),
+            styles: ['']
+        }),
+        __metadata("design:paramtypes", [plugin_service_1.PluginService, router_1.Router])
+    ], ListPluginComponent);
     return ListPluginComponent;
 }(list_component_1.ListComponent));
-ListPluginComponent = __decorate([
-    core_1.Component({
-        selector: 'pl-list',
-        template: __webpack_require__("./src/plugins/Hardel/Plugin/component/Plugins/listplugin.component.html"),
-        styles: ['']
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof plugin_service_1.PluginService !== "undefined" && plugin_service_1.PluginService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
-], ListPluginComponent);
 exports.ListPluginComponent = ListPluginComponent;
-var _a, _b;
-//# sourceMappingURL=listplugin.component.js.map
+
 
 /***/ }),
 
@@ -645,10 +641,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var list_component_1 = __webpack_require__("./src/model/list.component.ts");
 var plugin_service_1 = __webpack_require__("./src/plugins/Hardel/Plugin/Service/plugin.service.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var ListTemplateComponent = (function (_super) {
     __extends(ListTemplateComponent, _super);
     function ListTemplateComponent(tpSer, router) {
@@ -741,19 +737,18 @@ var ListTemplateComponent = (function (_super) {
             });
         }
     };
+    ListTemplateComponent = __decorate([
+        core_1.Component({
+            selector: 'tp-list',
+            template: __webpack_require__("./src/plugins/Hardel/Plugin/component/Template/listtemplate.component.html"),
+            styles: ['']
+        }),
+        __metadata("design:paramtypes", [plugin_service_1.PluginService, router_1.Router])
+    ], ListTemplateComponent);
     return ListTemplateComponent;
 }(list_component_1.ListComponent));
-ListTemplateComponent = __decorate([
-    core_1.Component({
-        selector: 'tp-list',
-        template: __webpack_require__("./src/plugins/Hardel/Plugin/component/Template/listtemplate.component.html"),
-        styles: ['']
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof plugin_service_1.PluginService !== "undefined" && plugin_service_1.PluginService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
-], ListTemplateComponent);
 exports.ListTemplateComponent = ListTemplateComponent;
-var _a, _b;
-//# sourceMappingURL=listtemplate.component.js.map
+
 
 /***/ }),
 
@@ -776,7 +771,7 @@ var listtemplate_component_1 = __webpack_require__("./src/plugins/Hardel/Plugin/
 exports.ListTemplateComponent = listtemplate_component_1.ListTemplateComponent;
 var install_template_component_1 = __webpack_require__("./src/plugins/Hardel/Plugin/component/InstallTemplate/install-template.component.ts");
 exports.InstallTemplateComponent = install_template_component_1.InstallTemplateComponent;
-//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 
@@ -805,8 +800,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var PluginComponent = (function () {
     function PluginComponent(pr) {
         var _this = this;
@@ -826,18 +821,17 @@ var PluginComponent = (function () {
     }
     PluginComponent.prototype.ngOnInit = function () {
     };
+    PluginComponent = __decorate([
+        core_1.Component({
+            selector: 'app-plugin',
+            template: __webpack_require__("./src/plugins/Hardel/Plugin/component/plugin.component.html")
+        }),
+        __metadata("design:paramtypes", [router_1.Router])
+    ], PluginComponent);
     return PluginComponent;
 }());
-PluginComponent = __decorate([
-    core_1.Component({
-        selector: 'app-plugin',
-        template: __webpack_require__("./src/plugins/Hardel/Plugin/component/plugin.component.html")
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _a || Object])
-], PluginComponent);
 exports.PluginComponent = PluginComponent;
-var _a;
-//# sourceMappingURL=plugin.component.js.map
+
 
 /***/ }),
 
@@ -856,11 +850,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var plugin_routing_1 = __webpack_require__("./src/plugins/Hardel/Plugin/plugin.routing.ts");
-var common_1 = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-var forms_1 = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-var http_1 = __webpack_require__("./node_modules/@angular/http/@angular/http.es5.js");
+var common_1 = __webpack_require__("./node_modules/@angular/common/esm5/common.js");
+var forms_1 = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
+var http_1 = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
 var breadcrumbs_1 = __webpack_require__("./src/app/backend-module/breadcrumbs/index.ts");
 var uielement_module_1 = __webpack_require__("./src/app/backend-module/UIElement/uielement.module.ts");
 var plugin_service_1 = __webpack_require__("./src/plugins/Hardel/Plugin/Service/plugin.service.ts");
@@ -868,25 +862,25 @@ var ng_bootstrap_1 = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootst
 var PluginModule = (function () {
     function PluginModule() {
     }
+    PluginModule = __decorate([
+        core_1.NgModule({
+            imports: [
+                common_1.CommonModule,
+                forms_1.FormsModule,
+                http_1.HttpClientModule,
+                plugin_routing_1.routing,
+                breadcrumbs_1.BreadCrumbModule,
+                uielement_module_1.UIElementModule,
+                ng_bootstrap_1.NgbModule.forRoot()
+            ],
+            providers: [plugin_service_1.PluginService],
+            declarations: [plugin_routing_1.pluginComponent]
+        })
+    ], PluginModule);
     return PluginModule;
 }());
-PluginModule = __decorate([
-    core_1.NgModule({
-        imports: [
-            common_1.CommonModule,
-            forms_1.FormsModule,
-            http_1.HttpModule,
-            plugin_routing_1.routing,
-            breadcrumbs_1.BreadCrumbModule,
-            uielement_module_1.UIElementModule,
-            ng_bootstrap_1.NgbModule.forRoot()
-        ],
-        providers: [plugin_service_1.PluginService],
-        declarations: [plugin_routing_1.pluginComponent]
-    })
-], PluginModule);
 exports.PluginModule = PluginModule;
-//# sourceMappingURL=plugin.module.js.map
+
 
 /***/ }),
 
@@ -899,7 +893,7 @@ exports.PluginModule = PluginModule;
  * Created by hernan on 17/10/2017.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var PL = __webpack_require__("./src/plugins/Hardel/Plugin/component/index.ts");
 var routes = [
     { path: '', component: PL.PluginComponent, data: { breadcrumb: 'Plugins' }, children: [
@@ -919,7 +913,7 @@ exports.pluginComponent = [
     PL.ListTemplateComponent,
     PL.InstallTemplateComponent
 ];
-//# sourceMappingURL=plugin.routing.js.map
+
 
 /***/ })
 

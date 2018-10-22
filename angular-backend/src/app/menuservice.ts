@@ -2,13 +2,12 @@
  * Created by hernan on 16/10/2017.
  */
 import {Injectable} from "@angular/core";
-import {Headers, Http, RequestOptions, Response} from "@angular/http";
 import {HttpHeaders, HttpClient} from "@angular/common/http";
 import 'rxjs/Rx';
 import {Observable} from "rxjs/Observable";
 import {ApiManager} from "./urlApi/api.manager";
 import {User} from "./backend-module/user-module/user-model/user.interface";
-import {Permission} from "../plugins/Hardel/Settings/Services/settings.interfaces";
+import {SlideItem} from "@Lortom/interfaces/slideItem.interface";
 
 @Injectable()
 export class MenuService {
@@ -22,29 +21,26 @@ export class MenuService {
         this.urlManager = new ApiManager();
     }
 
-    getMenu(){
-        return this.http.get(this.urlManager.getPathByName('getMenu'))
-            .map(
-                (response: Response) => {
-                    return response.json().menulista;
+    getMenu(): Observable<any>{
+        return this.http.get(this.urlManager.getPathByName('getMenu'));
+            /*.map(
+                (response : {menulista: SlideItem[]}) => {
+                    return response.menulista;
                 }
-            );
+            );*/
     }
 
     login(credential : {username:string, password:string}) : Observable<any>{
         let headers = new HttpHeaders({'Content-Type' : 'application/json'});
         let options =  { headers: headers};
-        return this.http.post(this.urlManager.getPathByName('login'),credential,options)
-            .map(
-                (response: Response) => {return response.json();}
-            );
+        return this.http.post(this.urlManager.getPathByName('login'),credential,options);
     }
 
     logout() : Observable<any>{
         return this.http.get(this.urlManager.getPathByName('logout'))
             .map(
-                (response :Response) => {
-                    return response.json();
+                response  => {
+                    return response;
                 }
             );
     }
@@ -54,8 +50,8 @@ export class MenuService {
         let options =  { headers: headers};
         return this.http.put(this.urlManager.getPathByName('editMyProfile'),user,options)
             .map(
-                (response : Response) => {
-                    return response.json();
+                response => {
+                    return response;
                 }
             );
     }

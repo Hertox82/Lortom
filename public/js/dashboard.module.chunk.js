@@ -25,22 +25,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var DashBoardComponent = (function () {
     function DashBoardComponent() {
     }
     DashBoardComponent.prototype.ngOnInit = function () { };
+    DashBoardComponent = __decorate([
+        core_1.Component({
+            selector: 'app-dashboard',
+            template: __webpack_require__("./src/plugins/Hardel/Dashboard/component/dashboard.component.html"),
+        }),
+        __metadata("design:paramtypes", [])
+    ], DashBoardComponent);
     return DashBoardComponent;
 }());
-DashBoardComponent = __decorate([
-    core_1.Component({
-        selector: 'app-dashboard',
-        template: __webpack_require__("./src/plugins/Hardel/Dashboard/component/dashboard.component.html"),
-    }),
-    __metadata("design:paramtypes", [])
-], DashBoardComponent);
 exports.DashBoardComponent = DashBoardComponent;
-//# sourceMappingURL=dashboard.component.js.map
+
 
 /***/ }),
 
@@ -59,24 +59,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var dashboard_component_1 = __webpack_require__("./src/plugins/Hardel/Dashboard/component/dashboard.component.ts");
 var dashboard_routing_1 = __webpack_require__("./src/plugins/Hardel/Dashboard/dashboard.routing.ts");
 var DashboardModule = (function () {
     function DashboardModule() {
     }
+    DashboardModule = __decorate([
+        core_1.NgModule({
+            imports: [dashboard_routing_1.routing],
+            declarations: [
+                dashboard_component_1.DashBoardComponent
+            ],
+        })
+    ], DashboardModule);
     return DashboardModule;
 }());
-DashboardModule = __decorate([
-    core_1.NgModule({
-        imports: [dashboard_routing_1.routing],
-        declarations: [
-            dashboard_component_1.DashBoardComponent
-        ],
-    })
-], DashboardModule);
 exports.DashboardModule = DashboardModule;
-//# sourceMappingURL=dashboard.module.js.map
+
 
 /***/ }),
 
@@ -89,13 +89,13 @@ exports.DashboardModule = DashboardModule;
  * Created by hernan on 17/10/2017.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var dashboard_component_1 = __webpack_require__("./src/plugins/Hardel/Dashboard/component/dashboard.component.ts");
 var routes = [
     { path: '', component: dashboard_component_1.DashBoardComponent, data: { breadcrumb: 'Dashboard' } }
 ];
 exports.routing = router_1.RouterModule.forChild(routes);
-//# sourceMappingURL=dashboard.routing.js.map
+
 
 /***/ })
 

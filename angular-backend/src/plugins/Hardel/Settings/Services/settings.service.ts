@@ -2,7 +2,6 @@
 
 import {Injectable} from "@angular/core";
 import {Role, Permission, User} from "./settings.interfaces";
-import {Http,Response} from "@angular/http";
 import {HttpClient} from "@angular/common/http";
 import 'rxjs/Rx';
 import {Subject} from "rxjs/Subject";
@@ -42,8 +41,8 @@ export class SettingsService extends MasterService{
     getRolesFrom()
     {
         return this.http.get(this.apiManager.getPathByName('getRoles'))
-            .map( (response : Response) => {
-                return response.json().roles;
+            .map( (response : {roles : Role[]}) => {
+                return response.roles;
             });
 
     }
@@ -52,8 +51,8 @@ export class SettingsService extends MasterService{
     {
         return this.http.get(this.apiManager.getPathByName('getUsers'))
             .map(
-                (response : Response) => {
-                    return response.json().users;
+                (response : {users: User []}) => {
+                    return response.users;
                 }
             );
     }
@@ -75,8 +74,8 @@ export class SettingsService extends MasterService{
     getPermissionsFrom()
     {
         return this.http.get(this.apiManager.getPathByName('getPermission'))
-            .map((response : Response) =>  {
-                return response.json().permissions;
+            .map((response : {permissions: Permission[]}) =>  {
+                return response.permissions;
             });
     }
 
@@ -228,8 +227,8 @@ export class SettingsService extends MasterService{
     saveRole(role : Role) : Observable<any> {
 
         return this.http.put(this.apiManager.getPathByName('saveRole'),role,this.getOptions())
-            .map((response : Response) => {
-                return response.json().role;
+            .map((response : {role : Role}) => {
+                return response.role;
             });
     }
 
@@ -241,8 +240,8 @@ export class SettingsService extends MasterService{
     saveUser(user : User) : Observable<any> {
 
         return this.http.put(this.apiManager.getPathByName('saveUser'),user,this.getOptions())
-            .map((response : Response) => {
-                return response.json().user;
+            .map((response : {user: User}) => {
+                return response.user;
             });
     }
 
@@ -255,8 +254,8 @@ export class SettingsService extends MasterService{
 
         return this.http.post(this.apiManager.getPathByName('saveRole'),role,this.getOptions())
             .map(
-                (response : Response) => {
-                    return response.json().role;
+                (response : {role: Role}) => {
+                    return response.role;
                 }
             );
     }
@@ -270,8 +269,8 @@ export class SettingsService extends MasterService{
 
         return this.http.post(this.apiManager.getPathByName('saveUser'),user,this.getOptions())
             .map(
-                (response : Response) => {
-                    return response.json().user;
+                (response : {user: User}) => {
+                    return response.user;
                 }
             );
     }
@@ -285,8 +284,8 @@ export class SettingsService extends MasterService{
 
         return this.http.put(this.apiManager.getPathByName('getRoles'),roles,this.getOptions())
             .map(
-                (response : Response) => {
-                    return response.json().roles;
+                (response : {roles: Role[]}) => {
+                    return response.roles;
                 }
             );
     }
@@ -300,8 +299,8 @@ export class SettingsService extends MasterService{
 
         return this.http.put(this.apiManager.getPathByName('getUsers'),users,this.getOptions())
             .map(
-                (response : Response) => {
-                    return response.json().roles;
+                (response : {users: User[]}) => {
+                    return response.users;
                 }
             );
     }

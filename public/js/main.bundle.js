@@ -1,6 +1,6 @@
 webpackJsonp(["main"],{
 
-/***/ "./src/$$_gendir lazy recursive":
+/***/ "./src/$$_lazy_route_resource lazy recursive":
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -35,7 +35,7 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
 	return Object.keys(map);
 };
-webpackAsyncContext.id = "./src/$$_gendir lazy recursive";
+webpackAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 module.exports = webpackAsyncContext;
 
 /***/ }),
@@ -69,9 +69,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var event_service_1 = __webpack_require__("./src/services/event.service.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var AppComponent = (function () {
     function AppComponent(event, router) {
         var _this = this;
@@ -119,19 +119,18 @@ var AppComponent = (function () {
         }
         return '';
     };
+    AppComponent = __decorate([
+        core_1.Component({
+            selector: 'app-root',
+            template: __webpack_require__("./src/app/app.component.html"),
+            styles: [__webpack_require__("./src/app/app.component.css")]
+        }),
+        __metadata("design:paramtypes", [event_service_1.EventService, router_1.Router])
+    ], AppComponent);
     return AppComponent;
 }());
-AppComponent = __decorate([
-    core_1.Component({
-        selector: 'app-root',
-        template: __webpack_require__("./src/app/app.component.html"),
-        styles: [__webpack_require__("./src/app/app.component.css")]
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof event_service_1.EventService !== "undefined" && event_service_1.EventService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
-], AppComponent);
 exports.AppComponent = AppComponent;
-var _a, _b;
-//# sourceMappingURL=app.component.js.map
+
 
 /***/ }),
 
@@ -147,38 +146,38 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var platform_browser_1 = __webpack_require__("./node_modules/@angular/platform-browser/@angular/platform-browser.es5.js");
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var http_1 = __webpack_require__("./node_modules/@angular/http/@angular/http.es5.js");
+var platform_browser_1 = __webpack_require__("./node_modules/@angular/platform-browser/esm5/platform-browser.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var http_1 = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
 var app_component_1 = __webpack_require__("./src/app/app.component.ts");
 var menuservice_1 = __webpack_require__("./src/app/menuservice.ts");
 var app_routing_1 = __webpack_require__("./src/app/app.routing.ts");
 var event_service_1 = __webpack_require__("./src/services/event.service.ts");
-var forms_1 = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+var forms_1 = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
 var backend_module_1 = __webpack_require__("./src/app/backend-module/backend.module.ts");
 var AppModule = (function () {
     function AppModule() {
     }
+    AppModule = __decorate([
+        core_1.NgModule({
+            declarations: [
+                app_component_1.AppComponent,
+            ],
+            imports: [
+                platform_browser_1.BrowserModule,
+                http_1.HttpClientModule,
+                app_routing_1.routing,
+                backend_module_1.BackendModule,
+                forms_1.FormsModule
+            ],
+            providers: [menuservice_1.MenuService, event_service_1.EventService],
+            bootstrap: [app_component_1.AppComponent]
+        })
+    ], AppModule);
     return AppModule;
 }());
-AppModule = __decorate([
-    core_1.NgModule({
-        declarations: [
-            app_component_1.AppComponent,
-        ],
-        imports: [
-            platform_browser_1.BrowserModule,
-            http_1.HttpModule,
-            app_routing_1.routing,
-            backend_module_1.BackendModule,
-            forms_1.FormsModule
-        ],
-        providers: [menuservice_1.MenuService, event_service_1.EventService],
-        bootstrap: [app_component_1.AppComponent]
-    })
-], AppModule);
 exports.AppModule = AppModule;
-//# sourceMappingURL=app.module.js.map
+
 
 /***/ }),
 
@@ -188,7 +187,7 @@ exports.AppModule = AppModule;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var login_1 = __webpack_require__("./src/app/backend-module/login/index.ts");
 var user_module_1 = __webpack_require__("./src/app/backend-module/user-module/index.ts");
 var notfoundpage_1 = __webpack_require__("./src/app/backend-module/notfoundpage/index.ts");
@@ -204,7 +203,7 @@ var routes = [
     { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' }
 ];
 exports.routing = router_1.RouterModule.forRoot(routes);
-//# sourceMappingURL=app.routing.js.map
+
 
 /***/ }),
 
@@ -223,7 +222,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 __webpack_require__("./node_modules/tinymce/tinymce.js");
 __webpack_require__("./node_modules/tinymce/themes/modern/index.js");
 __webpack_require__("./node_modules/tinymce/plugins/table/index.js");
@@ -260,28 +259,28 @@ var EditorComponent = (function () {
     EditorComponent.prototype.ngOnDestroy = function () {
         tinymce.remove(this.editor);
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], EditorComponent.prototype, "elementId", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], EditorComponent.prototype, "content", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", Object)
+    ], EditorComponent.prototype, "onEditorKeyup", void 0);
+    EditorComponent = __decorate([
+        core_1.Component({
+            selector: 'app-editor',
+            template: '<textarea id="{{elementId}}" style="display: none;"></textarea>'
+        })
+    ], EditorComponent);
     return EditorComponent;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], EditorComponent.prototype, "elementId", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], EditorComponent.prototype, "content", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", Object)
-], EditorComponent.prototype, "onEditorKeyup", void 0);
-EditorComponent = __decorate([
-    core_1.Component({
-        selector: 'app-editor',
-        template: '<textarea id="{{elementId}}" style="display: none;"></textarea>'
-    })
-], EditorComponent);
 exports.EditorComponent = EditorComponent;
-//# sourceMappingURL=editor.component.js.map
+
 
 /***/ }),
 
@@ -300,30 +299,30 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var common_1 = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var common_1 = __webpack_require__("./node_modules/@angular/common/esm5/common.js");
 var editor_component_1 = __webpack_require__("./src/app/backend-module/Editor/editor.component.ts");
 var EditorModule = (function () {
     function EditorModule() {
     }
+    EditorModule = __decorate([
+        core_1.NgModule({
+            imports: [
+                common_1.CommonModule,
+            ],
+            declarations: [
+                editor_component_1.EditorComponent
+            ],
+            providers: [],
+            exports: [
+                editor_component_1.EditorComponent
+            ]
+        })
+    ], EditorModule);
     return EditorModule;
 }());
-EditorModule = __decorate([
-    core_1.NgModule({
-        imports: [
-            common_1.CommonModule,
-        ],
-        declarations: [
-            editor_component_1.EditorComponent
-        ],
-        providers: [],
-        exports: [
-            editor_component_1.EditorComponent
-        ]
-    })
-], EditorModule);
 exports.EditorModule = EditorModule;
-//# sourceMappingURL=editor.js.map
+
 
 /***/ }),
 
@@ -340,7 +339,7 @@ var editor_1 = __webpack_require__("./src/app/backend-module/Editor/editor.ts");
 exports.EditorModule = editor_1.EditorModule;
 var editor_component_1 = __webpack_require__("./src/app/backend-module/Editor/editor.component.ts");
 exports.EditorComponent = editor_component_1.EditorComponent;
-//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 
@@ -359,41 +358,41 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var common_1 = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var common_1 = __webpack_require__("./node_modules/@angular/common/esm5/common.js");
 var menuservice_1 = __webpack_require__("./src/app/menuservice.ts");
 var event_service_1 = __webpack_require__("./src/services/event.service.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-var forms_1 = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
+var forms_1 = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
 var backend_module_1 = __webpack_require__("./src/app/backend-module/index.ts");
 var BackendModule = (function () {
     function BackendModule() {
     }
+    BackendModule = __decorate([
+        core_1.NgModule({
+            imports: [
+                common_1.CommonModule,
+                router_1.RouterModule,
+                forms_1.FormsModule,
+                backend_module_1.UserModule,
+                backend_module_1.BreadCrumbModule
+            ],
+            declarations: [
+                backend_module_1.BackendImportComponent
+            ],
+            providers: [
+                menuservice_1.MenuService,
+                event_service_1.EventService
+            ],
+            exports: [
+                backend_module_1.BackendExportComponent
+            ]
+        })
+    ], BackendModule);
     return BackendModule;
 }());
-BackendModule = __decorate([
-    core_1.NgModule({
-        imports: [
-            common_1.CommonModule,
-            router_1.RouterModule,
-            forms_1.FormsModule,
-            backend_module_1.UserModule,
-            backend_module_1.BreadCrumbModule
-        ],
-        declarations: [
-            backend_module_1.BackendImportComponent
-        ],
-        providers: [
-            menuservice_1.MenuService,
-            event_service_1.EventService
-        ],
-        exports: [
-            backend_module_1.BackendExportComponent
-        ]
-    })
-], BackendModule);
 exports.BackendModule = BackendModule;
-//# sourceMappingURL=backend.module.js.map
+
 
 /***/ }),
 
@@ -422,8 +421,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 __webpack_require__("./node_modules/rxjs/_esm5/add/operator/filter.js");
 var BreadCrumbsComponent = (function () {
     function BreadCrumbsComponent(activatedRoute, router) {
@@ -496,19 +495,18 @@ var BreadCrumbsComponent = (function () {
             return this.getBreadcrumbs(child, url, breadcrumbs);
         }
     };
+    BreadCrumbsComponent = __decorate([
+        core_1.Component({
+            selector: 'breadcrumbs',
+            template: __webpack_require__("./src/app/backend-module/breadcrumbs/breadcrumbs.component.html"),
+            styles: ['']
+        }),
+        __metadata("design:paramtypes", [router_1.ActivatedRoute, router_1.Router])
+    ], BreadCrumbsComponent);
     return BreadCrumbsComponent;
 }());
-BreadCrumbsComponent = __decorate([
-    core_1.Component({
-        selector: 'breadcrumbs',
-        template: __webpack_require__("./src/app/backend-module/breadcrumbs/breadcrumbs.component.html"),
-        styles: ['']
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
-], BreadCrumbsComponent);
 exports.BreadCrumbsComponent = BreadCrumbsComponent;
-var _a, _b;
-//# sourceMappingURL=breadcrumbs.component.js.map
+
 
 /***/ }),
 
@@ -524,32 +522,32 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var common_1 = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var common_1 = __webpack_require__("./node_modules/@angular/common/esm5/common.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var breadcrumbs_component_1 = __webpack_require__("./src/app/backend-module/breadcrumbs/breadcrumbs.component.ts");
 var BreadCrumbModule = (function () {
     function BreadCrumbModule() {
     }
+    BreadCrumbModule = __decorate([
+        core_1.NgModule({
+            imports: [
+                common_1.CommonModule,
+                router_1.RouterModule
+            ],
+            declarations: [
+                breadcrumbs_component_1.BreadCrumbsComponent
+            ],
+            providers: [],
+            exports: [
+                breadcrumbs_component_1.BreadCrumbsComponent
+            ]
+        })
+    ], BreadCrumbModule);
     return BreadCrumbModule;
 }());
-BreadCrumbModule = __decorate([
-    core_1.NgModule({
-        imports: [
-            common_1.CommonModule,
-            router_1.RouterModule
-        ],
-        declarations: [
-            breadcrumbs_component_1.BreadCrumbsComponent
-        ],
-        providers: [],
-        exports: [
-            breadcrumbs_component_1.BreadCrumbsComponent
-        ]
-    })
-], BreadCrumbModule);
 exports.BreadCrumbModule = BreadCrumbModule;
-//# sourceMappingURL=breadcrumbs.module.js.map
+
 
 /***/ }),
 
@@ -563,7 +561,7 @@ var breadcrumbs_module_1 = __webpack_require__("./src/app/backend-module/breadcr
 exports.BreadCrumbModule = breadcrumbs_module_1.BreadCrumbModule;
 var breadcrumbs_component_1 = __webpack_require__("./src/app/backend-module/breadcrumbs/breadcrumbs.component.ts");
 exports.BreadCrumbsComponent = breadcrumbs_component_1.BreadCrumbsComponent;
-//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 
@@ -577,7 +575,7 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__("./src/app/backend-module/public_api.ts"));
-//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 
@@ -591,7 +589,7 @@ var login_component_1 = __webpack_require__("./src/app/backend-module/login/logi
 exports.LoginComponent = login_component_1.LoginComponent;
 var logout_component_1 = __webpack_require__("./src/app/backend-module/login/logout.component.ts");
 exports.LogoutComponent = logout_component_1.LogoutComponent;
-//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 
@@ -624,10 +622,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var menuservice_1 = __webpack_require__("./src/app/menuservice.ts");
 var event_service_1 = __webpack_require__("./src/services/event.service.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var LoginComponent = (function () {
     function LoginComponent(service, event, router) {
         this.service = service;
@@ -651,27 +649,26 @@ var LoginComponent = (function () {
             }
         });
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], LoginComponent.prototype, "username", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], LoginComponent.prototype, "password", void 0);
+    LoginComponent = __decorate([
+        core_1.Component({
+            selector: 'app-login',
+            template: __webpack_require__("./src/app/backend-module/login/login.component.html"),
+            styles: [__webpack_require__("./src/app/backend-module/login/login.component.css")]
+        }),
+        __metadata("design:paramtypes", [menuservice_1.MenuService, event_service_1.EventService, router_1.Router])
+    ], LoginComponent);
     return LoginComponent;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], LoginComponent.prototype, "username", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], LoginComponent.prototype, "password", void 0);
-LoginComponent = __decorate([
-    core_1.Component({
-        selector: 'app-login',
-        template: __webpack_require__("./src/app/backend-module/login/login.component.html"),
-        styles: [__webpack_require__("./src/app/backend-module/login/login.component.css")]
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof menuservice_1.MenuService !== "undefined" && menuservice_1.MenuService) === "function" && _a || Object, typeof (_b = typeof event_service_1.EventService !== "undefined" && event_service_1.EventService) === "function" && _b || Object, typeof (_c = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _c || Object])
-], LoginComponent);
 exports.LoginComponent = LoginComponent;
-var _a, _b, _c;
-//# sourceMappingURL=login.component.js.map
+
 
 /***/ }),
 
@@ -690,9 +687,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var menuservice_1 = __webpack_require__("./src/app/menuservice.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var event_service_1 = __webpack_require__("./src/services/event.service.ts");
 var LogoutComponent = (function () {
     function LogoutComponent(menuService, router, eService) {
@@ -713,19 +710,18 @@ var LogoutComponent = (function () {
         });
     }
     LogoutComponent.prototype.ngOnInit = function () { };
+    LogoutComponent = __decorate([
+        core_1.Component({
+            selector: 'app-logout',
+            template: '',
+            styles: [''],
+        }),
+        __metadata("design:paramtypes", [menuservice_1.MenuService, router_1.Router, event_service_1.EventService])
+    ], LogoutComponent);
     return LogoutComponent;
 }());
-LogoutComponent = __decorate([
-    core_1.Component({
-        selector: 'app-logout',
-        template: '',
-        styles: [''],
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof menuservice_1.MenuService !== "undefined" && menuservice_1.MenuService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object, typeof (_c = typeof event_service_1.EventService !== "undefined" && event_service_1.EventService) === "function" && _c || Object])
-], LogoutComponent);
 exports.LogoutComponent = LogoutComponent;
-var _a, _b, _c;
-//# sourceMappingURL=logout.component.js.map
+
 
 /***/ }),
 
@@ -741,7 +737,7 @@ var menu_item_component_1 = __webpack_require__("./src/app/backend-module/menu-i
 exports.MenuItemComponent = menu_item_component_1.MenuItemComponent;
 var menu_items_component_1 = __webpack_require__("./src/app/backend-module/menu-items/menu-items.component.ts");
 exports.MenuItemsComponent = menu_items_component_1.MenuItemsComponent;
-//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 
@@ -774,10 +770,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var slideItem_interface_1 = __webpack_require__("./src/interfaces/slideItem.interface.ts");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var event_service_1 = __webpack_require__("./src/services/event.service.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var MenuItemComponent = (function () {
     function MenuItemComponent(eService, router) {
         var _this = this;
@@ -817,23 +812,22 @@ var MenuItemComponent = (function () {
         var count = substring.length;
         return (this.router.url.substring(0, count) !== substring);
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], MenuItemComponent.prototype, "item", void 0);
+    MenuItemComponent = __decorate([
+        core_1.Component({
+            selector: 'app-menu-item',
+            template: __webpack_require__("./src/app/backend-module/menu-items/menu-item/menu-item.component.html"),
+            styles: [__webpack_require__("./src/app/backend-module/menu-items/menu-item/menu-item.component.css")]
+        }),
+        __metadata("design:paramtypes", [event_service_1.EventService, router_1.Router])
+    ], MenuItemComponent);
     return MenuItemComponent;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", typeof (_a = typeof slideItem_interface_1.SlideItem !== "undefined" && slideItem_interface_1.SlideItem) === "function" && _a || Object)
-], MenuItemComponent.prototype, "item", void 0);
-MenuItemComponent = __decorate([
-    core_1.Component({
-        selector: 'app-menu-item',
-        template: __webpack_require__("./src/app/backend-module/menu-items/menu-item/menu-item.component.html"),
-        styles: [__webpack_require__("./src/app/backend-module/menu-items/menu-item/menu-item.component.css")]
-    }),
-    __metadata("design:paramtypes", [typeof (_b = typeof event_service_1.EventService !== "undefined" && event_service_1.EventService) === "function" && _b || Object, typeof (_c = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _c || Object])
-], MenuItemComponent);
 exports.MenuItemComponent = MenuItemComponent;
-var _a, _b, _c;
-//# sourceMappingURL=menu-item.component.js.map
+
 
 /***/ }),
 
@@ -866,7 +860,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var menuservice_1 = __webpack_require__("./src/app/menuservice.ts");
 var MenuItemsComponent = (function () {
     function MenuItemsComponent(menuService) {
@@ -874,22 +868,22 @@ var MenuItemsComponent = (function () {
     }
     MenuItemsComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.menuService.getMenu()
-            .subscribe(function (menuItems) { return _this.items = menuItems; }, function (error) { return console.log(error); });
+        this.menuService.getMenu().map(function (response) {
+            return response.menulista;
+        }).subscribe(function (menuItems) { return _this.items = menuItems; }, function (error) { return console.log(error); });
     };
+    MenuItemsComponent = __decorate([
+        core_1.Component({
+            selector: 'app-menu-items',
+            template: __webpack_require__("./src/app/backend-module/menu-items/menu-items.component.html"),
+            styles: [__webpack_require__("./src/app/backend-module/menu-items/menu-items.component.css")]
+        }),
+        __metadata("design:paramtypes", [menuservice_1.MenuService])
+    ], MenuItemsComponent);
     return MenuItemsComponent;
 }());
-MenuItemsComponent = __decorate([
-    core_1.Component({
-        selector: 'app-menu-items',
-        template: __webpack_require__("./src/app/backend-module/menu-items/menu-items.component.html"),
-        styles: [__webpack_require__("./src/app/backend-module/menu-items/menu-items.component.css")]
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof menuservice_1.MenuService !== "undefined" && menuservice_1.MenuService) === "function" && _a || Object])
-], MenuItemsComponent);
 exports.MenuItemsComponent = MenuItemsComponent;
-var _a;
-//# sourceMappingURL=menu-items.component.js.map
+
 
 /***/ }),
 
@@ -915,8 +909,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var slideItem_interface_1 = __webpack_require__("./src/interfaces/slideItem.interface.ts");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var event_service_1 = __webpack_require__("./src/services/event.service.ts");
 var SubMenuItemComponent = (function () {
     function SubMenuItemComponent(eService) {
@@ -927,22 +920,21 @@ var SubMenuItemComponent = (function () {
     SubMenuItemComponent.prototype.send = function (event, item) {
         this.eService.emitEventSubMenu(item);
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], SubMenuItemComponent.prototype, "item", void 0);
+    SubMenuItemComponent = __decorate([
+        core_1.Component({
+            selector: 'app-submenu-item',
+            template: __webpack_require__("./src/app/backend-module/menu-items/submenu-item/submenu-item.component.html")
+        }),
+        __metadata("design:paramtypes", [event_service_1.EventService])
+    ], SubMenuItemComponent);
     return SubMenuItemComponent;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", typeof (_a = typeof slideItem_interface_1.SlideSubMenu !== "undefined" && slideItem_interface_1.SlideSubMenu) === "function" && _a || Object)
-], SubMenuItemComponent.prototype, "item", void 0);
-SubMenuItemComponent = __decorate([
-    core_1.Component({
-        selector: 'app-submenu-item',
-        template: __webpack_require__("./src/app/backend-module/menu-items/submenu-item/submenu-item.component.html")
-    }),
-    __metadata("design:paramtypes", [typeof (_b = typeof event_service_1.EventService !== "undefined" && event_service_1.EventService) === "function" && _b || Object])
-], SubMenuItemComponent);
 exports.SubMenuItemComponent = SubMenuItemComponent;
-var _a, _b;
-//# sourceMappingURL=submenu-item.component.js.map
+
 
 /***/ }),
 
@@ -956,7 +948,7 @@ var navbar_item_component_1 = __webpack_require__("./src/app/backend-module/navb
 exports.NavbarItemComponent = navbar_item_component_1.NavbarItemComponent;
 var navbar_component_1 = __webpack_require__("./src/app/backend-module/navbar/navbar.component.ts");
 exports.NavbarComponent = navbar_component_1.NavbarComponent;
-//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 
@@ -989,10 +981,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var event_service_1 = __webpack_require__("./src/services/event.service.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-var public_api_1 = __webpack_require__("./src/app/backend-module/navbar/public_api.ts");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var NavbarItemComponent = (function () {
     function NavbarItemComponent(eService, router) {
         var _this = this;
@@ -1038,23 +1029,22 @@ var NavbarItemComponent = (function () {
             active: false,
         });
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], NavbarItemComponent.prototype, "navbarItem", void 0);
+    NavbarItemComponent = __decorate([
+        core_1.Component({
+            selector: 'app-navbar-item',
+            template: __webpack_require__("./src/app/backend-module/navbar/navbar-item/navbar-item.component.html"),
+            styles: [__webpack_require__("./src/app/backend-module/navbar/navbar-item/navbar-item.component.css")]
+        }),
+        __metadata("design:paramtypes", [event_service_1.EventService, router_1.Router])
+    ], NavbarItemComponent);
     return NavbarItemComponent;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", typeof (_a = typeof public_api_1.NavbarItem !== "undefined" && public_api_1.NavbarItem) === "function" && _a || Object)
-], NavbarItemComponent.prototype, "navbarItem", void 0);
-NavbarItemComponent = __decorate([
-    core_1.Component({
-        selector: 'app-navbar-item',
-        template: __webpack_require__("./src/app/backend-module/navbar/navbar-item/navbar-item.component.html"),
-        styles: [__webpack_require__("./src/app/backend-module/navbar/navbar-item/navbar-item.component.css")]
-    }),
-    __metadata("design:paramtypes", [typeof (_b = typeof event_service_1.EventService !== "undefined" && event_service_1.EventService) === "function" && _b || Object, typeof (_c = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _c || Object])
-], NavbarItemComponent);
 exports.NavbarItemComponent = NavbarItemComponent;
-var _a, _b, _c;
-//# sourceMappingURL=navbar-item.component.js.map
+
 
 /***/ }),
 
@@ -1087,7 +1077,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var menuservice_1 = __webpack_require__("./src/app/menuservice.ts");
 var NavbarComponent = (function () {
     function NavbarComponent(sMenu) {
@@ -1118,29 +1108,18 @@ var NavbarComponent = (function () {
         });
     }
     NavbarComponent.prototype.ngOnInit = function () { };
+    NavbarComponent = __decorate([
+        core_1.Component({
+            selector: 'app-navbar',
+            template: __webpack_require__("./src/app/backend-module/navbar/navbar.component.html"),
+            styles: [__webpack_require__("./src/app/backend-module/navbar/navbar.component.css")]
+        }),
+        __metadata("design:paramtypes", [menuservice_1.MenuService])
+    ], NavbarComponent);
     return NavbarComponent;
 }());
-NavbarComponent = __decorate([
-    core_1.Component({
-        selector: 'app-navbar',
-        template: __webpack_require__("./src/app/backend-module/navbar/navbar.component.html"),
-        styles: [__webpack_require__("./src/app/backend-module/navbar/navbar.component.css")]
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof menuservice_1.MenuService !== "undefined" && menuservice_1.MenuService) === "function" && _a || Object])
-], NavbarComponent);
 exports.NavbarComponent = NavbarComponent;
-var _a;
-//# sourceMappingURL=navbar.component.js.map
 
-/***/ }),
-
-/***/ "./src/app/backend-module/navbar/public_api.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-//# sourceMappingURL=public_api.js.map
 
 /***/ }),
 
@@ -1152,7 +1131,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 Object.defineProperty(exports, "__esModule", { value: true });
 var notfound_component_1 = __webpack_require__("./src/app/backend-module/notfoundpage/notfound.component.ts");
 exports.NotFoundComponent = notfound_component_1.NotFoundComponent;
-//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 
@@ -1178,23 +1157,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var NotFoundComponent = (function () {
     function NotFoundComponent() {
     }
     NotFoundComponent.prototype.ngOnInit = function () { };
+    NotFoundComponent = __decorate([
+        core_1.Component({
+            selector: 'app-not-found',
+            template: __webpack_require__("./src/app/backend-module/notfoundpage/notfound.component.html"),
+            styles: ['']
+        }),
+        __metadata("design:paramtypes", [])
+    ], NotFoundComponent);
     return NotFoundComponent;
 }());
-NotFoundComponent = __decorate([
-    core_1.Component({
-        selector: 'app-not-found',
-        template: __webpack_require__("./src/app/backend-module/notfoundpage/notfound.component.html"),
-        styles: ['']
-    }),
-    __metadata("design:paramtypes", [])
-], NotFoundComponent);
 exports.NotFoundComponent = NotFoundComponent;
-//# sourceMappingURL=notfound.component.js.map
+
 
 /***/ }),
 
@@ -1236,7 +1215,7 @@ exports.BackendExportComponent = [
     _1.UserModelComponent,
     notfoundpage_1.NotFoundComponent,
 ];
-//# sourceMappingURL=public_api.js.map
+
 
 /***/ }),
 
@@ -1252,17 +1231,7 @@ var user_side_component_1 = __webpack_require__("./src/app/backend-module/user-m
 exports.UserSideComponent = user_side_component_1.UserSideComponent;
 var user_module_1 = __webpack_require__("./src/app/backend-module/user-module/user.module.ts");
 exports.UserModule = user_module_1.UserModule;
-//# sourceMappingURL=index.js.map
 
-/***/ }),
-
-/***/ "./src/app/backend-module/user-module/user-model/user.interface.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-//# sourceMappingURL=user.interface.js.map
 
 /***/ }),
 
@@ -1288,8 +1257,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var user_interface_1 = __webpack_require__("./src/app/backend-module/user-module/user-model/user.interface.ts");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var event_service_1 = __webpack_require__("./src/services/event.service.ts");
 var menuservice_1 = __webpack_require__("./src/app/menuservice.ts");
 var UserModelComponent = (function () {
@@ -1351,23 +1319,22 @@ var UserModelComponent = (function () {
             alert(response.message);
         });
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], UserModelComponent.prototype, "user", void 0);
+    UserModelComponent = __decorate([
+        core_1.Component({
+            selector: 'app-user-model',
+            template: __webpack_require__("./src/app/backend-module/user-module/user-model/usermodel.component.html"),
+            styles: ['']
+        }),
+        __metadata("design:paramtypes", [event_service_1.EventService, menuservice_1.MenuService])
+    ], UserModelComponent);
     return UserModelComponent;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", typeof (_a = typeof user_interface_1.User !== "undefined" && user_interface_1.User) === "function" && _a || Object)
-], UserModelComponent.prototype, "user", void 0);
-UserModelComponent = __decorate([
-    core_1.Component({
-        selector: 'app-user-model',
-        template: __webpack_require__("./src/app/backend-module/user-module/user-model/usermodel.component.html"),
-        styles: ['']
-    }),
-    __metadata("design:paramtypes", [typeof (_b = typeof event_service_1.EventService !== "undefined" && event_service_1.EventService) === "function" && _b || Object, typeof (_c = typeof menuservice_1.MenuService !== "undefined" && menuservice_1.MenuService) === "function" && _c || Object])
-], UserModelComponent);
 exports.UserModelComponent = UserModelComponent;
-var _a, _b, _c;
-//# sourceMappingURL=usermodel.component.js.map
+
 
 /***/ }),
 
@@ -1400,7 +1367,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var menuservice_1 = __webpack_require__("./src/app/menuservice.ts");
 var event_service_1 = __webpack_require__("./src/services/event.service.ts");
 var UserSideComponent = (function () {
@@ -1417,23 +1384,22 @@ var UserSideComponent = (function () {
             _this.user = _this.mService.getUser();
         });
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], UserSideComponent.prototype, "user", void 0);
+    UserSideComponent = __decorate([
+        core_1.Component({
+            selector: 'app-user-side',
+            template: __webpack_require__("./src/app/backend-module/user-module/user-side/user-side.component.html"),
+            styles: [__webpack_require__("./src/app/backend-module/user-module/user-side/user-side.component.css")]
+        }),
+        __metadata("design:paramtypes", [menuservice_1.MenuService, event_service_1.EventService])
+    ], UserSideComponent);
     return UserSideComponent;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], UserSideComponent.prototype, "user", void 0);
-UserSideComponent = __decorate([
-    core_1.Component({
-        selector: 'app-user-side',
-        template: __webpack_require__("./src/app/backend-module/user-module/user-side/user-side.component.html"),
-        styles: [__webpack_require__("./src/app/backend-module/user-module/user-side/user-side.component.css")]
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof menuservice_1.MenuService !== "undefined" && menuservice_1.MenuService) === "function" && _a || Object, typeof (_b = typeof event_service_1.EventService !== "undefined" && event_service_1.EventService) === "function" && _b || Object])
-], UserSideComponent);
 exports.UserSideComponent = UserSideComponent;
-var _a, _b;
-//# sourceMappingURL=user-side.component.js.map
+
 
 /***/ }),
 
@@ -1449,40 +1415,40 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var common_1 = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-var forms_1 = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var common_1 = __webpack_require__("./node_modules/@angular/common/esm5/common.js");
+var forms_1 = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var user_side_component_1 = __webpack_require__("./src/app/backend-module/user-module/user-side/user-side.component.ts");
 var event_service_1 = __webpack_require__("./src/services/event.service.ts");
 var usermodel_component_1 = __webpack_require__("./src/app/backend-module/user-module/user-model/usermodel.component.ts");
 var UserModule = (function () {
     function UserModule() {
     }
+    UserModule = __decorate([
+        core_1.NgModule({
+            imports: [
+                common_1.CommonModule,
+                forms_1.FormsModule,
+                router_1.RouterModule
+            ],
+            declarations: [
+                user_side_component_1.UserSideComponent,
+                usermodel_component_1.UserModelComponent
+            ],
+            providers: [
+                event_service_1.EventService
+            ],
+            exports: [
+                user_side_component_1.UserSideComponent,
+                usermodel_component_1.UserModelComponent
+            ]
+        })
+    ], UserModule);
     return UserModule;
 }());
-UserModule = __decorate([
-    core_1.NgModule({
-        imports: [
-            common_1.CommonModule,
-            forms_1.FormsModule,
-            router_1.RouterModule
-        ],
-        declarations: [
-            user_side_component_1.UserSideComponent,
-            usermodel_component_1.UserModelComponent
-        ],
-        providers: [
-            event_service_1.EventService
-        ],
-        exports: [
-            user_side_component_1.UserSideComponent,
-            usermodel_component_1.UserModelComponent
-        ]
-    })
-], UserModule);
 exports.UserModule = UserModule;
-//# sourceMappingURL=user.module.js.map
+
 
 /***/ }),
 
@@ -1504,8 +1470,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by hernan on 16/10/2017.
  */
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var http_1 = __webpack_require__("./node_modules/@angular/http/@angular/http.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var http_1 = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
 __webpack_require__("./node_modules/rxjs/_esm5/Rx.js");
 var api_manager_1 = __webpack_require__("./src/app/urlApi/api.manager.ts");
 var MenuService = (function () {
@@ -1515,29 +1481,30 @@ var MenuService = (function () {
         this.urlManager = new api_manager_1.ApiManager();
     }
     MenuService.prototype.getMenu = function () {
-        return this.http.get(this.urlManager.getPathByName('getMenu'))
-            .map(function (response) {
-            return response.json().menulista;
-        });
+        return this.http.get(this.urlManager.getPathByName('getMenu'));
+        /*.map(
+            (response : {menulista: SlideItem[]}) => {
+                return response.menulista;
+            }
+        );*/
     };
     MenuService.prototype.login = function (credential) {
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ headers: headers });
-        return this.http.post(this.urlManager.getPathByName('login'), credential, options)
-            .map(function (response) { return response.json(); });
+        var headers = new http_1.HttpHeaders({ 'Content-Type': 'application/json' });
+        var options = { headers: headers };
+        return this.http.post(this.urlManager.getPathByName('login'), credential, options);
     };
     MenuService.prototype.logout = function () {
         return this.http.get(this.urlManager.getPathByName('logout'))
             .map(function (response) {
-            return response.json();
+            return response;
         });
     };
     MenuService.prototype.editMyProfile = function (user) {
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ headers: headers });
+        var headers = new http_1.HttpHeaders({ 'Content-Type': 'application/json' });
+        var options = { headers: headers };
         return this.http.put(this.urlManager.getPathByName('editMyProfile'), user, options)
             .map(function (response) {
-            return response.json();
+            return response;
         });
     };
     MenuService.prototype.setUser = function (user) {
@@ -1564,15 +1531,14 @@ var MenuService = (function () {
     MenuService.prototype.deleteUser = function () {
         sessionStorage.removeItem('user');
     };
+    MenuService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], MenuService);
     return MenuService;
 }());
-MenuService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [typeof (_a = typeof http_1.Http !== "undefined" && http_1.Http) === "function" && _a || Object])
-], MenuService);
 exports.MenuService = MenuService;
-var _a;
-//# sourceMappingURL=menuservice.js.map
+
 
 /***/ }),
 
@@ -1617,7 +1583,7 @@ var ApiManager = (function () {
     return ApiManager;
 }());
 exports.ApiManager = ApiManager;
-//# sourceMappingURL=api.manager.js.map
+
 
 /***/ }),
 
@@ -1634,20 +1600,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.environment = {
     production: false
 };
-//# sourceMappingURL=environment.js.map
 
-/***/ }),
-
-/***/ "./src/interfaces/slideItem.interface.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Created by hernan on 16/10/2017.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-//# sourceMappingURL=slideItem.interface.js.map
 
 /***/ }),
 
@@ -1657,8 +1610,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var platform_browser_dynamic_1 = __webpack_require__("./node_modules/@angular/platform-browser-dynamic/@angular/platform-browser-dynamic.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var platform_browser_dynamic_1 = __webpack_require__("./node_modules/@angular/platform-browser-dynamic/esm5/platform-browser-dynamic.js");
 var app_module_1 = __webpack_require__("./src/app/app.module.ts");
 var environment_1 = __webpack_require__("./src/environments/environment.ts");
 __webpack_require__("./node_modules/codemirror/lib/codemirror.js");
@@ -1667,7 +1620,7 @@ if (environment_1.environment.production) {
 }
 platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(app_module_1.AppModule)
     .catch(function (err) { return console.log(err); });
-//# sourceMappingURL=main.js.map
+
 
 /***/ }),
 
@@ -1686,7 +1639,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var Subject_1 = __webpack_require__("./node_modules/rxjs/_esm5/Subject.js");
 var EventService = (function () {
     function EventService() {
@@ -1711,13 +1664,13 @@ var EventService = (function () {
     EventService.prototype.emitEventSubMenu = function (object) {
         this._subMenu.next(object);
     };
+    EventService = __decorate([
+        core_1.Injectable()
+    ], EventService);
     return EventService;
 }());
-EventService = __decorate([
-    core_1.Injectable()
-], EventService);
 exports.EventService = EventService;
-//# sourceMappingURL=event.service.js.map
+
 
 /***/ }),
 

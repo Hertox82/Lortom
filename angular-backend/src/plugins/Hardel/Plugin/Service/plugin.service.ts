@@ -5,7 +5,6 @@
 
 import {Injectable} from "@angular/core";
 import {MasterService} from "@Lortom/services/master.service";
-import {Http, Response} from "@angular/http";
 import {HttpClient} from "@angular/common/http";
 import {LtPlugin, LtTemplate} from "@Lortom/plugins/Hardel/Plugin/Service/plugin.interface";
 import {Observable} from "rxjs/Observable";
@@ -52,8 +51,8 @@ export class PluginService extends MasterService
     getPluginsFrom(): Observable<any> {
         return this.http.get(this.apiManager.getPathByName('getPlugins'))
             .map(
-                (response : Response) => {
-                    return response.json().plugins;
+                (response : {plugins : LtPlugin []}) => {
+                    return response.plugins;
                 }
             );
     }
@@ -61,8 +60,8 @@ export class PluginService extends MasterService
     getTemplateFrom(): Observable<any> {
         return this.http.get(this.apiManager.getPathByName('getTemplate'))
             .map(
-                (response: Response) => {
-                    return response.json();
+                response => {
+                    return response;
                 }
             );
     }
@@ -70,8 +69,8 @@ export class PluginService extends MasterService
     getLatestPlugin(): Observable<any> {
         return this.http.get(this.apiManager.getPathByName('getLatestPlugin'))
             .map(
-                (response: Response) => {
-                    return response.json().plugins;
+                (response: {plugins: LtPlugin[]}) => {
+                    return response.plugins;
                 }
             );
     }
@@ -79,8 +78,8 @@ export class PluginService extends MasterService
     getLatestTemplate(): Observable<any> {
         return this.http.get(this.apiManager.getPathByName('getLatestTemplate'))
             .map(
-                (response: Response) => {
-                    return response.json().template;
+                (response: {template : LtTemplate [] }) => {
+                    return response.template;
                 }
             );
     }
@@ -94,8 +93,8 @@ export class PluginService extends MasterService
 
         return this.http.put(this.apiManager.getPathByName('getPlugins'),plugins,this.getOptions())
             .map(
-                (response : Response) => {
-                    return response.json().message;
+                (response : {message : boolean}) => {
+                    return response.message;
                 }
             );
     }
@@ -103,8 +102,8 @@ export class PluginService extends MasterService
     uninstallTemplates(templates: LtTemplate[]): Observable <any> {
         return this.http.put(this.apiManager.getPathByName('instTemp'),templates,this.getOptions())
             .map(
-                (response: Response) => {
-                    return response.json().message;
+                (response: {message: boolean}) => {
+                    return response.message;
                 }
             );
     }
@@ -112,8 +111,8 @@ export class PluginService extends MasterService
     uninstallTemplate(template: LtTemplate): Observable<any> {
         return this.http.put(this.apiManager.getPathByName('instTemp'),template,this.getOptions())
             .map(
-                (response: Response) => {
-                    return response.json().message;
+                (response: {message : boolean}) => {
+                    return response.message;
                 }
             );
     }
@@ -121,8 +120,8 @@ export class PluginService extends MasterService
     deletePackPlugin(plugin: LtPlugin): Observable<any> {
         return this.http.post(this.apiManager.getPathByName('delPack'),plugin,this.getOptions())
             .map(
-                (response: Response) => {
-                    return response.json().plugins;
+                (response: {plugins : LtPlugin []}) => {
+                    return response.plugins;
                 }
             );
     }
@@ -130,8 +129,8 @@ export class PluginService extends MasterService
     deletePackTemplate(template: LtTemplate): Observable<any> {
         return this.http.post(this.apiManager.getPathByName('unPackTemp'),template,this.getOptions())
             .map(
-                (response: Response) => {
-                    return response.json().message;
+                (response: {message : boolean}) => {
+                    return response.message;
                 }
             );
     }
@@ -144,8 +143,8 @@ export class PluginService extends MasterService
     installPlugin(plugin: LtPlugin) : Observable<any> {
         return this.http.post(this.apiManager.getPathByName('installPlugin'),plugin,this.getOptions())
             .map(
-                (response: Response) => {
-                    return response.json().message;
+                (response: {message : boolean}) => {
+                    return response.message;
                 }
             );
     }
@@ -153,8 +152,8 @@ export class PluginService extends MasterService
     installTemplate(template: LtTemplate): Observable<any> {
         return this.http.post(this.apiManager.getPathByName('instTemp'),template,this.getOptions())
             .map(
-                (response: Response) => {
-                    return response.json().message;
+                (response: {message: boolean}) => {
+                    return response.message;
                 }
             );
     }
@@ -162,8 +161,8 @@ export class PluginService extends MasterService
     activateTemplate(template: LtTemplate): Observable<any> {
         return this.http.post(this.apiManager.getPathByName('actiTemp'),template,this.getOptions())
             .map(
-                (response: Response) => {
-                    return response.json().message;
+                (response: {message : boolean}) => {
+                    return response.message;
                 }
             );
     }
@@ -171,8 +170,8 @@ export class PluginService extends MasterService
     deactivateTemplate(template: LtTemplate): Observable<any> {
         return this.http.post(this.apiManager.getPathByName('deactiTemp'),template,this.getOptions())
             .map(
-                (response: Response) => {
-                    return response.json().message;
+                (response: {message: boolean}) => {
+                    return response.message;
                 }
             );
 
@@ -186,8 +185,8 @@ export class PluginService extends MasterService
     updatePlugin(plugin: LtPlugin): Observable<any> {
         return this.http.put(this.apiManager.getPathByName('installPlugin'),plugin,this.getOptions())
             .map(
-                (response: Response) => {
-                    return response.json().messsage;
+                (response: {messsage: boolean}) => {
+                    return response.messsage;
                 }
             );
     }
@@ -195,8 +194,8 @@ export class PluginService extends MasterService
     updateTemplate(template: LtTemplate): Observable<any> {
         return this.http.put(this.apiManager.getPathByName('installTemplate'),template,this.getOptions())
             .map(
-                (response: Response) => {
-                    return response.json().message;
+                (response: {message: boolean}) => {
+                    return response.message;
                 }
             );
     }
@@ -204,8 +203,8 @@ export class PluginService extends MasterService
     packPlugin(plugin: LtPlugin): Observable<any> {
         return this.http.post(this.apiManager.getPathByName('packPlugin'),plugin,this.getOptions())
             .map(
-                (response: Response) => {
-                    return response.json().plugins;
+                (response: {plugins : LtPlugin []}) => {
+                    return response.plugins;
                 }
             );
     }
@@ -213,8 +212,8 @@ export class PluginService extends MasterService
     packTemplate(template: LtTemplate): Observable<any> {
         return this.http.post(this.apiManager.getPathByName('packTemplate'),template,this.getOptions())
             .map(
-                (response: Response) => {
-                    return response.json().message;
+                (response: {message: boolean}) => {
+                    return response.message;
                 }
             );
     }

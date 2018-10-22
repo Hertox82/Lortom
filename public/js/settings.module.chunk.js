@@ -1,15 +1,5 @@
 webpackJsonp(["settings.module"],{
 
-/***/ "./src/plugins/Hardel/Settings/Services/settings.interfaces.ts":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-//# sourceMappingURL=settings.interfaces.js.map
-
-/***/ }),
-
 /***/ "./src/plugins/Hardel/Settings/Services/settings.service.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -35,8 +25,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var http_1 = __webpack_require__("./node_modules/@angular/http/@angular/http.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var http_1 = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
 __webpack_require__("./node_modules/rxjs/_esm5/Rx.js");
 var Subject_1 = __webpack_require__("./node_modules/rxjs/_esm5/Subject.js");
 var master_service_1 = __webpack_require__("./src/services/master.service.ts");
@@ -68,13 +58,13 @@ var SettingsService = (function (_super) {
     SettingsService.prototype.getRolesFrom = function () {
         return this.http.get(this.apiManager.getPathByName('getRoles'))
             .map(function (response) {
-            return response.json().roles;
+            return response.roles;
         });
     };
     SettingsService.prototype.getUsersFrom = function () {
         return this.http.get(this.apiManager.getPathByName('getUsers'))
             .map(function (response) {
-            return response.json().users;
+            return response.users;
         });
     };
     SettingsService.prototype.updateRoleInList = function (role) {
@@ -90,7 +80,7 @@ var SettingsService = (function (_super) {
     SettingsService.prototype.getPermissionsFrom = function () {
         return this.http.get(this.apiManager.getPathByName('getPermission'))
             .map(function (response) {
-            return response.json().permissions;
+            return response.permissions;
         });
     };
     /**
@@ -210,7 +200,7 @@ var SettingsService = (function (_super) {
     SettingsService.prototype.saveRole = function (role) {
         return this.http.put(this.apiManager.getPathByName('saveRole'), role, this.getOptions())
             .map(function (response) {
-            return response.json().role;
+            return response.role;
         });
     };
     /**
@@ -221,7 +211,7 @@ var SettingsService = (function (_super) {
     SettingsService.prototype.saveUser = function (user) {
         return this.http.put(this.apiManager.getPathByName('saveUser'), user, this.getOptions())
             .map(function (response) {
-            return response.json().user;
+            return response.user;
         });
     };
     /**
@@ -232,7 +222,7 @@ var SettingsService = (function (_super) {
     SettingsService.prototype.newRole = function (role) {
         return this.http.post(this.apiManager.getPathByName('saveRole'), role, this.getOptions())
             .map(function (response) {
-            return response.json().role;
+            return response.role;
         });
     };
     /**
@@ -243,7 +233,7 @@ var SettingsService = (function (_super) {
     SettingsService.prototype.newUser = function (user) {
         return this.http.post(this.apiManager.getPathByName('saveUser'), user, this.getOptions())
             .map(function (response) {
-            return response.json().user;
+            return response.user;
         });
     };
     /**
@@ -254,7 +244,7 @@ var SettingsService = (function (_super) {
     SettingsService.prototype.deleteRoles = function (roles) {
         return this.http.put(this.apiManager.getPathByName('getRoles'), roles, this.getOptions())
             .map(function (response) {
-            return response.json().roles;
+            return response.roles;
         });
     };
     /**
@@ -265,7 +255,7 @@ var SettingsService = (function (_super) {
     SettingsService.prototype.deleteUsers = function (users) {
         return this.http.put(this.apiManager.getPathByName('getUsers'), users, this.getOptions())
             .map(function (response) {
-            return response.json().roles;
+            return response.users;
         });
     };
     /**
@@ -280,15 +270,14 @@ var SettingsService = (function (_super) {
     SettingsService.prototype.updateListOfUsers = function () {
         this._updateUsers.next();
     };
+    SettingsService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], SettingsService);
     return SettingsService;
 }(master_service_1.MasterService));
-SettingsService = __decorate([
-    core_1.Injectable(),
-    __metadata("design:paramtypes", [typeof (_a = typeof http_1.Http !== "undefined" && http_1.Http) === "function" && _a || Object])
-], SettingsService);
 exports.SettingsService = SettingsService;
-var _a;
-//# sourceMappingURL=settings.service.js.map
+
 
 /***/ }),
 
@@ -314,9 +303,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var RoleNewComponent = (function () {
     function RoleNewComponent(sService, router) {
         this.sService = sService;
@@ -442,19 +431,18 @@ var RoleNewComponent = (function () {
         this.role = Object.assign({}, this.copyRole);
         this.role.permissions = permissions;
     };
+    RoleNewComponent = __decorate([
+        core_1.Component({
+            selector: 'settings-new-role',
+            template: __webpack_require__("./src/plugins/Hardel/Settings/component/NewRole/rolenew.component.html"),
+            styles: ['']
+        }),
+        __metadata("design:paramtypes", [settings_service_1.SettingsService, router_1.Router])
+    ], RoleNewComponent);
     return RoleNewComponent;
 }());
-RoleNewComponent = __decorate([
-    core_1.Component({
-        selector: 'settings-new-role',
-        template: __webpack_require__("./src/plugins/Hardel/Settings/component/NewRole/rolenew.component.html"),
-        styles: ['']
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof settings_service_1.SettingsService !== "undefined" && settings_service_1.SettingsService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
-], RoleNewComponent);
 exports.RoleNewComponent = RoleNewComponent;
-var _a, _b;
-//# sourceMappingURL=rolenew.component.js.map
+
 
 /***/ }),
 
@@ -483,9 +471,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var UserNewComponent = (function () {
     function UserNewComponent(nService, router) {
         this.nService = nService;
@@ -602,19 +590,18 @@ var UserNewComponent = (function () {
         this.user.role = role;
         this.user.role.permissions = permissions;
     };
+    UserNewComponent = __decorate([
+        core_1.Component({
+            selector: 'settings-new-user',
+            template: __webpack_require__("./src/plugins/Hardel/Settings/component/NewUser/usernew.component.html"),
+            styles: ['']
+        }),
+        __metadata("design:paramtypes", [settings_service_1.SettingsService, router_1.Router])
+    ], UserNewComponent);
     return UserNewComponent;
 }());
-UserNewComponent = __decorate([
-    core_1.Component({
-        selector: 'settings-new-user',
-        template: __webpack_require__("./src/plugins/Hardel/Settings/component/NewUser/usernew.component.html"),
-        styles: ['']
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof settings_service_1.SettingsService !== "undefined" && settings_service_1.SettingsService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
-], UserNewComponent);
 exports.UserNewComponent = UserNewComponent;
-var _a, _b;
-//# sourceMappingURL=usernew.component.js.map
+
 
 /***/ }),
 
@@ -640,10 +627,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
-var settings_interfaces_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.interfaces.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var RoleComponent = (function () {
     function RoleComponent(sService, router, nav) {
         var _this = this;
@@ -805,23 +791,22 @@ var RoleComponent = (function () {
         this.role = Object.assign({}, this.copyRole);
         this.role.permissions = permissions;
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], RoleComponent.prototype, "role", void 0);
+    RoleComponent = __decorate([
+        core_1.Component({
+            selector: 'app-role',
+            template: __webpack_require__("./src/plugins/Hardel/Settings/component/Role/role.component.html"),
+            styles: ['']
+        }),
+        __metadata("design:paramtypes", [settings_service_1.SettingsService, router_1.ActivatedRoute, router_1.Router])
+    ], RoleComponent);
     return RoleComponent;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", typeof (_a = typeof settings_interfaces_1.Role !== "undefined" && settings_interfaces_1.Role) === "function" && _a || Object)
-], RoleComponent.prototype, "role", void 0);
-RoleComponent = __decorate([
-    core_1.Component({
-        selector: 'app-role',
-        template: __webpack_require__("./src/plugins/Hardel/Settings/component/Role/role.component.html"),
-        styles: ['']
-    }),
-    __metadata("design:paramtypes", [typeof (_b = typeof settings_service_1.SettingsService !== "undefined" && settings_service_1.SettingsService) === "function" && _b || Object, typeof (_c = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _c || Object, typeof (_d = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _d || Object])
-], RoleComponent);
 exports.RoleComponent = RoleComponent;
-var _a, _b, _c, _d;
-//# sourceMappingURL=role.component.js.map
+
 
 /***/ }),
 
@@ -860,9 +845,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var list_component_1 = __webpack_require__("./src/model/list.component.ts");
 var RolesComponent = (function (_super) {
     __extends(RolesComponent, _super);
@@ -905,19 +890,18 @@ var RolesComponent = (function (_super) {
             delFn: 'deleteRoles'
         }, 'listaRole', "Do you really want delete this Roles?");
     };
+    RolesComponent = __decorate([
+        core_1.Component({
+            selector: 'app-roles-component',
+            template: __webpack_require__("./src/plugins/Hardel/Settings/component/Roles/roles.component.html"),
+            styles: ['']
+        }),
+        __metadata("design:paramtypes", [settings_service_1.SettingsService, router_1.Router])
+    ], RolesComponent);
     return RolesComponent;
 }(list_component_1.ListComponent));
-RolesComponent = __decorate([
-    core_1.Component({
-        selector: 'app-roles-component',
-        template: __webpack_require__("./src/plugins/Hardel/Settings/component/Roles/roles.component.html"),
-        styles: ['']
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof settings_service_1.SettingsService !== "undefined" && settings_service_1.SettingsService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
-], RolesComponent);
 exports.RolesComponent = RolesComponent;
-var _a, _b;
-//# sourceMappingURL=roles.component.js.map
+
 
 /***/ }),
 
@@ -946,10 +930,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var settings_interfaces_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.interfaces.ts");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var UserComponent = (function () {
     function UserComponent(sService, router, nav) {
         var _this = this;
@@ -1105,23 +1088,22 @@ var UserComponent = (function () {
         this.user.role = role;
         this.user.role.permissions = permissions;
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], UserComponent.prototype, "user", void 0);
+    UserComponent = __decorate([
+        core_1.Component({
+            selector: 'settings-user',
+            template: __webpack_require__("./src/plugins/Hardel/Settings/component/User/user.component.html"),
+            styles: ['']
+        }),
+        __metadata("design:paramtypes", [settings_service_1.SettingsService, router_1.ActivatedRoute, router_1.Router])
+    ], UserComponent);
     return UserComponent;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", typeof (_a = typeof settings_interfaces_1.User !== "undefined" && settings_interfaces_1.User) === "function" && _a || Object)
-], UserComponent.prototype, "user", void 0);
-UserComponent = __decorate([
-    core_1.Component({
-        selector: 'settings-user',
-        template: __webpack_require__("./src/plugins/Hardel/Settings/component/User/user.component.html"),
-        styles: ['']
-    }),
-    __metadata("design:paramtypes", [typeof (_b = typeof settings_service_1.SettingsService !== "undefined" && settings_service_1.SettingsService) === "function" && _b || Object, typeof (_c = typeof router_1.ActivatedRoute !== "undefined" && router_1.ActivatedRoute) === "function" && _c || Object, typeof (_d = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _d || Object])
-], UserComponent);
 exports.UserComponent = UserComponent;
-var _a, _b, _c, _d;
-//# sourceMappingURL=user.component.js.map
+
 
 /***/ }),
 
@@ -1160,8 +1142,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var list_component_1 = __webpack_require__("./src/model/list.component.ts");
 var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
 var UsersComponent = (function (_super) {
@@ -1205,19 +1187,18 @@ var UsersComponent = (function (_super) {
             delFn: 'deleteUsers'
         }, 'listaUser', "Do you really want delete this Users?");
     };
+    UsersComponent = __decorate([
+        core_1.Component({
+            selector: 'settings-users',
+            template: __webpack_require__("./src/plugins/Hardel/Settings/component/Users/users.component.html"),
+            styles: ['']
+        }),
+        __metadata("design:paramtypes", [settings_service_1.SettingsService, router_1.Router])
+    ], UsersComponent);
     return UsersComponent;
 }(list_component_1.ListComponent));
-UsersComponent = __decorate([
-    core_1.Component({
-        selector: 'settings-users',
-        template: __webpack_require__("./src/plugins/Hardel/Settings/component/Users/users.component.html"),
-        styles: ['']
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof settings_service_1.SettingsService !== "undefined" && settings_service_1.SettingsService) === "function" && _a || Object, typeof (_b = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _b || Object])
-], UsersComponent);
 exports.UsersComponent = UsersComponent;
-var _a, _b;
-//# sourceMappingURL=users.component.js.map
+
 
 /***/ }),
 
@@ -1241,7 +1222,7 @@ var usernew_component_1 = __webpack_require__("./src/plugins/Hardel/Settings/com
 exports.UserNewComponent = usernew_component_1.UserNewComponent;
 var user_component_1 = __webpack_require__("./src/plugins/Hardel/Settings/component/User/user.component.ts");
 exports.UserComponent = user_component_1.UserComponent;
-//# sourceMappingURL=index.js.map
+
 
 /***/ }),
 
@@ -1270,9 +1251,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var SettingsComponent = (function () {
     function SettingsComponent(router, service) {
         var _this = this;
@@ -1297,18 +1278,17 @@ var SettingsComponent = (function () {
     }
     SettingsComponent.prototype.ngOnInit = function () {
     };
+    SettingsComponent = __decorate([
+        core_1.Component({
+            selector: 'app-settings',
+            template: __webpack_require__("./src/plugins/Hardel/Settings/component/settings.component.html")
+        }),
+        __metadata("design:paramtypes", [router_1.Router, settings_service_1.SettingsService])
+    ], SettingsComponent);
     return SettingsComponent;
 }());
-SettingsComponent = __decorate([
-    core_1.Component({
-        selector: 'app-settings',
-        template: __webpack_require__("./src/plugins/Hardel/Settings/component/settings.component.html")
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof router_1.Router !== "undefined" && router_1.Router) === "function" && _a || Object, typeof (_b = typeof settings_service_1.SettingsService !== "undefined" && settings_service_1.SettingsService) === "function" && _b || Object])
-], SettingsComponent);
 exports.SettingsComponent = SettingsComponent;
-var _a, _b;
-//# sourceMappingURL=settings.component.js.map
+
 
 /***/ }),
 
@@ -1327,35 +1307,35 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var settings_routing_1 = __webpack_require__("./src/plugins/Hardel/Settings/settings.routing.ts");
 var settings_service_1 = __webpack_require__("./src/plugins/Hardel/Settings/Services/settings.service.ts");
-var common_1 = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-var forms_1 = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-var http_1 = __webpack_require__("./node_modules/@angular/http/@angular/http.es5.js");
+var common_1 = __webpack_require__("./node_modules/@angular/common/esm5/common.js");
+var http_1 = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
+var forms_1 = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
 var _1 = __webpack_require__("./src/app/backend-module/index.ts");
 var uielement_module_1 = __webpack_require__("./src/app/backend-module/UIElement/uielement.module.ts");
 var SettingsModule = (function () {
     function SettingsModule() {
     }
+    SettingsModule = __decorate([
+        core_1.NgModule({
+            imports: [
+                common_1.CommonModule,
+                forms_1.FormsModule,
+                http_1.HttpClientModule,
+                settings_routing_1.routing,
+                _1.BreadCrumbModule,
+                uielement_module_1.UIElementModule
+            ],
+            providers: [settings_service_1.SettingsService],
+            declarations: [settings_routing_1.routedComponents]
+        })
+    ], SettingsModule);
     return SettingsModule;
 }());
-SettingsModule = __decorate([
-    core_1.NgModule({
-        imports: [
-            common_1.CommonModule,
-            forms_1.FormsModule,
-            http_1.HttpModule,
-            settings_routing_1.routing,
-            _1.BreadCrumbModule,
-            uielement_module_1.UIElementModule
-        ],
-        providers: [settings_service_1.SettingsService],
-        declarations: [settings_routing_1.routedComponents]
-    })
-], SettingsModule);
 exports.SettingsModule = SettingsModule;
-//# sourceMappingURL=settings.module.js.map
+
 
 /***/ }),
 
@@ -1368,7 +1348,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Created by hernan on 17/10/2017.
  */
-var router_1 = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+var router_1 = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var component_1 = __webpack_require__("./src/plugins/Hardel/Settings/component/index.ts");
 var routes = [
     { path: '', component: component_1.SettingsComponent, data: { breadcrumb: 'Settings' }, children: [
@@ -1384,7 +1364,7 @@ var routes = [
 ];
 exports.routing = router_1.RouterModule.forChild(routes);
 exports.routedComponents = [component_1.SettingsComponent, component_1.RolesComponent, component_1.RoleComponent, component_1.RoleNewComponent, component_1.UsersComponent, component_1.UserNewComponent, component_1.UserComponent];
-//# sourceMappingURL=settings.routing.js.map
+
 
 /***/ })
 
