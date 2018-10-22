@@ -1,5 +1,6 @@
 import {ApiManager} from "@Lortom/app/urlApi/api.manager";
 import {User} from "@Lortom-Backend/user-module/user-model/user.interface";
+import {HttpHeaders,HttpParams} from "@angular/common/http";
 import {RequestOptions, Headers} from "@angular/http";
 /**
  * Created by hernan on 20/11/2017.
@@ -132,10 +133,17 @@ export class MasterService {
         sessionStorage.removeItem(name);
     }
 
-    protected getOptions() : RequestOptions
+    protected getOptions() : {
+    headers?: HttpHeaders;
+    observe?: 'body';
+    params?: HttpParams;
+    reportProgress?: boolean;
+    responseType?: 'json';
+    withCredentials?: boolean;
+}
     {
-        let headers = new Headers({'Content-Type' : 'application/json'});
+        let headers = new HttpHeaders({'Content-Type' : 'application/json'});
 
-        return new RequestOptions({headers : headers});
+        return {headers : headers};
     }
 }

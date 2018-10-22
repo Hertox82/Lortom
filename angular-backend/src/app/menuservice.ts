@@ -3,6 +3,7 @@
  */
 import {Injectable} from "@angular/core";
 import {Headers, Http, RequestOptions, Response} from "@angular/http";
+import {HttpHeaders, HttpClient} from "@angular/common/http";
 import 'rxjs/Rx';
 import {Observable} from "rxjs/Observable";
 import {ApiManager} from "./urlApi/api.manager";
@@ -15,7 +16,7 @@ export class MenuService {
     urlManager : ApiManager;
 
     user : User;
-    constructor(private http: Http)
+    constructor(private http: HttpClient)
     {
         this.user = null;
         this.urlManager = new ApiManager();
@@ -31,8 +32,8 @@ export class MenuService {
     }
 
     login(credential : {username:string, password:string}) : Observable<any>{
-        let headers = new Headers({'Content-Type' : 'application/json'});
-        let options = new RequestOptions( { headers: headers} );
+        let headers = new HttpHeaders({'Content-Type' : 'application/json'});
+        let options =  { headers: headers};
         return this.http.post(this.urlManager.getPathByName('login'),credential,options)
             .map(
                 (response: Response) => {return response.json();}
@@ -49,8 +50,8 @@ export class MenuService {
     }
 
     editMyProfile(user : User) : Observable<any>{
-        let headers = new Headers({'Content-Type' : 'application/json'});
-        let options = new RequestOptions( { headers: headers} );
+        let headers = new HttpHeaders({'Content-Type' : 'application/json'});
+        let options =  { headers: headers};
         return this.http.put(this.urlManager.getPathByName('editMyProfile'),user,options)
             .map(
                 (response : Response) => {
