@@ -7,6 +7,7 @@ import {pluginComponent, routing} from './plugin.routing';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
+import {HttpClientModule} from "@angular/common/http";
 import {BreadCrumbModule} from '@Lortom-Backend/breadcrumbs';
 import {UIElementModule} from '@Lortom/app/backend-module/UIElement/uielement.module';
 import {PluginService} from '@Lortom/plugins/Hardel/Plugin/Service/plugin.service';
@@ -16,7 +17,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     imports: [
         CommonModule,
         FormsModule,
-        HttpModule,
+        HttpClientModule,
         routing,
         BreadCrumbModule,
         UIElementModule,

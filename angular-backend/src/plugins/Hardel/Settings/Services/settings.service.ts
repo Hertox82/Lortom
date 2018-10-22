@@ -3,6 +3,7 @@
 import {Injectable} from "@angular/core";
 import {Role, Permission, User} from "./settings.interfaces";
 import {Http,Response} from "@angular/http";
+import {HttpClient} from "@angular/common/http";
 import 'rxjs/Rx';
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
@@ -19,7 +20,7 @@ export class SettingsService extends MasterService{
     private _updateUsers = new Subject();
     updateUsers$ = this._updateUsers.asObservable();
 
-    constructor(private http : Http)
+    constructor(private http : HttpClient)
     {
         super();
         // write the api route for setting

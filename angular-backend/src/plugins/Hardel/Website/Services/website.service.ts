@@ -5,6 +5,7 @@
 
 import {Injectable} from "@angular/core";
 import {Http, Response} from "@angular/http";
+import {HttpClient} from "@angular/common/http";
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
 import {LortomComponent, Page, LortomMenu} from "./website.interfaces";
@@ -27,7 +28,7 @@ export class WebsiteService extends MasterService{
     private _updateComponents = new Subject();
     updateComponents$ = this._updateComponents.asObservable();
 
-    constructor(private http: Http)
+    constructor(private http: HttpClient)
     {
         super();
 

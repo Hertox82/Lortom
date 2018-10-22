@@ -6,6 +6,7 @@
 import {Injectable} from "@angular/core";
 import {MasterService} from "@Lortom/services/master.service";
 import {Http, Response} from "@angular/http";
+import {HttpClient} from "@angular/common/http";
 import {LtPlugin, LtTemplate} from "@Lortom/plugins/Hardel/Plugin/Service/plugin.interface";
 import {Observable} from "rxjs/Observable";
 import {Subject} from "rxjs/Subject";
@@ -22,7 +23,7 @@ export class PluginService extends MasterService
     updatePlugins$ = this._updatePlugins.asObservable();
     updateTemplate$ = this._updateTemplate.asObservable();
 
-    constructor(private http: Http) {
+    constructor(private http: HttpClient) {
         super();
 
         // write the api route for setting
