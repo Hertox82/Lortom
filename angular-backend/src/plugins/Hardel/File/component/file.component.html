@@ -1,12 +1,57 @@
 <div class="content-box">
     <div class="content-header">
-        <h1>Title</h1>
-        <ol class="breadcrumb">
-            <li><a>Level 1</a></li>
-            <li class="active"><a>Level 2 active</a></li>
-        </ol>
+        <h1>Media</h1>
+        <breadcrumbs></breadcrumbs>
     </div>
     <div class="content">
-        Here, the Content!
+        <form class="form" *ngIf="notFound == false">
+            <div class="portlet">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-database"></i>
+                        <span>General Definitions</span>
+                    </div>
+                    <div class="actions">
+                        <button class="btn darkorange" (click)="editMode()">
+                            <i class="fa fa-edit"></i>
+                            Edit
+                        </button>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="portlet-form-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group flex-group">
+                                        <label for="nome" class="col-md-2 control-label">Nome</label>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control" name="nome" [ngModel] = "cFile.file.name" placeholder="Nome" id="nome" *ngIf="isEdit === false; else editName" readonly>
+                                            <ng-template #editName>
+                                                <input type="text" class="form-control" name="nome" placeholder="Nome" id="nome" [(ngModel)] = "cFile.file.name" >
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group flex-group">
+                                        <label for="nome" class="col-md-2 control-label">Immagine</label>
+                                        <div class="col-md-4 file-dnd">
+                                            <img src="{{cFile.file.img}}" alt="{{cFile.file.name}}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button class="btn orange" >Save</button>
+                    <button class="btn red" >Reset</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>

@@ -14,6 +14,7 @@ const routes: Routes = [
        {path: 'backend/website' , loadChildren:'../plugins/Hardel/Website/website.module#WebsiteModule'},
        {path: 'backend/plugin' , loadChildren:'../plugins/Hardel/Plugin/plugin.module#PluginModule'},
        {path: 'backend/dashboard' , loadChildren:'../plugins/Hardel/Dashboard/dashboard.module#DashboardModule'},
-       {path: 'backend/dashboard', loadChildren: '../plugins/Hardel/File/file.module#FileModule'}
+       {path: 'backend/file', loadChildren: '../plugins/Hardel/File/file.module#FileModule'},
+
 ]; 
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes);

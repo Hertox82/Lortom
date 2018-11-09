@@ -14,6 +14,6 @@ export class FileManagerService {
     }
 
     getFiles(): Observable<any> {
-
+       return null;
     }
 }

@@ -1,15 +1,15 @@
-import {Component} from '@angular/common';
-import {OnInit} from "@angular/core";
+
+import {OnInit, Component} from "@angular/core";
 
 
 
 @Component({
     selector: 'app-filemanager',
-    template: '',
+    templateUrl: './filemanager.component.html',
     styles: ['']
 })
 
-export class FileManagerComponent extends OnInit {
+export class FileManagerComponent implements OnInit {
 
     constructor() {}
     ngOnInit() {}

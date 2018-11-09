@@ -27,12 +27,15 @@ class FileController extends Controller
         $arrayFiles[] = $fileD;
         }
 
-        $main = new FileManagerService();
-
-        pr(getFileByObj(1,"Plugins\\Hardel\\Website\\Model\\LortomPages"));
-        pr($main->getModelAliases(),1);
+        //$main = new FileManagerService();
+        //pr(getFileByObj(1,"Plugins\\Hardel\\Website\\Model\\LortomPages"));
+        //pr($main->getModelAlias(),1);
         return response()->json($arrayFiles);
     }
+
+
+
+
 
 
 }

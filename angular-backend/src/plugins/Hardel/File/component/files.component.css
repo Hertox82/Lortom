@@ -1,0 +1,15 @@
+.box-file {
+    width: 150px;
+    height: 150px;
+    margin-top: 10px;
+    margin-right: 10px;
+    display: inline;
+    cursor: pointer;
+}
+
+
+.box-file img {
+    width: 150px;
+    height: 150px;
+    margin-bottom:10px;
+}
