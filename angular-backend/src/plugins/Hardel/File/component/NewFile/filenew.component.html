@@ -1,0 +1,27 @@
+
+<div class="portlet">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-database"></i>
+            <span>General Definitions</span>
+        </div>
+        <div class="actions">
+            <a class="btn btn-success white" role="button">Save</a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="portlet-form-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <lt-filednd
+                        (uploadFile)="updateFile($event)"
+                        (deletedFile)="deletedFile($event)"
+                        [listOfFile]="listOfFile"
+                        ></lt-filednd>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

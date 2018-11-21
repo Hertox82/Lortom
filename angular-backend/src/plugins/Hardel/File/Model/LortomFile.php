@@ -66,5 +66,32 @@ class LortomFile extends Model {
 
         return $listObj;
     }
+
+    /**
+     * This function return the Type by Extension
+     * 
+     */
+    public function getTypeByExtension() {
+
+            $type = '';
+
+            switch($this->extentsion) {
+                case 'jpg':
+                case 'jpeg':
+                case 'png':
+
+                $type = 'image';
+                break;
+
+                case 'xls':
+                case 'xlsx':
+                case 'pdf':
+                 $type = 'document';
+                 break;
+                
+            }
+
+            return $type;
+    }
 }
 

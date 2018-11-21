@@ -1,10 +1,11 @@
 /**
  * Created by hernan on 07/11/2018.
  */
-import {Injectable} from "@angular/core";
-import {MasterService} from "@Lortom/services/master.service";
-import {FileFromApi, LortomFile} from "@Lortom/plugins/Hardel/File/Services/files.interfaces";
-import {HttpClient} from "@angular/common/http";
+import {Injectable} from '@angular/core';
+import {MasterService} from '@Lortom/services/master.service';
+import {FileFromApi, LortomFile} from '@Lortom/plugins/Hardel/File/Services/files.interfaces';
+import {HttpClient} from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
 
 
 
@@ -17,48 +18,94 @@ export class FilesServices extends MasterService {
         super();
 
         const urls = [
-            { namePath : 'getFiles', path: 'files'}
+            { namePath: 'getFiles', path: 'files'},
+            { namePath: 'saveFile', path: 'file'}
         ];
-        //Add the Api to the ApiManager
+        // Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
     }
 
 
-    public getFilesFrom() {
+    /**
+     * This function retrieve the List of File from API
+     */
+    public getFilesFrom(): Observable<LortomFile[]> {
         return this.http.get(this.apiManager.getPathByName('getFiles'))
-            .map((response: FileFromApi [])=> {
-                    let nArrayOfFiles: LortomFile[] = [];
+            .map((response: FileFromApi []) => {
+                    const nArrayOfFiles: LortomFile[] = [];
 
-                    for(let i=0; i<response.length; i++) {
+                    for (let i = 0; i < response.length; i++) {
                         const file: FileFromApi = response[i];
 
-                        nArrayOfFiles.push({
-                            file: {
-                                id: file.id,
-                                img: file.src,
-                                name: file.fileName
-                            },
-                            ListObj: file.ListObj
-                        });
+                        nArrayOfFiles.push(this.convertFileApiToLortomFile(file));
                     }
                     return nArrayOfFiles;
-            })
+            });
     }
 
 
-    public setFiles(array: LortomFile []) {
+    /**
+     * This function convert a file From API into a LortomFile
+     * @param fTApi
+     * @returns LortomFile
+     */
+    protected convertFileApiToLortomFile(fTApi: FileFromApi): LortomFile {
+            return {
+                    file: {
+                        id: fTApi.id,
+                        img: fTApi.src,
+                        name: fTApi.fileName
+                    },
+                    ListObj: fTApi.ListObj
+        };
+    }
 
-        this.setItem('files',array);
+    /**
+     * this function convert a LortomFile into a FileFromApi
+     * @param file
+     */
+    protected convertLortomFileToFileApi(file: LortomFile) {
+            return {
+                ListObj: file.ListObj,
+                id: file.file.id,
+                src: file.file.img,
+                fileName: file.file.name
+            };
+    }
+
+    /**
+     * This function set the File into a localStorage
+     * @param array
+     */
+    public setFiles(array: LortomFile []): void {
+
+        this.setItem('files', array);
         this.arrayOfFiles = array;
     }
 
-    public getFiles() {
-        return this.getItem('files','arrayOfFiles') as LortomFile[];
+
+    /**
+     * This function add file into List of File stored in localStorage
+     * @param file
+     */
+    public setFile(file: LortomFile): void {
+        this.updateItemInList(file, 'arrayOfFiles');
     }
 
-    public getFilesById(id:number): LortomFile {
+    /**
+     * This function return a list Of LortomFile
+     */
+    public getFiles() {
+        return this.getItem('files', 'arrayOfFiles') as LortomFile[];
+    }
 
-        if(this.arrayOfFiles == undefined) {
+    /**
+     * This function return Lortom File by Id
+     * @param id
+     */
+    public getFilesById(id: number): LortomFile {
+
+        if (this.arrayOfFiles === undefined) {
             this.arrayOfFiles = this.getFiles();
         }
 
@@ -71,5 +118,21 @@ export class FilesServices extends MasterService {
         }
 
         return null;
+    }
+
+
+    public saveFile(file: File): Observable<LortomFile> {
+
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+        return this.http.post(this.apiManager.getPathByName('saveFile'), formData, this.getOptions([]))
+        .map((response: FileFromApi) => {
+             return this.convertFileApiToLortomFile(response);
+        });
+    }
+
+
+    public deleteFile(file: LortomFile) {
+
     }
 }

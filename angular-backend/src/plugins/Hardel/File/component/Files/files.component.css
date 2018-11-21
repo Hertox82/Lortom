@@ -2,9 +2,10 @@
     width: 150px;
     height: 150px;
     margin-top: 10px;
-    margin-right: 10px;
+    margin-right: 20px;
     display: inline;
     cursor: pointer;
+    position: relative;
 }
 
 
@@ -12,4 +13,13 @@
     width: 150px;
     height: 150px;
     margin-bottom:10px;
+}
+
+.box-file .delete {
+    position:absolute;
+    top:-80px;
+    right: -15px;
+    color:white;
+    text-decoration: none;
+    cursor: pointer;
 }

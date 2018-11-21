@@ -7775,8 +7775,9 @@ var MasterService = (function () {
         this[prop] = null;
         sessionStorage.removeItem(name);
     };
-    MasterService.prototype.getOptions = function () {
-        var headers = new http_1.HttpHeaders({ 'Content-Type': 'application/json' });
+    MasterService.prototype.getOptions = function (type) {
+        if (type === void 0) { type = 'application/json'; }
+        var headers = new http_1.HttpHeaders({ 'Content-Type': type });
         return { headers: headers };
     };
     return MasterService;

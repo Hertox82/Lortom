@@ -8,6 +8,11 @@ var map = {
 		"./src/plugins/Hardel/Dashboard/dashboard.module.ts",
 		"dashboard.module"
 	],
+	"../plugins/Hardel/File/file.module": [
+		"./src/plugins/Hardel/File/file.module.ts",
+		"common",
+		"file.module"
+	],
 	"../plugins/Hardel/Plugin/plugin.module": [
 		"./src/plugins/Hardel/Plugin/plugin.module.ts",
 		"common",
@@ -200,7 +205,8 @@ var routes = [
     { path: 'backend/settings', loadChildren: '../plugins/Hardel/Settings/settings.module#SettingsModule' },
     { path: 'backend/website', loadChildren: '../plugins/Hardel/Website/website.module#WebsiteModule' },
     { path: 'backend/plugin', loadChildren: '../plugins/Hardel/Plugin/plugin.module#PluginModule' },
-    { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' }
+    { path: 'backend/dashboard', loadChildren: '../plugins/Hardel/Dashboard/dashboard.module#DashboardModule' },
+    { path: 'backend/file', loadChildren: '../plugins/Hardel/File/file.module#FileModule' },
 ];
 exports.routing = router_1.RouterModule.forRoot(routes);
 
@@ -430,60 +436,63 @@ var BreadCrumbsComponent = (function () {
         this.activatedRoute = activatedRoute;
         this.router = router;
         this.breadcrumbs = [];
-        var ROUTE_DATA_BREADCRUMB = "breadcrumb";
-        //subscribe to the NavigationEnd event
-        this.router.events.filter(function (event) { return event instanceof router_1.NavigationEnd; }).subscribe(function (event) {
-            //set breadcrumbs
+        // this.breadcrumbs = [];
+        var ROUTE_DATA_BREADCRUMB = 'breadcrumb';
+        // subscribe to the NavigationEnd event
+        this.subscription = this.router.events.filter(function (event) { return event instanceof router_1.NavigationEnd; }).subscribe(function (event) {
+            // set breadcrumbs
             var root = _this.activatedRoute.root;
-            _this.breadcrumbs = _this.sanitizeBreadcrumbs(event, _this.getBreadcrumbs(root));
+            // this.breadcrumbs = this.sanitizeBreadcrumbs(event,this.getBreadcrumbs(root));
+            _this.setBreadCrumbs(event, root);
         });
     }
-    BreadCrumbsComponent.prototype.ngOnInit = function () {
+    BreadCrumbsComponent.prototype.ngOnInit = function () { };
+    BreadCrumbsComponent.prototype.setBreadCrumbs = function (event, root) {
+        this.breadcrumbs = this.sanitizeBreadcrumbs(event, this.getBreadcrumbs(root));
     };
     BreadCrumbsComponent.prototype.sanitizeBreadcrumbs = function (route, breadcrumbs) {
         for (var _i = 0, breadcrumbs_1 = breadcrumbs; _i < breadcrumbs_1.length; _i++) {
             var b = breadcrumbs_1[_i];
-            if (b.url == route.url) {
+            if (b.url === route.url) {
                 b.active = true;
             }
         }
-        //console.log(breadcrumbs);
         return breadcrumbs;
     };
     BreadCrumbsComponent.prototype.getBreadcrumbs = function (route, url, breadcrumbs) {
-        if (url === void 0) { url = ""; }
+        if (url === void 0) { url = ''; }
         if (breadcrumbs === void 0) { breadcrumbs = []; }
-        var ROUTE_DATA_BREADCRUMB = "breadcrumb";
-        //get the child routes
+        var ROUTE_DATA_BREADCRUMB = 'breadcrumb';
+        // get the child routes
         var children = route.children;
-        //return if there are no more children
+        // return if there are no more children
         if (children.length === 0) {
             return breadcrumbs;
         }
-        //iterate over each children
+        // iterate over each children
         for (var _i = 0, children_1 = children; _i < children_1.length; _i++) {
             var child = children_1[_i];
             if (child.routeConfig.hasOwnProperty('loadChildren')) {
                 this.basePath = child.routeConfig.path;
             }
-            //verify primary route
+            // verify primary route
             if (child.outlet !== router_1.PRIMARY_OUTLET) {
                 continue;
             }
-            //verify the custom data property "breadcrumb" is specified on the route
+            // verify the custom data property "breadcrumb" is specified on the route
             if (!child.snapshot.data.hasOwnProperty(ROUTE_DATA_BREADCRUMB)) {
                 return this.getBreadcrumbs(child, url, breadcrumbs);
             }
-            //get the route's URL segment
+            // get the route's URL segment
             if (child.snapshot.url.length > 0) {
-                var routeURL = child.snapshot.url.map(function (segment) { return segment.path; }).join("/");
-                //append route URL to URL
+                var routeURL = child.snapshot.url.map(function (segment) { return segment.path; }).join('/');
+                // append route URL to URL
                 url += "/" + routeURL;
             }
             else {
                 url = "/" + this.basePath;
             }
-            //add breadcrumb
+            // add breadcrumb
             var breadcrumb = {
                 label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
                 params: child.snapshot.params,
@@ -491,7 +500,7 @@ var BreadCrumbsComponent = (function () {
                 active: false
             };
             breadcrumbs.push(breadcrumb);
-            //recursive
+            // recursive
             return this.getBreadcrumbs(child, url, breadcrumbs);
         }
     };

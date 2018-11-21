@@ -47,7 +47,7 @@ var SettingsService = (function (_super) {
             { namePath: 'getUsers', path: 'users' },
             { namePath: 'saveUser', path: 'user' }
         ];
-        //Add the Api to the ApiManager
+        // Add the Api to the ApiManager
         _this.apiManager.addListUrlApi(urls);
         return _this;
     }

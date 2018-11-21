@@ -1,25 +1,25 @@
 
 
-import {Injectable} from "@angular/core";
-import {Role, Permission, User} from "./settings.interfaces";
-import {HttpClient} from "@angular/common/http";
+import {Injectable} from '@angular/core';
+import {Role, Permission, User} from './settings.interfaces';
+import {HttpClient} from '@angular/common/http';
 import 'rxjs/Rx';
-import {Subject} from "rxjs/Subject";
-import {Observable} from "rxjs/Observable";
-import {MasterService} from "@Lortom/services/master.service";
+import {Subject} from 'rxjs/Subject';
+import {Observable} from 'rxjs/Observable';
+import {MasterService} from '@Lortom/services/master.service';
 
 @Injectable()
-export class SettingsService extends MasterService{
+export class SettingsService extends MasterService {
 
-    listOfRoles : Role[];
-    listOfUsers : User[];
+    listOfRoles: Role[];
+    listOfUsers: User[];
     private _updateRoles = new Subject();
     updateRoles$ = this._updateRoles.asObservable();
 
     private _updateUsers = new Subject();
     updateUsers$ = this._updateUsers.asObservable();
 
-    constructor(private http : HttpClient)
+    constructor(private http: HttpClient)
     {
         super();
         // write the api route for setting
@@ -30,7 +30,7 @@ export class SettingsService extends MasterService{
                 { namePath : 'getUsers', path: 'users'},
                 { namePath : 'saveUser', path: 'user'}
             ];
-        //Add the Api to the ApiManager
+        // Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
     }
 
@@ -38,43 +38,38 @@ export class SettingsService extends MasterService{
      * This function retrive the roles from the API (Laravel)
      * @returns {Observable<R>}
      */
-    getRolesFrom()
-    {
+    getRolesFrom() {
         return this.http.get(this.apiManager.getPathByName('getRoles'))
-            .map( (response : {roles : Role[]}) => {
+            .map( (response: {roles: Role[]}) => {
                 return response.roles;
             });
 
     }
 
-    getUsersFrom()
-    {
+    getUsersFrom() {
         return this.http.get(this.apiManager.getPathByName('getUsers'))
             .map(
-                (response : {users: User []}) => {
+                (response: {users: User []}) => {
                     return response.users;
                 }
             );
     }
 
-    updateRoleInList(role : Role) : void
-    {
-        this.updateItemInList(role,'listOfRoles');
+    updateRoleInList(role: Role): void {
+        this.updateItemInList(role, 'listOfRoles');
     }
 
-    updateUserInList(user : User) : void
-    {
-        this.updateItemInList(user,'listOfUsers');
+    updateUserInList(user: User): void {
+        this.updateItemInList(user, 'listOfUsers');
     }
 
     /**
      * This function retrive the permissions from the API (Laravel)
      * @returns {Observable<R>}
      */
-    getPermissionsFrom()
-    {
+    getPermissionsFrom() {
         return this.http.get(this.apiManager.getPathByName('getPermission'))
-            .map((response : {permissions: Permission[]}) =>  {
+            .map((response: {permissions: Permission[]}) =>  {
                 return response.permissions;
             });
     }
@@ -83,9 +78,8 @@ export class SettingsService extends MasterService{
      * This function set the Roles
      * @param roles
      */
-    setRoles(roles : Role[]) : void
-    {
-        this.setItem('roles',roles);
+    setRoles(roles: Role[]): void {
+        this.setItem('roles', roles);
         this.listOfRoles = roles;
     }
 
@@ -93,9 +87,8 @@ export class SettingsService extends MasterService{
      * This function set the Users
      * @param users
      */
-    setUsers(users : User[]) : void
-    {
-        this.setItem('users',users);
+    setUsers(users: User[]): void {
+        this.setItem('users', users);
         this.listOfUsers = users;
     }
 
@@ -104,8 +97,7 @@ export class SettingsService extends MasterService{
      * This function is to set new role into the listOfRoles
      * @param role
      */
-    setRole(role : Role)
-    {
+    setRole(role: Role) {
         let roles = this.getRoles();
         roles.push(role);
        this.deleteRoleFromCache();
