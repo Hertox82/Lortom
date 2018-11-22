@@ -7,6 +7,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LtFile } from 'lt-drag-and-drop';
 import { FilesServices } from '../../Services/files.services';
+import { LortomFile } from '../../Services/files.interfaces';
 
 @Component({
     selector: 'app-file-new',
@@ -22,11 +23,10 @@ export class FileNewComponent implements OnInit {
     ngOnInit() {}
 
     updateFile(file: LtFile[]) {
-        console.log('update file');
-        console.log(file);
         this.srvFile.saveFile(file[0].file).subscribe(
-            (response: any) => {
+            (response: LortomFile) => {
                 console.log(response);
+                this.srvFile.setFile(response);
             }
         );
 

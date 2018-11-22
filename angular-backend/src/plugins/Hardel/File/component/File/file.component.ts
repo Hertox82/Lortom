@@ -18,11 +18,11 @@ export class FileComponent implements OnInit {
     private sub: any;
     id: number;
     cFile: LortomFile;
-    notFound: boolean = false;
-    public isEdit: boolean = false;
+    notFound = false;
+    public isEdit = false;
     cFileClone: LortomFile;
 
-    constructor(private sFileSer: FilesServices,private router: ActivatedRoute, private nav: Router) {
+    constructor(private sFileSer: FilesServices, private router: ActivatedRoute, private nav: Router) {
         this.sub = this.router.params.subscribe(
             (params) => {
                 this.id = +params['id'];
@@ -33,18 +33,57 @@ export class FileComponent implements OnInit {
     }
     ngOnInit() {}
 
-    cloneFile() {
+    /**
+     * This function clone the file
+     */
+    cloneFile(): void {
         this.cFileClone = Object.assign({}, this.cFile);
         this.cFileClone.file = Object.assign({}, this.cFile.file);
         if (this.cFile.ListObj !== undefined) {
             this.cFileClone.ListObj = [];
-            for( let i = 0; i < this.cFile.ListObj.length; i++) {
+            for ( let i = 0; i < this.cFile.ListObj.length; i++) {
                 this.cFileClone.ListObj.push(this.cFile.ListObj[i]);
+            }
+        }
+    }
+
+    /**
+     * This function clone the copyFile
+     */
+    cloneCopyFile(): void {
+        this.cFile = Object.assign({}, this.cFileClone);
+        this.cFile.file = Object.assign({}, this.cFileClone.file);
+        if (this.cFileClone.ListObj !== undefined) {
+            this.cFile.ListObj = [];
+            for (let i = 0; i < this.cFileClone.ListObj.length; i++) {
+                this.cFile.ListObj.push(this.cFileClone.ListObj[i]);
             }
         }
     }
 
     editMode() {
         this.isEdit = !this.isEdit;
+    }
+
+    /**
+     * this function edit the File
+     */
+    saveEdit() {
+        if (this.cFile.file.name !== this.cFileClone.file.name) {
+            // send via API the modification
+            if (this.cFile.file.name.length === 0) {
+                alert('You must write a File Name, please!');
+                this.cloneCopyFile();
+                return;
+            }
+
+            this.sFileSer.editFile(this.cFile).subscribe(
+                (file: LortomFile) => {
+                    this.cFile = file;
+                   this.cloneFile();
+                   this.sFileSer.updateFileInList(this.cFile);
+                }
+            );
+        }
     }
 }

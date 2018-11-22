@@ -13,32 +13,20 @@ class FileController extends Controller
 {
 
 
+    /**
+     * @Api({
+     *      "description": "this function return list of files"
+     * })
+     * @param Request $request
+     * @return Response $response
+     */
     public function getFiles(Request $request) {
 
-        $files = LortomFile::all();
-
-        $arrayFiles = [];
-
-        foreach ($files as $file) {
-            
-        $arrayFiles[] = $this->convertLortomFileToJson($file);
-
-        }
 
         //$main = new FileManagerService();
         //pr(getFileByObj(1,"Plugins\\Hardel\\Website\\Model\\LortomPages"));
         //pr($main->getModelAlias(),1);
-        return response()->json($arrayFiles);
-    }
-
-    protected function convertLortomFileToJson(LortomFile $file) {
-        $fileD = new \stdClass();
-        $fileD->id = $file->id;
-        $fileD->fileName = $file->fileName;
-        $fileD->src = $file->getSrc();
-        $fileD->ListObj = $file->getListObj();
-
-        return $fileD;
+        return response()->json($this->getAllFiles());
     }
 
 
@@ -76,7 +64,7 @@ class FileController extends Controller
             unset($arrayPath[0]);
             $arrayPath = array_values($arrayPath);
             $fileLt->path = '/'.implode('/', $arrayPath).'/';
-            $fileLt->type = $fileLt->getTypeByExtension();
+            $fileLt->type = $fileLt->getTypeByExtension($ext);
             $fileLt->save();
 
             // return response
@@ -85,6 +73,52 @@ class FileController extends Controller
         }
     }
 
+    /**
+     * This function edit File
+     */
+    public function editFile(Request $request) {
+        $input = $request->all();
+        $file = $input['file'];
+        $ltFile = LortomFile::find($file['id']);
+
+        if($file['name'] != $ltFile->fileName) {
+            $realPath = $ltFile->getRealPath();
+            $name = $file['name'];
+            $pathChange = public_path()."{$ltFile->path}{$name}.{$ltFile->extension}";
+            File::move($realPath,$pathChange);
+            $ltFile->fileName = $name;
+            $ltFile->save();
+        }
+
+        return response()->json($this->convertLortomFileToJson($ltFile));
+    }
+
+    /**
+     * 
+     */
+    public function deleteFile(Request $request) {
+        $input = $request->all();
+        $idFile = $input['id'];
+
+        $file = LortomFile::find($idFile);
+
+        // first of all delete the reference from Server
+        $pathFile =$file->getRealPath();
+
+        if(File::exists($pathFile)) {
+            File::delete($pathFile);
+        }
+
+        // after that, delete record from DB
+        $file->delete();
+
+        return response()->json($this->getAllFiles());
+
+    }
+
+    /**
+     * 
+     */
     protected function createPathIfNotExists($arrayPath) {
 
             $pathBase = '';
@@ -95,5 +129,37 @@ class FileController extends Controller
                 }
                 $pathBase.='/';
             }
+    }
+
+    /**
+     * 
+     */
+    protected function convertLortomFileToJson(LortomFile $file) {
+        $fileD = new \stdClass();
+        $fileD->id = $file->id;
+        $fileD->fileName = $file->fileName;
+        $fileD->src = $file->getSrc();
+        $fileD->ListObj = $file->getListObj();
+
+        return $fileD;
+    }
+
+    /**
+     * This function return all Files
+     * @return array
+     */
+    protected function getAllFiles() {
+
+        $files = LortomFile::all();
+
+        $arrayFiles = [];
+
+        foreach ($files as $file) {
+            
+        $arrayFiles[] = $this->convertLortomFileToJson($file);
+
+        }
+
+        return $arrayFiles;
     }
 }

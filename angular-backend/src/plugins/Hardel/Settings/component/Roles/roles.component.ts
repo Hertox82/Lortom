@@ -17,31 +17,30 @@ import {ListComponent} from "@Lortom/model/list.component";
 
 export class RolesComponent extends ListComponent implements OnInit
 {
-    listaRole : Role[] = [];
+    listaRole: Role[] = [];
     myRoot = '/backend/settings/roles';
     isRoot = false;
 
-    constructor(public c_Service : SettingsService, public router :Router) {
+    constructor(public c_Service: SettingsService, public router: Router) {
         super();
 
         this.onComponentInit({
             name: 'c_Service',
             permission: 'Hardel.Settings.Roles',
             upd: 'updateRoles$'
-        },'router','retrieveListOfRoles');
+        }, 'router', 'retrieveListOfRoles');
     }
 
     ngOnInit() {}
 
-    retrieveListOfRoles() : void
-    {
+    retrieveListOfRoles(): void {
         this.retrieveListOfData({
-            name:'c_Service',
+            name: 'c_Service',
             getData: 'getRoles',
             setData: 'setRoles',
             callApi: 'getRolesFrom',
             check: 'checkRolesExist'
-        },'listaRole');
+        }, 'listaRole');
     }
 
     /**

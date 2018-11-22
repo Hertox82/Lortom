@@ -44,6 +44,13 @@ class LortomFile extends Model {
         return "{$this->path}{$this->fileName}.{$this->extension}";
     }
 
+    /**
+     * This function return realPath
+     * @return string
+     */
+    public function getRealPath() {
+        return public_path()."{$this->getSrc()}";
+    }
 
     /**
      * This function return an array of Obj
@@ -71,11 +78,15 @@ class LortomFile extends Model {
      * This function return the Type by Extension
      * 
      */
-    public function getTypeByExtension() {
+    public function getTypeByExtension($ext = '') {
 
             $type = '';
 
-            switch($this->extentsion) {
+            if($this->extension !== null) {
+                $ext = $this->extension;
+            }
+
+            switch($ext) {
                 case 'jpg':
                 case 'jpeg':
                 case 'png':

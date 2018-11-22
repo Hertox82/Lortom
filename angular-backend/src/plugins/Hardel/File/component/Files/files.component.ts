@@ -1,8 +1,6 @@
 import {
     AfterViewInit, Component, ComponentFactoryResolver, OnDestroy, OnInit, ViewChild,
-    ViewContainerRef,
-    TemplateRef,
-    AfterViewChecked
+    ViewContainerRef
 } from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router,Event as NavigationEvent} from '@angular/router';
 import {FilesServices} from '@Lortom/plugins/Hardel/File/Services/files.services';
@@ -46,14 +44,10 @@ export class FilesComponent implements OnInit, OnDestroy, AfterViewInit {
                     } else {
                         this.isRoot = false;
                     }
-
                     this.loadComponent();
                 }
             }
         );
-
-      // console.log(this.br);
-
     }
 
     ngAfterViewInit() {
@@ -92,11 +86,15 @@ export class FilesComponent implements OnInit, OnDestroy, AfterViewInit {
         console.log(file);
     }
 
-    deleteFile(file: LortomFile) {
-        // todo
-        console.log(file);
-
+    deleteFile(file: LortomFile): void {
         // call Api in order to delete references from Database and Server
         // when response come, delete file from listOfArray
+        this.fserv.deleteFile(file).subscribe(
+            (response: any) => {
+                this.listOfFile = response;
+                this.fserv.deleteFileFromCache();
+                this.fserv.setFiles(response);
+            }
+        );
     }
 }

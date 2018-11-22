@@ -19,7 +19,8 @@ export class FilesServices extends MasterService {
 
         const urls = [
             { namePath: 'getFiles', path: 'files'},
-            { namePath: 'saveFile', path: 'file'}
+            { namePath: 'saveFile', path: 'file'},
+            { namePath: 'deleteFile', path: 'files'}
         ];
         // Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -32,15 +33,19 @@ export class FilesServices extends MasterService {
     public getFilesFrom(): Observable<LortomFile[]> {
         return this.http.get(this.apiManager.getPathByName('getFiles'))
             .map((response: FileFromApi []) => {
-                    const nArrayOfFiles: LortomFile[] = [];
-
-                    for (let i = 0; i < response.length; i++) {
-                        const file: FileFromApi = response[i];
-
-                        nArrayOfFiles.push(this.convertFileApiToLortomFile(file));
-                    }
-                    return nArrayOfFiles;
+                  return this.convertListFromApiToLortomFile(response);
             });
+    }
+
+    protected convertListFromApiToLortomFile(arrFile: FileFromApi[]): LortomFile[] {
+        const nArrayOfFiles: LortomFile[] = [];
+
+        for (let i = 0; i < arrFile.length; i++) {
+            const file: FileFromApi = arrFile[i];
+
+            nArrayOfFiles.push(this.convertFileApiToLortomFile(file));
+        }
+        return nArrayOfFiles;
     }
 
 
@@ -89,7 +94,10 @@ export class FilesServices extends MasterService {
      * @param file
      */
     public setFile(file: LortomFile): void {
-        this.updateItemInList(file, 'arrayOfFiles');
+        const files = this.getFiles();
+        files.push(file);
+        this.deleteFileFromCache();
+        this.setFiles(files);
     }
 
     /**
@@ -97,6 +105,10 @@ export class FilesServices extends MasterService {
      */
     public getFiles() {
         return this.getItem('files', 'arrayOfFiles') as LortomFile[];
+    }
+
+    public deleteFileFromCache() {
+        this.deleteItem('files', 'arrayOfFiles');
     }
 
     /**
@@ -120,7 +132,30 @@ export class FilesServices extends MasterService {
         return null;
     }
 
+    /**
+     * This function update the file in list
+     * @param file
+     */
+    public updateFileInList(file: LortomFile) {
+        if (this.arrayOfFiles === undefined) {
+            this.arrayOfFiles = this.getFiles();
+        }
 
+        for (let i = 0; i < this.arrayOfFiles.length; i++) {
+            if (this.arrayOfFiles[i].file.id === file.file.id) {
+                this.arrayOfFiles[i] = file;
+            }
+        }
+
+        this.deleteFileFromCache();
+        this.setFiles(this.arrayOfFiles);
+    }
+
+
+    /**
+     * this function save file into db
+     * @param file
+     */
     public saveFile(file: File): Observable<LortomFile> {
 
         const formData = new FormData();
@@ -131,8 +166,18 @@ export class FilesServices extends MasterService {
         });
     }
 
+    public editFile(file: LortomFile): Observable<LortomFile> {
+        return this.http.put(this.apiManager.getPathByName('saveFile'), file, this.getOptions())
+        .map((response: FileFromApi) => {
+            return this.convertFileApiToLortomFile(response);
+        });
+    }
+
 
     public deleteFile(file: LortomFile) {
-
+        return this.http.put(this.apiManager.getPathByName('deleteFile'), {id: file.file.id}, this.getOptions())
+        .map((response: FileFromApi []) => {
+            return this.convertListFromApiToLortomFile(response);
+        });
     }
 }

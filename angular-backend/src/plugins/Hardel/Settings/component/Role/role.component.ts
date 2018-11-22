@@ -1,10 +1,9 @@
 
 
-import {Component, OnInit, Input, OnDestroy} from "@angular/core";
-import {SettingsService} from "../../Services/settings.service";
-import {Permission, Role} from "../../Services/settings.interfaces";
-import {ActivatedRoute, Router} from "@angular/router";
-import {element} from "protractor";
+import {Component, OnInit, Input, OnDestroy} from '@angular/core';
+import {SettingsService} from '../../Services/settings.service';
+import {Permission, Role} from '../../Services/settings.interfaces';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
     selector : 'app-role',
@@ -12,19 +11,18 @@ import {element} from "protractor";
     styles : ['']
 })
 
-export class RoleComponent implements OnInit,OnDestroy
-{
-    @Input() role : Role;
-    copyRole : Role;
-    id : number;
-    private sub : any;
-    isEdit : boolean;
+export class RoleComponent implements OnInit, OnDestroy {
+    @Input() role: Role;
+    copyRole: Role;
+    id: number;
+    private sub: any;
+    isEdit: boolean;
     listPermissions = [];
-    filteredList : Permission[];
-    query : string;
-    notFound : boolean;
+    filteredList: Permission[];
+    query: string;
+    notFound: boolean;
 
-    constructor(private sService : SettingsService, private router : ActivatedRoute,private nav : Router){
+    constructor(private sService: SettingsService, private router: ActivatedRoute, private nav: Router) {
         this.isEdit = false;
         this.notFound = false;
         this.filteredList = [];
@@ -38,21 +36,18 @@ export class RoleComponent implements OnInit,OnDestroy
         this.sub = this.router.params.subscribe(
             (params) => {
                 this.id = +params['id'];
-                this.role = this.sService.getRoleByProperty('id',this.id);
-                if(this.role != null)
-                {
+                this.role = this.sService.getRoleByProperty('id', this.id);
+                if (this.role != null) {
                     this.notFound = true;
-                }
-                else
-                {
+                } else {
                     this.nav.navigate(['/backend/not-found']);
                 }
-                this.copyRole = Object.assign({},this.role);
+                this.copyRole = Object.assign({}, this.role);
             }
         );
     }
 
-    ngOnInit(){
+    ngOnInit() {
         this.retrivePermission();
     }
 
@@ -63,8 +58,8 @@ export class RoleComponent implements OnInit,OnDestroy
     /**
      * This function pass into edit Mode
      */
-    editMode(){
-        //passa in modalità edit
+    editMode() {
+        // passa in modalità edit
         this.isEdit = !this.isEdit;
     }
 
@@ -72,18 +67,16 @@ export class RoleComponent implements OnInit,OnDestroy
      * This function go to save Mode
      */
     saveMode() {
-        //salva i cambiamenti
-        if(this.role !== this.copyRole)
-        {
-            if(this.role.name.length == 0)
-            {
+        // salva i cambiamenti
+        if (this.role !== this.copyRole) {
+            if (this.role.name.length === 0) {
                 alert('You must write a name of Role, please!');
                 this.cloneCopyRole();
                 return;
             }
 
             this.sService.saveRole(this.role).subscribe(
-                (role : Role) => {
+                (role: Role) => {
                     this.role = role;
                     this.retrivePermission();
                     this.sService.updateRoleInList(this.role);
@@ -96,16 +89,15 @@ export class RoleComponent implements OnInit,OnDestroy
     /**
      * This function is to get Permission from API
      */
-    private retrivePermission()
-    {
+    private retrivePermission() {
         this.sService.getPermissionsFrom().subscribe(
-            (perms : Permission []) => {
+            (perms: Permission []) => {
                 this.listPermissions = perms;
-                if(this.role != null) {
-                    this.role.permissions.forEach((item: Permission) => {
+                if (this.role != null) {
+                     this.role.permissions.forEach((item: Permission) => {
                         let index = -1;
                         for (let i = 0; i < this.listPermissions.length; i++) {
-                            let m = this.listPermissions[i];
+                            const m = this.listPermissions[i];
 
                             if (m.id === item.id && m.name === item.name) {
                                 index = i;
@@ -127,7 +119,7 @@ export class RoleComponent implements OnInit,OnDestroy
      */
     resetMode() {
 
-        if(this.role !== this.copyRole) {
+        if (this.role !== this.copyRole) {
             if (confirm('Are you sure you don\'t want to save this changement and restore it?')) {
                 this.cloneCopyRole();
             }
@@ -138,16 +130,15 @@ export class RoleComponent implements OnInit,OnDestroy
      * This Function add Permission at the moment to role.permissions
      * @param item
      */
-    addPermissions(item : Permission) {
-        //aggiunge un permesso
+    addPermissions(item: Permission) {
+        // aggiunge un permesso
         this.filteredList = [];
         this.query = item.name;
         this.role.permissions.push(item);
-        let index = this.listPermissions.indexOf(item);
+        const index = this.listPermissions.indexOf(item);
 
-        if(index > -1)
-        {
-            this.listPermissions.splice(index,1);
+        if (index > -1) {
+            this.listPermissions.splice(index, 1);
         }
 
     }
@@ -159,11 +150,10 @@ export class RoleComponent implements OnInit,OnDestroy
     erasePermission(item) {
         // cancella il permesso
         this.listPermissions.push(item);
-        let index = this.role.permissions.indexOf(item);
+        const index = this.role.permissions.indexOf(item);
 
-        if(index > -1)
-        {
-            this.role.permissions.splice(index,1);
+        if ( index > -1) {
+            this.role.permissions.splice(index, 1);
         }
 
     }
@@ -171,25 +161,22 @@ export class RoleComponent implements OnInit,OnDestroy
     /**
      * This function filter permission for research
      */
-    filter(){
-        if (this.query !== "") {
+    filter() {
+        if (this.query !== '') {
             this.filteredList = this.listPermissions.filter(function(el){
                 return el.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
             }.bind(this));
-        }
-        else {
-
         }
     }
 
     /**
      * This function clone the Role
      */
-    cloneRole(){
-        if(this.role != null) {
-            let permissions: Permission[] = [];
+    cloneRole() {
+        if (this.role != null) {
+            const permissions: Permission[] = [];
 
-            for (let perm of this.role.permissions) {
+            for (const perm of this.role.permissions) {
                 permissions.push(perm);
             }
 
@@ -201,16 +188,14 @@ export class RoleComponent implements OnInit,OnDestroy
     /**
      * This function clone the CopyRole
      */
-    cloneCopyRole()
-    {
-        let permissions: Permission[] = [];
+    cloneCopyRole() {
+        const permissions: Permission[] = [];
 
-        for(let perm of this.copyRole.permissions)
-        {
+        for (const perm of this.copyRole.permissions) {
             permissions.push(perm);
         }
 
-        this.role = Object.assign({},this.copyRole);
+        this.role = Object.assign({}, this.copyRole);
         this.role.permissions = permissions;
     }
 }

@@ -19,8 +19,7 @@ export class SettingsService extends MasterService {
     private _updateUsers = new Subject();
     updateUsers$ = this._updateUsers.asObservable();
 
-    constructor(private http: HttpClient)
-    {
+    constructor(private http: HttpClient) {
         super();
         // write the api route for setting
          const urls = [
@@ -98,7 +97,7 @@ export class SettingsService extends MasterService {
      * @param role
      */
     setRole(role: Role) {
-        let roles = this.getRoles();
+        const roles = this.getRoles();
         roles.push(role);
        this.deleteRoleFromCache();
        this.setRoles(roles);
@@ -108,9 +107,8 @@ export class SettingsService extends MasterService {
      * This function is to set new User into the listOfUsers
      * @param user
      */
-    setUser(user : User)
-    {
-        let users = this.getUsers();
+    setUser(user: User) {
+        const users = this.getUsers();
         users.push(user);
         this.deleteUserFromCache();
         this.setUsers(users);
@@ -120,25 +118,22 @@ export class SettingsService extends MasterService {
     /**
      * This function delete listOfRoles from Cache
      */
-    deleteRoleFromCache() : void
-    {
-        this.deleteItem('roles','listOfRoles');
+    deleteRoleFromCache(): void {
+        this.deleteItem('roles', 'listOfRoles');
     }
 
     /**
      * This function delete listOfUsers from Cache
      */
-    deleteUserFromCache() : void
-    {
-        this.deleteItem('users','listOfUsers');
+    deleteUserFromCache(): void {
+        this.deleteItem('users', 'listOfUsers');
     }
 
     /**
      * This function check if Dataset of Roles exist
      * @returns {boolean}
      */
-    checkRolesExist()
-    {
+    checkRolesExist() {
         return this.checkItemExist('roles');
     }
 
@@ -146,8 +141,7 @@ export class SettingsService extends MasterService {
      * This function check if Dataset of Users exist
      * @returns {boolean}
      */
-    checkUsersExist()
-    {
+    checkUsersExist() {
         return this.checkItemExist('users');
     }
 
@@ -157,9 +151,8 @@ export class SettingsService extends MasterService {
      * @param value
      * @returns {Role}
      */
-    getRoleByProperty(name : string, value : any)
-    {
-        return this.getItemByProperty(name,value,'roles','listOfRoles') as Role;
+    getRoleByProperty(name: string, value: any) {
+        return this.getItemByProperty(name, value, 'roles', 'listOfRoles') as Role;
     }
 
     /**
@@ -168,9 +161,8 @@ export class SettingsService extends MasterService {
      * @param value
      * @returns {User}
      */
-    getUserByProperty(name : string, value : any) : User
-    {
-        return this.getItemByProperty(name,value,'users','listOfUsers') as User;
+    getUserByProperty(name: string, value: any): User {
+        return this.getItemByProperty(name, value, 'users', 'listOfUsers') as User;
     }
 
     /**
@@ -179,14 +171,12 @@ export class SettingsService extends MasterService {
      * @param permission
      * @returns {boolean}
      */
-    roleHasPermission(role: Role, permission : string)
-    {
+    roleHasPermission(role: Role, permission: string) {
         let response = false;
 
         role.permissions.forEach(
-            (p : Permission) => {
-               if(p.name === permission)
-               {
+            (p: Permission) => {
+               if (p.name === permission) {
                    response = true;
                }
             });
@@ -197,18 +187,17 @@ export class SettingsService extends MasterService {
      * This function return a Role Array
      * @returns {Role[]}
      */
-    getRoles() : Role [] {
+    getRoles(): Role [] {
 
-        return this.getItem('roles','listOfRoles') as Role[];
+        return this.getItem('roles', 'listOfRoles') as Role[];
     }
 
     /**
      * This function return a User Array
      * @returns {User[]}
      */
-    getUsers() : User []
-    {
-        return this.getItem('users','listOfUsers') as User[];
+    getUsers(): User [] {
+        return this.getItem('users', 'listOfUsers') as User[];
     }
 
     /**
@@ -216,10 +205,10 @@ export class SettingsService extends MasterService {
      * @param role
      * @returns {Observable<R>}
      */
-    saveRole(role : Role) : Observable<any> {
+    saveRole(role: Role): Observable<any> {
 
-        return this.http.put(this.apiManager.getPathByName('saveRole'),role,this.getOptions())
-            .map((response : {role : Role}) => {
+        return this.http.put(this.apiManager.getPathByName('saveRole'), role, this.getOptions())
+            .map((response: {role: Role}) => {
                 return response.role;
             });
     }
@@ -229,10 +218,10 @@ export class SettingsService extends MasterService {
      * @param user
      * @returns {Observable<R>}
      */
-    saveUser(user : User) : Observable<any> {
+    saveUser(user: User): Observable<any> {
 
-        return this.http.put(this.apiManager.getPathByName('saveUser'),user,this.getOptions())
-            .map((response : {user: User}) => {
+        return this.http.put(this.apiManager.getPathByName('saveUser'), user, this.getOptions())
+            .map((response: {user: User}) => {
                 return response.user;
             });
     }
@@ -242,11 +231,11 @@ export class SettingsService extends MasterService {
      * @param role
      * @returns {Observable<R>}
      */
-    newRole(role : Role) : Observable<any> {
+    newRole(role: Role): Observable<any> {
 
-        return this.http.post(this.apiManager.getPathByName('saveRole'),role,this.getOptions())
+        return this.http.post(this.apiManager.getPathByName('saveRole'), role, this.getOptions())
             .map(
-                (response : {role: Role}) => {
+                (response: {role: Role}) => {
                     return response.role;
                 }
             );
@@ -257,11 +246,11 @@ export class SettingsService extends MasterService {
      * @param user
      * @returns {Observable<R>}
      */
-    newUser(user : User) : Observable<any> {
+    newUser(user: User): Observable<any> {
 
-        return this.http.post(this.apiManager.getPathByName('saveUser'),user,this.getOptions())
+        return this.http.post(this.apiManager.getPathByName('saveUser'), user, this.getOptions())
             .map(
-                (response : {user: User}) => {
+                (response: {user: User}) => {
                     return response.user;
                 }
             );
@@ -272,11 +261,11 @@ export class SettingsService extends MasterService {
      * @param roles
      * @returns {Observable<R>}
      */
-    deleteRoles(roles : Role[]) : Observable<any> {
+    deleteRoles(roles: Role[]): Observable<any> {
 
-        return this.http.put(this.apiManager.getPathByName('getRoles'),roles,this.getOptions())
+        return this.http.put(this.apiManager.getPathByName('getRoles'), roles, this.getOptions())
             .map(
-                (response : {roles: Role[]}) => {
+                (response: {roles: Role[]}) => {
                     return response.roles;
                 }
             );
@@ -287,11 +276,11 @@ export class SettingsService extends MasterService {
      * @param users
      * @returns {Observable<R>}
      */
-    deleteUsers (users : User[]) : Observable<any> {
+    deleteUsers (users: User[]): Observable<any> {
 
-        return this.http.put(this.apiManager.getPathByName('getUsers'),users,this.getOptions())
+        return this.http.put(this.apiManager.getPathByName('getUsers'), users, this.getOptions())
             .map(
-                (response : {users: User[]}) => {
+                (response: {users: User[]}) => {
                     return response.users;
                 }
             );
@@ -300,16 +289,14 @@ export class SettingsService extends MasterService {
     /**
      * This function emit an Event
      */
-    updateListOfRoles()
-    {
+    updateListOfRoles() {
         this._updateRoles.next();
     }
 
     /**
      * This function emit an Event
      */
-    updateListOfUsers()
-    {
+    updateListOfUsers() {
         this._updateUsers.next();
     }
 }
