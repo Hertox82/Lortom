@@ -117,7 +117,7 @@ export class FilesServices extends MasterService {
      */
     public getFilesById(id: number): LortomFile {
 
-        if (this.arrayOfFiles === undefined) {
+        if (this.arrayOfFiles === undefined || this.arrayOfFiles === null) {
             this.arrayOfFiles = this.getFiles();
         }
 
@@ -147,7 +147,7 @@ export class FilesServices extends MasterService {
             }
         }
 
-        this.deleteFileFromCache();
+        // this.deleteFileFromCache();
         this.setFiles(this.arrayOfFiles);
     }
 

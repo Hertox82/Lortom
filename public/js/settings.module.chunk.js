@@ -669,7 +669,7 @@ var RoleComponent = (function () {
      * This function pass into edit Mode
      */
     RoleComponent.prototype.editMode = function () {
-        //passa in modalità edit
+        // passa in modalità edit
         this.isEdit = !this.isEdit;
     };
     /**
@@ -677,9 +677,9 @@ var RoleComponent = (function () {
      */
     RoleComponent.prototype.saveMode = function () {
         var _this = this;
-        //salva i cambiamenti
+        // salva i cambiamenti
         if (this.role !== this.copyRole) {
-            if (this.role.name.length == 0) {
+            if (this.role.name.length === 0) {
                 alert('You must write a name of Role, please!');
                 this.cloneCopyRole();
                 return;
@@ -732,7 +732,7 @@ var RoleComponent = (function () {
      * @param item
      */
     RoleComponent.prototype.addPermissions = function (item) {
-        //aggiunge un permesso
+        // aggiunge un permesso
         this.filteredList = [];
         this.query = item.name;
         this.role.permissions.push(item);
@@ -757,12 +757,10 @@ var RoleComponent = (function () {
      * This function filter permission for research
      */
     RoleComponent.prototype.filter = function () {
-        if (this.query !== "") {
+        if (this.query !== '') {
             this.filteredList = this.listPermissions.filter(function (el) {
                 return el.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
             }.bind(this));
-        }
-        else {
         }
     };
     /**

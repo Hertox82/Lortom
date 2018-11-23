@@ -82,6 +82,7 @@ export class FileComponent implements OnInit {
                     this.cFile = file;
                    this.cloneFile();
                    this.sFileSer.updateFileInList(this.cFile);
+                   this.editMode();
                 }
             );
         }

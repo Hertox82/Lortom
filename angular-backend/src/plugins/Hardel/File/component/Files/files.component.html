@@ -22,11 +22,11 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="content">
-                                            <div class="box-file" *ngFor="let file of listOfFile" (click)="deleteFile(file)">
+                                            <div class="box-file" *ngFor="let file of listOfFile">
                                                 <a [routerLink] = "['/backend/file/',file.file.id]">
                                                     <img src="{{file.file.img}}" alt="{{file.file.name}}"> 
                                                 </a>
-                                                <a class="btn btn-danger delete" data-toggle="buttons"><i class="fa fa-times"></i></a>
+                                                <a class="btn btn-danger delete" data-toggle="buttons" (click)="deleteFile(file)"><i class="fa fa-times"></i></a>
                                             </div>
                                         </div>
                                     </div>

@@ -178,7 +178,8 @@ var FilesServices = (function (_super) {
         _this.http = http;
         var urls = [
             { namePath: 'getFiles', path: 'files' },
-            { namePath: 'saveFile', path: 'file' }
+            { namePath: 'saveFile', path: 'file' },
+            { namePath: 'deleteFile', path: 'files' }
         ];
         // Add the Api to the ApiManager
         _this.apiManager.addListUrlApi(urls);
@@ -191,13 +192,16 @@ var FilesServices = (function (_super) {
         var _this = this;
         return this.http.get(this.apiManager.getPathByName('getFiles'))
             .map(function (response) {
-            var nArrayOfFiles = [];
-            for (var i = 0; i < response.length; i++) {
-                var file = response[i];
-                nArrayOfFiles.push(_this.convertFileApiToLortomFile(file));
-            }
-            return nArrayOfFiles;
+            return _this.convertListFromApiToLortomFile(response);
         });
+    };
+    FilesServices.prototype.convertListFromApiToLortomFile = function (arrFile) {
+        var nArrayOfFiles = [];
+        for (var i = 0; i < arrFile.length; i++) {
+            var file = arrFile[i];
+            nArrayOfFiles.push(this.convertFileApiToLortomFile(file));
+        }
+        return nArrayOfFiles;
     };
     /**
      * This function convert a file From API into a LortomFile
@@ -215,6 +219,18 @@ var FilesServices = (function (_super) {
         };
     };
     /**
+     * this function convert a LortomFile into a FileFromApi
+     * @param file
+     */
+    FilesServices.prototype.convertLortomFileToFileApi = function (file) {
+        return {
+            ListObj: file.ListObj,
+            id: file.file.id,
+            src: file.file.img,
+            fileName: file.file.name
+        };
+    };
+    /**
      * This function set the File into a localStorage
      * @param array
      */
@@ -227,7 +243,10 @@ var FilesServices = (function (_super) {
      * @param file
      */
     FilesServices.prototype.setFile = function (file) {
-        this.updateItemInList(file, 'arrayOfFiles');
+        var files = this.getFiles();
+        files.push(file);
+        this.deleteFileFromCache();
+        this.setFiles(files);
     };
     /**
      * This function return a list Of LortomFile
@@ -235,12 +254,15 @@ var FilesServices = (function (_super) {
     FilesServices.prototype.getFiles = function () {
         return this.getItem('files', 'arrayOfFiles');
     };
+    FilesServices.prototype.deleteFileFromCache = function () {
+        this.deleteItem('files', 'arrayOfFiles');
+    };
     /**
      * This function return Lortom File by Id
      * @param id
      */
     FilesServices.prototype.getFilesById = function (id) {
-        if (this.arrayOfFiles === undefined) {
+        if (this.arrayOfFiles === undefined || this.arrayOfFiles === null) {
             this.arrayOfFiles = this.getFiles();
         }
         for (var i = 0; i < this.arrayOfFiles.length; i++) {
@@ -251,6 +273,26 @@ var FilesServices = (function (_super) {
         }
         return null;
     };
+    /**
+     * This function update the file in list
+     * @param file
+     */
+    FilesServices.prototype.updateFileInList = function (file) {
+        if (this.arrayOfFiles === undefined) {
+            this.arrayOfFiles = this.getFiles();
+        }
+        for (var i = 0; i < this.arrayOfFiles.length; i++) {
+            if (this.arrayOfFiles[i].file.id === file.file.id) {
+                this.arrayOfFiles[i] = file;
+            }
+        }
+        // this.deleteFileFromCache();
+        this.setFiles(this.arrayOfFiles);
+    };
+    /**
+     * this function save file into db
+     * @param file
+     */
     FilesServices.prototype.saveFile = function (file) {
         var _this = this;
         var formData = new FormData();
@@ -258,6 +300,20 @@ var FilesServices = (function (_super) {
         return this.http.post(this.apiManager.getPathByName('saveFile'), formData, this.getOptions([]))
             .map(function (response) {
             return _this.convertFileApiToLortomFile(response);
+        });
+    };
+    FilesServices.prototype.editFile = function (file) {
+        var _this = this;
+        return this.http.put(this.apiManager.getPathByName('saveFile'), file, this.getOptions())
+            .map(function (response) {
+            return _this.convertFileApiToLortomFile(response);
+        });
+    };
+    FilesServices.prototype.deleteFile = function (file) {
+        var _this = this;
+        return this.http.put(this.apiManager.getPathByName('deleteFile'), { id: file.file.id }, this.getOptions())
+            .map(function (response) {
+            return _this.convertListFromApiToLortomFile(response);
         });
     };
     FilesServices = __decorate([
@@ -281,7 +337,7 @@ module.exports = "\n\n.file-dnd img {\n    width: 340px;\n}"
 /***/ "./src/plugins/Hardel/File/component/File/file.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-box\">\n   <!-- <div class=\"content-header\">\n        <h1>Media</h1>\n        <breadcrumbs></breadcrumbs>\n    </div> -->\n    <div class=\"content\">\n        <form class=\"form\" *ngIf=\"notFound == false\">\n            <div class=\"portlet\">\n                <div class=\"portlet-title\">\n                    <div class=\"caption\">\n                        <i class=\"fa fa-database\"></i>\n                        <span>General Definitions</span>\n                    </div>\n                    <div class=\"actions\">\n                        <button class=\"btn darkorange\" (click)=\"editMode()\">\n                            <i class=\"fa fa-edit\"></i>\n                            Edit\n                        </button>\n                    </div>\n                </div>\n                <div class=\"portlet-body\">\n                    <div class=\"portlet-form-body\">\n                        <div class=\"container\">\n                            <div class=\"row\">\n                                <div class=\"col-12\">\n                                    <div class=\"form-group flex-group\">\n                                        <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                        <div class=\"col-md-4\">\n                                            <input type=\"text\" class=\"form-control\" name=\"nome\" [ngModel] = \"cFile.file.name\" placeholder=\"Nome\" id=\"nome\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                            <ng-template #editName>\n                                                <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"cFile.file.name\" >\n                                            </ng-template>\n                                        </div>\n                                    </div>\n                                </div>\n                                <div class=\"col-12\">\n                                    <div class=\"form-group flex-group\">\n                                        <label for=\"nome\" class=\"col-md-2 control-label\">Immagine</label>\n                                        <div class=\"col-md-4 file-dnd\">\n                                            <img src=\"{{cFile.file.img}}\" alt=\"{{cFile.file.name}}\">\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-12\">\n                    <button class=\"btn orange\" >Save</button>\n                    <button class=\"btn red\" >Reset</button>\n                </div>\n            </div>\n        </form>\n    </div>\n</div>"
+module.exports = "<div class=\"content-box\">\n   <!-- <div class=\"content-header\">\n        <h1>Media</h1>\n        <breadcrumbs></breadcrumbs>\n    </div> -->\n    <div class=\"content\">\n        <form class=\"form\" *ngIf=\"notFound == false\">\n            <div class=\"portlet\">\n                <div class=\"portlet-title\">\n                    <div class=\"caption\">\n                        <i class=\"fa fa-database\"></i>\n                        <span>General Definitions</span>\n                    </div>\n                    <div class=\"actions\">\n                        <button class=\"btn darkorange\" (click)=\"editMode()\">\n                            <i class=\"fa fa-edit\"></i>\n                            Edit\n                        </button>\n                    </div>\n                </div>\n                <div class=\"portlet-body\">\n                    <div class=\"portlet-form-body\">\n                        <div class=\"container\">\n                            <div class=\"row\">\n                                <div class=\"col-12\">\n                                    <div class=\"form-group flex-group\">\n                                        <label for=\"nome\" class=\"col-md-2 control-label\">Nome</label>\n                                        <div class=\"col-md-4\">\n                                            <input type=\"text\" class=\"form-control\" name=\"nome\" [ngModel] = \"cFile.file.name\" placeholder=\"Nome\" id=\"nome\" *ngIf=\"isEdit === false; else editName\" readonly>\n                                            <ng-template #editName>\n                                                <input type=\"text\" class=\"form-control\" name=\"nome\" placeholder=\"Nome\" id=\"nome\" [(ngModel)] = \"cFile.file.name\" >\n                                            </ng-template>\n                                        </div>\n                                    </div>\n                                </div>\n                                <div class=\"col-12\">\n                                    <div class=\"form-group flex-group\">\n                                        <label for=\"nome\" class=\"col-md-2 control-label\">Immagine</label>\n                                        <div class=\"col-md-4 file-dnd\">\n                                            <img src=\"{{cFile.file.img}}\" alt=\"{{cFile.file.name}}\">\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-12\">\n                    <button class=\"btn orange\" (click)=\"saveEdit()\">Save</button>\n                    <button class=\"btn red\" >Reset</button>\n                </div>\n            </div>\n        </form>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -321,6 +377,9 @@ var FileComponent = (function () {
         });
     }
     FileComponent.prototype.ngOnInit = function () { };
+    /**
+     * This function clone the file
+     */
     FileComponent.prototype.cloneFile = function () {
         this.cFileClone = Object.assign({}, this.cFile);
         this.cFileClone.file = Object.assign({}, this.cFile.file);
@@ -331,8 +390,41 @@ var FileComponent = (function () {
             }
         }
     };
+    /**
+     * This function clone the copyFile
+     */
+    FileComponent.prototype.cloneCopyFile = function () {
+        this.cFile = Object.assign({}, this.cFileClone);
+        this.cFile.file = Object.assign({}, this.cFileClone.file);
+        if (this.cFileClone.ListObj !== undefined) {
+            this.cFile.ListObj = [];
+            for (var i = 0; i < this.cFileClone.ListObj.length; i++) {
+                this.cFile.ListObj.push(this.cFileClone.ListObj[i]);
+            }
+        }
+    };
     FileComponent.prototype.editMode = function () {
         this.isEdit = !this.isEdit;
+    };
+    /**
+     * this function edit the File
+     */
+    FileComponent.prototype.saveEdit = function () {
+        var _this = this;
+        if (this.cFile.file.name !== this.cFileClone.file.name) {
+            // send via API the modification
+            if (this.cFile.file.name.length === 0) {
+                alert('You must write a File Name, please!');
+                this.cloneCopyFile();
+                return;
+            }
+            this.sFileSer.editFile(this.cFile).subscribe(function (file) {
+                _this.cFile = file;
+                _this.cloneFile();
+                _this.sFileSer.updateFileInList(_this.cFile);
+                _this.editMode();
+            });
+        }
     };
     FileComponent = __decorate([
         core_1.Component({
@@ -359,7 +451,7 @@ module.exports = ".box-file {\n    width: 150px;\n    height: 150px;\n    margin
 /***/ "./src/plugins/Hardel/File/component/Files/files.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\">\n        <h1>Media</h1>\n       <ng-template #bread></ng-template>\n    </div>\n    <div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n            <ul class=\"nav nav-tabs\">\n                <li class=\"active\">\n                    <a href=\"#tab_1\" data-toggle=\"tab\"> Media</a>\n                </li>\n            </ul>\n            <div class=\"tab-content\">\n                <div class=\"tab-pane active\" id=\"tab_1\">\n                    <div class=\"box\">\n                        <div class=\"box-body\">\n                            <div class=\"wrapper\">\n                                <div class=\"row\">\n                                    <div class=\"col-md-8\">\n                                        <a class=\"btn btn-primary\" [routerLink]=\"['/backend/file/new']\"><i class=\"fa fa-file\"></i> New Media</a>\n                                    </div>\n                                </div>\n                                <div class=\"row\">\n                                    <div class=\"col-md-12\">\n                                        <div class=\"content\">\n                                            <div class=\"box-file\" *ngFor=\"let file of listOfFile\" (click)=\"deleteFile(file)\">\n                                                <a [routerLink] = \"['/backend/file/',file.file.id]\">\n                                                    <img src=\"{{file.file.img}}\" alt=\"{{file.file.name}}\"> \n                                                </a>\n                                                <a class=\"btn btn-danger delete\" data-toggle=\"buttons\"><i class=\"fa fa-times\"></i></a>\n                                            </div>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n   \n</div>\n\n<router-outlet></router-outlet>"
+module.exports = "<div class=\"content-box\">\n    <div class=\"content-header\">\n        <h1>Media</h1>\n       <ng-template #bread></ng-template>\n    </div>\n    <div class=\"tabbable-custom\" *ngIf=\"isRoot === true\">\n            <ul class=\"nav nav-tabs\">\n                <li class=\"active\">\n                    <a href=\"#tab_1\" data-toggle=\"tab\"> Media</a>\n                </li>\n            </ul>\n            <div class=\"tab-content\">\n                <div class=\"tab-pane active\" id=\"tab_1\">\n                    <div class=\"box\">\n                        <div class=\"box-body\">\n                            <div class=\"wrapper\">\n                                <div class=\"row\">\n                                    <div class=\"col-md-8\">\n                                        <a class=\"btn btn-primary\" [routerLink]=\"['/backend/file/new']\"><i class=\"fa fa-file\"></i> New Media</a>\n                                    </div>\n                                </div>\n                                <div class=\"row\">\n                                    <div class=\"col-md-12\">\n                                        <div class=\"content\">\n                                            <div class=\"box-file\" *ngFor=\"let file of listOfFile\">\n                                                <a [routerLink] = \"['/backend/file/',file.file.id]\">\n                                                    <img src=\"{{file.file.img}}\" alt=\"{{file.file.name}}\"> \n                                                </a>\n                                                <a class=\"btn btn-danger delete\" data-toggle=\"buttons\" (click)=\"deleteFile(file)\"><i class=\"fa fa-times\"></i></a>\n                                            </div>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n   \n</div>\n\n<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -409,7 +501,6 @@ var FilesComponent = (function () {
                 _this.loadComponent();
             }
         });
-        // console.log(this.br);
     }
     FilesComponent.prototype.ngAfterViewInit = function () {
         this.loadComponent();
@@ -442,8 +533,14 @@ var FilesComponent = (function () {
         console.log(file);
     };
     FilesComponent.prototype.deleteFile = function (file) {
-        // todo
-        console.log(file);
+        var _this = this;
+        // call Api in order to delete references from Database and Server
+        // when response come, delete file from listOfArray
+        this.fserv.deleteFile(file).subscribe(function (response) {
+            _this.listOfFile = response;
+            _this.fserv.deleteFileFromCache();
+            _this.fserv.setFiles(response);
+        });
     };
     __decorate([
         core_1.ViewChild('bread', { read: core_1.ViewContainerRef }),
@@ -509,10 +606,10 @@ var FileNewComponent = (function () {
     }
     FileNewComponent.prototype.ngOnInit = function () { };
     FileNewComponent.prototype.updateFile = function (file) {
-        console.log('update file');
-        console.log(file);
+        var _this = this;
         this.srvFile.saveFile(file[0].file).subscribe(function (response) {
             console.log(response);
+            _this.srvFile.setFile(response);
         });
     };
     FileNewComponent.prototype.deletedFile = function (files) {
