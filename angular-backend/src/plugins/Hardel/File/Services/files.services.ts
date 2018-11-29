@@ -4,8 +4,9 @@
 import {Injectable} from '@angular/core';
 import {MasterService} from '@Lortom/services/master.service';
 import {FileFromApi, LortomFile} from '@Lortom/plugins/Hardel/File/Services/files.interfaces';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import { LtFile } from 'lt-drag-and-drop';
 
 
 
@@ -30,8 +31,10 @@ export class FilesServices extends MasterService {
     /**
      * This function retrieve the List of File from API
      */
-    public getFilesFrom(): Observable<LortomFile[]> {
-        return this.http.get(this.apiManager.getPathByName('getFiles'))
+    public getFilesFrom(params?: HttpParams): Observable<LortomFile[]> {
+        return this.http.get(this.apiManager.getPathByName('getFiles'), {
+            params: params
+        })
             .map((response: FileFromApi []) => {
                   return this.convertListFromApiToLortomFile(response);
             });
@@ -46,6 +49,14 @@ export class FilesServices extends MasterService {
             nArrayOfFiles.push(this.convertFileApiToLortomFile(file));
         }
         return nArrayOfFiles;
+    }
+
+    public convertLortomFileToLtFile(file: LortomFile): LtFile {
+        return {
+            img: file.file.img,
+            name: file.file.name,
+            id: file.file.id
+        };
     }
 
 
@@ -156,16 +167,24 @@ export class FilesServices extends MasterService {
      * this function save file into db
      * @param file
      */
-    public saveFile(file: File): Observable<LortomFile> {
+    public saveFile(file: File, idObject?: number, nameObject?: string): Observable<LortomFile> {
 
         const formData = new FormData();
         formData.append('file', file, file.name);
+        if (idObject !== null && nameObject !== null) {
+            formData.append('idObject', idObject.toString());
+            formData.append('nameObject', nameObject);
+        }
         return this.http.post(this.apiManager.getPathByName('saveFile'), formData, this.getOptions([]))
         .map((response: FileFromApi) => {
              return this.convertFileApiToLortomFile(response);
         });
     }
 
+    /**
+     * this function edit file into db
+     * @param file
+     */
     public editFile(file: LortomFile): Observable<LortomFile> {
         return this.http.put(this.apiManager.getPathByName('saveFile'), file, this.getOptions())
         .map((response: FileFromApi) => {

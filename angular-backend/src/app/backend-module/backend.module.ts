@@ -3,12 +3,12 @@
  */
 
 import { NgModule } from '@angular/core';
-import {CommonModule} from "@angular/common";
-import {MenuService} from "../menuservice";
-import {EventService} from "../../services/event.service";
-import {RouterModule} from "@angular/router";
-import {FormsModule} from "@angular/forms";
-import {UserModule,BreadCrumbModule,BackendImportComponent,BackendExportComponent} from "../backend-module";
+import {CommonModule} from '@angular/common';
+import {MenuService} from '../menuservice';
+import {EventService} from '../../services/event.service';
+import {RouterModule} from '@angular/router';
+import {FormsModule} from '@angular/forms';
+import {UserModule, BreadCrumbModule, BackendImportComponent, BackendExportComponent} from '../backend-module';
 
 @NgModule({
     imports : [

@@ -1,55 +1,56 @@
 
 
 
-import {Component, Input, OnInit} from "@angular/core";
-import {LortomComponent, LtPageComponent, Page, createLtPageComponentFrom} from "../../Services/website.interfaces";
-import {WebsiteService} from "../../Services/website.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {hasOwnProperty} from "tslint/lib/utils";
-import {NgbModal, ModalDismissReasons} from "@ng-bootstrap/ng-bootstrap";
+import {Component, Input, OnInit} from '@angular/core';
+import {LortomComponent, LtPageComponent, Page, createLtPageComponentFrom} from '../../Services/website.interfaces';
+import {WebsiteService} from '../../Services/website.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {hasOwnProperty} from 'tslint/lib/utils';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector : 'wb-page',
     templateUrl : './page.component.html',
     styles : ['']
 })
 
-export class PageComponent implements OnInit
-{
-    @Input() page : Page;
-    copyPage : Page;
-    id : number;
-    private sub : any;
-    isEdit : boolean;
-    query : string;
-    notFound : boolean;
-    listOfState : {id? : number, label? : string}[];
-    listOfComponent =[];
-    filteredList : LortomComponent[];
+export class PageComponent implements OnInit {
+    @Input() page: Page;
+    copyPage: Page;
+    id: number;
+    private sub: any;
+    isEdit: boolean;
+    query: string;
+    notFound: boolean;
+    listOfState: {id?: number, label?: string}[];
+    listOfComponent = [];
+    filteredList: LortomComponent[];
     listOfModels: any;
     Model: {label: string, functions: any[]};
     listOfModelIndex: {label: string, functions: any[]} [] = [];
     listOfFunctions: string [] = [];
     Function: string;
 
-    constructor(private pService : WebsiteService, private router : ActivatedRoute,private nav : Router, private sModal: NgbModal) {
+    sObj = 'Plugins\\Hardel\\Website\\Model\\LortomPages';
+
+    constructor(private pService: WebsiteService, private router: ActivatedRoute, private nav: Router, private sModal: NgbModal) {
         this.isEdit = false;
         this.notFound = false;
         this.query = '';
         this.filteredList = [];
         this.page = {
-            id : -2,
-            title : '',
-            check : false,
-            state : {},
-            metaDesc : '',
-            metaTag : '',
-            slug : '',
-            fileName : '',
-            content : '',
+            id: -2,
+            title: '',
+            check: false,
+            state: {},
+            metaDesc: '',
+            metaTag: '',
+            slug: '',
+            fileName: '',
+            content: '',
             components: []
         };
         this.pService.getPageAtt().subscribe(
-            (data : any) => {
+            (data: any) => {
                 this.listOfState = data.states;
             }
         );
@@ -70,15 +71,12 @@ export class PageComponent implements OnInit
             (params) => {
                 this.id = +params['id'];
                 this.page = this.pService.getPageByProperty('id',this.id);
-                if(this.page != null)
-                {
+                if ( this.page != null) {
                     this.notFound = true;
-                    if(! hasOwnProperty(this.page,'components')) {
+                    if (! hasOwnProperty(this.page, 'components')) {
                         this.page['components'] = [];
                     }
-                }
-                else
-                {
+                } else {
                     this.nav.navigate(['/backend/not-found']);
                 }
                 this.clonePage();
@@ -90,70 +88,66 @@ export class PageComponent implements OnInit
     /**
      * This function pass into edit Mode
      */
-    editMode(){
-        //passa in modalità edit
+    editMode() {
+        // passa in modalità edit
         this.isEdit = !this.isEdit;
     }
 
-    resetMode(){
+    resetMode() {
         if (confirm('Do you want to reset all data?')) {
             this.cloneCopyPage();
         }
     }
 
     openModal(event, modal, item) {
-        //Stop bubbling
+        // Stop bubbling
         event.target.blur();
         event.preventDefault();
-        //assign to ModelObject the item
+        // assign to ModelObject the item
         this.Function = item.functions;
 
         this.Model = {label: '', functions: []};
 
-        //transform List of Object in array
-        for(let obj in this.listOfModels) {
-
+        // transform List of Object in array
+        for (let obj in this.listOfModels) {
             this.listOfModelIndex.push(this.listOfModels[obj]);
         }
 
-        //Check if Model is present
-        if(item.Object in this.listOfModels)
-        {
+        // Check if Model is present
+        if (item.Object in this.listOfModels) {
             this.Model = this.listOfModels[item.Object];
         }
 
-        //intialize listOfFunction, and if Model is not empty, assign it list of functions
+        // intialize listOfFunction, and if Model is not empty, assign it list of functions
         this.objectChange();
 
-        //open a Bootstrap Modal.
+        // open a Bootstrap Modal.
         const mod = this.sModal.open(modal);
 
-        //check action on Modal (save and close)
+        // check action on Modal (save and close)
         mod.result.then((result) => {
 
-            if(result === 'SAVE_DATA') {
+            if (result === 'SAVE_DATA') {
                 for (let obj in this.listOfModels) {
-                    let Modello = this.listOfModels[obj];
-
+                    const Modello = this.listOfModels[obj];
                     if (Modello.label === this.Model.label) {
                         item.Object = obj;
                     }
                 }
 
                 item.functions = this.Function;
-            }
-            else {
+            } else {
                 item.Object = null;
                 item.functions = null;
             }
-        },(reason) => {
-            //reason is fired when modal is closed
-           let result = console.log(this.getDismissReason(reason));
+        }, (reason) => {
+            // reason is fired when modal is closed
+           const result = console.log(this.getDismissReason(reason));
 
            this.Model = {label: '', functions: []};
-           //this.ModelObject = null;
+           // this.ModelObject = null;
            this.Function = '';
-        })
+        });
 
     }
 
@@ -176,7 +170,7 @@ export class PageComponent implements OnInit
         const index = this.page.components.indexOf(item);
 
         if(index > -1) {
-            this.page.components.splice(index,1);
+            this.page.components.splice(index, 1);
         }
     }
 
@@ -189,8 +183,8 @@ export class PageComponent implements OnInit
     /**
      * This function filter permission for research
      */
-    filter(){
-        if (this.query !== "") {
+    filter() {
+        if (this.query !== '') {
             this.filteredList = this.listOfComponent.filter(function(el){
                 return el.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
             }.bind(this));
@@ -199,22 +193,18 @@ export class PageComponent implements OnInit
         }
     }
 
-    clonePage()
-    {
-        this.copyPage = Object.assign({},this.page);
+    clonePage() {
+        this.copyPage = Object.assign({}, this.page);
     }
 
-    cloneCopyPage()
-    {
-        this.page = Object.assign({},this.copyPage);
+    cloneCopyPage() {
+        this.page = Object.assign({}, this.copyPage);
     }
 
-    saveMode()
-    {
-        if(this.page.slug.length>0)
-        {
+    saveMode() {
+        if (this.page.slug.length > 0) {
             this.pService.savePage(this.page).subscribe(
-                (page : Page) => {
+                (page: Page) => {
                     this.page = page;
                     this.clonePage();
                     this.pService.updatePageInList(this.page);
@@ -222,17 +212,14 @@ export class PageComponent implements OnInit
                     this.editMode();
                 }
             );
-        }
-        else
-        {
+        } else {
             alert('The slug cannot be empty, please!');
             this.cloneCopyPage();
             return;
         }
     }
 
-    keyupHandlerFunction(event)
-    {
+    keyupHandlerFunction(event) {
         this.page.content = event;
     }
 }

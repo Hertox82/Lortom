@@ -8,6 +8,7 @@ use Plugins\Hardel\File\Model\LortomFile;
 use Plugins\Hardel\File\Services\FileManagerService;
 use Illuminate\Support\Facades\Input;
 use File;
+use DB;
 
 class FileController extends Controller
 {
@@ -22,7 +23,28 @@ class FileController extends Controller
      */
     public function getFiles(Request $request) {
 
+        $sObj = $request->query('sObj');
+        $nIdObj = $request->query('nIdObj');
+        
+        if(!is_null($sObj) and !is_null('nIdObj')) {
+            $where = [
+                ['idObj',$nIdObj],
+                ['typeObj', $sObj]
+            ];
+            $listOfFile = DB::table('lt_file_object')
+            ->where($where)
+            ->select('idFile')
+            ->get();
 
+            $arrayFiles = [];
+
+            foreach ($listOfFile as $Obj) {
+                $arrayFiles[] = $this->convertLortomFileToJson(LortomFile::find($Obj->idFile));
+            }
+
+            return response()->json($arrayFiles);
+
+        }
         //$main = new FileManagerService();
         //pr(getFileByObj(1,"Plugins\\Hardel\\Website\\Model\\LortomPages"));
         //pr($main->getModelAlias(),1);
@@ -66,6 +88,21 @@ class FileController extends Controller
             $fileLt->path = '/'.implode('/', $arrayPath).'/';
             $fileLt->type = $fileLt->getTypeByExtension($ext);
             $fileLt->save();
+
+            $input = $request->all();
+            
+            if(isset($input['idObject']) and isset($input['nameObject'])) {
+                DB::table('lt_file_object')->insert([
+                    [
+                        'idFile'        => $fileLt->id,
+                        'idObj'         => $input['idObject'],
+                        'typeObj'       => $input['nameObject'],
+                        'created_at'    => date('Y-m-d H:i:s'),
+                        'updated_at'    => date('Y-m-d H:i:s'),
+                    ]
+                ]);
+
+            }
 
             // return response
 

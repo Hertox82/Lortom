@@ -18,10 +18,7 @@ export class FilesComponent implements OnInit, OnDestroy, AfterViewInit {
     myRoot = '/backend/file';
     sub;
     navEnd: NavigationEnd;
-
     @ViewChild('bread', {read: ViewContainerRef}) breadCmp: ViewContainerRef;
-
-
     public listOfFile: LortomFile[] = [];
 
     constructor (public fserv: FilesServices,
