@@ -2799,6 +2799,156 @@ LtTreeviewModule.decorators = [
 
 /***/ }),
 
+/***/ "./src/app/backend-module/file-manager/filemanager.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<lt-filednd\n(uploadFile)=\"updateFile($event)\"\n(deletedFile)=\"deletedFile($event)\"\n[listOfFile]=\"arrayOfFile\"\n></lt-filednd>"
+
+/***/ }),
+
+/***/ "./src/app/backend-module/file-manager/filemanager.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var files_services_1 = __webpack_require__("./src/plugins/Hardel/File/Services/files.services.ts");
+var http_1 = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
+var FileManagerComponent = (function () {
+    function FileManagerComponent(fiServ) {
+        this.fiServ = fiServ;
+    }
+    FileManagerComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        var params = new http_1.HttpParams()
+            .set('sObj', this.sObj)
+            .set('nIdObj', this.nIdObj.toString());
+        this.fiServ.getFilesFrom(params).subscribe(function (res) {
+            _this.listOfFile = res;
+            _this.arrayOfFile = [];
+            for (var i = 0; i < _this.listOfFile.length; i++) {
+                var file = _this.fiServ.convertLortomFileToLtFile(_this.listOfFile[i]);
+                _this.arrayOfFile.push(file);
+            }
+            _this.fiServ.setFiles(res);
+        });
+    };
+    /**
+     * This function save File into DB
+     * @param file
+     */
+    FileManagerComponent.prototype.updateFile = function (file) {
+        var _this = this;
+        this.fiServ.saveFile(file[0].file, this.nIdObj, this.sObj).subscribe(function (response) {
+            _this.fiServ.setFile(response);
+        });
+    };
+    /**
+     * this function delete file from list and DB
+     * @param file
+     */
+    FileManagerComponent.prototype.deletedFile = function (file) {
+        var _this = this;
+        var singleFile = this.convertIntoLortomFile(file[0]);
+        if (singleFile !== null) {
+            this.fiServ.deleteFile(singleFile).subscribe(function (response) {
+                _this.listOfFile = response;
+                _this.fiServ.deleteFileFromCache();
+                _this.fiServ.setFiles(response);
+            });
+        }
+    };
+    /**
+     * this function get lortomfile from listOfFile
+     * @param file
+     */
+    FileManagerComponent.prototype.convertIntoLortomFile = function (file) {
+        var retFile = null;
+        for (var i = 0; i < this.listOfFile.length; i++) {
+            var f = this.listOfFile[i];
+            if (f.file.id === file.id) {
+                retFile = f;
+            }
+        }
+        return retFile;
+    };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], FileManagerComponent.prototype, "sObj", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], FileManagerComponent.prototype, "nIdObj", void 0);
+    FileManagerComponent = __decorate([
+        core_1.Component({
+            selector: 'app-filemanager',
+            template: __webpack_require__("./src/app/backend-module/file-manager/filemanager.component.html"),
+            styles: ['']
+        }),
+        __metadata("design:paramtypes", [files_services_1.FilesServices])
+    ], FileManagerComponent);
+    return FileManagerComponent;
+}());
+exports.FileManagerComponent = FileManagerComponent;
+
+
+/***/ }),
+
+/***/ "./src/app/backend-module/file-manager/filemanager.module.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var common_1 = __webpack_require__("./node_modules/@angular/common/esm5/common.js");
+var filemanager_component_1 = __webpack_require__("./src/app/backend-module/file-manager/filemanager.component.ts");
+var lt_drag_and_drop_1 = __webpack_require__("./node_modules/lt-drag-and-drop/esm5/lt-drag-and-drop.js");
+var files_services_1 = __webpack_require__("./src/plugins/Hardel/File/Services/files.services.ts");
+var FileManagerModule = (function () {
+    function FileManagerModule() {
+    }
+    FileManagerModule = __decorate([
+        core_1.NgModule({
+            imports: [
+                common_1.CommonModule,
+                lt_drag_and_drop_1.LtFiledndModule
+            ],
+            declarations: [
+                filemanager_component_1.FileManagerComponent
+            ],
+            exports: [
+                filemanager_component_1.FileManagerComponent
+            ],
+            providers: [
+                files_services_1.FilesServices
+            ]
+        })
+    ], FileManagerModule);
+    return FileManagerModule;
+}());
+exports.FileManagerModule = FileManagerModule;
+
+
+/***/ }),
+
 /***/ "./src/plugins/Hardel/Website/Services/website.interfaces.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3997,7 +4147,7 @@ exports.PageNewComponent = PageNewComponent;
 /***/ "./src/plugins/Hardel/Website/component/Page/page.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn darkorange\" (click)=\"editMode()\">\n                    <i class=\"fa fa-edit\"></i>\n                    Edit\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"title\" class=\"col-md-2 control-label\">Title</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"title\" [ngModel] = \"page.title\" placeholder=\"Title\" id=\"title\" *ngIf=\"isEdit === false; else editTitle\" readonly>\n                                    <ng-template #editTitle>\n                                        <input type=\"text\" class=\"form-control\" name=\"title\" placeholder=\"Title\" id=\"title\" [(ngModel)] = \"page.title\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"slug\" class=\"col-md-2 control-label\">Slug</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"slug\" placeholder=\"Slug\" id=\"slug\" [ngModel] = \"page.slug\" *ngIf=\"isEdit === false; else editSlug\" readonly>\n                                    <ng-template #editSlug>\n                                        <input type=\"text\" class=\"form-control\" name=\"slug\" placeholder=\"Slug\" id=\"slug\" [(ngModel)] = \"page.slug\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"fileName\" class=\"col-md-2 control-label\">File Name</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"fileName\" placeholder=\"File Name\" id=\"fileName\" [ngModel] = \"page.fileName\" *ngIf=\"isEdit === false; else editFileName\" readonly>\n                                    <ng-template #editFileName>\n                                        <input type=\"text\" class=\"form-control\" name=\"fileName\" placeholder=\"File Name\" id=\"fileName\" [(ngModel)] = \"page.fileName\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"meta_tag\" class=\"col-md-2 control-label\">Meta Tag</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"meta_tag\" placeholder=\"Meta Tag\" id=\"meta_tag\" [ngModel] = \"page.metaTag\" *ngIf=\"isEdit === false; else editMetaTag\" readonly>\n                                    <ng-template #editMetaTag>\n                                        <input type=\"text\" class=\"form-control\" name=\"meta_tag\" placeholder=\"Meta Tag\" id=\"meta_tag\" [(ngModel)] = \"page.metaTag\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"meta_desc\" class=\"col-md-2 control-label\">Meta Desc</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"meta_desc\" placeholder=\"Meta Desc\" id=\"meta_desc\" [ngModel] = \"page.metaDesc\" *ngIf=\"isEdit === false; else editMetaDesc\" readonly>\n                                    <ng-template #editMetaDesc>\n                                        <input type=\"text\" class=\"form-control\" name=\"meta_desc\" placeholder=\"Meta Desc\" id=\"meta_desc\" [(ngModel)] = \"page.metaDesc\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"state\" class=\"col-md-2 control-label\">State</label>\n                                <div class=\"col-md-4\">\n                                    <select class=\"form-control\" name=\"state\"  id=\"state\" *ngIf=\"isEdit === false; else editState\" disabled>\n                                        <ng-container>\n                                            <option *ngFor=\"let x of listOfState\" [ngValue]=\"x\" [attr.selected] = \"x == page.state ? true : null\">{{x.label}}</option>\n                                        </ng-container>\n                                    </select>\n                                    <ng-template #editState>\n                                        <select class=\"form-control\" name=\"state\" [(ngModel)] = \"page.state\">\n                                            <option *ngFor=\"let x of listOfState\" [ngValue]=\"x\" [attr.selected] = \"x == page.state ? true : null\">{{x.label}}</option>\n                                        </select>\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"edit-page\" class=\"col-md-2 control-label\">Content</label>\n                                <div class=\"col-md-10\">\n                                    <div class=\"form-control\" [innerHtml] = \"page.content\" *ngIf=\"isEdit === false; else editContent\" disabled></div>\n                                    <ng-template #editContent>\n                                        <app-editor [elementId]=\"'edit-page'\" id=\"edit-page\" [content]=\"page.content\" (onEditorKeyup)=\"keyupHandlerFunction($event)\"></app-editor>\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-list\"></i>\n                <span>Component</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn cyan\" data-toggle=\"modal\" data-target=\"#addModal\" *ngIf=\"isEdit == true\">\n                    <i class=\"fa fa-plus\"></i>\n                    Add\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\" *ngIf=\"page.components.length > 0\">\n                                    <thead>\n                                    <tr>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th>\n                                            <a>Object</a>\n                                        </th>\n                                        <th>\n                                            <a>Function</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let comp of page.components; let i = index\">\n                                        <td>\n                                            {{comp.name}}\n                                        </td>\n                                        <td>\n                                            <input type=\"text\" class=\"form-control\" [ngModel]=\"comp.Object\"  name=\"objecto-{{i}}\" *ngIf=\"isEdit === false; else editObject\" readonly>\n                                            <ng-template #editObject>\n                                                <input type=\"text\" class=\"form-control\" [(ngModel)]=\"comp.Object\" name=\"objecto-{{i}}\" (focus)=\"openModal($event,addModal2,comp)\" readonly>\n                                            </ng-template>\n                                        </td>\n                                        <td>\n                                            <input type=\"text\" class=\"form-control\" [ngModel]=\"comp.functions\" name=\"functions-{{i}}\"  readonly>\n                                        </td>\n                                        <td>\n                                            <a class=\"td_orange\" (click)=\"eraseComponent(comp)\" *ngIf=\"isEdit == true\"><i class=\"fa fa-window-close-o\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n    <div id=\"addModal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"addModal\"  aria-hidden=\"true\">\n        <div class=\"modal-dialog\">\n            <div class=\"modal-content\">\n                <div class=\"modal-header\">\n                    <div class=\"modal-title\">\n                        Searching For Permission\n                        <button class=\"close\" data-dismiss = \"modal\" aria-label=\"hidden\"><i class=\"fa fa-times\"></i></button>\n                    </div>\n                </div>\n                <div class=\"modal-body\">\n                    <div class=\"row\">\n                        <div class=\"col-md-12\">\n                            <div class=\"form-group flex-group\">\n                                <label class=\"col-md-4\">Name</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control input-sm\" name=\"query\" [(ngModel)]=\"query\" (keyup)=\"filter()\" autocomplete=\"off\">\n                                    <div class=\"suggestions\" *ngIf=\"filteredList.length > 0\">\n                                        <ul>\n                                            <li class=\"suggestion-li\" *ngFor=\"let item of filteredList\">\n                                                <a (click)=\"addComponent(item)\">{{item.name}}</a>\n                                            </li>\n                                        </ul>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"modal-footer\">\n                    <div class=\"m-footer\">\n\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <ng-template #addModal2 let-c=\"close\" let-d=\"dismiss\">\n        <div class=\"modal-header\">\n            <h4 class=\"modal-title\">Object and Functions</h4>\n            <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n                <span aria-hidden=\"true\">&times;</span>\n            </button>\n        </div>\n        <div class=\"modal-body\">\n            <div class=\"row\">\n                <div class=\"col-md-12\">\n                    <div class=\"form-group flex-group\">\n                        <label class=\"col-md-4\">Object</label>\n                        <div class=\"col-md-4\">\n                            <select class=\"form-control\" name=\"ObjectModel\" [(ngModel)] = \"Model\" (ngModelChange) = \"objectChange()\">\n                                <option *ngFor=\"let x of listOfModelIndex\" [ngValue]=\"x\" [attr.selected] = \"x.label === Model.label ?  true : null\">{{x.label}}</option>\n                            </select>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-md-12\">\n                    <div class=\"form-group flex-group\">\n                        <label class=\"col-md-4\">Functions</label>\n                        <div class=\"col-md-4\">\n                            <select class=\"form-control\" name=\"ObjectFunctions\" [(ngModel)] = \"Function\">\n                                <option *ngFor=\"let h of listOfFunctions\" [value]=\"h\">{{h}}</option>\n                            </select>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"modal-footer\">\n           <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"c('SAVE_DATA')\">Save</button>\n            <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"c('CLEAR_DATA')\">Clear Data</button>\n        </div>\n    </ng-template>\n</form>"
+module.exports = "<form class=\"form\">\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-database\"></i>\n                <span>General Definitions</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn darkorange\" (click)=\"editMode()\">\n                    <i class=\"fa fa-edit\"></i>\n                    Edit\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"portlet-form-body\">\n                <div class=\"container\">\n                    <div class=\"row\">\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"title\" class=\"col-md-2 control-label\">Title</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"title\" [ngModel] = \"page.title\" placeholder=\"Title\" id=\"title\" *ngIf=\"isEdit === false; else editTitle\" readonly>\n                                    <ng-template #editTitle>\n                                        <input type=\"text\" class=\"form-control\" name=\"title\" placeholder=\"Title\" id=\"title\" [(ngModel)] = \"page.title\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"slug\" class=\"col-md-2 control-label\">Slug</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"slug\" placeholder=\"Slug\" id=\"slug\" [ngModel] = \"page.slug\" *ngIf=\"isEdit === false; else editSlug\" readonly>\n                                    <ng-template #editSlug>\n                                        <input type=\"text\" class=\"form-control\" name=\"slug\" placeholder=\"Slug\" id=\"slug\" [(ngModel)] = \"page.slug\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"fileName\" class=\"col-md-2 control-label\">File Name</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"fileName\" placeholder=\"File Name\" id=\"fileName\" [ngModel] = \"page.fileName\" *ngIf=\"isEdit === false; else editFileName\" readonly>\n                                    <ng-template #editFileName>\n                                        <input type=\"text\" class=\"form-control\" name=\"fileName\" placeholder=\"File Name\" id=\"fileName\" [(ngModel)] = \"page.fileName\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"meta_tag\" class=\"col-md-2 control-label\">Meta Tag</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"meta_tag\" placeholder=\"Meta Tag\" id=\"meta_tag\" [ngModel] = \"page.metaTag\" *ngIf=\"isEdit === false; else editMetaTag\" readonly>\n                                    <ng-template #editMetaTag>\n                                        <input type=\"text\" class=\"form-control\" name=\"meta_tag\" placeholder=\"Meta Tag\" id=\"meta_tag\" [(ngModel)] = \"page.metaTag\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"meta_desc\" class=\"col-md-2 control-label\">Meta Desc</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control\" name=\"meta_desc\" placeholder=\"Meta Desc\" id=\"meta_desc\" [ngModel] = \"page.metaDesc\" *ngIf=\"isEdit === false; else editMetaDesc\" readonly>\n                                    <ng-template #editMetaDesc>\n                                        <input type=\"text\" class=\"form-control\" name=\"meta_desc\" placeholder=\"Meta Desc\" id=\"meta_desc\" [(ngModel)] = \"page.metaDesc\" >\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"state\" class=\"col-md-2 control-label\">State</label>\n                                <div class=\"col-md-4\">\n                                    <select class=\"form-control\" name=\"state\"  id=\"state\" *ngIf=\"isEdit === false; else editState\" disabled>\n                                        <ng-container>\n                                            <option *ngFor=\"let x of listOfState\" [ngValue]=\"x\" [attr.selected] = \"x == page.state ? true : null\">{{x.label}}</option>\n                                        </ng-container>\n                                    </select>\n                                    <ng-template #editState>\n                                        <select class=\"form-control\" name=\"state\" [(ngModel)] = \"page.state\">\n                                            <option *ngFor=\"let x of listOfState\" [ngValue]=\"x\" [attr.selected] = \"x == page.state ? true : null\">{{x.label}}</option>\n                                        </select>\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-12\">\n                            <div class=\"form-group flex-group\">\n                                <label for=\"edit-page\" class=\"col-md-2 control-label\">Content</label>\n                                <div class=\"col-md-10\">\n                                    <div class=\"form-control\" [innerHtml] = \"page.content\" *ngIf=\"isEdit === false; else editContent\" disabled></div>\n                                    <ng-template #editContent>\n                                        <app-editor [elementId]=\"'edit-page'\" id=\"edit-page\" [content]=\"page.content\" (onEditorKeyup)=\"keyupHandlerFunction($event)\"></app-editor>\n                                    </ng-template>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-list\"></i>\n                <span>Component</span>\n            </div>\n            <div class=\"actions\">\n                <button class=\"btn cyan\" data-toggle=\"modal\" data-target=\"#addModal\" *ngIf=\"isEdit == true\">\n                    <i class=\"fa fa-plus\"></i>\n                    Add\n                </button>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"box\">\n                <div class=\"box-header\">\n\n                </div>\n                <div class=\"box-body\">\n                    <div class=\"wrapper\">\n                        <div class=\"row\">\n                            <div class=\"col-sm-12\">\n                                <table class=\"table table-bordered table-striped\" *ngIf=\"page.components.length > 0\">\n                                    <thead>\n                                    <tr>\n                                        <th>\n                                            <a>Nome</a>\n                                        </th>\n                                        <th>\n                                            <a>Object</a>\n                                        </th>\n                                        <th>\n                                            <a>Function</a>\n                                        </th>\n                                        <th style=\"width: 50px;\"></th>\n                                    </tr>\n                                    </thead>\n                                    <tbody>\n                                    <tr *ngFor=\"let comp of page.components; let i = index\">\n                                        <td>\n                                            {{comp.name}}\n                                        </td>\n                                        <td>\n                                            <input type=\"text\" class=\"form-control\" [ngModel]=\"comp.Object\"  name=\"objecto-{{i}}\" *ngIf=\"isEdit === false; else editObject\" readonly>\n                                            <ng-template #editObject>\n                                                <input type=\"text\" class=\"form-control\" [(ngModel)]=\"comp.Object\" name=\"objecto-{{i}}\" (focus)=\"openModal($event,addModal2,comp)\" readonly>\n                                            </ng-template>\n                                        </td>\n                                        <td>\n                                            <input type=\"text\" class=\"form-control\" [ngModel]=\"comp.functions\" name=\"functions-{{i}}\"  readonly>\n                                        </td>\n                                        <td>\n                                            <a class=\"td_orange\" (click)=\"eraseComponent(comp)\" *ngIf=\"isEdit == true\"><i class=\"fa fa-window-close-o\"></i></a>\n                                        </td>\n                                    </tr>\n                                    </tbody>\n                                </table>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"portlet\">\n        <div class=\"portlet-title\">\n            <div class=\"caption\">\n                <i class=\"fa fa-file-o\" aria-hidden=\"true\"></i>\n                <span>File</span>\n            </div>\n        </div>\n        <div class=\"portlet-body\">\n            <div class=\"container\">\n                <div class=\"row\">\n                    <app-filemanager *ngIf=\"isEdit\"\n                    [sObj]=\"sObj\"\n                    [nIdObj]=\"id\"\n                    ></app-filemanager>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-12\">\n            <button class=\"btn orange\" (click)=\"saveMode()\">Save</button>\n            <button class=\"btn red\" (click)=\"resetMode()\">Reset</button>\n        </div>\n    </div>\n    <div id=\"addModal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"addModal\"  aria-hidden=\"true\">\n        <div class=\"modal-dialog\">\n            <div class=\"modal-content\">\n                <div class=\"modal-header\">\n                    <div class=\"modal-title\">\n                        Searching For Permission\n                        <button class=\"close\" data-dismiss = \"modal\" aria-label=\"hidden\"><i class=\"fa fa-times\"></i></button>\n                    </div>\n                </div>\n                <div class=\"modal-body\">\n                    <div class=\"row\">\n                        <div class=\"col-md-12\">\n                            <div class=\"form-group flex-group\">\n                                <label class=\"col-md-4\">Name</label>\n                                <div class=\"col-md-4\">\n                                    <input type=\"text\" class=\"form-control input-sm\" name=\"query\" [(ngModel)]=\"query\" (keyup)=\"filter()\" autocomplete=\"off\">\n                                    <div class=\"suggestions\" *ngIf=\"filteredList.length > 0\">\n                                        <ul>\n                                            <li class=\"suggestion-li\" *ngFor=\"let item of filteredList\">\n                                                <a (click)=\"addComponent(item)\">{{item.name}}</a>\n                                            </li>\n                                        </ul>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"modal-footer\">\n                    <div class=\"m-footer\">\n\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <ng-template #addModal2 let-c=\"close\" let-d=\"dismiss\">\n        <div class=\"modal-header\">\n            <h4 class=\"modal-title\">Object and Functions</h4>\n            <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n                <span aria-hidden=\"true\">&times;</span>\n            </button>\n        </div>\n        <div class=\"modal-body\">\n            <div class=\"row\">\n                <div class=\"col-md-12\">\n                    <div class=\"form-group flex-group\">\n                        <label class=\"col-md-4\">Object</label>\n                        <div class=\"col-md-4\">\n                            <select class=\"form-control\" name=\"ObjectModel\" [(ngModel)] = \"Model\" (ngModelChange) = \"objectChange()\">\n                                <option *ngFor=\"let x of listOfModelIndex\" [ngValue]=\"x\" [attr.selected] = \"x.label === Model.label ?  true : null\">{{x.label}}</option>\n                            </select>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-md-12\">\n                    <div class=\"form-group flex-group\">\n                        <label class=\"col-md-4\">Functions</label>\n                        <div class=\"col-md-4\">\n                            <select class=\"form-control\" name=\"ObjectFunctions\" [(ngModel)] = \"Function\">\n                                <option *ngFor=\"let h of listOfFunctions\" [value]=\"h\">{{h}}</option>\n                            </select>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"modal-footer\">\n           <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"c('SAVE_DATA')\">Save</button>\n            <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"c('CLEAR_DATA')\">Clear Data</button>\n        </div>\n    </ng-template>\n</form>"
 
 /***/ }),
 
@@ -4032,6 +4182,7 @@ var PageComponent = (function () {
         this.listOfComponent = [];
         this.listOfModelIndex = [];
         this.listOfFunctions = [];
+        this.sObj = 'Plugins\\Hardel\\Website\\Model\\LortomPages';
         this.isEdit = false;
         this.notFound = false;
         this.query = '';
@@ -4077,7 +4228,7 @@ var PageComponent = (function () {
      * This function pass into edit Mode
      */
     PageComponent.prototype.editMode = function () {
-        //passa in modalità edit
+        // passa in modalità edit
         this.isEdit = !this.isEdit;
     };
     PageComponent.prototype.resetMode = function () {
@@ -4087,25 +4238,25 @@ var PageComponent = (function () {
     };
     PageComponent.prototype.openModal = function (event, modal, item) {
         var _this = this;
-        //Stop bubbling
+        // Stop bubbling
         event.target.blur();
         event.preventDefault();
-        //assign to ModelObject the item
+        // assign to ModelObject the item
         this.Function = item.functions;
         this.Model = { label: '', functions: [] };
-        //transform List of Object in array
+        // transform List of Object in array
         for (var obj in this.listOfModels) {
             this.listOfModelIndex.push(this.listOfModels[obj]);
         }
-        //Check if Model is present
+        // Check if Model is present
         if (item.Object in this.listOfModels) {
             this.Model = this.listOfModels[item.Object];
         }
-        //intialize listOfFunction, and if Model is not empty, assign it list of functions
+        // intialize listOfFunction, and if Model is not empty, assign it list of functions
         this.objectChange();
-        //open a Bootstrap Modal.
+        // open a Bootstrap Modal.
         var mod = this.sModal.open(modal);
-        //check action on Modal (save and close)
+        // check action on Modal (save and close)
         mod.result.then(function (result) {
             if (result === 'SAVE_DATA') {
                 for (var obj in _this.listOfModels) {
@@ -4121,10 +4272,10 @@ var PageComponent = (function () {
                 item.functions = null;
             }
         }, function (reason) {
-            //reason is fired when modal is closed
+            // reason is fired when modal is closed
             var result = console.log(_this.getDismissReason(reason));
             _this.Model = { label: '', functions: [] };
-            //this.ModelObject = null;
+            // this.ModelObject = null;
             _this.Function = '';
         });
     };
@@ -4156,7 +4307,7 @@ var PageComponent = (function () {
      * This function filter permission for research
      */
     PageComponent.prototype.filter = function () {
-        if (this.query !== "") {
+        if (this.query !== '') {
             this.filteredList = this.listOfComponent.filter(function (el) {
                 return el.name.toLowerCase().indexOf(this.query.toLowerCase()) > -1;
             }.bind(this));
@@ -4421,6 +4572,7 @@ var uielement_module_1 = __webpack_require__("./src/app/backend-module/UIElement
 var lt_codemirror_1 = __webpack_require__("./node_modules/lt-codemirror/lib/index.js");
 var lt_treeview_1 = __webpack_require__("./node_modules/lt-treeview/esm5/lt-treeview.js");
 var ng_bootstrap_1 = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
+var filemanager_module_1 = __webpack_require__("./src/app/backend-module/file-manager/filemanager.module.ts");
 var WebsiteModule = (function () {
     function WebsiteModule() {
     }
@@ -4437,6 +4589,7 @@ var WebsiteModule = (function () {
                 lt_codemirror_1.CodemirrorModule,
                 lt_treeview_1.LtTreeviewModule,
                 ng_bootstrap_1.NgbModule.forRoot(),
+                filemanager_module_1.FileManagerModule
             ],
             providers: [website_service_1.WebsiteService],
             declarations: [website_routing_1.websiteComponent]

@@ -178,7 +178,7 @@
         <div class="portlet-body">
             <div class="container">
                 <div class="row">
-                    <app-filemanager
+                    <app-filemanager *ngIf="isEdit"
                     [sObj]="sObj"
                     [nIdObj]="id"
                     ></app-filemanager>
