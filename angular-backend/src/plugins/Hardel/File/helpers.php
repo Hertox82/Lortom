@@ -31,3 +31,9 @@ if(!function_exists('getModelAlias')) {
         }
     }
 }
+
+if(!function_exists('deleteRefObjFile')) {
+    function deleteRefObjFile($idObj, $model) {
+        app('lt.filemanager')->deleteFileRefByObj($idObj, $model);
+    }
+}

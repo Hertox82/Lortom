@@ -140,7 +140,16 @@ class FileManagerService {
         return $arrayFile;
     }
 
-    
+    public function deleteFileRefByObj ($idObj, $model) {
+        
+        $where = [
+            ['lt_file_object.idObj',$idObj],
+            ['lt_file_object.typeObj',$class]
+        ];
+
+        DB::table('lt_file_object')->where($where)->delete();
+
+    }
 }
 
 

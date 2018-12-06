@@ -120,6 +120,11 @@ class WebsiteController extends Controller
         $name = 'Page';
         $responseKey = 'pages';
 
+        // here go the check if it can delete a file
+        foreach($input as $page) {
+            deleteRefObjFile($input['id'], $Class);
+        }
+
         return response()->json($this->deleteObj(compact('input','tableCol','Class','name','responseKey')));
     }
 

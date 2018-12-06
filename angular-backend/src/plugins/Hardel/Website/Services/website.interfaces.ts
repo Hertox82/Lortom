@@ -4,40 +4,40 @@
 
 
 export interface Page {
-    id : number,
-    title : string,
-    slug : string,
-    content : string,
-    metaTag : string,
-    metaDesc : string,
-    fileName : string,
-    check : boolean,
-    state : { id? : number , label? : string },
-    components?: LtPageComponent[]
+    id: number;
+    title: string;
+    slug: string;
+    content: string;
+    metaTag: string;
+    metaDesc: string;
+    fileName: string;
+    check: boolean;
+    state: { id?: number , label?: string };
+    components?: LtPageComponent[];
 }
 
 export interface LortomComponent {
-    id : number,
-    name : string,
-    appearance : string,
-    check : boolean
+    id: number;
+    name: string;
+    appearance: string;
+    check: boolean;
 }
 
 export interface LtPageComponent {
-    id: number,
-    idComponent?: number,
-    name?: string,
-    Object?: string,
-    functions?: string,
+    id: number;
+    idComponent?: number;
+    name?: string;
+    Object?: string;
+    functions?: string;
 }
 
 export interface LortomMenu {
-    id:number,
-    idPage: {id: any, label: string},
-    name: string,
-    check: boolean,
-    parentList?: {id: number, label: string},
-    idParent: number
+    id: number;
+    idPage: {id: any, label: string};
+    name: string;
+    check: boolean;
+    parentList?: {id: number, label: string};
+    idParent: number;
 }
 
 
