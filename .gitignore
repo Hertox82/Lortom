@@ -22,7 +22,6 @@ Homestead.json
 # Lortom gitignore
 angular-backend/README.md
 .idea/
-compressed
 composer.lock
-libLortom/
 hadeluca/
+ltpm.config.json
