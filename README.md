@@ -60,7 +60,8 @@ this command:
 - Install the follows plugins: Dashboard, Settings, Plugin and Website
 - install Angular in background
 
-<div style="height:1px; background-color:grey; margin:10px"></div>
+---
+
 Ok, now everything is ready, you can start creating something really cool.
 
 If you want to know how to build a Plugin or Template please, read this [document](DEVELOPMENT.md)
