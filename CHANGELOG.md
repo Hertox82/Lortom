@@ -1,7 +1,7 @@
 # Release Notes
 
 
-## 1.0.0-alpha2 (2018-12-07)
+## 1.0.0-alpha2 (2018-12-10)
 
 ### Added
 

@@ -4,7 +4,6 @@ In this section i will try to explain you the way to make a Plugin for Lortom an
 
 Enjoy the reading!
 
-
 ## Create Plugin on Lortom
 
 In order to create a Plugin in Lortom, you must understand the folder structure
