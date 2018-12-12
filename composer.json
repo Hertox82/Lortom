@@ -1,12 +1,12 @@
 {
     "name": "hadeluca/lortom",
-    "description": "Lortom is a CMS based on Laravel Framework, The Backend was built with Angular 4",
+    "description": "Lortom is a CMS based on Laravel Framework, The Backend was built with Angular 5",
     "keywords": [
         "cms",
         "laravel",
-        "angular4",
+        "angular5",
         "laravel plus angular",
-        "angular 4"
+        "angular 5"
     ],
     "license": "MIT",
     "type": "project",
@@ -24,12 +24,6 @@
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0"
     },
-    "repositories":[
-        {
-            "type": "path",
-            "url": "hadeluca/lortom-framework"
-        }
-    ],
     "require-dev": {
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
@@ -43,9 +37,7 @@
         ],
         "psr-4": {
             "App\\": "app/",
-            "Plugins\\": "angular-backend/src/plugins/",
-            "LortomTemplate\\Fantastic\\": "template/LortomTemplate/Fantastic/frontend",
-            "Hardel\\TemplateTest\\": "template/Hardel/TemplateTest/frontend"
+            "Plugins\\": "angular-backend/src/plugins/"
         }
     },
     "autoload-dev": {
@@ -70,6 +62,7 @@
             "@php artisan package:discover"
         ]
     },
+    "minimum-stability": "stable",
     "config": {
         "preferred-install": "dist",
         "sort-packages": true,
