@@ -164,7 +164,7 @@ return [
        App\Providers\AuthServiceProvider::class,
        App\Providers\EventServiceProvider::class,
        App\Providers\RouteServiceProvider::class,
-        Hardel\Exporter\DBExporterServiceProvider::class,
+       Hardel\Exporter\DBExporterServiceProvider::class,
        LTFramework\LTFrameworkProvider::class,
 
 

@@ -1,6 +1,6 @@
 
 
-import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output} from "@angular/core";
+import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import 'tinymce';
 import 'tinymce/themes/modern';
 import 'tinymce/plugins/table';
@@ -14,39 +14,37 @@ import 'tinymce/plugins/imagetools';
     selector : 'app-editor',
     template : '<textarea id="{{elementId}}" style="display: none;"></textarea>'
 })
-export class EditorComponent implements AfterViewInit, OnDestroy
-{
+export class EditorComponent implements AfterViewInit, OnDestroy {
     @Input() elementId: string;
-    @Input() content : string;
+    @Input() content: string;
     @Output() onEditorKeyup = new EventEmitter<any>();
 
     editor;
 
-    ngAfterViewInit()
-    {
+    ngAfterViewInit() {
         tinymce.init({
-            selector: '#'+this.elementId,
-            plugins : ['link','paste','table', 'code','image','imagetools'],
+            selector: '#' + this.elementId,
+            plugins : ['link', 'paste', 'table', 'code', 'image', 'imagetools'],
             skin_url: '../../../js/assets/skins/lightgray',
             setup : editor => {
                 this.editor = editor;
 
-                editor.on('keyup', ()=> {
+                editor.on('keyup', () => {
                     const content = editor.getContent();
                     this.onEditorKeyup.emit(content);
                 });
             },
             init_instance_callback : inst => {
-                if(this.content != null || this.content != undefined)
-                {
-                    if(this.content.length>0)
+                if (this.content != null || this.content !== undefined) {
+                    if (this.content.length > 0) {
                         inst.setContent(this.content);
+                    }
                 }
             },
         });
     }
 
-    ngOnDestroy(){
+    ngOnDestroy() {
         tinymce.remove(this.editor);
     }
 }

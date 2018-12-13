@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {HttpModule} from "@angular/http";
+import {HttpClientModule} from "@angular/common/http";
 import { AppComponent } from './app.component';
 import {MenuService} from "./menuservice";
 import {routing} from "./app.routing";
@@ -16,7 +17,7 @@ import {BackendModule} from "./backend-module/backend.module";
   ],
   imports: [
     BrowserModule,
-    HttpModule,
+    HttpClientModule,
     routing,
     BackendModule,
     FormsModule

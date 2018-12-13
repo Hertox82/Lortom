@@ -1,12 +1,12 @@
 {
     "name": "hadeluca/lortom",
-    "description": "Lortom is a CMS based on Laravel Framework, The Backend was built with Angular 4",
+    "description": "Lortom is a CMS based on Laravel Framework, The Backend was built with Angular 5",
     "keywords": [
         "cms",
         "laravel",
-        "angular4",
+        "angular5",
         "laravel plus angular",
-        "angular 4"
+        "angular 5"
     ],
     "license": "MIT",
     "type": "project",
@@ -65,11 +65,11 @@
             "@php artisan package:discover"
         ]
     },
+    "minimum-stability": "stable",
     "config": {
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
     },
-    "minimum-stability": "alpha",
     "prefer-stable": true
 }

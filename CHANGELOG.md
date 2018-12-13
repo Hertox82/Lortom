@@ -1,21 +1,19 @@
 # Release Notes
 
 
-## 0.1.9 (2018-07-12)
-
-### Changed
-
-- Rebuild the basic Plugins
-- Updated file Readme
+## 1.0.0-alpha2 (2018-12-10)
 
 ### Added
 
-- Added Development file
-- Added Changelog file
+- Pass from Angular 4 to Angular 5
+- Created new Plugin File Manager
 
-## 0.1.8 (2018-07-11)
 
-alpha stable version
+## 1.0.0-alpha1 (2018-07-12)
+
+### Added
+
+- released alpha version
 
 ### Added
 
