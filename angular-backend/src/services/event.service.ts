@@ -2,8 +2,8 @@
  * Created by hernan on 20/10/2017.
  */
 
-import {Injectable} from "@angular/core";
-import {Subject} from "rxjs/Subject";
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs/Subject';
 
 @Injectable()
 export class EventService {
@@ -24,16 +24,15 @@ export class EventService {
         this._clicked.next(object);
     }
 
-    logged(object){
+    logged(object) {
         this._logged.next(object);
     }
 
-    user(object){
+    user(object) {
         this._user.next(object);
     }
 
-    emitEventSubMenu(object)
-    {
+    emitEventSubMenu(object) {
         this._subMenu.next(object);
     }
 }

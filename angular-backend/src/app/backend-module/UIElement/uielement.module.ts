@@ -13,9 +13,9 @@ import {ShowEntryComponent} from "./pagination/show-entry.component";
         CommonModule,
         FormsModule
     ],
-    declarations : [PaginationComponent,ShowEntryComponent],
+    declarations : [PaginationComponent, ShowEntryComponent],
     providers : [],
-    exports : [PaginationComponent,ShowEntryComponent]
+    exports : [PaginationComponent, ShowEntryComponent]
 })
 
 export class UIElementModule {}

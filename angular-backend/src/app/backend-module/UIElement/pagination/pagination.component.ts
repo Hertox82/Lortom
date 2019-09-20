@@ -3,7 +3,7 @@
  */
 
 
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 @Component({
     selector : 'lt-pagination',
     templateUrl : './pagination.component.html',
@@ -11,13 +11,12 @@ import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 })
 
 
-export class PaginationComponent implements OnInit
-{
-    @Input() count : number;
-    @Input() page : number;
+export class PaginationComponent implements OnInit {
+    @Input() count: number;
+    @Input() page: number;
     @Input() loading = false;
     @Input() perPage: number;
-    @Input() pagesToShow : number;
+    @Input() pagesToShow: number;
 
     @Output() goPrev = new EventEmitter<boolean>();
     @Output() goNext = new EventEmitter<boolean>();
@@ -26,39 +25,36 @@ export class PaginationComponent implements OnInit
     ngOnInit() {}
 
 
-    getMin() : number {
-        return ((this.perPage * this.page) - this.perPage) +1;
+    getMin(): number {
+        return ((this.perPage * this.page) - this.perPage) + 1;
     }
 
-    getMax() : number{
+    getMax(): number {
         let max = this.perPage * this.page;
 
-        if(max > this.count)
-        {
+        if (max > this.count) {
             max = this.count;
         }
         return max;
     }
 
-    onPrev() : void{
+    onPrev(): void {
         this.goPrev.emit(true);
     }
 
-    onNext(next : boolean) : void{
+    onNext(next: boolean): void {
         this.goNext.emit(next);
     }
 
-    onPage(page : number) : void {
+    onPage(page: number): void {
         this.goPage.emit(page);
     }
 
-    lastPage() : boolean
-    {
+    lastPage(): boolean {
         return this.perPage * this.page > this.count;
     }
 
-    getPages() : number []
-    {
+    getPages(): number [] {
         const c = Math.ceil(this.count / this.perPage);
         const p = this.page || 1;
         const pagesToShow = this.pagesToShow || 9;

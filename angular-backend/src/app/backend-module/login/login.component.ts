@@ -1,7 +1,7 @@
-import {OnInit, Component, Input} from "@angular/core";
-import {MenuService} from "../../menuservice";
-import {EventService} from "@Lortom/services/event.service";
-import {Router} from "@angular/router";
+import {OnInit, Component, Input} from '@angular/core';
+import {MenuService} from '../../menuservice';
+import {EventService} from '@Lortom/services/event.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-login',
@@ -9,13 +9,12 @@ import {Router} from "@angular/router";
     styleUrls: ['./login.component.css']
 })
 
-export class LoginComponent implements OnInit
-{
-    @Input() username : string;
-    @Input() password : string;
-    error : string;
+export class LoginComponent implements OnInit {
+    @Input() username: string;
+    @Input() password: string;
+    error: string;
 
-    constructor(private service: MenuService, private event : EventService, private router : Router) {}
+    constructor(private service: MenuService, private event: EventService, private router: Router) {}
 
     ngOnInit() {}
 
@@ -25,8 +24,7 @@ export class LoginComponent implements OnInit
                     (data: { error?: string, token?: string, user?: any }) => {
                         if (data.error) {
                             this.error = data.error;
-                        }
-                        else {
+                        } else {
 
                             this.event.logged(true);
                             localStorage.setItem('l_t', data.token);

@@ -1,19 +1,19 @@
 
-import {PaginationService} from "@Lortom/services/pagination.service";
-import {hasOwnProperty} from "tslint/lib/utils";
-import {NavigationEnd} from "@angular/router";
+import {PaginationService} from '@Lortom/services/pagination.service';
+import {hasOwnProperty} from 'tslint/lib/utils';
+import {NavigationEnd} from '@angular/router';
 
 export class ListComponent {
 
     listToShow: any;
     listOfData: any = [];
     listOfDataToDelete: any = [];
-    actualPage : number;
-    perPage : number;
-    pagServ : PaginationService;
+    actualPage: number;
+    perPage: number;
+    pagServ: PaginationService;
 
     constructor() {
-        //This is to manage the Pagination
+        // This is to manage the Pagination
         this.pagServ = new PaginationService();
         this.actualPage = 1;
         this.perPage = 3;
@@ -24,26 +24,21 @@ export class ListComponent {
     public onComponentInit(
         service: {name: string, permission: string, upd: string},
         router: string,
-        getList: string) : void {
-            if(this[service.name] != null || this[service.name] != undefined) {
-                if(!this[service.name].hasPermissions(service.permission))
-                {
-                    if(this[router] != null || this[router] != undefined) {
+        getList: string): void {
+            if (this[service.name] != null || this[service.name] !== undefined) {
+                if (!this[service.name].hasPermissions(service.permission)) {
+                    if (this[router] != null || this[router] !== undefined) {
                         this[router].navigate(['/backend/dashboard']);
                     }
                 }
             }
-        if(this[router] != null || this[router] != undefined) {
+        if (this[router] != null || this[router] !== undefined) {
            this[router].events.subscribe(
                (val) => {
-                   if(val instanceof NavigationEnd)
-                   {
-                       if(this['myRoot'] === val.url)
-                       {
+                   if ( val instanceof NavigationEnd) {
+                       if (this['myRoot'] === val.url) {
                            this['isRoot'] = true;
-                       }
-                       else
-                       {
+                       } else {
                            this['isRoot'] = false;
                        }
                    }
@@ -51,9 +46,9 @@ export class ListComponent {
            );
         }
 
-        if( typeof this[getList] === 'function') {
+        if ( typeof this[getList] === 'function') {
                 this[getList]();
-            if(this[service.name] != null || this[service.name] != undefined) {
+            if (this[service.name] != null || this[service.name] !== undefined) {
 
                 this[service.name][service.upd].subscribe(
                     () => {
@@ -67,8 +62,7 @@ export class ListComponent {
     /**
      * This function is
      */
-    protected updateListaShow() : void
-    {
+    protected updateListaShow(): void {
         this.listToShow = this.pagServ.getShowList({
             entry : this.perPage,
             list : this.listOfData,
@@ -79,8 +73,7 @@ export class ListComponent {
     /**
      * This function is to Catch Event of Pagination
      */
-    onPrev()
-    {
+    onPrev() {
         this.actualPage--;
         this.updateListaShow();
     }
@@ -89,8 +82,7 @@ export class ListComponent {
      * This function is to Catch Event of Pagination
      * @param ev
      */
-    onNext(ev)
-    {
+    onNext(ev) {
         this.actualPage++;
         this.updateListaShow();
     }
@@ -99,8 +91,7 @@ export class ListComponent {
      * This function is to Catch Event of Pagination
      * @param act
      */
-    onPage(act)
-    {
+    onPage(act) {
         this.actualPage = act;
         this.updateListaShow();
     }
@@ -109,8 +100,7 @@ export class ListComponent {
      * This function is to Catch Event of Pagination
      * @param n
      */
-    onPerPage(n : number)
-    {
+    onPerPage(n: number) {
         this.perPage = n;
         this.updateListaShow();
     }
@@ -123,7 +113,7 @@ export class ListComponent {
      */
     public retrieveListOfData(service:
         {name: string, check: string, callApi: string, setData: string, getData: string}, nameList: string): void {
-        if (this[service.name] != null || this[service.name] != undefined) {
+        if (this[service.name] != null || this[service.name] !== undefined) {
             const fnCheck = service.check;
             if (typeof this[service.name][fnCheck] === 'function') {
                 if (!this[service.name][fnCheck]()) {
@@ -133,15 +123,17 @@ export class ListComponent {
                             (plugins: any) => {
                                 this.listOfData = plugins;
                                 this[nameList] = plugins;
-                                    for (var i = 0; i < this[nameList].length; i++) {
+                                    for (let i = 0; i < this[nameList].length; i++) {
                                        if (!hasOwnProperty(this[nameList][i], 'check')) {
                                            this[nameList][i].check = false;
                                        }
                                     }
 
                                 const fnSetData = service.setData;
-                                if(typeof this[service.name][fnSetData] === 'function') {
-                                    this[service.name][fnSetData](plugins);
+                                if (typeof this[service.name][fnSetData] === 'function') {
+                                    if (plugins.length !== 0) {
+                                        this[service.name][fnSetData](plugins);
+                                    }
                                     this.updateListaShow();
                                 }
                             }
@@ -167,19 +159,13 @@ export class ListComponent {
      * @param ev
      * @param data
      */
-    public  eventChangeData(ev,data : any) : void
-    {
-        if(ev.target.checked)
-        {
+    public  eventChangeData(ev, data: any): void {
+        if (ev.target.checked) {
             this.listOfDataToDelete.push(data);
-        }
-        else
-        {
-            let index = this.listOfDataToDelete.indexOf(data);
-
-            if(index > -1)
-            {
-                this.listOfDataToDelete.splice(index,1);
+        } else {
+            const index = this.listOfDataToDelete.indexOf(data);
+            if (index > -1) {
+                this.listOfDataToDelete.splice(index, 1);
             }
         }
     }
@@ -193,7 +179,7 @@ export class ListComponent {
     public  deleteData(service: {name: string, delFn: string, setData: string}, nameList: string, message: string) {
         if (this.listOfDataToDelete.length > 0) {
             if (confirm(message)) {
-                if (this[service.name] != null || this[service.name] != undefined) {
+                if (this[service.name] != null || this[service.name] !== undefined) {
                     const fnDel = service.delFn;
                     if (typeof this[service.name][fnDel] === 'function') {
                         this[service.name][fnDel](this.listOfDataToDelete).subscribe(
