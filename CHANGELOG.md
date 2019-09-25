@@ -1,5 +1,10 @@
 # Release Notes
 
+## 1.0.0-beta1 (2019-09-25)
+
+### Added
+- New Editor Manager
+- Added new Plugins (Blog, Shop, Geolocate)
 
 ## 1.0.0-alpha2 (2018-12-10)
 
