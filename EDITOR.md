@@ -338,3 +338,73 @@ these are the keys in common with all fields.
 **placeholder** is the placeholder of the input  
 **db_table** should be populated when you want to join with another table  
 **db_callable** is a Closure and is used to sanitize the Name of the table column.
+
+
+```php
+<?php
+
+namespace Plugins\Vendor\Bundle\Controller;
+
+use Illuminate\Http\Request;
+use LTFramework\Controllers\LortomController as Controller;
+use LTFramework\Traits\BuildEditTrait;
+use Plugins\Vendor\Bundle\Model\Products;
+
+class ProductsController extends Controller {
+    use BuildEditTrait;
+
+     public function buildViewList(Request $request) {}
+
+     public function buildViewEdit(Request $request, $id = 0) {
+
+         $isEdit = true;
+
+        if($id > 0) {
+            $isEdit = false;
+        }
+
+        $edit =  edit([
+             'class'   => Products::class,
+             'objId' => $id,
+             'input' => $request->all()
+         ])
+         ->addCp('bl','block',[
+             'label' => 'Generale',
+             'icons' => 'fa fa-database',
+         ])->addCp('fl','text',[
+             'label' => 'Name', // label near the input
+             'placeholder' => 'Name',
+             'name'  => 'name',
+             'data'  => '',
+             'isEdit'    => $isEdit
+         ])->addCp('fl','text',[
+             'label' => 'Product Number',
+             'placeholder'   => 'Product Number',
+             'name'  => 'productCode',
+             'data'  => '',
+             'isEdit' => $isEdit
+         ])->addCp('fl','select', [
+            'label' => 'State',
+            'name'  => 'state',
+            'data'  => '',
+            'isEdit'    => $isEdit,
+            'options'   => Products::gValS('state')
+        ])->addCp('fl','select', [
+            'label' => 'Package',
+            'name'  => 'package',
+            'data'  => '',
+            'isEdit'    => $isEdit,
+            'options'   => Products::gValS('package')
+        ])->addCp('fl','number', [
+            'label' => 'Quantity', // placeholder
+            'name'  => 'quantity',
+            'data'  => '',
+            'isEdit'    => $isEdit
+        ]);
+
+        return $edit;
+     }
+
+     public function storeAndUpdate(Request $request, $id = 0) {}
+}
+```
