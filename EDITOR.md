@@ -275,7 +275,6 @@ As you can see there are three parameters to pass to the function:
 - abstract
 - data
 
-
 **type** you have to pass o bl or fl.
 
 **abstract** you must pass the name of the object Block or Abstract Field;
@@ -309,6 +308,7 @@ each of these objects accepts different types of **data**.
 
 **data** is passed as an *array*.
 
+#### Blocks
 
 Every Blocks has the same data:
 
@@ -338,7 +338,6 @@ these are the keys in common with all fields.
 **placeholder** is the placeholder of the input  
 **db_table** should be populated when you want to join with another table  
 **db_callable** is a Closure and is used to sanitize the Name of the table column.
-
 
 ```php
 <?php
@@ -396,7 +395,7 @@ class ProductsController extends Controller {
             'isEdit'    => $isEdit,
             'options'   => Products::gValS('package')
         ])->addCp('fl','number', [
-            'label' => 'Quantity', // placeholder
+            'label' => 'Quantity',
             'name'  => 'quantity',
             'data'  => '',
             'isEdit'    => $isEdit
@@ -408,3 +407,72 @@ class ProductsController extends Controller {
      public function storeAndUpdate(Request $request, $id = 0) {}
 }
 ```
+
+##### Select
+
+for select field we have also another key to pass:
+
+- options
+
+Options is a list that populate the option in a select.
+
+##### chbxList
+
+for checkbox list field we have also another key to pass:
+
+- items
+
+items accept an array with this keys:
+
+- id
+- name
+- check
+
+check is a boolean and serves to know if the object has been checked or not.  
+id is the id of the object (take from the table into the database).  
+name is the "label" of the object.
+
+##### number
+
+for number we have also another key to pass:
+
+- step
+
+##### search
+
+for search we have also another key to pass:
+
+- route
+
+route is a web url where send a search.
+
+##### tblField
+
+- table
+- name
+- uniqueKeys
+- keyParams
+
+`table` accept an array with this keys:
+
+- theader (array of table header)
+- tbody   (array with rows of table)
+- rulesPrint
+
+`rulesPrint` is an array where the keys are the object to print and the values are what you want to print.  
+
+If you wanted to print more than one attribute of the object just separate the values ​​from a `|`.  for example:
+
+```php
+...
+    'rulesPrint' => [
+        'product'   => 'productCode|name',
+        'VAT'       => 'name'
+    ]
+...
+```
+
+`uniqueKeys` is an array and is used to not duplicate lines making certain values ​​unique.
+
+`keyParams` is an array and is used to exclude a list of attributes from the table so as not to display them.
+
