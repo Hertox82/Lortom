@@ -476,3 +476,12 @@ If you wanted to print more than one attribute of the object just separate the v
 
 `keyParams` is an array and is used to exclude a list of attributes from the table so as not to display them.
 
+##### filefld
+
+- idObj
+- obj
+
+##### uplfile
+
+- saveButton
+- urlToSave
