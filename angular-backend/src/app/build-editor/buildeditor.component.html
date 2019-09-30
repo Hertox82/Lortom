@@ -1,0 +1,11 @@
+<form class="form">
+    <div>
+        <div #viewContainer></div>
+    </div>
+    <div class="row" *ngIf="isSaved">
+        <div class="col-12">
+            <button class="btn orange" (click)="saveButton()">Save</button>
+            <button class="btn red" (click)="resetButton()">Reset</button>
+        </div>
+    </div>
+</form>

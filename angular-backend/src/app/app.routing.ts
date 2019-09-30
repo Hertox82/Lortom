@@ -11,4 +11,5 @@ const routes: Routes = [
               {path: 'backend/profile/edit', component : UserModelComponent },
               {path: 'backend/not-found', component: NotFoundComponent},
 ];
+
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes);

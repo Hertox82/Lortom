@@ -1,0 +1,80 @@
+<div class="tabbable-custom">
+    <nav-tab-list
+    [liLink] = "listOfTabLink"
+    ></nav-tab-list>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_1">
+            <div class="box">
+                <div class="box-header">
+
+                </div>
+                <div class="box-body">
+                    <div class="wrapper">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <lt-entry-pagination
+                                [entry]="'50-5'"
+                                (onEntry)="onPerPage($event)"
+                                >
+                                </lt-entry-pagination>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="dataTables_filter" >
+                                    <label>
+                                        Search:
+                                        <input type="search" class="form-control input-sm">
+                                    </label>
+                                    <ng-template #acCon>
+
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <ng-container *ngFor="let h of header.fields" [ngSwitch]="h.type">
+                                            <th *ngSwitchCase="'checkbox'" style="width: 30px;"></th>
+                                            <th *ngSwitchCase="'text'">
+                                                <a>{{h.label}}</a>
+                                            </th>
+                                            <th *ngSwitchCase="'id'" style="width: 50px;"></th>
+                                        </ng-container>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let tlItems of listToShow">
+                                            <ng-container *ngFor="let tlItem of tlItems.fields" [ngSwitch]="tlItem.type">
+                                                <td *ngSwitchCase="'checkbox'">
+                                                    <input type="checkbox" (change)="eventChange($event, tlItems)" [(ngModel)]="tlItem.value">
+                                                </td>
+                                                <td *ngSwitchCase="'text'">
+                                                    {{tlItem.value}}
+                                                </td>
+                                                <td *ngSwitchCase="'id'">
+                                                    <a [routerLink]="[basePath,tlItem.value]"><i class="fa fa-edit" style="color:orange; font-size: 16px;"></i></a>
+                                                </td>
+                                            </ng-container>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <lt-pagination
+                            [pagesToShow]="3"
+                            [perPage]="perPage"
+                            [count]="listOfData.length"
+                            [loading]="false"
+                            [page]="actualPage"
+                            (goNext)="onNext($event)"
+                            (goPage)="onPage($event)"
+                            (goPrev)="onPrev()"
+                        ></lt-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

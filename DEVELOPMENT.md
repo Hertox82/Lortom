@@ -100,7 +100,7 @@ In order to create a Plugin in Lortom, you must understand the folder structure
           |--- node_modules
           |--- src
                |-- "angular's folder"
-               |   
+               |
                |   ...
                |
                |-- plugins

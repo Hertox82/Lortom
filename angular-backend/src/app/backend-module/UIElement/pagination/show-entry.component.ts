@@ -4,17 +4,16 @@
 
 
 
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 @Component({
     selector : 'lt-entry-pagination',
     templateUrl : './show-entry.component.html',
     styles : ['']
 })
 
-export class ShowEntryComponent implements OnInit
-{
-    @Input() entry : string;
-    listEntry : number [] = [];
+export class ShowEntryComponent implements OnInit {
+    @Input() entry: string;
+    listEntry: number [] = [];
 
     @Output() onEntry = new EventEmitter<number>();
 
@@ -22,16 +21,15 @@ export class ShowEntryComponent implements OnInit
 
     }
     ngOnInit() {
-        let entries = this.entry.split('-');
+        const entries = this.entry.split('-');
 
-        let maxNumber = parseInt(entries[0]);
-        let grouping = parseInt(entries[1]);
+        const maxNumber = parseInt(entries[0], 10);
+        const grouping = parseInt(entries[1], 10);
 
-        let iterator = maxNumber/grouping;
+        const iterator = maxNumber / grouping;
 
-        for(let i = 0 ; i<iterator; i++)
-        {
-            let number = (i +1) * grouping;
+        for (let i = 0 ; i < iterator; i++) {
+            const number = (i + 1) * grouping;
             this.listEntry.push(number);
         }
 
@@ -39,8 +37,7 @@ export class ShowEntryComponent implements OnInit
     }
 
 
-    passVal(event)
-    {
-        this.onEntry.emit(parseInt(event));
+    passVal(event) {
+        this.onEntry.emit(parseInt(event, 10));
     }
 }

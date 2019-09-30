@@ -1,13 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {HttpModule} from "@angular/http";
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClientModule} from '@angular/common/http';
 import { AppComponent } from './app.component';
-import {MenuService} from "./menuservice";
-import {routing} from "./app.routing";
-import {EventService} from "../services/event.service";
-import {FormsModule} from "@angular/forms";
-import {BackendModule} from "./backend-module/backend.module";
+import {MenuService} from './menuservice';
+import {routing} from './app.routing';
+import {EventService} from '../services/event.service';
+import {FormsModule} from '@angular/forms';
+import {BackendModule} from './backend-module/backend.module';
 
 
 
@@ -22,7 +21,7 @@ import {BackendModule} from "./backend-module/backend.module";
     BackendModule,
     FormsModule
   ],
-  providers: [MenuService,EventService],
+  providers: [MenuService, EventService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

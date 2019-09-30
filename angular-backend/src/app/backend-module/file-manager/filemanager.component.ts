@@ -9,7 +9,13 @@ import { HttpParams } from '@angular/common/http';
 
 @Component({
     selector: 'app-filemanager',
-    templateUrl: './filemanager.component.html',
+    template: `
+    <lt-filednd
+        (uploadFile)="updateFile($event)"
+        (deletedFile)="deletedFile($event)"
+        [listOfFile]="arrayOfFile"
+    ></lt-filednd>
+    `,
     styles: ['']
 })
 
