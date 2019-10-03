@@ -27,7 +27,8 @@ type;
         .addComponent('tblfield', UIField.TableFieldComponent)
         .addComponent('date', UIField.DateComponent)
         .addComponent('filefld', UIField.FileFieldComponent)
-        .addComponent('uplfile', UIField.UploadFileComponent);
+        .addComponent('uplfile', UIField.UploadFileComponent)
+        .addComponent('cdmirror', UIField.CodeMirrorComponent);
 
         this.stService
         .addAction('edit', UIAction.EditButtonComponent)
