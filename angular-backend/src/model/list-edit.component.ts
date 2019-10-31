@@ -1,8 +1,8 @@
 import { ITabListObject } from '@Lortom/app/build-editor/tablist/interface.tablist';
 import { ViewChild } from '@angular/core';
 import { TabListComponent } from '@Lortom/app/build-editor/tablist/component/tablist.component';
-import { BlogServices } from '@Lortom/plugins/Hardel/Blog/Services/blog.services';
 import { Router, NavigationEnd } from '@angular/router';
+import { MasterService } from '@Lortom/services/master.service';
 
 
 
@@ -17,7 +17,7 @@ export class ListEditComponent {
     keyPath: string;
 
     @ViewChild(TabListComponent) tbList: TabListComponent;
-    constructor(private srvBlog: BlogServices,
+    constructor(private srvBlog: MasterService,
         private rt: Router,
         url: string,
         functName: string) {
