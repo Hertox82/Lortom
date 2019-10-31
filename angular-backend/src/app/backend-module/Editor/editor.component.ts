@@ -29,7 +29,9 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     @Output() onEditorKeyup = new EventEmitter<any>();
 
     editor;
-
+    constructor() {
+        this.content= '';
+    }
     ngAfterViewInit() {
         tinymce.init({
             selector: '#' + this.elementId,
@@ -50,6 +52,8 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
                     if (this.content.length > 0) {
                         inst.setContent(this.content);
                         this.editor.getBody().setAttribute('contenteditable', this.isEditable);
+                    } else {
+                        this.content = '';
                     }
                 }
             },

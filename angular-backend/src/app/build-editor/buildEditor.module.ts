@@ -11,11 +11,13 @@ import { EditorModule } from '../backend-module';
 import { UIService } from './service/ui.service';
 import { KeysPipe, KeysNoParamsPipe } from './service/pipe/keys.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CodemirrorModule } from 'lt-codemirror';
 import { FileManagerModule } from '../backend-module/file-manager/filemanager.module';
 
 @NgModule({
   imports:      [ CommonModule, FormsModule, FileManagerModule ,
-    RouterModule, UIElementModule, EditorModule, ReactiveFormsModule, NgbModule.forRoot() ],
+    RouterModule, UIElementModule, EditorModule, CodemirrorModule ,
+    ReactiveFormsModule, NgbModule.forRoot() ],
   declarations: [ uiComponent, KeysPipe, KeysNoParamsPipe ],
   exports: [ uiComponent, KeysPipe, KeysNoParamsPipe ],
   providers: [ SC, UIService ]

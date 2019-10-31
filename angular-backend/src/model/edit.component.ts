@@ -2,6 +2,7 @@ import { ViewChild } from '@angular/core';
 import { IComponentManager } from '@Lortom/app/build-editor/abstract.component';
 import { BuildEditorComponent } from '@Lortom/app/build-editor/buildeditor.component';
 import { IBuildEditObject } from '@Lortom/app/build-editor/be.interface';
+import { TinyMceComponent } from '@Lortom/app/build-editor/field';
 
 
 export class ViewEditComponent implements  IComponentManager {
@@ -73,7 +74,13 @@ export class ViewEditComponent implements  IComponentManager {
                         const obj = component.instance;
                         if ('available' in obj) {
                             if ( component.instance['available'] === true ) {
-                                component.instance['isEdit'] = ! this.isEdit;
+                                // component.instance['isEdit'] = ! this.isEdit;
+                                if (component.instance instanceof TinyMceComponent) {
+                                    component.instance.editor.readOnly(!this.isEdit);
+                                } else {
+                                    component.instance['isEdit'] = ! this.isEdit;
+                                }
+
                             }
                         } else {
                             component.instance.isEdit = ! this.isEdit;

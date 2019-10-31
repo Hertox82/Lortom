@@ -2,6 +2,8 @@ import { OnInit, EventEmitter, Input, Component, ViewChild } from '@angular/core
 import { LTComponent } from '../abstract.component';
 import { EditorComponent } from '@Lortom/app/backend-module';
 import { GenericField } from './genericField.component';
+import { CodemirrorComponent } from 'lt-codemirror';
+import 'codemirror/mode/htmlmixed/htmlmixed';
 
 @Component({
     selector: 'cdmirror-field',
@@ -27,7 +29,7 @@ export class CodeMirrorComponent extends GenericField implements OnInit, LTCompo
     send: EventEmitter<any> = new EventEmitter();
     config: any;
     size: {w: string|number, h: string|number };
-    @ViewChild(EditorComponent) editor: EditorComponent;
+    @ViewChild(CodemirrorComponent) editor: CodemirrorComponent;
     @Input() data: any;
     copyData: any;
     ngOnInit() {}
@@ -48,7 +50,6 @@ export class CodeMirrorComponent extends GenericField implements OnInit, LTCompo
         };
     }
     getData(): any {
-        this.data = this.editor.getContent();
         if (this.data != undefined) {
             return {
                 id: this.name,
