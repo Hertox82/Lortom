@@ -2,6 +2,7 @@ import { OnInit, Component, Input, ComponentFactoryResolver, Injector, ViewChild
 import { AbstractBlock } from './abstractblock.component';
 import { SC } from '../sc';
 import { IComponentManager } from '../abstract.component';
+import { UtilService } from '@Lortom/app/utilModule/util-service';
 
 
 
@@ -38,8 +39,8 @@ type: string;
 @ViewChild('actionC', {read: ViewContainerRef}) actionContainer: ViewContainerRef;
 isEdit: boolean;
 
-    constructor(bsService: SC, bResolver: ComponentFactoryResolver, bInj: Injector) {
-       super(bsService, bResolver, bInj);
+constructor(bsService: SC, bResolver: ComponentFactoryResolver, bInj: Injector, bUtSer: UtilService) {
+        super(bsService, bResolver, bInj, bUtSer);
     }
     ngOnInit() {}
 

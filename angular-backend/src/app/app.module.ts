@@ -7,7 +7,7 @@ import {routing} from './app.routing';
 import {EventService} from '../services/event.service';
 import {FormsModule} from '@angular/forms';
 import {BackendModule} from './backend-module/backend.module';
-
+import { UtilModule } from './utilModule/utilModule';
 
 
 @NgModule({
@@ -19,7 +19,8 @@ import {BackendModule} from './backend-module/backend.module';
     HttpClientModule,
     routing,
     BackendModule,
-    FormsModule
+    FormsModule,
+    UtilModule.forRoot()
   ],
   providers: [MenuService, EventService],
   bootstrap: [AppComponent]

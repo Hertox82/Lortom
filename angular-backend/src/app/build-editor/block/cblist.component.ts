@@ -2,6 +2,7 @@ import { AbstractBlock } from './abstractblock.component';
 import { Input, ViewChild, ViewContainerRef, Component, ComponentFactoryResolver, Injector } from '@angular/core';
 import { SC } from '../sc';
 import { IComponentManager } from '../abstract.component';
+import { UtilService } from '@Lortom/app/utilModule/util-service';
 
 
 @Component({
@@ -35,9 +36,9 @@ export class CbListComponent extends AbstractBlock {
     @ViewChild('vCcb', {read: ViewContainerRef}) container: ViewContainerRef;
     isEdit: boolean;
 
-    constructor(bsService: SC, bResolver: ComponentFactoryResolver, bInj: Injector) {
-       super(bsService, bResolver, bInj);
-    }
+    constructor(bsService: SC, bResolver: ComponentFactoryResolver, bInj: Injector, cbUtSer: UtilService) {
+        super(bsService, bResolver, bInj, cbUtSer);
+     }
 
     editMode() {}
 

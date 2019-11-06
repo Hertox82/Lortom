@@ -31,6 +31,16 @@ export class ApiManager {
         this.apiUrl.push(url);
     }
 
+    hasUrlByName(name: string): boolean {
+        for (let i = 0; i < this.apiUrl.length; i++) {
+            if (this.apiUrl[i].namePath === name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     addListUrlApi(urls: {namePath: string , path: string} []) {
         urls.forEach((item) => {
            this.addUrlApi(item);

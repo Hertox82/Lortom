@@ -9,7 +9,11 @@
       ],
       "@Lortom-Backend/*": [
         "app/backend-module/*"
+      ],
+      "@LortomPlugins/*": [
+        "plugins"
       ]
+
     },
     "module": "commonjs",
     "types": []

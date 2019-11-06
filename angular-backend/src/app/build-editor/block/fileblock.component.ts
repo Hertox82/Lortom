@@ -2,6 +2,7 @@ import { OnInit, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver, I
 import { AbstractBlock } from './abstractblock.component';
 import { SC } from '../sc';
 import { IComponentManager } from '../abstract.component';
+import { UtilService } from '@Lortom/app/utilModule/util-service';
 
 
 @Component({
@@ -37,8 +38,8 @@ export class FileBlockComponent extends AbstractBlock implements OnInit {
     @ViewChild('actionC', {read: ViewContainerRef}) actionContainer: ViewContainerRef;
     isEdit: boolean;
 
-    constructor(fbService: SC, fbResolver: ComponentFactoryResolver, fbInj: Injector) {
-        super(fbService, fbResolver, fbInj);
+    constructor(fbService: SC, fbResolver: ComponentFactoryResolver, fbInj: Injector, fbUtSer: UtilService) {
+        super(fbService, fbResolver, fbInj, fbUtSer);
     }
 
     ngOnInit() {}

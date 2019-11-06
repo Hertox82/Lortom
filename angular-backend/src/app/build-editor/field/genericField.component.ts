@@ -10,6 +10,7 @@ export class GenericField {
     @Input() placeholder: string;
     @Input() name: string;
     @Input() available = true;
+    @Input() type: string;
     cManager: IComponentManager;
 
     public setGenericData(data: any) {
