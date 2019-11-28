@@ -22,7 +22,7 @@
                                 <div class="dataTables_filter" >
                                     <label>
                                         Search:
-                                        <input type="search" class="form-control input-sm">
+                                        <input type="search" [(ngModel)]="searching" (keyup)="searchOn()" class="form-control input-sm">
                                     </label>
                                     <ng-template #acCon>
 
