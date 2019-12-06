@@ -30,13 +30,15 @@ type;
         .addComponent('date', UIField.DateComponent)
         .addComponent('filefld', UIField.FileFieldComponent)
         .addComponent('uplfile', UIField.UploadFileComponent)
-        .addComponent('cdmirror', UIField.CodeMirrorComponent);
+        .addComponent('cdmirror', UIField.CodeMirrorComponent)
+        .addComponent('media', UIField.MediaComponent);
 
         this.stService
         .addAction('edit', UIAction.EditButtonComponent)
         .addAction('openMod', UIAction.AddModalComponent)
         .addAction('saveMod', UIAction.SaveModalComponent)
-        .addAction('cleanBlock', UIAction.CleanBlockComponent);
+        .addAction('cleanBlock', UIAction.CleanBlockComponent)
+        .addAction('readIng', UIAction.ReadIngredientsComponent);
     }
 
     /**
