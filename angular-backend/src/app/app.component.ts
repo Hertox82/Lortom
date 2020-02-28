@@ -1,76 +1,55 @@
 import { Component } from '@angular/core';
-import {EventService} from "../services/event.service";
-import {MenuService} from "./menuservice";
-import {NavigationEnd, Router} from "@angular/router";
+import {EventService} from '../services/event.service';
+import {NavigationEnd, Router} from '@angular/router';
+import { AuthService } from './auth-module/auth.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styles: ['']
 })
 export class AppComponent {
   title = 'app';
   isAuth = false;
-  user : any;
+  user: any;
   urlLogin = '/backend/login';
   isLogin = true;
 
-  constructor(private event : EventService, private router: Router) {
+  constructor(private event: EventService, private authSer: AuthService, private router: Router) {
 
-    let cookie = this.getCookie('l_t');
-    if(cookie)
-    {
-      this.isLogin = false;
-      this.isAuth = true;
+    if (this.authSer.isAuthenticated()) {
+        this.isLogin = false;
+        this.isAuth = true;
+        this.authSer.createUser();
+        this.user = this.authSer._currentUser;
     }
-
     this.router.events.subscribe(
         (val) => {
-          if(val instanceof NavigationEnd)
-          {
-            if(this.urlLogin === val.url)
-            {
+          if (val instanceof NavigationEnd) {
+            if (this.urlLogin === val.url) {
               this.isLogin = true;
               this.isAuth = false;
-            }
-            else
-            {
+            } else {
               this.isLogin = false;
             }
           }
         }
     );
 
-    if(!this.isAuth)
-    {
+    if (!this.isAuth) {
       sessionStorage.removeItem('users');
       sessionStorage.removeItem('roles');
     }
-    this.event.logged$.subscribe(
-        (isLogged : boolean) => this.isAuth = isLogged
+    this.event.getAuthenticate()
+    .subscribe(
+        (isLogged: boolean) => this.isAuth = isLogged
     );
 
-    this.event.user$.subscribe(
-        (user : any ) => {
+    this.event.retriveUser()
+    .subscribe(
+        (user: any ) => {
           this.user = user;
         }
     );
-  }
-
-
-  private getCookie(name : string)
-  {
-    let ca: Array<string> = document.cookie.split(';');
-    let caLen: number = ca.length;
-    let cookieName = `${name}=`;
-    let c: string;
-
-    for (let i: number = 0; i < caLen; i += 1) {
-      c = ca[i].replace(/^\s+/g, '');
-      if (c.indexOf(cookieName) == 0) {
-        return c.substring(cookieName.length, c.length);
-      }
-    }
-    return '';
   }
 }

@@ -1,6 +1,5 @@
 import { OnInit, EventEmitter, Input, Component, ViewChild } from '@angular/core';
 import { LTComponent } from '../abstract.component';
-import { EditorComponent } from '@Lortom/app/backend-module';
 import { GenericField } from './genericField.component';
 import { CodemirrorComponent } from 'lt-codemirror';
 import 'codemirror/mode/htmlmixed/htmlmixed';

@@ -1,8 +1,8 @@
-import {OnInit,Component} from "@angular/core";
-import {MenuService} from "../../menuservice";
-import {Router} from "@angular/router";
-import {Observable} from "rxjs/Observable";
-import {EventService} from "../../../services/event.service";
+import {OnInit, Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {Observable} from 'rxjs/Observable';
+import { AuthService } from '@Lortom/app/auth-module/auth.service';
+import { EventService } from '@Lortom/services/event.service';
 
 @Component({
     selector: 'app-logout',
@@ -10,16 +10,10 @@ import {EventService} from "../../../services/event.service";
     styles : [''],
 })
 
-export class LogoutComponent implements OnInit
-{
-    constructor(private menuService : MenuService, private router : Router, private eService : EventService)
-    {
-        this.menuService.logout().subscribe(
-            (data : Observable<any>) => {
-                if(localStorage.getItem('user'))
-                {
-                    localStorage.removeItem('user');
-                }
+export class LogoutComponent implements OnInit {
+    constructor(private autSer: AuthService, private router: Router, private eService: EventService) {
+        this.autSer.logout().subscribe(
+            (data: Observable<any>) => {
                 this.eService.logged(false);
                 this.eService.clicked({
                     object: null,
@@ -27,7 +21,7 @@ export class LogoutComponent implements OnInit
                 });
                 this.router.navigate(['/backend/login']);
             }
-        )
+        );
     }
     ngOnInit() {}
 }

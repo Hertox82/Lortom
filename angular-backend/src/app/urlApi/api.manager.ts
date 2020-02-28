@@ -9,7 +9,7 @@ export class ApiManager {
     basePath: string;
     apiUrl: any;
     constructor() {
-        this.basePath = 'http://lastreganew.com/api/';
+        this.basePath = 'https://lastreganew.com/api/';
         this.apiUrl = [
             { namePath: 'getMenu', path: this.basePath + 'populate-slidebar'},
             { namePath: 'login', path: this.basePath + 'login'},
@@ -37,7 +37,6 @@ export class ApiManager {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -54,5 +53,4 @@ export class ApiManager {
     consolePrint() {
         console.log(this.apiUrl);
     }
-
 }

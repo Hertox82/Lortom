@@ -74,5 +74,4 @@ export class TableBlockComponent extends AbstractBlock implements OnInit {
         });
         return response;
     }
-
 }

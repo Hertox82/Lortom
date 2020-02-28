@@ -1,36 +1,35 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SlideItem, SlideSubMenu} from "../../../../interfaces/slideItem.interface";
-import {EventService} from "../../../../services/event.service";
-import {Router} from "@angular/router";
+import {SlideItem, SlideSubMenu} from '../../../../interfaces/slideItem.interface';
+import {EventService} from '../../../../services/event.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-menu-item',
   templateUrl: './menu-item.component.html',
-  styleUrls: ['./menu-item.component.css']
+  styles: ['']
 })
 export class MenuItemComponent implements OnInit {
 
-  @Input() item : SlideItem;
-  isClicked : boolean;
+  @Input() item: SlideItem;
+  isClicked: boolean;
 
-  constructor(private eService: EventService, private router : Router) {
+  constructor(private eService: EventService, private router: Router) {
     this.isClicked = false;
     this.eService.clicked$.subscribe(
-        (item : {object: MenuItemComponent, close: boolean}) => {
-          if(item.object != this)
-          {
-            if(this.isClicked === true)
+        (item: {object: MenuItemComponent, close: boolean}) => {
+          if (item.object != this) {
+            if (this.isClicked === true) {
               this.isClicked = item.close;
+            }
           }
         }
     );
 
     this.eService._subMenu$.subscribe(
-        (item : SlideSubMenu) => {
+        (item: SlideSubMenu) => {
           this.item.subMenu.forEach(
-              (subItem : SlideSubMenu) => {
-                  if(item === subItem)
-                  {
+              (subItem: SlideSubMenu) => {
+                  if (item === subItem) {
                     this.eService.clicked({
                       object : this,
                       close : false,
@@ -42,15 +41,12 @@ export class MenuItemComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  onRouterClick(){
+  onRouterClick() {
 
     let closeAll: boolean;
-
     closeAll = !this.isClicked;
-
     this.isClicked = closeAll;
     this.eService.clicked({
       object: this,
@@ -58,12 +54,9 @@ export class MenuItemComponent implements OnInit {
     });
   }
 
-  checkUrlRouter()
-  {
-    let substring = this.item.href;
-    let count = substring.length;
-    return (this.router.url.substring(0,count) !== substring);
+  checkUrlRouter() {
+    const substring = this.item.href;
+    const count = substring.length;
+    return (this.router.url.substring(0, count) !== substring);
   }
-
-
 }

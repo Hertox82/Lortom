@@ -22,13 +22,15 @@ export class ListComponent {
     }
 
     public onComponentInit(
-        service: {name: string, permission: string, upd: string},
+        service: {name: string, permission?: string, upd: string},
         router: string,
         getList: string): void {
             if (this[service.name] != null || this[service.name] !== undefined) {
-                if (!this[service.name].hasPermissions(service.permission)) {
-                    if (this[router] != null || this[router] !== undefined) {
-                        this[router].navigate(['/backend/dashboard']);
+                if (service.permission) {
+                    if (!this[service.name].hasPermissions(service.permission)) {
+                        if (this[router] != null || this[router] !== undefined) {
+                            this[router].navigate(['/backend/dashboard']);
+                        }
                     }
                 }
             }

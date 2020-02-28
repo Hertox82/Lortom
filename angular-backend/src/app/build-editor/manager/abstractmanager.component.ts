@@ -17,7 +17,8 @@ export class AbstractComponentManager implements IComponentManager {
 
     listOfRawData: any[] = [];
 
-    constructor(protected abCMService: SC, protected abCMResolver: ComponentFactoryResolver, protected abCMInjector: Injector ) {
+    constructor(protected abCMService: SC, protected abCMResolver: ComponentFactoryResolver,
+      protected abCMInjector: Injector ) {
         this.listOfBlock = [];
         this.abCMService.addBlock('block', BlockComponent)
         .addBlock('cbList', CbListComponent)

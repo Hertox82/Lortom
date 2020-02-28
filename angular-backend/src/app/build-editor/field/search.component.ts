@@ -1,6 +1,5 @@
 import { OnInit, Input, EventEmitter, Component } from '@angular/core';
 import { LTComponent } from '../abstract.component';
-import { FormControl } from '@angular/forms';
 import { UIService } from '../service/ui.service';
 import { Subject } from 'rxjs/Subject';
 import { GenericField } from './genericField.component';

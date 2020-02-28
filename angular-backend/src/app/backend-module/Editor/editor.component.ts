@@ -1,5 +1,3 @@
-
-
 import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import 'tinymce';
 import 'tinymce/themes/modern';
@@ -30,8 +28,9 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
 
     editor;
     constructor() {
-        this.content= '';
+        this.content = '';
     }
+
     ngAfterViewInit() {
         tinymce.init({
             selector: '#' + this.elementId,

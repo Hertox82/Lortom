@@ -1,9 +1,7 @@
-
-
 import {OnInit, Component, Input} from '@angular/core';
-import { LortomFile } from '@Lortom/plugins/Hardel/File/Services/files.interfaces';
+import { LortomFile } from './files.interfaces';
 import { LtFile } from 'lt-drag-and-drop';
-import { FilesServices } from '@Lortom/plugins/Hardel/File/Services/files.services';
+import { FilesServices } from './files.services';
 import { HttpParams } from '@angular/common/http';
 
 

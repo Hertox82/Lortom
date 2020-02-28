@@ -60,4 +60,3 @@ constructor(bsService: SC, bResolver: ComponentFactoryResolver, bInj: Injector, 
         super.buildAction(data, cmManager, this.actionContainer);
     }
 }
-

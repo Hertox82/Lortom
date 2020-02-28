@@ -52,4 +52,3 @@ export class CbListComponent extends AbstractBlock {
         super.buildEdit(data, cmManager, this.container);
     }
 }
-

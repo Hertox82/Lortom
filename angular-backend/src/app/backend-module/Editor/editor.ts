@@ -2,9 +2,9 @@
  * Created by hernan on 14/11/2017.
  */
 
-import {NgModule} from "@angular/core";
-import {CommonModule} from "@angular/common";
-import {EditorComponent} from "./editor.component";
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {EditorComponent} from './editor.component';
 
 
 

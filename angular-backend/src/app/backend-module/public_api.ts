@@ -1,5 +1,3 @@
-
-
 import {NavbarComponent, NavbarItemComponent} from './navbar';
 import {MenuItemsComponent, MenuItemComponent, SubMenuItemComponent} from './menu-items';
 import {LoginComponent, LogoutComponent} from './login';
