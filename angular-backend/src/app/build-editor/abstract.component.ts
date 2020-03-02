@@ -11,6 +11,7 @@ export interface LTComponent {
   send: EventEmitter<any>;
   isEdit?: boolean;
   name?: string;
+  type: string;
   setData(data: any): void;
   getData(): any;
   resetData(): void;

@@ -7,7 +7,6 @@ import 'rxjs/Rx';
 import {Observable} from 'rxjs/Observable';
 import {ApiManager} from './urlApi/api.manager';
 import {User} from './backend-module/user-module/user-model/user.interface';
-import {SlideItem} from '@Lortom/interfaces/slideItem.interface';
 
 @Injectable()
 export class MenuService {
@@ -22,11 +21,6 @@ export class MenuService {
 
     getMenu(): Observable<any> {
         return this.http.get(this.urlManager.getPathByName('getMenu'));
-            /*.map(
-                (response : {menulista: SlideItem[]}) => {
-                    return response.menulista;
-                }
-            );*/
     }
 
     login(credential: {username: string, password: string}): Observable<any> {
@@ -55,7 +49,6 @@ export class MenuService {
             );
     }
 
-
     setUser(user: User): void {
         this.user = user;
         sessionStorage.setItem('user', JSON.stringify(user));
@@ -73,12 +66,13 @@ export class MenuService {
         if (this.user == null) {
             this.user = JSON.parse(sessionStorage.getItem('user'));
         }
-        for (let i = 0; i < this.user.permissions.length; i++) {
-            if (this.user.permissions[i].name === name) {
-                return true;
+        if (this.user) {
+            for (let i = 0; i < this.user.permissions.length; i++) {
+                if (this.user.permissions[i].name === name) {
+                    return true;
+                }
             }
         }
-
         return false;
     }
 

@@ -20,7 +20,7 @@
         "php": ">=7.0.0",
         "fideloper/proxy": "~3.3",
         "hadeluca/db-exporter": "^2.0",
-        "hadeluca/lortom-framework": "1.0.*@beta",
+        "hadeluca/lortom-framework": "1.0.*@rc",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0"
     },

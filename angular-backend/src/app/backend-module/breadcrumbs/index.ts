@@ -1,3 +1,3 @@
 
-export {BreadCrumbModule} from "./breadcrumbs.module";
-export {BreadCrumbsComponent} from "./breadcrumbs.component";
+export {BreadCrumbModule} from './breadcrumbs.module';
+export {BreadCrumbsComponent} from './breadcrumbs.component';

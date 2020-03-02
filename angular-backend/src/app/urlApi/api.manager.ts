@@ -9,7 +9,7 @@ export class ApiManager {
     basePath: string;
     apiUrl: any;
     constructor() {
-        this.basePath = 'http://lastreganew.com/api/';
+        this.basePath = 'https://lastreganew.com/api/';
         this.apiUrl = [
             { namePath: 'getMenu', path: this.basePath + 'populate-slidebar'},
             { namePath: 'login', path: this.basePath + 'login'},
@@ -31,6 +31,15 @@ export class ApiManager {
         this.apiUrl.push(url);
     }
 
+    hasUrlByName(name: string): boolean {
+        for (let i = 0; i < this.apiUrl.length; i++) {
+            if (this.apiUrl[i].namePath === name) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     addListUrlApi(urls: {namePath: string , path: string} []) {
         urls.forEach((item) => {
            this.addUrlApi(item);
@@ -44,5 +53,4 @@ export class ApiManager {
     consolePrint() {
         console.log(this.apiUrl);
     }
-
 }

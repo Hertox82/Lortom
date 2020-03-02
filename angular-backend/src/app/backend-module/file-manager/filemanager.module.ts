@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FileManagerComponent } from './filemanager.component';
 import { LtFiledndModule } from 'lt-drag-and-drop';
-import { FilesServices } from '@Lortom/plugins/Hardel/File/Services/files.services';
+import { FilesServices } from './files.services';
 
 
 

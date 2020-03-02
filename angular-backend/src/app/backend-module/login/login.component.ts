@@ -1,7 +1,7 @@
 import {OnInit, Component, Input} from '@angular/core';
-import {MenuService} from '../../menuservice';
 import {EventService} from '@Lortom/services/event.service';
 import {Router} from '@angular/router';
+import { AuthService } from '@Lortom/app/auth-module/auth.service';
 
 @Component({
     selector: 'app-login',
@@ -14,22 +14,20 @@ export class LoginComponent implements OnInit {
     @Input() password: string;
     error: string;
 
-    constructor(private service: MenuService, private event: EventService, private router: Router) {}
+    constructor(private auth: AuthService, private event: EventService, private router: Router) {}
 
     ngOnInit() {}
 
     onSubmit() {
-            this.service.login({username: this.username, password: this.password})
+            this.auth.attemptLogin({username: this.username, password: this.password})
                 .subscribe(
                     (data: { error?: string, token?: string, user?: any }) => {
                         if (data.error) {
                             this.error = data.error;
                         } else {
-
                             this.event.logged(true);
-                            localStorage.setItem('l_t', data.token);
-                            this.service.setUser(data.user);
-                            this.event.user(data.user);
+                            // this.service.setUser(data.user);
+                            this.event.userCreated(data.user);
                             this.router.navigate(['/backend']);
                         }
                     }

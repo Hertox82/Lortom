@@ -11,3 +11,6 @@ export { TableFieldComponent }  from './tblfield.component';
 export { DateComponent} from './date.component';
 export { FileFieldComponent } from './filefield.component';
 export { UploadFileComponent } from './uploadfile.component';
+export { CodeMirrorComponent } from './codemirror.component';
+export { MediaComponent } from './media.component';
+

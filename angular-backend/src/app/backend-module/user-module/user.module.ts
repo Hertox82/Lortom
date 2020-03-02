@@ -1,10 +1,10 @@
-import {NgModule} from "@angular/core";
-import {CommonModule} from "@angular/common";
-import {FormsModule} from "@angular/forms";
-import {RouterModule} from "@angular/router";
-import {UserSideComponent} from "./user-side/user-side.component";
-import {EventService} from "../../../services/event.service";
-import {UserModelComponent} from "./user-model/usermodel.component";
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {RouterModule} from '@angular/router';
+import {UserSideComponent} from './user-side/user-side.component';
+import {EventService} from '../../../services/event.service';
+import {UserModelComponent} from './user-model/usermodel.component';
 
 
 @NgModule({
@@ -27,5 +27,3 @@ import {UserModelComponent} from "./user-model/usermodel.component";
 })
 
 export class UserModule {}
-
-

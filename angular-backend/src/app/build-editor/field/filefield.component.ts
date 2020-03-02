@@ -32,17 +32,11 @@ export class FileFieldComponent extends GenericField implements OnInit, LTCompon
         this.obj = data.obj;
     }
 
-    getData() {
+    getData() {}
 
-    }
+    resetData() {}
 
-    resetData() {
-
-    }
-
-    bindData() {
-
-    }
+    bindData() {}
 
     eraseData() {}
 }

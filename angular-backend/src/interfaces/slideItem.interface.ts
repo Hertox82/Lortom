@@ -3,16 +3,13 @@
  */
 
 export interface SlideItem {
-    name : string;
-    href : string;
-    icon : string;
-    subMenu : SlideSubMenu[]
+    name: string;
+    href: string;
+    icon: string;
+    subMenu: SlideSubMenu[];
 }
 
-export interface SlideSubMenu
-{
+export interface SlideSubMenu {
     name: string;
     href: string;
 }
-
-

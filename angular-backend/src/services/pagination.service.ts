@@ -1,11 +1,6 @@
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-
 /**
  * Created by hernan on 16/11/2017.
  */
-
-
 
 export class PaginationService {
 
@@ -43,11 +38,8 @@ export class PaginationService {
     }
 }
 
-
 export interface ObjPagination {
     entry: number;
     list: any;
     pageToShow: number;
 }
-
-

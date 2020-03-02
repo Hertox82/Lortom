@@ -4,6 +4,7 @@
 
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class EventService {
@@ -28,11 +29,19 @@ export class EventService {
         this._logged.next(object);
     }
 
-    user(object) {
+    userCreated(object) {
         this._user.next(object);
     }
 
     emitEventSubMenu(object) {
         this._subMenu.next(object);
+    }
+
+    getAuthenticate(): Observable<any> {
+        return this._logged.asObservable();
+    }
+
+    retriveUser(): Observable<any> {
+        return this._user.asObservable();
     }
 }

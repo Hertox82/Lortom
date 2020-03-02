@@ -17,7 +17,7 @@ export class MasterService {
         this.apiManager = new ApiManager();
     }
 
-    /**
+     /**
      * Check if User has permission
      * @param name
      * @returns {boolean}

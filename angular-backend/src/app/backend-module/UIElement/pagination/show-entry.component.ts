@@ -2,8 +2,6 @@
  * Created by hernan on 17/11/2017.
  */
 
-
-
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 @Component({
     selector : 'lt-entry-pagination',
@@ -17,15 +15,11 @@ export class ShowEntryComponent implements OnInit {
 
     @Output() onEntry = new EventEmitter<number>();
 
-    constructor() {
-
-    }
+    constructor() {}
     ngOnInit() {
         const entries = this.entry.split('-');
-
         const maxNumber = parseInt(entries[0], 10);
         const grouping = parseInt(entries[1], 10);
-
         const iterator = maxNumber / grouping;
 
         for (let i = 0 ; i < iterator; i++) {
@@ -35,7 +29,6 @@ export class ShowEntryComponent implements OnInit {
 
         this.onEntry.emit(this.listEntry[0]);
     }
-
 
     passVal(event) {
         this.onEntry.emit(parseInt(event, 10));

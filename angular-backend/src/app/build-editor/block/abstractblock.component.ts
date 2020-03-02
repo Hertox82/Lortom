@@ -3,6 +3,7 @@ import * as UIField from '../field';
 import { ViewContainerRef, ComponentFactoryResolver, Injector, ComponentRef } from '@angular/core';
 import { SC } from '../sc';
 import * as UIAction from '../action';
+import { UtilService } from '@Lortom/app/utilModule/util-service';
 
 
 
@@ -13,7 +14,8 @@ listOfComponents: ComponentRef<LTComponent>[] = [];
 listOfRawData: any[] = [];
 type;
 
-    constructor(protected stService: SC, protected abResolver: ComponentFactoryResolver, protected abInjector: Injector) {
+    constructor(protected stService: SC, protected abResolver: ComponentFactoryResolver, protected abInjector: Injector,
+        protected abUtServ: UtilService) {
         this.stService
         .addComponent('text', UIField.TextComponent)
         .addComponent('email', UIField.EmailComponent)
@@ -27,13 +29,16 @@ type;
         .addComponent('tblfield', UIField.TableFieldComponent)
         .addComponent('date', UIField.DateComponent)
         .addComponent('filefld', UIField.FileFieldComponent)
-        .addComponent('uplfile', UIField.UploadFileComponent);
+        .addComponent('uplfile', UIField.UploadFileComponent)
+        .addComponent('cdmirror', UIField.CodeMirrorComponent)
+        .addComponent('media', UIField.MediaComponent);
 
         this.stService
         .addAction('edit', UIAction.EditButtonComponent)
         .addAction('openMod', UIAction.AddModalComponent)
         .addAction('saveMod', UIAction.SaveModalComponent)
-        .addAction('cleanBlock', UIAction.CleanBlockComponent);
+        .addAction('cleanBlock', UIAction.CleanBlockComponent)
+        .addAction('readIng', UIAction.ReadIngredientsComponent);
     }
 
     /**
@@ -92,6 +97,7 @@ type;
         const cmpin = component.instance;
         cmpin.index = i;
         cmpin.setData(item.data);
+        cmpin.type = item.type;
         cmpin.setManager(cmManager);
         this.addComponent(component);
         const nameF = item.data.name + item.type.charAt(0).toUpperCase() + item.type.slice(1);
@@ -103,6 +109,19 @@ type;
             cmManager.listOfSubscription.push(cmpin.send.subscribe((data) => {
             cmManager[nameF](data);
           }));
+        } else {
+            if ((item.type === 'search') || (item.type === 'tblfield')) {
+                if (this.abUtServ.hasItem(nameF)) {
+                    cmManager.listOfSubscription.push(cmpin.send.subscribe((data) => {
+                        (async () => {
+                            const m = await this.abUtServ.getClassFunction(nameF);
+                            if (m !== null) {
+                                m(cmManager, data);
+                            }
+                        })();
+                    }));
+                }
+            }
         }
     }
 
@@ -157,6 +176,17 @@ type;
             cmManager.listOfSubscription.push(
             action.action.subscribe(() => {
                 cmManager[nameF]();
+            }));
+        } else {
+            cmManager.listOfSubscription.push(
+                action.action.subscribe(
+                    () => {
+                        (async () => {
+                            const m = await this.abUtServ.getClassFunction(nameF);
+                            if (m !== null) {
+                                m(cmManager);
+                            }
+                })();
             }));
         }
     }

@@ -28,4 +28,3 @@ export class EventActionComponent implements IActionTabList, OnInit {
         this.styleButton = data.styleButton;
     }
 }
-

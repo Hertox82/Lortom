@@ -1,5 +1,5 @@
 import { LTComponent } from '../abstract.component';
-import { OnInit, Input, EventEmitter, Component, ViewChild, AfterContentInit } from '@angular/core';
+import { OnInit, Input, EventEmitter, Component, ViewChild } from '@angular/core';
 import { NgbDateParserFormatter, NgbInputDatepicker, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { DatePickerFormatter } from '../service/datepickerformatter.service';
 import { GenericField } from './genericField.component';

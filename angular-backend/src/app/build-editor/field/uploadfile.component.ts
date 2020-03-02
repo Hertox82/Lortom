@@ -1,5 +1,5 @@
 import { GenericField } from './genericField.component';
-import { OnInit, Input, EventEmitter, Component, ViewContainerRef } from '@angular/core';
+import { OnInit, Input, EventEmitter, Component } from '@angular/core';
 import { LTComponent } from '../abstract.component';
 
 

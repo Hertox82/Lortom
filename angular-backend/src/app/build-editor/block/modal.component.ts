@@ -4,6 +4,7 @@ import { OnInit, Component, Input, ViewChild, ViewContainerRef,
 import { SC } from '../sc';
 import { IComponentManager } from '../abstract.component';
 import { SearchFieldComponent } from '../field';
+import { UtilService } from '@Lortom/app/utilModule/util-service';
 
 
 @Component({
@@ -48,8 +49,8 @@ export class ModalBlockComponent extends AbstractBlock implements OnInit {
     tblKeyIndex: string;
     isInEditMode: boolean;
 
-    constructor(modService: SC, modResolver: ComponentFactoryResolver, modInj: Injector) {
-        super(modService, modResolver, modInj);
+    constructor(modService: SC, modResolver: ComponentFactoryResolver, modInj: Injector, modUtService: UtilService) {
+        super(modService, modResolver, modInj, modUtService);
         this.render = modInj.get(Renderer2);
         this.display = 'none';
         this.lastNumberInsert = 0;

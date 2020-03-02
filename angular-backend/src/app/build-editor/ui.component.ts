@@ -35,5 +35,8 @@ export const uiComponent = [
     UIAction.CleanBlockComponent,
     UIBlock.FileBlockComponent,
     UIField.FileFieldComponent,
-    UIField.UploadFileComponent
+    UIField.UploadFileComponent,
+    UIField.CodeMirrorComponent,
+    UIAction.ReadIngredientsComponent,
+    UIField.MediaComponent
 ];

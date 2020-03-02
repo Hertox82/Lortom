@@ -56,7 +56,7 @@ export class TextComponent extends GenericField implements OnInit, LTComponent {
     editData(data) {
         this.data = data;
     }
-    
+
     eraseData() {
         this.data = '';
     }

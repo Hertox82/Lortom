@@ -3,6 +3,7 @@ import { OnInit, ComponentFactoryResolver, Injector, Input, ViewChild, ViewConta
 import { SC } from '../sc';
 import { IComponentManager } from '../abstract.component';
 import { TableFieldComponent } from '../field';
+import { UtilService } from '@Lortom/app/utilModule/util-service';
 
 
 @Component({
@@ -33,8 +34,8 @@ export class TableBlockComponent extends AbstractBlock implements OnInit {
     @ViewChild('vC', {read: ViewContainerRef}) container: ViewContainerRef;
     @ViewChild('actionC', {read: ViewContainerRef}) actionContainer: ViewContainerRef;
     isEdit: boolean;
-    constructor(tbService: SC, tbResolver: ComponentFactoryResolver, tbInj: Injector) {
-        super(tbService, tbResolver, tbInj);
+    constructor(tbService: SC, tbResolver: ComponentFactoryResolver, tbInj: Injector, tbUtSer: UtilService) {
+        super(tbService, tbResolver, tbInj, tbUtSer);
     }
     ngOnInit() {}
 
@@ -73,5 +74,4 @@ export class TableBlockComponent extends AbstractBlock implements OnInit {
         });
         return response;
     }
-
 }

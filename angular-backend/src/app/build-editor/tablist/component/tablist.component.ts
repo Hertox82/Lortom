@@ -31,6 +31,7 @@ export class TabListComponent implements AfterContentInit, OnDestroy {
     perPage: number;
     pagServ: PaginationService;
     subscription = [];
+    searching = '';
 
     constructor(private tbliService: SC, private tblresolver: ComponentFactoryResolver) {
         this.listOfTabLink = [];
@@ -79,6 +80,34 @@ export class TabListComponent implements AfterContentInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.forEach(x => x.unsubscribe());
+    }
+
+    searchOn() {
+        const searchText = this.searching.toLocaleLowerCase();
+        const rval = this.listOfData.filter((it) => {
+            const ltr = it.fields.filter( (sbOb) => {
+                if (sbOb.type === 'text') {
+                    if (sbOb.value) {
+                        return sbOb.value.toString().toLocaleLowerCase().includes(searchText.toLocaleLowerCase());
+                    } else {
+                        // console.log(sbOb);
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            });
+            if (ltr.length === 0 ) {
+                return false;
+            } else {
+                return true;
+            }
+        });
+        this.listToShow = this.pagServ.getShowList({
+            entry : this.perPage,
+            list : rval,
+            pageToShow : this.actualPage
+        });
     }
 
         /**
