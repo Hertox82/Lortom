@@ -27,6 +27,10 @@ export class AuthInterceptor implements HttpInterceptor {
                 } else if (err.status === 403) {
                   this.authServ.createUser();
                   this.router.navigate(['/backend/dashboard']);
+                } else if (err.status === 404) {
+                  this.router.navigate(['/backend/not-found']);
+                } else if (err.status === 200 ) {
+                  this.router.navigate(['/backend/login']);
                 }
               }
         });

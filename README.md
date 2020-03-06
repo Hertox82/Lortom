@@ -36,6 +36,14 @@ run this command on your console:
 
 Composer download for you the package and install the dependencies.
 
+If the command above generates an error (because the version of Lortom is not yet stable), please try this one:
+
+```bash
+composer create-project "hadeluca/lortom"=versionNumber projectName
+```
+
+example of `versionNumber`: 1.0.0-rc2
+
 ### Fourth Step
 
 before launching the setup command, look in the .env file if the following variables match the actual path with your path:
@@ -57,7 +65,7 @@ this command:
 - Write .env database configuration
 - Run migration
 - create in config folder 2 files
-- Install the follows plugins: Dashboard, Settings, Plugin and Website
+- Install the follows plugins: Dashboard, Settings, Plugin, Website and File
 - install Angular in background
 
 ---

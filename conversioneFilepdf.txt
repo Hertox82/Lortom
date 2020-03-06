@@ -1,0 +1,27 @@
+Per poter fare la conversione da pdf a testo degli ingredienti bisogna installare dei piccoli software che sono nell'ordine:
+
+ImageMagick
+Ghostscript
+Tesseract
+
+una volta installati le librerie faranno funzionare il resto.
+
+c'è una libreria di laravel che si chiama spatie/pdf-to-image che richiede l'aggiunta dell'estensione imagick.so 
+
+per aggiungere l'estensione imagick.so bisogna
+
+scaricare il tarball imagick 3.4.4
+
+verificare che ci siano le librerire di autconf e pkg-config
+
+poi bisogna compilare il file sorgente di imagick 3.4.4
+
+As root:
+
+    run ./phpize
+    run ./configure
+    run make
+    run make install
+
+Edit the php.ini and add imagick.so to the extensions section
+

@@ -21,8 +21,8 @@ import { GenericField } from './genericField.component';
                                     <th *ngFor="let th of tHeader">
                                         <a>{{th}}</a>
                                     </th>
-                                    <th style="width: 50px;"></th>
-                                    <th style="width: 50px;"></th>
+                                    <th style="width: 50px;" *ngIf="btnEdit === true"></th>
+                                    <th style="width: 50px;" *ngIf="btnDelete === true"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -31,10 +31,10 @@ import { GenericField } from './genericField.component';
                                     <td *ngFor="let name of item | keys | keysNoParams:keyParams">
                                         {{item[name]}}
                                     </td>
-                                    <td>
+                                    <td *ngIf="btnEdit === true">
                                         <button class="btn btn-default" (click)="editEmit(i,item)"><i class="fa fa-edit"></i></button>
                                     </td>
-                                    <td>
+                                    <td *ngIf="btnDelete === true">
                                         <button class="btn btn-default" (click)="deleteEmit(i, item)"><i class="fa fa-times"></i></button>
                                     </td>
                                 </tr>
@@ -57,10 +57,14 @@ export class TableFieldComponent extends GenericField implements OnInit, LTCompo
     keyParams: any[];
     uniqueKeys: any[];
     name: string;
+    btnEdit: boolean;
+    btnDelete: boolean;
     constructor() {
         super();
         this.keyParams = [];
         this.uniqueKeys = [];
+        this.btnEdit = true;
+        this.btnDelete = true;
     }
     ngOnInit() {}
 
@@ -70,6 +74,14 @@ export class TableFieldComponent extends GenericField implements OnInit, LTCompo
         this.rulesPrint = data.table.rulesPrint;
         this.keyParams = data.keyParams;
         this.uniqueKeys = data.uniqueKeys;
+        const propEd = 'btnEdit';
+        const propDel = 'btnDelete';
+        if (propEd in data) {
+            this.btnEdit = data.btnEdit;
+        }
+        if (propDel in data) {
+            this.btnDelete = data.btnDelete;
+        }
         this.setGenericData(data);
         this.manipulateData();
     }

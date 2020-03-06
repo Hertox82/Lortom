@@ -42,14 +42,28 @@ export class AuthService {
      * @returns User
      */
     getUserFromPayload(list: string[]): User {
-        const payload = JSON.parse(list[1]);
-        const user: User = {
-            username: payload.sub,
-            name: payload.name,
-            permissions: payload.perm
-        };
+        if (this.checkIfJson(list[1])) {
+            const payload = JSON.parse(list[1]);
+            const user: User = {
+                username: payload.sub,
+                name: payload.name,
+                permissions: payload.perm
+            };
 
-        return user;
+            return user;
+        }
+
+        return null;
+    }
+
+    checkIfJson(text: any) {
+        try {
+            JSON.parse(text);
+        } catch (e) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

@@ -26,7 +26,6 @@ export class LoginComponent implements OnInit {
                             this.error = data.error;
                         } else {
                             this.event.logged(true);
-                            // this.service.setUser(data.user);
                             this.event.userCreated(data.user);
                             this.router.navigate(['/backend']);
                         }

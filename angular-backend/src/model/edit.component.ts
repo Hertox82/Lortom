@@ -1,4 +1,4 @@
-import { ViewChild } from '@angular/core';
+import { ViewChild, EventEmitter } from '@angular/core';
 import { IComponentManager } from '@Lortom/app/build-editor/abstract.component';
 import { BuildEditorComponent } from '@Lortom/app/build-editor/buildeditor.component';
 import { IBuildEditObject } from '@Lortom/app/build-editor/be.interface';
@@ -17,6 +17,7 @@ export class ViewEditComponent implements  IComponentManager {
     varNameUtilService: string;
     varUrlBack: string;
     isSave = true;
+    finishToBuild = new EventEmitter<any>();
     @ViewChild(BuildEditorComponent) beComp: BuildEditorComponent;
 
     callServer(id?: number) {
@@ -45,6 +46,7 @@ export class ViewEditComponent implements  IComponentManager {
             this.beComp.bldEdit(this, this.dataStructured);
             this.listOfSubscription.push(this.beComp.eventSave.subscribe(this.save));
             this.listOfSubscription.push(this.beComp.eventReset.subscribe(this.reset));
+            this.finishToBuild.emit(true);
         }
     }
 
@@ -124,7 +126,6 @@ export class ViewEditComponent implements  IComponentManager {
                 (response: any) => {
                      this.destroySub();
                     this.buildEdit(response);
-
                 }
             );
             } else {
@@ -141,8 +142,4 @@ export class ViewEditComponent implements  IComponentManager {
     reset() {
         console.log('reset');
     }
-
-
 }
-
-

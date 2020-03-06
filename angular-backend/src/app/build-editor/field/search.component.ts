@@ -35,10 +35,12 @@ export class SearchFieldComponent extends GenericField implements OnInit, LTComp
     route: string;
     filteredList: any[];
     print: any[];
+    idModel: number;
     send: EventEmitter<any> = new EventEmitter<any>();
 
     constructor(private seUIServ: UIService) {
         super();
+        this.idModel = 0;
     }
 
     setData(data: any) {
@@ -48,13 +50,18 @@ export class SearchFieldComponent extends GenericField implements OnInit, LTComp
         this.filteredList = [];
         this.print = data.print;
     }
+
+    setIdObject(id: number) {
+        this.idModel = id;
+        console.log(this.idModel);
+    }
     getData() {}
     resetData() {}
     ngOnInit() {
         this.queryObj
         .debounceTime(200)
         .distinctUntilChanged()
-        .switchMap((query) => this.seUIServ.post(this.route, {search: query})
+        .switchMap((query) => this.seUIServ.post(this.route, {search: query, idObject: this.idModel})
         ).subscribe(
             (result) => {
                 this.filteredList = result;
