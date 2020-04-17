@@ -61,7 +61,7 @@ export class SearchFieldComponent extends GenericField implements OnInit, LTComp
         this.queryObj
         .debounceTime(200)
         .distinctUntilChanged()
-        .switchMap((query) => this.seUIServ.post(this.route, {search: query, idObject: this.idModel})
+        .switchMap((query: any) => this.seUIServ.post(this.route, {search: query, idObject: this.idModel})
         ).subscribe(
             (result) => {
                 this.filteredList = result;

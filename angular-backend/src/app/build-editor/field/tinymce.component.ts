@@ -22,12 +22,12 @@ export class TinyMceComponent extends GenericField implements OnInit, LTComponen
     send: EventEmitter<any> = new EventEmitter();
     appEditorId  = 'edit-page';
     @ViewChild(EditorComponent) editor: EditorComponent;
-    @Input() data: any;
+    @Input() data: any = '';
     copyData: any;
     ngOnInit() {}
     setData(data: any): void {
         this.setGenericData(data);
-        this.data = data.data;
+        this.data = (data.data) ? data.data : '';
         this.copyData = data.data;
         this.appEditorId = this.appEditorId + '-' + this.name;
     }

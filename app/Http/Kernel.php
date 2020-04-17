@@ -59,6 +59,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'lortom.auth' => \LTFramework\Middleware\LortomAuthentication::class
+        'lortom.auth' => \LTFramework\Auth\Middleware\LortomAuthentication::class,
+        'lortom.guard' => \LTFramework\Auth\Middleware\CheckPermission::class
     ];
 }
