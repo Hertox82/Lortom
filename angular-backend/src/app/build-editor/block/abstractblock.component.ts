@@ -31,7 +31,8 @@ type;
         .addComponent('filefld', UIField.FileFieldComponent)
         .addComponent('uplfile', UIField.UploadFileComponent)
         .addComponent('cdmirror', UIField.CodeMirrorComponent)
-        .addComponent('media', UIField.MediaComponent);
+        .addComponent('media', UIField.MediaComponent)
+        .addComponent('mediaSearch', UIField.MediaSearchComponent);
 
         this.stService
         .addAction('edit', UIAction.EditButtonComponent)
@@ -103,6 +104,7 @@ type;
         const nameF = item.data.name + item.type.charAt(0).toUpperCase() + item.type.slice(1);
         if ((typeof cmManager[nameF] === 'function' && item.type === 'text') ||
         (typeof cmManager[nameF] === 'function' && item.type === 'search') ||
+        (typeof cmManager[nameF] === 'function' && item.type === 'mediaSearch') ||
         (typeof cmManager[nameF] === 'function' && item.type === 'tblfield') ||
         (typeof cmManager[nameF] === 'function' && item.type === 'select')
         ) {

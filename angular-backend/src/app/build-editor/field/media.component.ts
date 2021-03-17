@@ -41,7 +41,7 @@ export class MediaComponent extends GenericField implements OnInit, LTComponent 
         this.isPdf = data.isPdf;
         if (this.isPdf) {
             this.url = this.sanitizer.bypassSecurityTrustResourceUrl(data.src);
-            console.log(this.url);
+            // console.log(this.url);
         } else {
             this.url = this.sanitizer.bypassSecurityTrustUrl(data.src);
         }

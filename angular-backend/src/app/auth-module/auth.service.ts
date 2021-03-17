@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { User } from './user.interface';
 import { ApiManager } from '../urlApi/api.manager';
 import { Encrypter } from '@Lortom/services/encrypter.service';
@@ -19,21 +20,25 @@ export class AuthService {
         const headers = new HttpHeaders({'Content-Type' : 'application/json' });
         const options = {headers: headers};
         return this.httpC.post(this._urlManager.getPathByName('login'), credentials, options)
-            .map(
+        .pipe(
+            map(
                 response => {
                     this.createUser();
                     return response;
                 }
-            );
+            )
+        );
     }
 
     logout(): Observable<any> {
         return this.httpC.get(this._urlManager.getPathByName('logout'))
-            .map(
+        .pipe(
+            map(
                 response  => {
                     return response;
                 }
-            );
+            )
+        );
     }
 
     /**

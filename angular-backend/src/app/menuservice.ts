@@ -3,8 +3,8 @@
  */
 import {Injectable} from '@angular/core';
 import {HttpHeaders, HttpClient} from '@angular/common/http';
-import 'rxjs/Rx';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
 import {ApiManager} from './urlApi/api.manager';
 import {User} from './backend-module/user-module/user-model/user.interface';
 
@@ -31,22 +31,26 @@ export class MenuService {
 
     logout(): Observable<any> {
         return this.http.get(this.urlManager.getPathByName('logout'))
-            .map(
+        .pipe(
+            map(
                 response  => {
                     return response;
                 }
-            );
+            )
+        );
     }
 
     editMyProfile(user: User): Observable<any> {
         const headers = new HttpHeaders({'Content-Type' : 'application/json'});
         const options =  { headers: headers};
         return this.http.put(this.urlManager.getPathByName('editMyProfile'), user, options)
-            .map(
+        .pipe(
+            map(
                 response => {
                     return response;
                 }
-            );
+            )
+        );
     }
 
     setUser(user: User): void {

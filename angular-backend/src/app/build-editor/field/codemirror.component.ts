@@ -1,7 +1,7 @@
 import { OnInit, EventEmitter, Input, Component, ViewChild } from '@angular/core';
 import { LTComponent } from '../abstract.component';
 import { GenericField } from './genericField.component';
-import { CodemirrorComponent } from 'lt-codemirror';
+import { LtCodemirrorComponent } from 'lt-codemirror';
 import 'codemirror/mode/htmlmixed/htmlmixed';
 
 @Component({
@@ -11,12 +11,12 @@ import 'codemirror/mode/htmlmixed/htmlmixed';
         <div class="form-group flex-group">
             <label for="appearance" class="col-md-2 control-label">{{label}}</label>
             <div class="col-md-10">
-                <codemirror
+                <lt-codemirror
                 class="" name="appearance" id="appearance"
                     [(ngModel)] = "data"
                     [config]="config"
                     [size]="size"
-                ></codemirror>
+                ></lt-codemirror>
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@ export class CodeMirrorComponent extends GenericField implements OnInit, LTCompo
     send: EventEmitter<any> = new EventEmitter();
     config: any;
     size: {w: string|number, h: string|number };
-    @ViewChild(CodemirrorComponent) editor: CodemirrorComponent;
+    @ViewChild(LtCodemirrorComponent) editor: LtCodemirrorComponent;
     @Input() data: any;
     copyData: any;
     ngOnInit() {}

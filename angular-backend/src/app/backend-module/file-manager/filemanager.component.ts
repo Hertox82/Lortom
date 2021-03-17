@@ -48,6 +48,12 @@ export class FileManagerComponent implements OnInit {
     updateFile(file: LtFile[]) {
         this.fiServ.saveFile(file[0].file, this.nIdObj, this.sObj).subscribe(
             (response: LortomFile) => {
+                this.listOfFile.push(response);
+                this.arrayOfFile = [];
+                for (let i = 0; i < this.listOfFile.length; i++) {
+                    const filed = this.fiServ.convertLortomFileToLtFile(this.listOfFile[i]);
+                    this.arrayOfFile.push(filed);
+                }
                 this.fiServ.setFile(response);
             }
         );
@@ -57,17 +63,19 @@ export class FileManagerComponent implements OnInit {
      * this function delete file from list and DB
      * @param file
      */
-    deletedFile(file: LtFile[]) {
-        const singleFile = this.convertIntoLortomFile(file[0]);
-
+    deletedFile(file: LtFile) {
+        const singleFile = this.convertIntoLortomFile(file);
         if (singleFile !== null) {
-            this.fiServ.deleteFile(singleFile).subscribe(
-                (response: any) => {
-                    this.listOfFile = response;
-                    this.fiServ.deleteFileFromCache();
-                    this.fiServ.setFiles(response);
-                }
-            );
+            this.fiServ.deleteFileObject(singleFile, this.nIdObj, this.sObj).subscribe(
+                (res: LortomFile []) => {
+                    this.listOfFile = res;
+                    this.arrayOfFile = [];
+                    for (let i = 0; i < this.listOfFile.length; i++) {
+                        const f = this.fiServ.convertLortomFileToLtFile(this.listOfFile[i]);
+                        this.arrayOfFile.push(f);
+                    }
+                    this.fiServ.setFiles(res);
+                });
         }
     }
 
@@ -77,13 +85,27 @@ export class FileManagerComponent implements OnInit {
      */
     private convertIntoLortomFile(file: LtFile): LortomFile {
         let retFile: LortomFile = null;
-
         for (let i = 0; i < this.listOfFile.length; i++) {
                 const f = this.listOfFile[i];
                 if ( f.file.id === file.id) {
                     retFile = f;
                 }
         }
+
         return retFile;
+    }
+
+    public saveFileObject(idFile: any) {
+        this.fiServ.saveFileObject(idFile, this.nIdObj, this.sObj).subscribe(
+            (response: LortomFile) => {
+                this.listOfFile.push(response);
+                this.arrayOfFile = [];
+                for (let i = 0; i < this.listOfFile.length; i++) {
+                    const filed = this.fiServ.convertLortomFileToLtFile(this.listOfFile[i]);
+                    this.arrayOfFile.push(filed);
+                }
+                this.fiServ.setFile(response);
+            }
+        );
     }
 }

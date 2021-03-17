@@ -30,4 +30,3 @@ export class RoutingActionComponent implements IActionTabList, OnInit {
         this.label = data.label;
     }
 }
-

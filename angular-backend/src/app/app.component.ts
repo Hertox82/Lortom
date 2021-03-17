@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import {EventService} from '../services/event.service';
 import {NavigationEnd, Router} from '@angular/router';
 import { AuthService } from './auth-module/auth.service';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-roots',
   templateUrl: './app.component.html',
-  styles: ['']
+  styles: [''],
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
   title = 'app';

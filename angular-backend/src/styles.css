@@ -96,6 +96,9 @@ a.page-link.disabled { display: none;  }
 .page-link {color: orange;
     cursor: pointer;}
 
+.wrapper-image {width: 50px; height: 50px; overflow: hidden;}
+.thumb-image {width:100%;}
+
 /* Modal Custom*/
 .modal {z-index: 1080;}
 .modal-content {border-radius: unset;}
@@ -164,3 +167,11 @@ a.page-link.disabled { display: none;  }
 .box-drag-and-drop .wrapper {  border: none !important;}
 .box-file .close-button { top: -10px !important; padding: 4px 10px 0px 10px !important; border-radius: 20px !important; width: 30px !important; height: 30px !important; left: -15px !important; font-size: 13px !important;}
 .white {color:white !important;}
+
+.thumb-sugg {width: 50px;
+    height: 50px;
+    overflow: hidden;
+    display: inline-block;}
+.suggestions a { position: relative; display: block; width:250px;}
+.thumbnail-sugg {width: 100%;}
+.thumb-label {position: absolute; top:24%; left:22%;}

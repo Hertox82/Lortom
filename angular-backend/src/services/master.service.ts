@@ -1,7 +1,8 @@
 import {ApiManager} from '@Lortom/app/urlApi/api.manager';
 import {User} from '@Lortom-Backend/user-module/user-model/user.interface';
 import {HttpHeaders, HttpParams, HttpClient} from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 /**
  * Created by hernan on 20/11/2017.
  */
@@ -36,18 +37,24 @@ export class MasterService {
 
     protected getFrom<T>(path: string): Observable<T[]> {
         return this.http.get<T>(path)
-        .map(item => this.convertData(item));
+        .pipe(
+            map(item => this.convertData(item))
+        );
     }
 
     protected updateItem<T>(item: T, path: string): Observable<T[]> {
         return this.http.put<T>(path, item, this.getOptions())
-        .map(data => this.convertData(data));
+        .pipe(
+            map(data => this.convertData(data))
+        );
     }
 
 
     protected storeItem<T>(item: T, path: string, typeHeader: any = 'application/json'): Observable<T[]> {
         return this.http.post<T>(path, item, this.getOptions(typeHeader))
-        .map(data => this.convertData(data));
+        .pipe(
+            map(data => this.convertData(data))
+        );
     }
 
     protected convertData<T>(data: any): T[] {
@@ -107,11 +114,14 @@ export class MasterService {
         const formData = new FormData();
         formData.append(file.id, file.data, file.data.name);
         const option = this.getOptions([]);
-        this.http.post(url, formData, option).map(
-            (response) => {
-                console.log(response);
-                return [];
-            }
+        this.http.post(url, formData, option)
+        .pipe(
+            map(
+                (response) => {
+                    console.log(response);
+                    return [];
+                }
+            )
         ).subscribe((response) => {
             console.log(response);
         });

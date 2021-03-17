@@ -1,6 +1,7 @@
 import { GenericField } from './genericField.component';
-import { OnInit, Input, EventEmitter, Component } from '@angular/core';
+import { OnInit, Input, EventEmitter, Component, ViewChild } from '@angular/core';
 import { LTComponent } from '../abstract.component';
+import { FileManagerComponent } from '@Lortom/app/backend-module/file-manager/filemanager.component';
 
 
 
@@ -23,6 +24,7 @@ export class FileFieldComponent extends GenericField implements OnInit, LTCompon
     send: EventEmitter<any> = new EventEmitter<any>();
     obj: string;
     idObj: number;
+    @ViewChild(FileManagerComponent) fileMan: FileManagerComponent;
 
     ngOnInit() {}
 
@@ -39,4 +41,8 @@ export class FileFieldComponent extends GenericField implements OnInit, LTCompon
     bindData() {}
 
     eraseData() {}
+
+    saveFileObject(idFile: any) {
+        this.fileMan.saveFileObject(idFile);
+    }
 }

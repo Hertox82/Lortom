@@ -29,7 +29,12 @@ import { GenericField } from './genericField.component';
                                 <tr *ngFor="let item of toShow; let i = index">
                                     <td></td>
                                     <td *ngFor="let name of item | keys | keysNoParams:keyParams">
-                                        {{item[name]}}
+                                        <div *ngIf="hasProp(item[name],'type'); else ifTempl" class="wrapper-image">
+                                         <img src="{{ item[name].value }}" class="thumb-image">
+                                        </div>
+                                        <ng-template #ifTempl>
+                                            {{item[name]}}
+                                        </ng-template>
                                     </td>
                                     <td *ngIf="btnEdit === true">
                                         <button class="btn btn-default" (click)="editEmit(i,item)"><i class="fa fa-edit"></i></button>
@@ -102,6 +107,11 @@ export class TableFieldComponent extends GenericField implements OnInit, LTCompo
     addRow(data: any) {
         this.tBody.push(data);
         this.manipulateData();
+    }
+
+    hasProp(o, name) {
+        if (o == null) { return false; }
+        return o.hasOwnProperty(name);
     }
 
     checkIfExistsAndUpdate(data: any) {
