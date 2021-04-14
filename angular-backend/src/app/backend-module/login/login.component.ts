@@ -19,6 +19,14 @@ export class LoginComponent implements OnInit {
     ngOnInit() {}
 
     onSubmit() {
+            if (typeof(this.username) == 'undefined') {
+                this.error = 'the username field is required';
+                return;
+            }
+            if (typeof(this.password) == 'undefined') {
+                this.error = 'the password field is required';
+                return;
+            }
             this.auth.attemptLogin({username: this.username, password: this.password})
                 .subscribe(
                     (data: { error?: string, token?: string, user?: any }) => {

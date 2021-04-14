@@ -4,12 +4,12 @@
 
 
 
-export class ApiManager {
+ export class ApiManager {
 
     basePath: string;
     apiUrl: any;
     constructor() {
-        this.basePath = 'https://lastreganew.com/api/';
+        this.basePath = '/api/';
         this.apiUrl = [
             { namePath: 'getMenu', path: this.basePath + 'populate-slidebar'},
             { namePath: 'login', path: this.basePath + 'login'},

@@ -38,6 +38,8 @@ export class AbstractComponentManager implements IComponentManager {
         cmManager: IComponentManager
         ) {
           container.clear();
+          // nuova implementazione
+          this.listOfBlock = [];
           let i = 0;
           data.forEach((item) => {
               if (this.abCMService.hasBlock(item.type)) {

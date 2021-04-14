@@ -5,7 +5,8 @@ import {Injectable} from '@angular/core';
 import {MasterService} from '../../../services/master.service';
 import {FileFromApi, LortomFile} from './files.interfaces';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { LtFile } from 'lt-drag-and-drop';
 
 
@@ -19,11 +20,15 @@ export class FilesServices extends MasterService {
         super(https);
 
         const urls = [
-            { namePath: 'getFiles', path: 'files'},
+            { namePath: 'getFiles', path: 'old/files'},
             { namePath: 'saveFile', path: 'file'},
             { namePath: 'deleteFile', path: 'files'},
             { namePath: 'editFiles', path: 'file/{id}/edit'},
             { namePath: 'updateFiles', path: 'file/{id}'},
+            { namePath: 'indexFiles', path: 'files'},
+            { namePath: 'deleteFiles', path: 'files'},
+            { namePath: 'deleteFileObject', path: 'media/delete/file/object'},
+            { namePath: 'storeFileObject', path: 'media/link/file/object'}
         ];
         // Add the Api to the ApiManager
         this.apiManager.addListUrlApi(urls);
@@ -36,10 +41,10 @@ export class FilesServices extends MasterService {
     public getFilesFrom(params?: HttpParams): Observable<LortomFile[]> {
         return this.http.get(this.apiManager.getPathByName('getFiles'), {
             params: params
-        }).
+        }).pipe(
         map((response: FileFromApi []) => {
                   return this.convertListFromApiToLortomFile(response);
-            });
+            }));
     }
 
     protected convertListFromApiToLortomFile(arrFile: FileFromApi[]): LortomFile[] {
@@ -107,7 +112,10 @@ export class FilesServices extends MasterService {
      * @param file
      */
     public setFile(file: LortomFile): void {
-        const files = this.getFiles();
+        let files: LortomFile[] = this.getFiles();
+        if (!files) {
+            files = [] as LortomFile [];
+        }
         files.push(file);
         this.deleteFileFromCache();
         this.setFiles(files);
@@ -178,9 +186,11 @@ export class FilesServices extends MasterService {
             formData.append('nameObject', nameObject);
         }
         return this.http.post(this.apiManager.getPathByName('saveFile'), formData, this.getOptions([]))
-        .map((response: FileFromApi) => {
+        .pipe(
+            map((response: FileFromApi) => {
              return this.convertFileApiToLortomFile(response);
-            });
+            })
+        );
     }
 
     /**
@@ -189,16 +199,50 @@ export class FilesServices extends MasterService {
      */
     public editFile(file: LortomFile): Observable<LortomFile> {
         return this.http.put(this.apiManager.getPathByName('saveFile'), file, this.getOptions())
-        .map((response: FileFromApi) => {
+        .pipe(
+            map((response: FileFromApi) => {
                 return this.convertFileApiToLortomFile(response);
-            });
+            })
+        );
     }
 
 
     public deleteFile(file: LortomFile) {
         return this.http.put(this.apiManager.getPathByName('deleteFile'), {id: file.file.id}, this.getOptions())
-        .map((response: FileFromApi []) => {
+        .pipe(
+            map((response: FileFromApi []) => {
                 return this.convertListFromApiToLortomFile(response);
-            });
+            })
+        );
+    }
+
+    /**
+     * this function delete relationship between file and object
+     * @param file
+     * @param idObject
+     * @param nameObject
+     */
+    public deleteFileObject(file: LortomFile, idObject: number, nameObject: string) {
+        return this.http.post(this.apiManager.getPathByName('deleteFileObject'), {id: file.file.id, sObj: nameObject, nIdObj: idObject})
+        .pipe(
+            map((response: FileFromApi []) => {
+                return this.convertListFromApiToLortomFile(response);
+            })
+        );
+    }
+
+    /**
+     * This function save relationshio between file and object
+     * @param idFile
+     * @param idObject
+     * @param nameObject
+     */
+    public saveFileObject(idFile: any, idObject?: number, nameObject?: string): Observable<LortomFile> {
+        return this.http.post(this.apiManager.getPathByName('storeFileObject'), {id: idFile, sObj: nameObject, nIdObj: idObject})
+        .pipe(
+            map((response: FileFromApi) => {
+                return this.convertFileApiToLortomFile(response);
+            })
+        );
     }
 }

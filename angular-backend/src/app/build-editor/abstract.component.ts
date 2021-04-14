@@ -39,4 +39,3 @@ export interface IBlock {
 export interface IComponentManager {
   listOfSubscription: any[];
 }
-

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {SlideItem} from '../../../interfaces/slideItem.interface';
-import {Response} from '@angular/http';
+// import {Response} from '@angular/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import {MenuService} from '../../menuservice';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-menu-items',
@@ -14,11 +16,12 @@ export class MenuItemsComponent implements OnInit {
   constructor(private menuService: MenuService) { }
 
   ngOnInit() {
-   this.menuService.getMenu().map(
-         (response: {menulista: SlideItem[]}) => {
+   this.menuService.getMenu().pipe(
+        map(
+              (response: {menulista: SlideItem[]}) => {
               return response.menulista;
             }
-        ).subscribe(
+        )).subscribe(
             (menuItems: SlideItem[]) => {
               // this.items = menuItems;
               this.items = Object.keys(menuItems).map(function(itemsIndex){
@@ -27,7 +30,7 @@ export class MenuItemsComponent implements OnInit {
                 return item;
               });
             },
-            (error: Response) => console.log(error)
+            (error: HttpErrorResponse) => console.log(error)
         );
   }
 }

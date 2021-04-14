@@ -1,6 +1,6 @@
 import { MasterService } from '@Lortom/services/master.service';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 

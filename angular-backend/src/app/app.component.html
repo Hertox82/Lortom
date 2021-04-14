@@ -1,6 +1,6 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div *ngIf="isAuth == true && isLogin == false; else login">
-    <header class="main-header">
+<div *ngIf="isAuth == true && isLogin == false; else login" style="position:relative;">
+    <header #headerEl class="main-header">
         <a class="logo">
             <span>Lortom</span>
         </a>
@@ -8,7 +8,8 @@
     </header>
 
     <aside class="main-sidebar">
-       <section class="sidebar">
+       <div class="main-sidebar-background"></div>
+       <section #elSidebar class="sidebar">
            <app-user-side [user]="user"></app-user-side>
            <app-menu-items></app-menu-items>
        </section>
@@ -21,7 +22,7 @@
 
 
     <footer>
-        &copy; Lortom 2020 - MIT License - created by Hernan Ariel De Luca
+        &copy; Lortom 2020 - {{ year }} - MIT License - created by Hernan Ariel De Luca
     </footer>
 </div>
 

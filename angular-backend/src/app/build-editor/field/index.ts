@@ -13,4 +13,4 @@ export { FileFieldComponent } from './filefield.component';
 export { UploadFileComponent } from './uploadfile.component';
 export { CodeMirrorComponent } from './codemirror.component';
 export { MediaComponent } from './media.component';
-
+export { MediaSearchComponent } from './media-search.component';

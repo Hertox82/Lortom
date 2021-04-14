@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
-import 'tinymce';
+// import 'tinymce';
 import 'tinymce/themes/modern';
 import 'tinymce/plugins/table';
 import 'tinymce/plugins/link';
@@ -14,7 +14,7 @@ import 'tinymce/plugins/media';
 import 'tinymce/plugins/visualblocks';
 import 'tinymce/plugins/colorpicker';
 
-declare var tinymce: any;
+declare const tinymce: any;
 
 @Component({
     selector : 'app-editor',
@@ -68,6 +68,8 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     }
 
     public readOnly(isWriteable: boolean) {
-        this.editor.getBody().setAttribute('contenteditable', isWriteable);
+        if (this.editor.getBody() != null) {
+            this.editor.getBody().setAttribute('contenteditable', isWriteable);
+        }
     }
 }

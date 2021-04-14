@@ -1,5 +1,10 @@
 # Release Notes
 
+## 1.0.0 (2021-04-14)
+
+- Finally realesed version 1.0.0
+- this version require Angular 6 and Laravel 5.5
+
 ## 1.0.0-rc2 (2020-03-06)
 
 - Added Multi site managment (with shared Database)

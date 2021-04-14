@@ -1,13 +1,12 @@
-import { OnInit, Input, EventEmitter, Component } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { LTComponent } from '../abstract.component';
-import { UIService } from '../service/ui.service';
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { GenericField } from './genericField.component';
-
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { UIService } from '../service/ui.service';
 
 @Component({
-    selector: 'search-field',
+    selector: 'media-search-field',
     template: `
     <div class="col-12">
         <div class="form-group flex-group">
@@ -17,7 +16,12 @@ import { GenericField } from './genericField.component';
                 <div class="suggestions" *ngIf="filteredList.length > 0">
                     <ul>
                         <li class="suggestion-li" *ngFor="let item of filteredList">
-                            <a (click)="addData(item)">{{item.label}}</a>
+                            <a (click)="addData(item)">
+                                <div class="thumb-sugg">
+                                    <img src="{{ item.src }}" class="thumbnail-sugg" alt="{{item.label}}">
+                                </div>
+                                <span class="thumb-label">{{item.label}}</span>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -26,7 +30,7 @@ import { GenericField } from './genericField.component';
     </div>
     `
 })
-export class SearchFieldComponent extends GenericField implements OnInit, LTComponent {
+export class MediaSearchComponent extends GenericField implements OnInit, LTComponent {
     @Input() keys: any[];
     _querySub = new Subject();
     queryObj = this._querySub.asObservable();
@@ -54,7 +58,7 @@ export class SearchFieldComponent extends GenericField implements OnInit, LTComp
 
     setIdObject(id: number) {
         this.idModel = id;
-        console.log(this.idModel);
+        // console.log(this.idModel);
     }
     getData() {}
     resetData() {}
@@ -64,7 +68,7 @@ export class SearchFieldComponent extends GenericField implements OnInit, LTComp
             distinctUntilChanged(),
             switchMap((query: any) => this.seUIServ.post(this.route, {search: query, idObject: this.idModel})
         )).subscribe(
-            (result) => {
+            (result: any[]) => {
                 this.filteredList = result;
             }
         );

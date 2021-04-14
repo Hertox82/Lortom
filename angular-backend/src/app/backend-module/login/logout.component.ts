@@ -1,6 +1,6 @@
 import {OnInit, Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import { AuthService } from '@Lortom/app/auth-module/auth.service';
 import { EventService } from '@Lortom/services/event.service';
 

@@ -38,5 +38,6 @@ export const uiComponent = [
     UIField.UploadFileComponent,
     UIField.CodeMirrorComponent,
     UIAction.ReadIngredientsComponent,
-    UIField.MediaComponent
+    UIField.MediaComponent,
+    UIField.MediaSearchComponent
 ];
