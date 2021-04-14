@@ -1,6 +1,21 @@
 # Lortom
 
-Lortom is an Content Management System built in Laravel 5.5 + Angular 6
+Lortom is an Content Management System built in Laravel + Angular
+
+| Lortom  | Laravel supported version | Angular supported version |
+| :-----: | :------------------------:| :------------------------:|
+|  1.*    |          5.5.*            |          6.*              |
+|  2.*    |          5.6.*            |          6.*              |
+|  3.0.*  |          5.7.*            |          6.*              |
+|  3.1.*  |          5.7.*            |          7.*              |
+|  4.0.*  |          5.8.*            |          7.*              |
+|  4.1.*  |          5.8.*            |          8.*              |
+|  5.0.*  |          6.*              |          8.*              |
+|  5.1.*  |          6.*              |          9.*              |
+|  6.0.*  |          7.*              |          9.*              |
+|  6.1.*  |          7.*              |         10.*              |
+|  7.0.*  |          8.*              |         10.*              |
+|  7.1.*  |          8.*              |         11.*              |
 
 [ChangeLog](CHANGELOG.md)
 
