@@ -1,58 +1,13 @@
-import { OnInit, EventEmitter, Component } from '@angular/core';
+import { OnInit, EventEmitter, Component, ViewChildren, ElementRef, Renderer2, AfterViewInit, QueryList } from '@angular/core';
 import { LTComponent } from '../abstract.component';
 import { GenericField } from './genericField.component';
 
 
 @Component({
     selector: 'table-field',
-    template: `
-    <div class="box">
-        <div class="box-header">
-
-        </div>
-        <div class="box-body">
-            <div class="wrapper">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th style="width: 50px;"></th>
-                                    <th *ngFor="let th of tHeader">
-                                        <a>{{th}}</a>
-                                    </th>
-                                    <th style="width: 50px;" *ngIf="btnEdit === true"></th>
-                                    <th style="width: 50px;" *ngIf="btnDelete === true"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of toShow; let i = index">
-                                    <td></td>
-                                    <td *ngFor="let name of item | keys | keysNoParams:keyParams">
-                                        <div *ngIf="hasProp(item[name],'type'); else ifTempl" class="wrapper-image">
-                                         <img src="{{ item[name].value }}" class="thumb-image">
-                                        </div>
-                                        <ng-template #ifTempl>
-                                            {{item[name]}}
-                                        </ng-template>
-                                    </td>
-                                    <td *ngIf="btnEdit === true">
-                                        <button class="btn btn-default" (click)="editEmit(i,item)"><i class="fa fa-edit"></i></button>
-                                    </td>
-                                    <td *ngIf="btnDelete === true">
-                                        <button class="btn btn-default" (click)="deleteEmit(i, item)"><i class="fa fa-times"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    `,
+    templateUrl: './tblfield.component.html',
 })
-export class TableFieldComponent extends GenericField implements OnInit, LTComponent {
+export class TableFieldComponent extends GenericField implements OnInit, AfterViewInit, LTComponent {
     tHeader: any[];
     tBody: any[];
     rulesPrint: any[];
@@ -64,7 +19,14 @@ export class TableFieldComponent extends GenericField implements OnInit, LTCompo
     name: string;
     btnEdit: boolean;
     btnDelete: boolean;
-    constructor() {
+    searching = '';
+    @ViewChildren('sourceTh')
+        sourceTh: QueryList<ElementRef>;
+
+    @ViewChildren('targetTh')
+        targetTh: QueryList<ElementRef>;
+
+    constructor(private renderer: Renderer2) {
         super();
         this.keyParams = [];
         this.uniqueKeys = [];
@@ -91,6 +53,29 @@ export class TableFieldComponent extends GenericField implements OnInit, LTCompo
         this.manipulateData();
     }
 
+    ngAfterViewInit() {
+        this.resizeColumns();
+      }
+
+      resizeColumns() {
+        let widths = this.sourceTh.map(th => th.nativeElement.offsetWidth);
+
+        this.targetTh.forEach((th, index) => {
+          this.renderer.setStyle(
+            th.nativeElement,
+            'width',
+            `${widths[index]}px`
+          );
+        });
+        this.sourceTh.forEach((th, index) => {
+            this.renderer.setStyle(
+                th.nativeElement,
+                'width',
+                `${widths[index]}px`
+              );
+        });
+      }
+
     getData() {
         if (this.tBody != undefined) {
             return {
@@ -105,8 +90,13 @@ export class TableFieldComponent extends GenericField implements OnInit, LTCompo
     resetData() {}
 
     addRow(data: any) {
+        let isResize = false;
+        if (this.tBody.length == 0) {
+            isResize = true;
+        }
         this.tBody.push(data);
         this.manipulateData();
+        this.resizeColumns();
     }
 
     hasProp(o, name) {
@@ -150,6 +140,12 @@ export class TableFieldComponent extends GenericField implements OnInit, LTCompo
     manipulateData() {
         // here do something
         this.toShow = [];
+
+        this.toShow = this.getDataToPrintOnTable();
+    }
+
+    getDataToPrintOnTable() {
+        const listOfData = [];
         this.tBody.forEach((row) => {
             const Keys = Object.keys(row);
             let object = {};
@@ -169,25 +165,55 @@ export class TableFieldComponent extends GenericField implements OnInit, LTCompo
                     object[key] = row[key];
                 }
             });
-            this.toShow.push(object);
+            listOfData.push(object);
         });
+
+        return listOfData;
     }
 
     editEmit(index: any, item: any) {
         const config = {
-            id: index,
+            id: this.containsObj(item),
             type: 'edit'
         };
         const data = Object.assign({}, config, item);
+        this.searching = '';
+        this.searchOn();
         this.send.next(data);
+    }
+
+    containsObj(item: any) {
+        const listItem = this.getDataToPrintOnTable();
+        let index = -1;
+        for (let i = 0; i < listItem.length; i++) {
+            const obj = listItem[i];
+            let isThisObj = false;
+            for (let prop in obj) {
+                if (item.hasOwnProperty(prop)) {
+                    if (item[prop] === obj[prop]) {
+                        isThisObj = true;
+                    } else {
+                        isThisObj = false;
+                    }
+                } else {
+                    isThisObj = false;
+                }
+            }
+            if (isThisObj === true) {
+                index = i;
+            }
+        }
+        return index;
     }
 
     deleteEmit(index: any, item: any) {
         const config = {
-            id: index,
+            id: this.containsObj(item),
             type: 'delete'
         };
         const data = Object.assign({}, config, item);
+        this.searching = '';
+        this.searchOn();
         this.send.next(data);
     }
 
@@ -198,5 +224,26 @@ export class TableFieldComponent extends GenericField implements OnInit, LTCompo
 
     getRow(id: number): any {
         return this.tBody[id];
+    }
+
+    searchOn() {
+        const searchText = this.searching.toLocaleLowerCase();
+        const data = this.getDataToPrintOnTable();
+        if (searchText.length == 0) {
+            this.toShow = data;
+        } else {
+            const rval = data.filter((it) => {
+                // console.log(it);
+                let check = false;
+                for (let prop in it) {
+                    if (it[prop].toString().toLocaleLowerCase().includes(searchText.toLocaleLowerCase())) {
+                        check = true;
+                    }
+                }
+
+                return check;
+            });
+            this.toShow = rval;
+        }
     }
 }

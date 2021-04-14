@@ -1,11 +1,39 @@
 <form class="form">
+    <div class="row" *ngIf="isSaved">
+        <div class="col-12">
+            <button class="btn orange" (click)="saveButton()" style="margin-bottom: 10px;
+            margin-right: 10px;
+            box-shadow: 3px 3px 9px gray;
+            border-radius: 4px;
+            background: #9e18c4;">Save</button>
+            
+            <button class="btn red" (click)="resetButton()" style="margin-bottom:10px; 
+            box-shadow: 3px 3px 9px gray;
+            border-radius: 4px;
+            margin-right: 10px;
+            ">Reset</button>
+            <button class="btn orange" (click)="saveAndLeaveButton()" style="
+            margin-bottom: 10px;
+            box-shadow: 3px 3px 9px gray;
+            border-radius: 4px;">Save And Leave</button>
+        </div>
+    </div>
     <div>
         <div #viewContainer></div>
     </div>
     <div class="row" *ngIf="isSaved">
         <div class="col-12">
-            <button class="btn orange" (click)="saveButton()">Save</button>
-            <button class="btn red" (click)="resetButton()">Reset</button>
+            <button class="btn orange" (click)="saveButton()" style="
+            margin-right: 10px;
+            box-shadow: 3px 3px 9px gray;
+            border-radius: 4px;
+            background: #9e18c4;">Save</button>
+            <button class="btn red" (click)="resetButton()" style="box-shadow: 3px 3px 9px gray;
+            margin-right: 10px;
+            border-radius: 4px;">Reset</button>
+            <button class="btn orange" (click)="saveAndLeaveButton()" style="
+            box-shadow: 3px 3px 9px gray;
+            border-radius: 4px;">Save And Leave</button>
         </div>
     </div>
 </form>

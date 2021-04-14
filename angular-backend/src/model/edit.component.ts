@@ -39,12 +39,13 @@ export class ViewEditComponent implements  IComponentManager {
     }
 
     buildEdit(data: any) {
-        this.dataStructured = data;
+        this.dataStructured = data.blocks;
         if (this.checkForRestriction(data)) {
             this[this.varNameRouter].navigate([this.varUrlBack]);
         } else {
             this.beComp.bldEdit(this, this.dataStructured);
             this.listOfSubscription.push(this.beComp.eventSave.subscribe(this.save));
+            this.listOfSubscription.push(this.beComp.eventSL.subscribe(this.save));
             this.listOfSubscription.push(this.beComp.eventReset.subscribe(this.reset));
             this.finishToBuild.emit(true);
         }
@@ -55,6 +56,7 @@ export class ViewEditComponent implements  IComponentManager {
             (x) => {
                 x.unsubscribe();
             });
+        this.listOfSubscription = [];
     }
 
     checkForRestriction(data: any) {
@@ -97,7 +99,9 @@ export class ViewEditComponent implements  IComponentManager {
      * This function is fired when User click on Button Save
      * @param cm
      */
-    save(cm) {
+    save(obj) {
+        const cm = obj.cm;
+        const lv = obj.lv;
         if (cm.isSave) {
             let rawData = [];
             // iterate over all Blocks in order to get the data
@@ -110,7 +114,7 @@ export class ViewEditComponent implements  IComponentManager {
                 object[it.id] = it.data;
             });
 
-            cm.sendToServer(object);
+            cm.sendToServer(object, lv);
         } else {
             console.log('non salvo');
         }
@@ -120,20 +124,40 @@ export class ViewEditComponent implements  IComponentManager {
      * This function send to Api the data Object to Update
      * @param object
      */
-    sendToServer(object: any) {
+    sendToServer(object: any, leave: boolean) {
         if (this.id != null) {
             this[this.varNameService].update(this.keyPath, this.id, object).subscribe(
                 (response: any) => {
                      this.destroySub();
-                    this.buildEdit(response);
+                     this.isEdit = false;
+                     alert('all data has been updated');
+                     if (leave === true) {
+                        if (typeof(this.varNameRouter) != 'undefined') {
+                            this[this.varNameRouter].navigate([this.varUrlBack]);
+                        } else {
+                            alert('This feature has yet to be implemented');
+                            this.buildEdit(response);
+                        }
+                     } else {
+                        this.buildEdit(response);
+                     }
                 }
             );
             } else {
             this[this.varNameService].store(this.keyPath, object).subscribe(
                 (response: any) => {
                      this.destroySub();
-                    this.buildEdit(response);
-                    this[this.varNameRouter].navigate([this.varUrlBack]);
+                     this.buildEdit(response);
+                    if (leave === true) {
+                            this[this.varNameRouter].navigate([this.varUrlBack]);
+                    } else {
+                        if (response.id === 0) {
+                            this[this.varNameRouter].navigate([this.varUrlBack]);
+                        } else {
+                            alert('all data has been stored');
+                            this[this.varNameRouter].navigate([this.varUrlBack + '/', response.id]);
+                        }
+                    }
                 }
             );
             }

@@ -68,6 +68,8 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     }
 
     public readOnly(isWriteable: boolean) {
-        this.editor.getBody().setAttribute('contenteditable', isWriteable);
+        if (this.editor.getBody() != null) {
+            this.editor.getBody().setAttribute('contenteditable', isWriteable);
+        }
     }
 }

@@ -16,6 +16,7 @@ export class BuildEditorComponent extends AbstractComponentManager implements Af
     @ViewChild('viewContainer', {read: ViewContainerRef}) container: ViewContainerRef;
     eventSave = new EventEmitter<any>();
     eventReset = new EventEmitter<any>();
+    eventSL = new EventEmitter<any>();
     isSaved = true;
 
     constructor(injector: Injector, resolver: ComponentFactoryResolver, storeManager: SC) {
@@ -29,10 +30,14 @@ export class BuildEditorComponent extends AbstractComponentManager implements Af
     }
 
     saveButton() {
-        this.eventSave.emit(this.cmManager);
+        this.eventSave.emit({cm: this.cmManager, lv: false});
     }
 
     resetButton() {
         this.eventReset.emit();
+    }
+
+    saveAndLeaveButton() {
+        this.eventSL.emit({cm: this.cmManager, lv: true});
     }
 }

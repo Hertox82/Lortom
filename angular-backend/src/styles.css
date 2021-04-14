@@ -1,7 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Header pannello Admin */
-.main-header{  height: 44px;  background-color: orange;  color: white;  position: fixed; z-index: 1040; width:100%;}
+body {background-color: #eaeaea;}
+.main-header{  height: 44px;  background-color: orange;  color: white;  position: fixed; z-index: 1040; width:100%; top:0;}
 .logo{  padding: 8px 25px;  text-align: left;  width: 200px;  float:left;  }
 .navbar-custom-menu{  float:right;}
 .navbar-custom-menu ul { float:left; margin:0; list-style: none; padding-left: 0; position:relative}
@@ -17,7 +18,9 @@
 .user-panel p {    font-size: 12px; padding-top: 10px;}
 
 /* Aside Bar*/
-.main-sidebar { position: fixed; width:200px; min-height: 100%; top:0; left:0; padding-top: 40px; z-index:810; background-color: #5e5d5d; color:white;}
+/* .main-sidebar { } */
+.main-sidebar-background {position: fixed; top: 0;bottom: -120px;z-index: 1;background-color: #5e5d5d;width: 200px;}
+.sidebar {position: fixed;width: 200px; z-index: 810;background-color: #5e5d5d;color: white;}
 .user-panel {padding: 5px 20px;  margin: 3px; display:table;}
 .sidebar-menu {    list-style: none; margin: 0; padding: 0; overflow: hidden; white-space: nowrap;}
 .sidebar-menu li.header { padding-top: 10px;  padding-left: 10px; padding-right:10px; padding-bottom: 10px; font-size: 12px; text-transform: uppercase; color:gainsboro; background-color: #2F3133; }
@@ -37,7 +40,7 @@
 .sidebar-menu li.active .submenu-item a { border:unset; background-color: rgb(123, 123, 123);}
 
 /*Content*/
-.content-wrapper { margin-left: 200px; background-color: #eaeaea; min-height: 1008px;}
+.content-wrapper { margin-left: 200px; background-color: #eaeaea; /*min-height: 1008px; */ height: 100%; padding-bottom:65px;}
 
 .content-box { padding-top:15px; padding-left:15px; padding-right: 15px; position: relative;}
 .content-header > h1 { margin:0px; font-size: 24px; }
@@ -52,13 +55,14 @@
 
 /*Footer*/
 
-footer { margin-left: 200px; padding: 10px; border:1px solid #dde0e6; font-size: 12px;}
+footer { margin-left: 200px; padding: 10px; font-size: 12px; position:absolute; bottom:0; left:0;}
 
 /* Portlet */
 
-.portlet {margin-top:0; margin-bottom: 25px; padding:12px 20px 15px; background-color: white; border:1px solid #eaeaea;}
+.portlet {margin-top:0; margin-bottom: 25px; padding:12px 20px 15px; background-color: white; border:1px solid #eaeaea; box-shadow: 3px 3px 10px gray;}
 .portlet-title {padding:0px; min-height: 48px; border-bottom: 1px solid #eaeaea; margin-bottom: 10px;}
 .portlet-title .caption { color:orange; font-size: 19px; float:left; display: inline-block; padding:4px;}
+.portlet-title .caption i {margin-right: 10px;}
 .portlet-title .actions {float:right}
 .portlet-body {}
 .portlet-form-body {margin-top:35px; padding-bottom: 30px;}
