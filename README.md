@@ -23,7 +23,7 @@ Lortom is an Content Management System built in Laravel + Angular
 
 ### Requirements
 
-- php >=7.0.0
+- php >=7.1.3
 - OpenSSL PHP Extension
 - PDO PHP Extension
 - Mbstring PHP Extension
