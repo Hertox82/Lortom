@@ -1,5 +1,9 @@
 # Release Notes
 
+## 3.0.0 (2021-04-21)
+
+- Upgrade Laravel version from 5.6 to 5.7
+
 ## 2.0.0 (2021-04-15)
 
 - Change Laravel version from 5.5 to 5.6

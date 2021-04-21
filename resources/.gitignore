@@ -1,5 +1,6 @@
 *
-
+!js/
+!sass/
 !views/api-doc.blade.php
 !views/login.blade.php
 !views/welcome.blade.php
