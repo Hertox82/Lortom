@@ -1,5 +1,9 @@
 # Release Notes
 
+## 3.1.0 (2021-04-27)
+
+- Upgrade Angular from 6 to 7
+
 ## 3.0.0 (2021-04-21)
 
 - Upgrade Laravel version from 5.6 to 5.7

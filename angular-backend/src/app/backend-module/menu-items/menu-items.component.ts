@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {SlideItem} from '../../../interfaces/slideItem.interface';
-// import {Response} from '@angular/http';
 import { HttpErrorResponse } from '@angular/common/http';
 import {MenuService} from '../../menuservice';
 import { map } from 'rxjs/operators';
