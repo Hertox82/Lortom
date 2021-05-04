@@ -6,6 +6,7 @@ import { FileManagerComponent } from '@Lortom/app/backend-module/file-manager/fi
 
 
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'filefield',
     template: `
         <div class="col-sm-12">
@@ -24,7 +25,7 @@ export class FileFieldComponent extends GenericField implements OnInit, LTCompon
     send: EventEmitter<any> = new EventEmitter<any>();
     obj: string;
     idObj: number;
-    @ViewChild(FileManagerComponent) fileMan: FileManagerComponent;
+    @ViewChild(FileManagerComponent, {static: false}) fileMan: FileManagerComponent;
 
     ngOnInit() {}
 

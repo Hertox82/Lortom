@@ -34,8 +34,8 @@ export class FileBlockComponent extends AbstractBlock implements OnInit {
     @Input() label: string;
     @Input() icons: string;
     type: string;
-    @ViewChild('vC', {read: ViewContainerRef}) container: ViewContainerRef;
-    @ViewChild('actionC', {read: ViewContainerRef}) actionContainer: ViewContainerRef;
+    @ViewChild('vC', {static: true, read: ViewContainerRef}) container: ViewContainerRef;
+    @ViewChild('actionC', {static: true, read: ViewContainerRef}) actionContainer: ViewContainerRef;
     isEdit: boolean;
 
     constructor(fbService: SC, fbResolver: ComponentFactoryResolver, fbInj: Injector, fbUtSer: UtilService) {

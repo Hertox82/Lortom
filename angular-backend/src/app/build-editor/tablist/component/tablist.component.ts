@@ -8,13 +8,14 @@ import { PaginationService } from '@Lortom/services/pagination.service';
 
 
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'tablist',
     templateUrl: './tablist.component.html',
     styleUrls: []
 })
 export class TabListComponent implements AfterContentInit, OnDestroy {
     @Input() listOfTabLink: any[];
-    @ViewChild('acCon', {read: ViewContainerRef}) actionContainer: ViewContainerRef;
+    @ViewChild('acCon', {static: true, read: ViewContainerRef}) actionContainer: ViewContainerRef;
     @Input() listOfAction: {
         data: any;
         type: string;
@@ -53,11 +54,15 @@ export class TabListComponent implements AfterContentInit, OnDestroy {
     }
 
     build() {
-        this.actionContainer.clear();
+        // this.actionContainer.clear();
+        if (typeof this.actionContainer !== 'undefined') {
+            this.actionContainer.clear();
+        }
+
         this.listOfAction.forEach((action) => {
             const factory = this.tblresolver.resolveComponentFactory(this.tbliService.getTabListAction(action.type));
             const compRef = this.actionContainer.createComponent(factory);
-            const component = compRef.instance;
+            const component = compRef.instance as IActionTabList;
             component.setData(action.data);
             if ( action.type === 'event') {
                 if ('obj' in action.data) {
@@ -110,7 +115,7 @@ export class TabListComponent implements AfterContentInit, OnDestroy {
         });
     }
 
-        /**
+    /**
      * This function is
      */
      updateListaShow(): void {
@@ -156,7 +161,7 @@ export class TabListComponent implements AfterContentInit, OnDestroy {
         this.updateListaShow();
     }
 
-     /**
+    /**
      * This function hold the Event from other Component
      * @param ev
      * @param data

@@ -17,7 +17,7 @@ import { FileManagerModule } from '../backend-module/file-manager/filemanager.mo
 @NgModule({
   imports:      [ CommonModule, FormsModule, FileManagerModule ,
     RouterModule, UIElementModule, EditorModule,
-    LtCodemirrorModule , ReactiveFormsModule, NgbModule.forRoot() ],
+    LtCodemirrorModule , ReactiveFormsModule, NgbModule ],
   declarations: [ uiComponent, KeysPipe, KeysNoParamsPipe ],
   exports: [ uiComponent, KeysPipe, KeysNoParamsPipe ],
   providers: [ SC, UIService ]

@@ -12,6 +12,18 @@
       ],
       "@LortomPlugins/*": [
         "plugins"
+      ],
+      "fs": [
+        "empty.ts"
+      ],
+      "module": [
+        "empty-module.ts"
+      ],
+      "path": [
+        "empty-path.ts"
+      ],
+      "crypto": [
+        "empty-crypto.ts"
       ]
 
     },

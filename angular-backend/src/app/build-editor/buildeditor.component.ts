@@ -13,7 +13,7 @@ import { IBuildEditObject } from './be.interface';
 })
 export class BuildEditorComponent extends AbstractComponentManager implements AfterContentInit {
     @Input() cmManager: IComponentManager;
-    @ViewChild('viewContainer', {read: ViewContainerRef}) container: ViewContainerRef;
+    @ViewChild('viewContainer', {static: true, read: ViewContainerRef}) container: ViewContainerRef;
     eventSave = new EventEmitter<any>();
     eventReset = new EventEmitter<any>();
     eventSL = new EventEmitter<any>();

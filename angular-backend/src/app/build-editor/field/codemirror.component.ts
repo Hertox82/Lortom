@@ -5,6 +5,7 @@ import { LtCodemirrorComponent } from 'lt-codemirror';
 import 'codemirror/mode/htmlmixed/htmlmixed';
 
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'cdmirror-field',
     template: `
     <div class="col-12">
@@ -28,7 +29,7 @@ export class CodeMirrorComponent extends GenericField implements OnInit, LTCompo
     send: EventEmitter<any> = new EventEmitter();
     config: any;
     size: {w: string|number, h: string|number };
-    @ViewChild(LtCodemirrorComponent) editor: LtCodemirrorComponent;
+    @ViewChild(LtCodemirrorComponent, {static: false}) editor: LtCodemirrorComponent;
     @Input() data: any;
     copyData: any;
     ngOnInit() {}

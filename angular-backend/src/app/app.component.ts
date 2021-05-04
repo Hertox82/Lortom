@@ -25,13 +25,14 @@ export class AppComponent {
   menuIsPinned = false;
   resizing = false;
 
-  @ViewChild('elSidebar') sidebar;
-  @ViewChild('headerEl') headerEl;
+  @ViewChild('elSidebar', {static: false}) sidebar;
+  @ViewChild('headerEl', {static : false}) headerEl;
 
   @HostListener('window:resize', ['$event'])
     getScreenSize(event?) {
         this.resizing = true;
-          if (typeof(this.sidebar) != 'undefined') {
+
+        if (typeof (this.sidebar) !== 'undefined') {
             this.setPinMenu();
           }
     }
@@ -137,14 +138,14 @@ export class AppComponent {
             if ( this.pinnedMenuTop ) {
               this.pinnedMenuTop = false;
                 // Calculate new offset position.
-                this.menuTop = rect.top - this.height.adminbar - ( this.actualPosition - this.lastPosition );
-                if ( this.menuTop + this.height.menu + this.height.adminbar < this.actualPosition + this.height.window ) {
+              this.menuTop = rect.top - this.height.adminbar - ( this.actualPosition - this.lastPosition );
+              if ( this.menuTop + this.height.menu + this.height.adminbar < this.actualPosition + this.height.window ) {
                   this.menuTop = this.actualPosition + this.height.window - this.height.menu - this.height.adminbar;
                 }
 
-                this.drawer.setStyle(sidebar, 'position', 'absolute');
-                this.drawer.setStyle(sidebar, 'top', `${this.menuTop}px`);
-                this.drawer.setStyle(sidebar, 'bottom', '');
+              this.drawer.setStyle(sidebar, 'position', 'absolute');
+              this.drawer.setStyle(sidebar, 'top', `${this.menuTop}px`);
+              this.drawer.setStyle(sidebar, 'bottom', '');
 
             } else if ( ! this.pinnedMenuBottom &&
               rect.top + this.height.menu < this.actualPosition + this.height.window ) {
@@ -162,14 +163,14 @@ export class AppComponent {
             if ( this.pinnedMenuBottom ) {
               this.pinnedMenuBottom = false;
                 // Calculate new offset position.
-                this.menuTop = rect.top - this.height.adminbar + this.actualPosition;
-                if ( this.menuTop + this.height.menu > this.actualPosition + this.height.window ) {
+              this.menuTop = rect.top - this.height.adminbar + this.actualPosition;
+              if ( this.menuTop + this.height.menu > this.actualPosition + this.height.window ) {
                   this.menuTop = this.actualPosition;
                 }
 
-                this.drawer.setStyle(sidebar, 'position', 'absolute');
-                this.drawer.setStyle(sidebar, 'top', `${this.menuTop}px`);
-                this.drawer.setStyle(sidebar, 'bottom', '');
+              this.drawer.setStyle(sidebar, 'position', 'absolute');
+              this.drawer.setStyle(sidebar, 'top', `${this.menuTop}px`);
+              this.drawer.setStyle(sidebar, 'bottom', '');
 
             } else if ( ! this.pinnedMenuTop && rect.top >= this.height.adminbar ) {
 
@@ -199,7 +200,7 @@ export class AppComponent {
         }
     }
 
-    this.lastPosition = this.actualPosition;
+      this.lastPosition = this.actualPosition;
   }
 
   unpinMenu() {

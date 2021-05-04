@@ -6,6 +6,7 @@ import { UtilService } from '@Lortom/app/utilModule/util-service';
 
 
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'cblist-block',
     template: `
     <div class="portlet">
@@ -33,7 +34,7 @@ export class CbListComponent extends AbstractBlock {
     @Input() label: string;
     @Input() icons: string;
     type: string;
-    @ViewChild('vCcb', {read: ViewContainerRef}) container: ViewContainerRef;
+    @ViewChild('vCcb', {static: true, read: ViewContainerRef}) container: ViewContainerRef;
     isEdit: boolean;
 
     constructor(bsService: SC, bResolver: ComponentFactoryResolver, bInj: Injector, cbUtSer: UtilService) {

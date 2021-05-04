@@ -18,7 +18,7 @@ export class ViewEditComponent implements  IComponentManager {
     varUrlBack: string;
     isSave = true;
     finishToBuild = new EventEmitter<any>();
-    @ViewChild(BuildEditorComponent) beComp: BuildEditorComponent;
+    @ViewChild(BuildEditorComponent, {static: false}) beComp: BuildEditorComponent;
 
     callServer(id?: number) {
         if (id != undefined || id != null ) {
@@ -60,14 +60,16 @@ export class ViewEditComponent implements  IComponentManager {
     }
 
     checkForRestriction(data: any) {
+        // tslint:disable-next-line:no-string-literal
         if (typeof this['isRestriction'] === 'function') {
+            // tslint:disable-next-line:no-string-literal
             return this['isRestriction'](data);
         }
 
         return false;
     }
 
-     /**
+    /**
      * This function is called when User click on Button Edit.
      * @param event
      */
@@ -78,10 +80,12 @@ export class ViewEditComponent implements  IComponentManager {
                     if (component.instance.isEdit != undefined) {
                         const obj = component.instance;
                         if ('available' in obj) {
+                            // tslint:disable-next-line:no-string-literal
                             if ( component.instance['available'] === true ) {
                                 if (component.instance instanceof TinyMceComponent) {
                                     component.instance.editor.readOnly(!this.isEdit);
                                 } else {
+                                    // tslint:disable-next-line:no-string-literal
                                     component.instance['isEdit'] = ! this.isEdit;
                                 }
                             }
@@ -148,7 +152,7 @@ export class ViewEditComponent implements  IComponentManager {
                 (response: any) => {
                      this.destroySub();
                      this.buildEdit(response);
-                    if (leave === true) {
+                     if (leave === true) {
                             this[this.varNameRouter].navigate([this.varUrlBack]);
                     } else {
                         if (response.id === 0) {

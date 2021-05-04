@@ -23,12 +23,8 @@ Lortom is an Content Management System built in Laravel + Angular
 
 ### Requirements
 
-- php >=7.1.3
-- OpenSSL PHP Extension
-- PDO PHP Extension
-- Mbstring PHP Extension
-- Tokenizer PHP Extension
-- XML PHP Extension
+- has same requirements of Laravel
+- has same requirements of Angular
 
 ### First Step
 
@@ -88,6 +84,5 @@ this command:
 Ok, now everything is ready, you can start creating something really cool.
 
 If you want to know how to build a Plugin or Template please, read this [document](DEVELOPMENT.md)
-
 
 [here](EDITOR.md) you can find how to use the Editor Manager, in order to build a fantastic Backend

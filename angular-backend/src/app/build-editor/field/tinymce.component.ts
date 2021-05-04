@@ -4,6 +4,7 @@ import { EditorComponent } from '@Lortom/app/backend-module';
 import { GenericField } from './genericField.component';
 
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'tinymcefield',
     template: `
     <div class="col-12">
@@ -21,7 +22,7 @@ export class TinyMceComponent extends GenericField implements OnInit, LTComponen
     index: number;
     send: EventEmitter<any> = new EventEmitter();
     appEditorId  = 'edit-page';
-    @ViewChild(EditorComponent) editor: EditorComponent;
+    @ViewChild(EditorComponent, {static: false}) editor: EditorComponent;
     @Input() data: any = '';
     copyData: any;
     ngOnInit() {}

@@ -7,6 +7,7 @@ import { UtilService } from '@Lortom/app/utilModule/util-service';
 
 
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'block',
     template: `
     <div class="portlet">
@@ -35,8 +36,8 @@ export class BlockComponent extends AbstractBlock implements OnInit {
 @Input() label: string;
 @Input() icons: string;
 type: string;
-@ViewChild('vC', {read: ViewContainerRef}) container: ViewContainerRef;
-@ViewChild('actionC', {read: ViewContainerRef}) actionContainer: ViewContainerRef;
+@ViewChild('vC', {static: true, read: ViewContainerRef}) container: ViewContainerRef;
+@ViewChild('actionC', {static: true, read: ViewContainerRef}) actionContainer: ViewContainerRef;
 isEdit: boolean;
 
 constructor(bsService: SC, bResolver: ComponentFactoryResolver, bInj: Injector, bUtSer: UtilService) {

@@ -8,6 +8,7 @@ import { UtilService } from '@Lortom/app/utilModule/util-service';
 
 
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'modal-block',
     template: `
     <div class="modal-backdrop fade show" [ngStyle]="{'display':display}" ></div>
@@ -39,9 +40,9 @@ import { UtilService } from '@Lortom/app/utilModule/util-service';
 export class ModalBlockComponent extends AbstractBlock implements OnInit {
     @Input() title: string;
     @Input() idModal: string;
-    @ViewChild('vC', {read: ViewContainerRef}) container: ViewContainerRef;
-    @ViewChild('actionC', {read: ViewContainerRef}) actionContainer: ViewContainerRef;
-    @ViewChild('modal') modal: ElementRef;
+    @ViewChild('vC', {static: true, read: ViewContainerRef}) container: ViewContainerRef;
+    @ViewChild('actionC', {static: true, read: ViewContainerRef}) actionContainer: ViewContainerRef;
+    @ViewChild('modal', {static: false}) modal: ElementRef;
     private render: Renderer2;
     type: string;
     display: string;

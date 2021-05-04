@@ -7,6 +7,7 @@ import { GenericField } from './genericField.component';
 
 
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'datefield',
     template: `
     <div class="col-12">
@@ -49,7 +50,7 @@ export class DateComponent extends GenericField implements OnInit, LTComponent {
     copyData: NgbDateStruct;
     index: number;
     send: EventEmitter<any> = new EventEmitter<any>();
-    @ViewChild('d', {read: NgbInputDatepicker}) dp: NgbInputDatepicker;
+    @ViewChild('d', {static: false, read: NgbInputDatepicker}) dp: NgbInputDatepicker;
     ngOnInit() {
     }
     setData(data: any) {
@@ -69,15 +70,15 @@ export class DateComponent extends GenericField implements OnInit, LTComponent {
         }
     }
     erase() {
-        this.data = <any>null;
+        this.data = null as any;
     }
 
     eraseData() {
-        this.data = <any>null;
+        this.data = null as any;
     }
     resetData() {
         // this.dp.manualDateChange(null, true);
-        this.data = <any>null;
+        this.data = null as any;
         this.copyData = null;
     }
     bindData() {}
@@ -90,16 +91,16 @@ export class DateComponent extends GenericField implements OnInit, LTComponent {
     parseData(data: string): NgbDateStruct {
         if (data) {
             const birthday = data.split('-');
-            const day: number = +birthday[0];
-            const month: number = +birthday[1];
-            const year: number = +birthday[2];
+            const d: number = +birthday[0];
+            const m: number = +birthday[1];
+            const y: number = +birthday[2];
             return {
-                day: day,
-                month: month,
-                year: year
+                day: d,
+                month: m,
+                year: y
             };
         } else {
-            return <any>null;
+            return null as any;
         }
     }
 }
