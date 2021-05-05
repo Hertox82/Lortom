@@ -7,6 +7,7 @@ import { IBuildEditObject } from './be.interface';
 
 
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'build-editor',
     templateUrl: './buildeditor.component.html',
     styleUrls: []
