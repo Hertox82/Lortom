@@ -1,12 +1,12 @@
 {
     "name": "hadeluca/lortom",
-    "description": "Lortom is a CMS based on Laravel Framework, The Backend was built with Angular 6",
+    "description": "Lortom is a CMS based on Laravel Framework, The Backend was built with Angular 8",
     "keywords": [
         "cms",
         "laravel",
-        "angular6",
+        "angular8",
         "laravel plus angular",
-        "angular 6"
+        "angular 8"
     ],
     "license": "MIT",
     "type": "project",
@@ -17,20 +17,19 @@
         }
     ],
     "require": {
-        "php": "^7.1.3",
-        "fideloper/proxy": "^4.0",
-        "hadeluca/db-exporter": "^2.2",
-        "hadeluca/lortom-framework": "1.3.*",
-        "laravel/framework": "5.8.*",
-        "laravel/tinker": "^1.0"
+        "php": "^7.2.5|^8.0",
+        "fideloper/proxy": "^4.4",
+        "hadeluca/db-exporter": "^2.3",
+        "hadeluca/lortom-framework": "1.4.*",
+        "laravel/framework": "^6.20",
+        "laravel/tinker": "^2.5"
     },
     "require-dev": {
-        "beyondcode/laravel-dump-server": "^1.0",
-        "filp/whoops": "^2.0",
-        "fzaninotto/faker": "^1.4",
+        "facade/ignition": "^1.16.4",
+        "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^3.0",
-        "phpunit/phpunit": "^7.5"
+        "phpunit/phpunit": "^8.5.8|^9.3.3"
     },
     "autoload": {
         "classmap": [
@@ -68,7 +67,7 @@
             "@php artisan package:discover --ansi"
         ]
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "config": {
         "preferred-install": "dist",
         "sort-packages": true,
