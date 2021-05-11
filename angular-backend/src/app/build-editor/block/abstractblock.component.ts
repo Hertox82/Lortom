@@ -15,7 +15,7 @@ listOfRawData: any[] = [];
 type;
 
     constructor(protected stService: SC, protected abResolver: ComponentFactoryResolver, protected abInjector: Injector,
-        protected abUtServ: UtilService) {
+                protected abUtServ: UtilService) {
         this.stService
         .addComponent('text', UIField.TextComponent)
         .addComponent('email', UIField.EmailComponent)
@@ -53,7 +53,7 @@ type;
             if (this.stService.hasComponent(item.type)) {
                 if (item.data.initialized) {
                    this.initComponent(container, item, cmManager, i);
-                    i++;
+                   i++;
                 }
             }
         });
@@ -154,12 +154,12 @@ type;
         let i = 0;
         data.forEach((item) => {
             if (this.stService.hasAction(item.type)) {
-            const factory = this.abResolver.resolveComponentFactory(this.stService.getAction(item.type));
-            const componentRef = actionContainer.createComponent(factory, i, this.abInjector);
-            this.instantiateAction(componentRef.instance, item, cmManager);
-            if (typeof componentRef.instance['setData'] === 'function') {
-                componentRef.instance.setData(item);
-            }
+                const factory = this.abResolver.resolveComponentFactory(this.stService.getAction(item.type));
+                const componentRef = actionContainer.createComponent(factory, i, this.abInjector);
+                this.instantiateAction(componentRef.instance, item, cmManager);
+                if (typeof componentRef.instance['setData'] === 'function') {
+                    componentRef.instance.setData(item);
+                }
                 i++;
             }
         });

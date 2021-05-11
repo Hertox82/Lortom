@@ -5,7 +5,6 @@ import {UserModelComponent, UserSideComponent} from './user-module/';
 import {NotFoundComponent} from './notfoundpage';
 
 export {BreadCrumbModule, BreadCrumbsComponent} from './breadcrumbs';
-export {EditorModule, EditorComponent} from './Editor';
 export {UserModule} from './user-module';
 
 export const BackendImportComponent = [

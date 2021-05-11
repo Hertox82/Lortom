@@ -83,7 +83,7 @@ export class ViewEditComponent implements  IComponentManager {
                             // tslint:disable-next-line:no-string-literal
                             if ( component.instance['available'] === true ) {
                                 if (component.instance instanceof TinyMceComponent) {
-                                    component.instance.editor.readOnly(!this.isEdit);
+                                    component.instance.isEdit = !this.isEdit;
                                 } else {
                                     // tslint:disable-next-line:no-string-literal
                                     component.instance['isEdit'] = ! this.isEdit;

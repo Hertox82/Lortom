@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { UIElementModule } from '../backend-module/UIElement/uielement.module';
-import { EditorModule } from '../backend-module';
+import { EditorModule } from '@tinymce/tinymce-angular';
 import { UIService } from './service/ui.service';
 import { KeysPipe, KeysNoParamsPipe } from './service/pipe/keys.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
