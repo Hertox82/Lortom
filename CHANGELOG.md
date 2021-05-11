@@ -1,15 +1,12 @@
 # Release Notes
 
-## 5.0.1 (2021-05-11)
-
-- Remove library TinyMCE
-- Added @tinymce/tinymce-angular library in order to fix some security issue
-- Fixed bug with TinyMCE, on previous version tinymce doesn't work
-
-## 5.0.0 (2021-05-07)
+## 5.0.0 (2021-05-11)
 
 - Upgrade Laravel version from 5.8 to ^6.20
 - End support for Laravel ^5.5
+- Remove library TinyMCE
+- Added @tinymce/tinymce-angular library in order to fix some security issue
+- Fixed bug with TinyMCE, on previous version tinymce doesn't work
 
 ## 4.1.0 (2021-05-04)
 
