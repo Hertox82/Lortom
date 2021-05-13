@@ -1,8 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SlideItem, SlideSubMenu} from '../../../../interfaces/slideItem.interface';
-import {EventService} from '../../../../services/event.service';
+import {SlideItem, SlideSubMenu} from '@Lortom/interfaces/slideItem.interface';
+import {EventService} from '@Lortom/services/event.service';
 import {Router} from '@angular/router';
-
 @Component({
   selector: 'app-menu-item',
   templateUrl: './menu-item.component.html',

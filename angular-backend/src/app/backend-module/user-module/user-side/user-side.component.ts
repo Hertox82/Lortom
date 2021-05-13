@@ -1,6 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {MenuService} from '../../../menuservice';
-import {EventService} from '../../../../services/event.service';
+import {MenuService} from '@Lortom/app/menuservice'; // '../../../menuservice';
+import {EventService} from '@Lortom/services/event.service';
 import {User} from '../user-model/user.interface';
 
 @Component({

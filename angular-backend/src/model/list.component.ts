@@ -1,6 +1,4 @@
-
 import {PaginationService} from '@Lortom/services/pagination.service';
-import {hasOwnProperty} from 'tslint/lib/utils';
 import {NavigationEnd} from '@angular/router';
 
 export class ListComponent {
@@ -34,31 +32,31 @@ export class ListComponent {
                     }
                 }
             }
-        if (this[router] != null || this[router] !== undefined) {
-           this[router].events.subscribe(
-               (val) => {
-                   if ( val instanceof NavigationEnd) {
-                       if (this['myRoot'] === val.url) {
-                           this['isRoot'] = true;
-                       } else {
-                           this['isRoot'] = false;
-                       }
-                   }
-               }
-           );
-        }
-
-        if ( typeof this[getList] === 'function') {
-                this[getList]();
-            if (this[service.name] != null || this[service.name] !== undefined) {
-
-                this[service.name][service.upd].subscribe(
-                    () => {
-                        this[getList]();
+            if (this[router] != null || this[router] !== undefined) {
+            this[router].events.subscribe(
+                (val) => {
+                    if ( val instanceof NavigationEnd) {
+                        if (this['myRoot'] === val.url) {
+                            this['isRoot'] = true;
+                        } else {
+                            this['isRoot'] = false;
+                        }
                     }
-                );
+                }
+            );
             }
-        }
+
+            if ( typeof this[getList] === 'function') {
+                    this[getList]();
+                    if (this[service.name] != null || this[service.name] !== undefined) {
+
+                        this[service.name][service.upd].subscribe(
+                            () => {
+                                this[getList]();
+                            }
+                        );
+                    }
+            }
     }
 
     /**
@@ -125,11 +123,14 @@ export class ListComponent {
                             (plugins: any) => {
                                 this.listOfData = plugins;
                                 this[nameList] = plugins;
-                                    for (let i = 0; i < this[nameList].length; i++) {
-                                       if (!hasOwnProperty(this[nameList][i], 'check')) {
-                                           this[nameList][i].check = false;
-                                       }
+                                for (let i = 0; i < this[nameList].length; i++) {
+                                    /*if (!hasOwnProperty(this[nameList][i], 'check')) {
+                                        this[nameList][i].check = false;
+                                    }*/
+                                    if (!this[nameList][i].hasOwnProperty('check')) {
+                                        this[nameList][i].check = false;
                                     }
+                                }
 
                                 const fnSetData = service.setData;
                                 if (typeof this[service.name][fnSetData] === 'function') {
