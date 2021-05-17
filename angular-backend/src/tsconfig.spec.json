@@ -12,10 +12,6 @@
   },
   "files": [
     "test.ts",
-    "empty.ts",
-    "empty-module.ts",
-    "empty-path.ts",
-    "empty-crypto.ts"
   ],
   "include": [
     "**/*.spec.ts",

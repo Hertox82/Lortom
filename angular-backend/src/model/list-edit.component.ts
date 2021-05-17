@@ -1,11 +1,13 @@
 import { ITabListObject } from '@Lortom/app/build-editor/tablist/interface.tablist';
-import { ViewChild } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { TabListComponent } from '@Lortom/app/build-editor/tablist/component/tablist.component';
 import { Router, NavigationEnd } from '@angular/router';
 import { MasterService } from '@Lortom/services/master.service';
 
 
-
+@Component({
+    template: ''
+})
 export class ListEditComponent {
     listOfResource = [];
     isRoot = false;
@@ -19,8 +21,8 @@ export class ListEditComponent {
     @ViewChild(TabListComponent, {static: false}) tbList: TabListComponent;
     constructor(private srvBlog: MasterService,
                 private rt: Router,
-                url: string,
-                functName: string) {
+                @Inject(String) url: string,
+                @Inject(String) functName: string) {
         this.listTh = {
             fields: []
         };
@@ -78,11 +80,11 @@ export class ListEditComponent {
         });
     }
 
-    deleteEvent(data: any, self: any) {
+    deleteEvent(data: any, self: any): void {
         self.delete(self.tbList.passId());
     }
 
-    delete(data: any) {
+    delete(data: any): void {
         this.srvBlog.delete(this.keyPath, data)
         .subscribe(
             (response: any) => {

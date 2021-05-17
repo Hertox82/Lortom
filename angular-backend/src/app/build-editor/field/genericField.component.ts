@@ -1,8 +1,10 @@
-import { Input } from '@angular/core';
+import { Component ,Input } from '@angular/core';
 import { IComponentManager } from '../abstract.component';
 
 
-
+@Component({
+    template: ''
+})
 export class GenericField {
 
     @Input() label: string;
@@ -13,7 +15,7 @@ export class GenericField {
     @Input() type: string;
     cManager: IComponentManager;
 
-    public setGenericData(data: any) {
+    public setGenericData(data: any): void {
 
         ['label', 'isEdit', 'placeholder', 'name', 'available'].forEach(item => {
             if (item in data) {
@@ -22,7 +24,7 @@ export class GenericField {
         });
     }
 
-    public setManager(manager: IComponentManager) {
+    public setManager(manager: IComponentManager): void {
         this.cManager = manager;
     }
 }

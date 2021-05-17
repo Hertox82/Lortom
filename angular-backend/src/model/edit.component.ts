@@ -1,10 +1,12 @@
-import { ViewChild, EventEmitter } from '@angular/core';
+import { ViewChild, EventEmitter, Component } from '@angular/core';
 import { IComponentManager } from '@Lortom/app/build-editor/abstract.component';
 import { BuildEditorComponent } from '@Lortom/app/build-editor/buildeditor.component';
 import { IBuildEditObject } from '@Lortom/app/build-editor/be.interface';
 import { TinyMceComponent } from '@Lortom/app/build-editor/field';
 
-
+@Component({
+    template: ''
+})
 export class ViewEditComponent implements  IComponentManager {
     notFound = true;
     isEdit = false;
@@ -20,7 +22,7 @@ export class ViewEditComponent implements  IComponentManager {
     finishToBuild = new EventEmitter<any>();
     @ViewChild(BuildEditorComponent, {static: false}) beComp: BuildEditorComponent;
 
-    callServer(id?: number) {
+    callServer(id?: number): void {
         if (id != undefined || id != null ) {
            this[this.varNameService].edit(this.keyPath, id)
              .subscribe(
@@ -38,7 +40,7 @@ export class ViewEditComponent implements  IComponentManager {
         }
     }
 
-    buildEdit(data: any) {
+    buildEdit(data: any): void {
         this.dataStructured = data.blocks;
         if (this.checkForRestriction(data)) {
             this[this.varNameRouter].navigate([this.varUrlBack]);
@@ -51,7 +53,7 @@ export class ViewEditComponent implements  IComponentManager {
         }
     }
 
-    destroySub() {
+    destroySub(): void {
         this.listOfSubscription.forEach(
             (x) => {
                 x.unsubscribe();
@@ -59,7 +61,7 @@ export class ViewEditComponent implements  IComponentManager {
         this.listOfSubscription = [];
     }
 
-    checkForRestriction(data: any) {
+    checkForRestriction(data: any): any {
         // tslint:disable-next-line:no-string-literal
         if (typeof this['isRestriction'] === 'function') {
             // tslint:disable-next-line:no-string-literal
@@ -73,7 +75,7 @@ export class ViewEditComponent implements  IComponentManager {
      * This function is called when User click on Button Edit.
      * @param event
      */
-    cmpEdit(event: any) {
+    cmpEdit(event: any): void {
         this.beComp.listOfBlock.forEach(
             (block) => {
                 block.instance.listOfComponents.forEach((component) => {
@@ -103,7 +105,7 @@ export class ViewEditComponent implements  IComponentManager {
      * This function is fired when User click on Button Save
      * @param cm
      */
-    save(obj) {
+    save(obj): void {
         const cm = obj.cm;
         const lv = obj.lv;
         if (cm.isSave) {
@@ -128,7 +130,7 @@ export class ViewEditComponent implements  IComponentManager {
      * This function send to Api the data Object to Update
      * @param object
      */
-    sendToServer(object: any, leave: boolean) {
+    sendToServer(object: any, leave: boolean): void {
         if (this.id != null) {
             this[this.varNameService].update(this.keyPath, this.id, object).subscribe(
                 (response: any) => {
@@ -167,7 +169,7 @@ export class ViewEditComponent implements  IComponentManager {
             }
     }
 
-    reset() {
+    reset(): void {
         console.log('reset');
     }
 }

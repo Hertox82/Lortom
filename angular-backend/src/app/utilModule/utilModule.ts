@@ -3,7 +3,7 @@ import { UtilService } from './util-service';
 
 @NgModule()
 export class UtilModule {
-    static forRoot(): ModuleWithProviders  {
+    static forRoot(): ModuleWithProviders<UtilModule>  {
         return {
             ngModule: UtilModule,
             providers: [UtilService]
