@@ -4,6 +4,7 @@
  * Date: 30/10/2017
  * Time: 15:10
  */
+namespace Database\Seeders;
 
 use LTFramework\Services\LortomSeeder as Seeder;
 

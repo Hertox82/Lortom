@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use LTFramework\Services\LortomSeeder as Seeder;
 
 class DatabaseSeeder extends Seeder

@@ -1,5 +1,25 @@
 # Release Notes
 
+## 7.0.0 (2021-05-26)
+
+- Upgrade Laravel version from 7 to 8
+- End support for Laravel 7
+
+## 6.1.0 (2021-05-17)
+
+- Upgrade Angular version from 9 to 10
+- End support for Angular 9
+
+## 6.0.0 (2021-05-14)
+
+- Upgrade Laravel version from 6 to 7
+- End support for Laravel 5.8 and 6
+
+## 5.1.0 (2021-05-13)
+
+- Upgrade Angular version from 8 to 9
+- End support for Angular 8
+
 ## 5.0.0 (2021-05-11)
 
 - Upgrade Laravel version from 5.8 to ^6.20

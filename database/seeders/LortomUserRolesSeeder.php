@@ -5,6 +5,8 @@
  * Time: 15:18
  */
 
+namespace Database\Seeders;
+
 use LTFramework\Services\LortomSeeder as Seeder;
 
 class LortomUserRolesSeeder extends Seeder

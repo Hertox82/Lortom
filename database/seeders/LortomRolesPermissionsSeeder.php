@@ -5,6 +5,8 @@
  * Time: 15:21
  */
 
+namespace Database\Seeders;
+
 use LTFramework\Services\LortomSeeder as Seeder;
 
 

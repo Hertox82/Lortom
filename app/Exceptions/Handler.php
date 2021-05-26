@@ -2,8 +2,12 @@
 
 namespace App\Exceptions;
 
-use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
+use Plugins\Hardel\File\Model\LortomFile;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use File;
+use Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -23,22 +27,22 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontFlash = [
+        'current_password',
         'password',
         'password_confirmation',
     ];
 
     /**
-     * Report or log an exception.
+     * Register the exception handling callbacks for the application.
      *
-     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
-     *
-     * @param  \Throwable  $exception
      * @return void
      */
-    public function report(Throwable $exception)
-    {
-        parent::report($exception);
-    }
+     public function register()
+     {
+         $this->reportable(function (Throwable $e) {
+             //
+         }); 
+     }
 
     /**
      * Render an exception into an HTTP response.
@@ -49,8 +53,49 @@ class Handler extends ExceptionHandler
      * 
      * @throws \Throwable
      */
-    public function render($request, Throwable $exception)
-    {
+    public function render ($request, Throwable $exception)
+    { 
+        if($exception instanceof NotFoundHttpException) {
+            if($request instanceof Request) {
+                $url = $request->url();
+                $url = str_replace($_ENV['APP_URL'].'/','',$url);
+                $data = extractDataFromUrl($url);
+                
+                if(empty($data)) {
+                    return parent::render($request, $exception);
+                }
+                extract($data,EXTR_SKIP);
+                $where = [
+                    ['fileName',$fileName],
+                    ['extension',$extension],
+                    ['path', $path]
+                ];
+                $file = LortomFile::where($where)->first();
+                
+                if($file) {
+                    if(! File::exists($file->getRealPath())) {
+                        return parent::render($request, $exception);
+                    } else {
+                        if($file->getTypeByExtension() != 'document') {
+                            
+                            mkThumb([
+                                'i' => $file->id,
+                                'w' => $w,
+                                'h' => $h
+                            ]);
+                           $fileName = $fileName.'.'.$extension;
+                        }
+                        $f = File::get(public_path().$path.$fileName);
+                        $type = File::mimeType(public_path().'/'.$url);
+                        $response = Response::make($f,200);
+                        $response->header("Content-Type", $type);
+    
+                        return $response;
+                    }
+                }
+               
+            }
+        }
         return parent::render($request, $exception);
     }
 }
