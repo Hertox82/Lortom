@@ -1,8 +1,7 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../out-tsc/app",
-    "baseUrl": "./",
+    "outDir": "./out-tsc/app",
     "paths": {
       "@Lortom/*": [
         "*"
@@ -14,11 +13,13 @@
         "plugins"
       ],
     },
-    "module": "commonjs",
     "types": []
   },
-  "exclude": [
-    "test.ts",
-    "**/*.spec.ts"
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
   ]
 }

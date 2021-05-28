@@ -17,7 +17,8 @@
               "index": "src/index.html",
               "main": "src/main.ts",
               "polyfills": "src/polyfills.ts",
-              "tsConfig": "src/tsconfig.app.json",
+              "tsConfig": "tsconfig.app.json",
+              "aot": true,
               "assets": [
                 "src/favicon.ico",
                 "src/assets"
@@ -55,9 +56,7 @@
                 "optimization": false,
                 "outputHashing": "all",
                 "sourceMap": false,
-                "extractCss": true,
                 "namedChunks": false,
-                "aot": true,
                 "extractLicenses": true,
                 "vendorChunk": false,
                 "buildOptimizer": true
